@@ -21,7 +21,7 @@
 /storage/pail
 /vendor
 /public
-/resources
+resources
 Homestead.json
 Homestead.yaml
 Thumbs.db
