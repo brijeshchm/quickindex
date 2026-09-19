@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "KB78SFN457.com.quickdial.app",
+          "NY2RFS2M9C.com.quickdial.app"
+        ],
+        "paths": ["*"]
+      }
+    ]
+  }
+}
