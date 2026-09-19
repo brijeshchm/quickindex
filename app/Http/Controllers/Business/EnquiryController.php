@@ -16,6 +16,7 @@ use App\Models\Status;
 use App\Models\AssignedLead;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Collection;
+use App\Services\ClientCommonService;
 class EnquiryController extends Controller
 {
 	protected $danger_msg = '';
@@ -24,15 +25,15 @@ class EnquiryController extends Controller
 	protected $info_msg = '';
 	protected $redirectTo = '/business-owners';
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct(Request $request)
-	{
 
+	private ClientCommonService $clientCommonService;
+
+	public function __construct(
+		ClientCommonService $clientCommonService
+	) {
+		$this->clientCommonService = $clientCommonService;
 	}
+	 
 
 
 
@@ -414,6 +415,9 @@ class EnquiryController extends Controller
 			$search = $request->input('search');
 		}
 		$clientID = auth()->guard('clients')->user()->id;
+		$profile = $this->clientCommonService->get(
+			$clientID
+		);
 		$statues = Status::where('lead_filter', '1')->get();
 		$services = DB::table('assigned_kwds')
 			->join('keyword', 'assigned_kwds.kw_id', '=', 'keyword.id')
@@ -424,7 +428,8 @@ class EnquiryController extends Controller
 		return view('business.leadlist', [
 			'search' => $search,
 			'statues' => $statues,
-			'services' => $services
+			'services' => $services,
+			'profile' => $profile,
 		]);
 	}
 
@@ -728,7 +733,9 @@ class EnquiryController extends Controller
 		}
 
 		$clientID = $client->id;
-
+		$profile = $this->clientCommonService->get(
+			$clientID
+		);
 		$clientDetails = DB::table('clients')
 			->where('id', $clientID)
 			->first();
@@ -850,12 +857,11 @@ class EnquiryController extends Controller
 
 
 
-		return view('business.myLead', ['leads' => $leads]);
+		return view('business.myLead', ['leads' => $leads,'profile'=>$profile]);
 	}
 
 	public function favoriteEnquiry(Request $request)
 	{
-
 
 		$client = auth()->guard('clients')->user();
 
@@ -864,6 +870,10 @@ class EnquiryController extends Controller
 		}
 
 		$clientID = $client->id;
+		$profile = $this->clientCommonService->get(
+			$clientID
+		);
+
 
 		$clientDetails = DB::table('clients')
 			->where('id', $clientID)
@@ -982,9 +992,17 @@ class EnquiryController extends Controller
 			return $lead;
 		});
 
+ $profileData= $profile['profile'];
 
 
-		return view('business.favorite-enquiry', ['leads' => $leads]);
+ $account= $profile['account'];
+ 
+ $completion= $profile['completion'];
+ $tabs= $profile['tabs'];
+ $leadsTabs= $profile['leadsTabs'];
+ 
+ 
+		return view('business.favorite-enquiry', ['leads' => $leads,'profile'=>$profileData,'account'=>$account,'completion'=>$completion,'tabs'=>$tabs,'leadsTabs'=>$leadsTabs]);
 	}
 
 
@@ -1253,6 +1271,9 @@ class EnquiryController extends Controller
 	public function manageEnquiry(Request $request)
 	{
 		$clientID = auth()->guard('clients')->user()->id;
+		$profile = $this->clientCommonService->get(
+			$clientID
+		);
 		$leads = DB::table('leads')
 			->join('assigned_leads', 'leads.id', '=', 'assigned_leads.lead_id')
 			->leftjoin('citylists', 'leads.city_id', '=', 'citylists.id')
@@ -1263,7 +1284,7 @@ class EnquiryController extends Controller
 			->orderBy('assigned_leads.created_at', 'desc')
 			->where('assigned_leads.client_id', $clientID)->limit('20')->get();
 
-		return view('business.manage-enquiry', ['leads' => $leads]);
+		return view('business.manage-enquiry', ['leads' => $leads,'profile'=>$profile]);
 	}
 
 	public function leadFollowUp(Request $request)

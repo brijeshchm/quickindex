@@ -32,6 +32,7 @@ use App\Models\Citieslists;
 use App\Models\AssignedZone;
 use App\Models\State;
 use App\Models\Occupation;
+use App\Services\ClientCommonService;
 class ProfileController extends Controller
 {
 	protected $danger_msg = '';
@@ -40,24 +41,24 @@ class ProfileController extends Controller
 	protected $info_msg = '';
 	protected $redirectTo = '/business-owners';
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct(Request $request)
-	{
+	private ClientCommonService $clientCommonService;
 
+	public function __construct(
+		ClientCommonService $clientCommonService
+	) {
+		$this->clientCommonService = $clientCommonService;
 	}
 
 	public function profileInfo(Request $request)
 	{
 		$clientID = auth()->guard('clients')->user()->id;
 		$client = Client::find($clientID);
-
+		$profile = $this->clientCommonService->get(
+			$clientID
+		);
 		$states = State::where('country_id', '101')->get();
 		$occupations = Occupation::where('status', '1')->get();
-		return view('business.profile', ['client' => $client, 'states' => $states, 'occupations' => $occupations]);
+		return view('business.profile', ['client' => $client,'profile'=>$profile,'states' => $states, 'occupations' => $occupations]);
 	}
 
 

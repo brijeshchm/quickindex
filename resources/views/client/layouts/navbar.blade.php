@@ -280,13 +280,13 @@ if(!empty($guests)){
         {{-- Menu items --}}
         @php
             $menuItems = [
-                ['url' => 'business/personal-details',  'icon' => 'user',     'label' => 'My Profile'],
-                ['url' => 'business/account-settings',  'icon' => 'gear',     'label' => 'Account Settings'],
-                ['url' => 'business/favorite-enquiry',  'icon' => 'star',     'label' => 'Favorite Enquiry'],
-                ['url' => 'business/manage-enquiry',    'icon' => 'envelope', 'label' => 'Manage Enquiry'],
-                ['url' => 'business/keywords',          'icon' => 'book',     'label' => 'Service Keywords'],
-                ['url' => 'business/package',           'icon' => 'package',  'label' => 'Package',         'badge' => 'New'],
-                ['url' => 'business/billing-history',   'icon' => 'wallet',   'label' => 'My Transactions'],
+                ['url' => 'business/profile/general',  'icon' => 'user',     'label' => 'My Profile'],
+                ['url' => 'business/account/settings',  'icon' => 'gear',     'label' => 'Account Settings'],
+                ['url' => 'business/leads/favorites',  'icon' => 'star',     'label' => 'Favorite Enquiry'],
+                ['url' => 'business/leads/manage-enquiry',    'icon' => 'envelope', 'label' => 'Manage Enquiry'],
+                ['url' => 'business/profile/keywords',          'icon' => 'book',     'label' => 'Service Keywords'],
+                ['url' => 'business/account/package',           'icon' => 'package',  'label' => 'Package',         'badge' => 'New'],
+                ['url' => 'business/account/invoices',   'icon' => 'wallet',   'label' => 'My Transactions'],
             ];
         @endphp
 
@@ -1018,91 +1018,7 @@ function selectMobileSuggestion(idx) {
     redirectSearch(s.id, stickySelectedCity);
 }
 
-
-// // ─── Sticky Search + Suggestions ──────────────────────────────────────────
-// let stickySearchTimeout = null;
-// let stickySuggestions   = [];
-// let activeStickyIdx     = -1;
-
-// function handleStickySearchInput(val) {
-//     alert(val);
-//     clearTimeout(stickySearchTimeout);
-//     if (val.trim().length < 1) {
-//         alert('inner');
-//         hideStickysuggestions();
-//         return;
-//     }
-//     stickySearchTimeout = setTimeout(() => fetchStickySuggestions(val.trim()), 220);
-// }
-
-// async function fetchStickySuggestions(q) {
-//     try {
-//         const res  = await fetch(`https://api.quickdials.com/api/website/get-keyword-list?keyword=${encodeURIComponent(q)}`);
-//         const data = await res.json();
-//         stickySuggestions = (data.data ?? []).map(i => ({ id: i.slug, label: i.keyword, kind: i.type }));
-//         renderStickySuggestions(q);
-//     } catch { hideStickysuggestions(); }
-// }
-
-// function renderStickySuggestions(q) {
-//     const list = document.getElementById('sticky-suggestions-list');
-//     const box  = document.getElementById('sticky-suggestions');
-//     if (!stickySuggestions.length) { hideStickysuggestions(); return; }
-//     const kindColors = { category: 'bg-blue-50 text-blue-600', service: 'bg-orange-50 text-orange-600', keyword: 'bg-green-50 text-green-600' };
-//     list.innerHTML = stickySuggestions.map((s, idx) => {
-//         const low = q.toLowerCase();
-//         const lbl = s.label;
-//         const mi  = lbl.toLowerCase().indexOf(low);
-//         const hl  = mi >= 0
-//             ? `${lbl.slice(0,mi)}<span class="text-blue-600 font-semibold">${lbl.slice(mi,mi+q.length)}</span>${lbl.slice(mi+q.length)}`
-//             : lbl;
-//         const kc = kindColors[s.kind] || 'bg-gray-100 text-gray-500';
-//         return `<li>
-//             <button onmouseenter="activeStickyIdx=${idx}" onmousedown="selectStickySuggestion(${idx})"
-//                 class="w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-gray-50">
-//                 <svg class="w-3.5 h-3.5 text-gray-300 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/></svg>
-//                 <span class="flex-1 text-sm text-gray-700">${hl}</span>
-//                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide ${kc}">${s.kind}</span>
-//             </button>
-//         </li>`;
-//     }).join('');
-//     box.classList.remove('hidden');
-//     activeStickyIdx = -1;
-// }
-
-// function hideStickysuggestions() {
-//     document.getElementById('sticky-suggestions').classList.add('hidden');
-//     stickySuggestions = [];
-//     activeStickyIdx   = -1;
-// }
-
-// function selectStickySuggestion(idx) {
-//     const s = stickySuggestions[idx];
-//       if (!s) return;
-//     document.getElementById('sticky-search-input').value = s.id;
-//     hideStickysuggestions();
-//     redirectSearch(s.id, stickySelectedCity);
-// }
-
-// function handleStickyKeydown(e) {
-    
-
-//     if (e.key === 'ArrowDown') { e.preventDefault(); activeStickyIdx = Math.min(activeStickyIdx+1, stickySuggestions.length-1); }
-//     else if (e.key === 'ArrowUp')  { e.preventDefault(); activeStickyIdx = Math.max(activeStickyIdx-1, 0); }
-//     else if (e.key === 'Enter')  { e.preventDefault(); activeStickyIdx >= 0 ? selectStickySuggestion(activeStickyIdx) : doStickySearch(); }
-//     else if (e.key === 'Escape') hideStickysuggestions();
-// }
-
-// function doStickySearch() {
-//     const kw = document.getElementById('sticky-search-input').value.trim();
-//     redirectSearch(kw, stickySelectedCity);
-// }
-
-// function doMobileSearch() {
-//     const kw = document.getElementById('mobile-search-input').value.trim();
-//     redirectSearch(kw, stickySelectedCity);
-// }
-
+ 
 function redirectSearch(keyword, city) {
     if (!keyword || !city) return;
     const c = city.toLowerCase().replace(/\s+/g, '-');
