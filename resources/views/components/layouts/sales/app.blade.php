@@ -44,7 +44,14 @@
             <p class="mt-8 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f879a]">Manage</p>
             <nav class="mt-3 space-y-1"><a href="#" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-[#aabccc] hover:bg-[#1b3a52] hover:text-white">Team</a><a href="#" class="block rounded-xl px-3 py-2.5 text-sm font-medium text-[#aabccc] hover:bg-[#1b3a52] hover:text-white">Settings</a></nav>
             <div class="mt-auto rounded-2xl border border-[#29465c] bg-[#1b3a52] p-4"><p class="text-xs font-semibold text-white">Network health</p><p class="mt-3 font-display text-2xl font-semibold text-white">92<span class="text-sm text-[#aabccc]">/100</span></p><div class="mt-3 h-1.5 rounded-full bg-[#29465c]"><div class="h-1.5 w-[92%] rounded-full bg-[#f0b45a]"></div></div><p class="mt-2 text-[10px] text-[#aabccc]">Healthy · reviewed today</p></div>
-            <form method="POST" action="{{ route('logout') }}" class="mt-4">@csrf<button class="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-[#aabccc] hover:bg-[#1b3a52] hover:text-white">Log out</button></form>
+            
+            
+          
+                
+            <a href="{{ route('salesLogout') }}" class="w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-[#aabccc] hover:bg-[#1b3a52] hover:text-white">Log out ff</a>
+         
+        
+      
         </aside>
 
         <main class="min-h-screen pt-[68px] lg:pl-[248px]">

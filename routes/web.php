@@ -465,7 +465,8 @@ Route::get('/businessdetails/{slug}', [App\Http\Controllers\Client\ClientDetailC
 Route::get('/businessdetails', [App\Http\Controllers\Client\ClientDetailController::class, 'businessDetails'])->name('lists.business');
 
 Route::post('/review', [App\Http\Controllers\Client\ReviewController::class, 'store']);
-Route::get('/client/logout', [App\Http\Controllers\LogoutController::class, 'clientLogout']);
+Route::get('/client/logout', [App\Http\Controllers\LogoutController::class, 'clientLogout'])->name('clientLogout');
+Route::get('/sales/logout', [App\Http\Controllers\LogoutController::class, 'salesLogout'])->name('salesLogout');
 
 
 

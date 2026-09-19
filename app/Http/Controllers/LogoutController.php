@@ -23,4 +23,10 @@ class LogoutController extends Controller
 		Auth::guard('clients')->logout();
 		return redirect('business-owners');
 	}
+	
+	public function salesLogout()
+	{
+		Auth::guard('sales')->logout();
+		return redirect('business-owners');
+	}
 }

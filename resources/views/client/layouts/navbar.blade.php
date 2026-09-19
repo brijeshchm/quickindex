@@ -364,7 +364,7 @@ if(!empty($guests)){
 
         {{-- Logout (separated) --}}
         <div class="border-t border-gray-100 py-1.5 bg-gray-50/50">
-            <a href="{{ url('client/logout') }}"
+            <a href="{{ route('clientLogout') }}"
                
                class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
                 <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-100 text-red-600 shrink-0">
