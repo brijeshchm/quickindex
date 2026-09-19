@@ -1,0 +1,502 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^\.well-known/ - [L]
+    #remove index.php from url
+     RewriteCond %{THE_REQUEST} \s/+index\.php[?\s]
+    RewriteRule ^index\.php$ / [R=301,L]
+   
+
+    # Disable directory browsing
+    Options -Indexes
+
+    # 1. Force HTTPS
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteCond %{HTTPS} off
+  #  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # 2. Redirect non-www to www (uncomment if you want www)
+   # RewriteCond %{HTTP_HOST} ^quickdials\.com [NC]
+    #RewriteRule ^(.*)$ https://www.quickdials.com/$1 [L,R=301,NC]
+    
+    # 3. Remove trailing slash (except for root /)
+    RewriteCond %{REQUEST_URI} ^(.+)/$
+    RewriteCond %{REQUEST_URI} !^/$
+    RewriteRule ^(.*)/$ /$1 [R=301,L]
+    
+    
+    # 4. Remove multiple slashes
+    RewriteCond %{THE_REQUEST} //
+    RewriteRule ^(.*)$ /$1 [R=301,L]
+
+ 
+    
+
+    # 5. Internally redirect all requests to public folder
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L]
+
+
+    #RewriteRule ^\.well-known/ - [L]
+ 
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+
+#     # Disable directory browsing
+#     Options -Indexes
+
+#     # Redirect requests to public folder internally
+#     RewriteCond %{REQUEST_URI} !^/public/
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule ^(.*)$ public/$1 [L]
+
+#     # Handle Authorization Header
+#     RewriteCond %{HTTP:Authorization} .
+#     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# </IfModule>
+
+# Security
+<IfModule mod_security.c>
+    SecFilterEngine Off
+    SecFilterScanPOST Off
+</IfModule>
+
+
+<IfModule mod_headers.c>
+
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Send a secure referrer policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Force HTTPS (only if your entire site uses HTTPS)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # Basic Content Security Policy
+    Header always set Content-Security-Policy "default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; font-src 'self' https: data:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https:; frame-ancestors 'self';"
+
+</IfModule>
+
+# 301 Redirects
+Redirect 301 "/categories/rent-buy" https://www.quickdials.com/categories/rent-and-buy
+Redirect 301 "/child/job" https://www.quickdials.com/child/jobs-placements
+Redirect 301 "/child/law-distance-education" https://www.quickdials.com/child/distance-education-institute
+Redirect 301 "/workday-peakon-employee-voice-consultant" https://www.quickdials.com/workday-peakon-employee-voice
+Redirect 301 "/noida/workday-peakon-employee-voice-consultant" https://www.quickdials.com/noida/workday-peakon-employee-voice
+Redirect 301 "/workday-projects-consultant" https://www.quickdials.com/workday-projects
+Redirect 301 "/workday-procurement-course-online" https://www.quickdials.com/workday-procurement
+Redirect 301 "/indian-forest-servicesifs" https://www.quickdials.com/indian-forest-services
+Redirect 301 "/ludhiana/workday-finance-modules-training" https://www.quickdials.com/workday-finance-modules
+Redirect 301 "/workday-finance-modules-training" https://www.quickdials.com/workday-finance-modules
+Redirect 301 "/beauty-parlour-services" https://www.quickdials.com/beauty-parlours
+Redirect 301 "/child/wedding-songs-dancer" https://www.quickdials.com/wedding-dancer-and-singer
+Redirect 301 "/bluecoat-training" https://www.quickdials.com/bluecoat-proxy-training
+Redirect 301 "/checkpoint-training" https://www.quickdials.com/checkpoint-firewall-training
+Redirect 301 "/1 Year Medical Coaching" https://www.quickdials.com/1-year-medical-coaching  
+Redirect 301 "/Salesforce Analytics Cloud" https://www.quickdials.com/salesforce-analytics-cloud
+Redirect 301 "/img/CCTV-security.png" https://www.quickdials.com/img/CCTV-security.webp
+Redirect 301 "/blog/salesforce-marketing-cloud-consultant--drive-targeted-marketing-success" https://www.quickdials.com/blog/salesforce-marketing-cloud-consultant-drive-targeted-marketing-success
+
+
+Redirect 301 "/mcsa-certification-training" https://www.quickdials.com/azure-administrator-associate-az-104
+
+Redirect 301 "/mcsa-training" https://www.quickdials.com/azure-administrator-associate-az-104
+   
+Redirect 301 "/microsoft-certified-applications-developer-(mcad)-training" https://www.quickdials.com/azure-administrator-associate-az-104
+Redirect 301 "/windows-2008-server-certification-training" https://www.quickdials.com/microsoft-windows-training
+ 
+Redirect 301 "/mcse-certification-training" https://www.quickdials.com/azure-administrator-associate-az-104
+Redirect 301 "/mcse-training" https://www.quickdials.com/azure-administrator-associate-az-104
+Redirect 301 "/type-writing-training" https://www.quickdials.com/typewriting-training
+Redirect 301 "/mobile-application-development-training" https://www.quickdials.com/mobile-app-development-training
+
+Redirect 301 "/blog/cyber-security-training--professional-courses--certification-programs-quick-dials" https://www.quickdials.com/blog/cyber-security-training-course-quick-dials
+
+Redirect 301 "/blog/master-workday-supplier-accounts-for-efficient-procurement-management" https://www.quickdials.com/blog/master-workflow-automation-with-hadoop-oozie-training
+Redirect 301 "/blog/workday-finance-modules-explained-streamline-your-financial-operations" https://www.quickdials.com/blog/workday-finance-modules-training-quick-dials
+ 
+Redirect 301 "/blog/oracle-apps-dba-training--master-oracle-e-business-suite-administration" https://www.quickdials.com/blog/oracle-apps-dba-training-master-oracle-e-business-suite-administration
+ 
+Redirect 301 "/blog/master-workday-revenue-management-for-accurate-financial-growth" https://www.quickdials.com/blog/master-workflow-automation-with-hadoop-oozie-training
+  
+Redirect 301 "/blog/sql-server-online-training--learn-ms-sql-with-real-time-practice-quick-dials" https://www.quickdials.com/blog/sql-server-online-training-course-quick-dials
+
+ 
+ Redirect 301 "/blog/event-organisers" https://www.quickdials.com/blog/wedding-photography-and-videography-cost-the-ultimate-price-guide
+ 
+ 
+ 
+Redirect 301 "/blog/master-workday-procurement-for-efficient-spend-management" https://www.quickdials.com/blog/master-workflow-automation-with-hadoop-oozie-training
+
+Redirect 301 "/blog/master-workday-banking--settlement-for-secure-financial-transactions" https://www.quickdials.com/blog/master-workflow-automation-with-hadoop-oozie-training
+
+
+ 
+Redirect 301 "/blog/workday-customer-accounts-explained-smarter-customer-management" https://www.quickdials.com/blog/workday-customer-accounts-training-quick-dials
+ 
+  
+Redirect 301 "/php-training-institute" https://www.quickdials.com/php-training
+ 
+Redirect 301 "/staadpro-training" https://www.quickdials.com/staad-pro-training
+Redirect 301 "/event-organisers" https://www.quickdials.com/event-organizers
+ Redirect 301 "/gurgaon/event-organisers" https://www.quickdials.com/event-organizers
+ 
+Redirect 301 "/vhdl-training" https://www.quickdials.com/verilog-hdl-training
+
+
+Redirect 301 "/vulnebrality-assesment-training" https://www.quickdials.com/vulnerability-assessment-training
+ 
+Redirect 301 "/wedding-choreographers" https://www.quickdials.com/wedding-choreographer
+
+Redirect 301 "/img/Dancing.png" https://www.quickdials.com/img/Dancing.webp
+Redirect 301 "/popular/Stage-Decorators.jpg" https://www.quickdials.com/popular/Stage-Decorators.webp
+Redirect 301 "/popular/Banquet-Halls.jpg" https://www.quickdials.com/popular/Banquet-Halls.webp
+Redirect 301 "/img/Rent-buy.png" https://www.quickdials.com/img/Rent-buy.webp
+Redirect 301 "/client/images/favicon.jpeg" https://www.quickdials.com/favicon.ico
+Redirect 301 "/img/Rent-buy.png" https://www.quickdials.com/img/Rent-buy.webp
+ 
+Redirect 301 "/paf-coaching/workday-hcm-function" https://www.quickdials.com/workday-hcm-functional
+
+Redirect 301 "/ccda training/adobe-flash-training" https://www.quickdials.com/adobe-framemaker-training
+Redirect 301 "/maf distance/adobe-flash-training" https://www.quickdials.com/adobe-framemaker-training
+ 
+ Redirect 301 "/meerut/bluecoat-training" https://www.quickdials.com/bluecoat-proxy-training
+ 
+Redirect 301 "/sql-server-training/nail-art-nail-extension-" https://www.quickdials.com/nail-art-nail-extension
+Redirect 301 "/business-details/s--s-care-skills-academy-pvt.-ltd" https://www.quickdials.com/businessdetails/s--s-care-skills-academy-pvt.-ltd
+
+Redirect 301 "/tally training/bsc-distance-" https://www.quickdials.com/bsc-distance
+Redirect 301 "/udaipur/hospital-management-training-" https://www.quickdials.com/udaipur/hospital-management-training
+
+Redirect 301 "/ahmedabad/etoricoxib--" https://www.quickdials.com/etoricoxib
+
+Redirect 301 "/business-details/advance-institute-of-management--technology" https://www.quickdials.com/businessdetails/advance-institute-of-management--technology
+
+
+Redirect 301 "/dhanbad/acupuncturist" https://www.quickdials.com/acupuncture-therapists
+
+Redirect 301 "/business-details/skillzlearn" https://www.quickdials.com/businessdetails/skillzlearn
+
+Redirect 301 "/raipur/apparel-designing-" https://www.quickdials.com/raipur/apparel-designing
+
+
+Redirect 301 "/botique-mangement-" https://www.quickdials.com/
+
+Redirect 301 "/prometric testing centers/hospital-management" https://www.quickdials.com/hospital-management-training
+Redirect 301 "/actor" https://www.quickdials.com/
+Redirect 301 "/ranchi/ugc-women-studies-coaching-" https://www.quickdials.com/ranchi/ugc-women-studies-coaching
+Redirect 301 "/mcsa certification training/liferay-training" https://www.quickdials.com/liferay-portal-administration-training
+Redirect 301 "/faridabad/music-" https://www.quickdials.com/faridabad/music
+
+
+Redirect 301 "/kochi/full-stack-developer" https://www.quickdials.com/full-stack-developer-training
+Redirect 301 "/udaipur/salesforce-lightning-web-components-online-training" https://www.quickdials.com/salesforce-administrator-training
+
+Redirect 301 "/ssc chsl/bank-insurance-exam-coaching" https://www.quickdials.com/banking-entrance-exams
+
+Redirect 301 "/ahmedabad/wedding-organizers" https://www.quickdials.com/wedding-organisers
+Redirect 301 "/oracle business intelligence training/bank-insurance-exam-coaching" https://www.quickdials.com/banking-entrance-exams
+
+Redirect 301 "/sap-bi-training/apparel-designing-" https://www.quickdials.com/apparel-designing
+
+Redirect 301 "/blender tool training/cs-intermediate-" https://www.quickdials.com/cs-intermediate
+
+
+
+Redirect 301 "/foreign education entrance exams/palo-alto-firewall--training" https://www.quickdials.com/palo-alto-firewall-training
+
+Redirect 301 "/chennai/nail-art-nail-extension-" https://www.quickdials.com/nail-art-nail-extension
+
+Redirect 301 "/home-appliance-repair-service-job-training/node.js-training" https://www.quickdials.com/nodejs-training
+
+Redirect 301 "/pgdhim distance/adobe-shockwave-training" https://www.quickdials.com/adobe-pagemaker-training
+
+Redirect 301 "/ugc-home-science-coaching/courier-services" https://www.quickdials.com/courier-service
+
+Redirect 301 "/upsc exam coaching/it-hardware-networking-training-" https://www.quickdials.com/it-hardware-networking-training
+
+Redirect 301 "/ranchi/ac-repair-services" https://www.quickdials.com/ac-repair-service
+Redirect 301 "/sas-online-training/web-2.0-training" https://www.quickdials.com/web-design-training
+
+Redirect 301 "/fortigate-training/adobe-soundbooth-training" https://www.quickdials.com/adobe-illustrator-training
+
+
+Redirect 301 "/medical entrance exam coaching/mcse-certification-training" https://www.quickdials.com/mca-distance
+
+
+Redirect 301 "/ccda-training/checkpoint-training" https://www.quickdials.com/checkpoint-firewall-training
+
+Redirect 301 "/azure-administrator-associate-az-104/windows-2008-server-certification-training" https://www.quickdials.com/microsoft-windows-training
+
+Redirect 301 "/study in austria/cfx-" https://www.quickdials.com/cfx-coaching
+
+Redirect 301 "/web-designing/full-stack-developer" https://www.quickdials.com/full-stack-developer-training
+Redirect 301 "/jalandhar/ac-service" https://www.quickdials.com/ac-repair-service
+Redirect 301 "/college tuition/bsc-distance-" https://www.quickdials.com/bsc-distance
+
+Redirect 301 "/ghaziabad/asp.net-training" https://www.quickdials.com/asp-dot-net-training
+
+Redirect 301 "/palo-alto-firewall--training/mean-training" https://www.quickdials.com/mean-stack-training
+
+Redirect 301 "/azure-administrator-associate-az-104/windows-2008-server-certification-training" https://www.quickdials.com/microsoft-windows-training
+
+Redirect 301 "/teradata-certification-training/zend-taining" https://www.quickdials.com/zend-training
+
+
+Redirect 301 "/medical neet aiims jipmer crash course for class xii students/bob-po" https://www.quickdials.com/bob-po-exam
+
+Redirect 301 "/aviation training/embriodery-zari" https://www.quickdials.com/embroidery-zari
+
+Redirect 301 "/hadoop-training/node.js-training" https://www.quickdials.com/nodejs-training
+
+Redirect 301 "/bfa distance/categories/entrance-exams-coaching/ugc-net-entrance-exam" https://www.quickdials.com/ugc-net-entrance-exam
+Redirect 301 "/img/Medical.png" https://www.quickdials.com/img/Medical.webp
+Redirect 301 "/electrician-job-training/categories/professional-courses/system-administration" https://www.quickdials.com/system-admin
+Redirect 301 "/open school distance education/categories/study-abroad/malaysia-education-consultants" https://www.quickdials.com/malaysia-education-consultants
+
+Redirect 301 "/bfa distance/actor" https://www.quickdials.com/
+Redirect 301 "/kcet/categories/professional-courses/automation-training" https://www.quickdials.com/automation-training
+Redirect 301 "/gurgaon/maid" https://www.quickdials.com/maid-services
+
+Redirect 301 "/llb distance/categories/distance-education/arts-media-distance-education" https://www.quickdials.com/llb-distance
+
+Redirect 301 "/smo-training/categories/distance-education/arts-media-distance-education" https://www.quickdials.com/smo-training
+Redirect 301 "/arabic language/categories/study-abroad/australia-education-consultants" https://www.quickdials.com/arabic-language
+
+
+Redirect 301 "/arabic language/categories/study-abroad/australia-education-consultants" https://www.quickdials.com/arabic-language
+Redirect 301 "/azure training/categories/study-abroad/australia-education-consultants" https://www.quickdials.com/azure-training
+
+Redirect 301 "/design-entrance-exam-coaching/ac-repair-services" https://www.quickdials.com/ac-repair-service
+
+Redirect 301 "/cfx coaching/categories/study-abroad/armenia-education-consultants" https://www.quickdials.com/cfx-coaching
+Redirect 301 "/ma distance/categories/coaching-tuitions/amie-coaching" https://www.quickdials.com/ma-distance
+
+Redirect 301 "/jewellery designing /categories/coaching-tuitions/amie-coaching" https://www.quickdials.com/jewellery-designing
+
+Redirect 301 "/jewellery-designing-/categories/coaching-tuitions/amie-coaching" https://www.quickdials.com/jewellery-designing
+
+Redirect 301 "/training/krishna-coaching" https://www.quickdials.com/businessdetails/krishna-computer-education
+Redirect 301 "/business/krishna-coaching" https://www.quickdials.com/businessdetails/krishna-computer-education
+
+
+Redirect 301 "/training/krishna-coaching" https://www.quickdials.com/businessdetails/krishna-computer-education
+Redirect 301 "/business/krishna-coaching" https://www.quickdials.com/businessdetails/krishna-computer-education
+Redirect 301 "/mobile app development/categories/computer-courses/networking-training" https://www.quickdials.com/mobile-app-development-training
+Redirect 301 "/plc-automation-training/categories/computer-courses/networking-training" https://www.quickdials.com/plc-automation-training
+Redirect 301 "/red-hat-training/categories/computer-courses/networking-training" https://www.quickdials.com/red-hat-training
+
+Redirect 301 "/prometric testing centers/categories/computer-courses/networking-training" https://www.quickdials.com/prometric-testing-centers
+
+
+Redirect 301 "/indian navy sailors exam coaching/categories/computer-courses/networking-training" https://www.quickdials.com/indian-navy-sailors-exam-coaching
+
+Redirect 301 "/plc automation training/categories/computer-courses/networking-training" https://www.quickdials.com/plc-automation-training
+
+
+Redirect 301 "/sap technical modules training/categories/computer-courses/networking-training" https://www.quickdials.com/sap-technical-modules-training
+Redirect 301 "/multimedia  designing training/b.a-distance" https://www.quickdials.com/multimedia-animation-training
+Redirect 301 "/advanced-animation-training/categories/computer-courses/cyber-security" https://www.quickdials.com/advanced-animation-training
+Redirect 301 "/process-design-training/categories/computer-courses/cyber-security" https://www.quickdials.com/process-design-training
+Redirect 301 "/medical-coding/categories/professional-courses/mainframe-training" https://www.quickdials.com/medical-entrance-exam-coaching
+Redirect 301 "/security-guard/categories/professional-courses/mainframe-training" https://www.quickdials.com/security-guards-services
+Redirect 301 "/bsf coaching/categories/professional-courses/mainframe-training" https://www.quickdials.com/bsf-coaching
+Redirect 301 "/ccse-training/categories/professional-courses/mainframe-training" https://www.quickdials.com/ccse-training
+Redirect 301 "/ajax training/categories/professional-courses/mainframe-training" https://www.quickdials.com/ajax-training
+Redirect 301 "/cam training/categories/professional-courses/mainframe-training" https://www.quickdials.com/cam-training
+
+Redirect 301 "/adc-coaching/categories/entrance-exams-coaching/gate-coaching" https://www.quickdials.com/cam-training
+Redirect 301 "/asm-training/categories/entrance-exams-coaching/gate-coaching" https://www.quickdials.com/asm-training
+Redirect 301 "/creo-training/categories/entrance-exams-coaching/gate-coaching" https://www.quickdials.com/creo-training
+Redirect 301 "/vcpi-training/categories/entrance-exams-coaching/gate-coaching" https://www.quickdials.com/vcpi-training
+Redirect 301 "/iift-coaching/categories/entrance-exams-coaching/gate-coaching" https://www.quickdials.com/iift-coaching
+Redirect 301 "/kanpur/botique-mangement-" https://www.quickdials.com/boutique-management
+Redirect 301 "/ugc hr coaching/categories/study-abroad/poland-education-consultants" https://www.quickdials.com/ugc-hr-coaching
+Redirect 301 "/ecg technician/categories/professional-courses/club-management-course" https://www.quickdials.com/ecg-technician
+Redirect 301 "/blis distance/categories/study-abroad/poland-education-consultants" https://www.quickdials.com/blis-distance
+Redirect 301 "/adobe-indesign-training/categories/coaching-tuitions/sat-coaching" https://www.quickdials.com/adobe-indesign-training
+Redirect 301 "/cs coaching/categories/entrance-exams-coaching/entrance-exam-coaching-center" https://www.quickdials.com/entrance-exam-coaching
+Redirect 301 "/img/Loan.png" https://www.quickdials.com/img/Loan.webp
+
+Redirect 301 "/finance-accounts-colleges/lamps--lighting" https://www.quickdials.com/lamps-and-lighting
+Redirect 301 "/ahmedabad/aws-certified-developer-training-consultant" https://www.quickdials.com/aws-devops-training
+Redirect 301 "/osha/club-management-" https://www.quickdials.com/club-management
+
+
+
+Redirect 301 "/automation-training/categories/professional-courses/aviation-management-training" https://www.quickdials.com/aviation-management
+
+Redirect 301 "/hospitality retail/categories/coaching-tuitions/kmat-coaching" https://www.quickdials.com/kmat-coaching
+
+Redirect 301 "/cakephp training/categories/professional-courses/laptop-repair-courses" https://www.quickdials.com/laptop-repair
+Redirect 301 "/vb-script-training/categories/computer-courses" https://www.quickdials.com/vb-script-training
+Redirect 301 "/cfx coaching/categories/entrance-exams-coaching/banking-entrance-exams" https://www.quickdials.com/banking-entrance-exams
+
+Redirect 301 "/oracle performance tuning training/categories/computer-courses/mechnical-engineering" https://www.quickdials.com/oracle-certification-training
+Redirect 301 "/ahmedabad/event-organisers" https://www.quickdials.com/event-organizers
+Redirect 301 "/aurangabad/event-organisers" https://www.quickdials.com/event-organizers
+Redirect 301 "/mumbai/event-organisers" https://www.quickdials.com/event-organizers
+Redirect 301 "/jewellery designing /categories/coaching-tuitions/cs-coaching" https://www.quickdials.com/jewellery-designing
+Redirect 301 "/amiete/categories/mat-coaching" https://www.quickdials.com/mat-coaching
+Redirect 301 "/study abroad in uk/categories/study-abroad/italy-education-consultants" https://www.quickdials.com/study-abroad-in-uk
+
+Redirect 301 "/ulsat/categories/study-abroad/overseas-journalism-education-consultants" https://www.quickdials.com/overseas-education-consultant
+
+Redirect 301 "/pgdbm distance/categories/coaching--tuitions/gmat-coaching" https://www.quickdials.com/gmat-coaching
+
+Redirect 301 "/ms bi ssis online training/ethical-hacking-training" https://www.quickdials.com/certified-ethical-hacking-training
+
+
+Redirect 301 "/post graduate diploma in interior designing/categories/coaching-tuitions/cma-coaching" https://www.quickdials.com/cma-coaching
+
+Redirect 301 "/upload/crs/2025/07/week_2/USA.webp" https://www.quickdials.com/
+
+Redirect 301 "/psu exam coaching/categories/entrance-exams-coaching/gate-coaching" https://www.quickdials.com/gate-coaching
+
+Redirect 301 "/mp judiciary/categories/entrance-exams-coaching/neet-entrance-exam-coaching" https://www.quickdials.com/neet-entrance-exam-coaching
+
+Redirect 301 "/ibps clerk/categories/study-abroad/ukraine-education-consultants" https://www.quickdials.com/ukraine-education-consultants
+
+Redirect 301 "/business/somniatis-consulting-pvt.ltd." https://www.quickdials.com/ 
+
+Redirect 301 "/finance-accounts-colleges/lamps--lighting" https://www.quickdials.com/finance-accounts-distance-education
+
+Redirect 301 "/gate life sciences/categories/study-abroad/dubai-education-consultants" https://www.quickdials.com/gate-life-sciences
+
+Redirect 301 "/ahmedabad/aws-certified-developer-training-consultant" https://www.quickdials.com/aws-devops-training
+
+ 
+Redirect 301 "/mumbai/event-organisers" https://www.quickdials.com/event-organizers
+
+Redirect 301 "/spoken english/categories/study-abroad/overseas-medical-education-consultants" https://www.quickdials.com/spoken-english
+
+Redirect 301 "/greater noida/categories/study-abroad/austria-education-consultants" https://www.quickdials.com/austria-education-consultants
+
+Redirect 301 "/dhtml-training/categories/computer-courses/networking-training" https://www.quickdials.com/networking-training
+
+Redirect 301 "/img/Loan.png" https://www.quickdials.com/
+Redirect 301 "/img/Medical.png" https://www.quickdials.com/
+Redirect 301 "/electrician-job-training/categories/professional-courses/system-administration" https://www.quickdials.com/system-admin
+
+Redirect 301 "/open school distance education/categories/study-abroad/malaysia-education-consultants" https://www.quickdials.com/open-school-distance-education-institute
+
+ #Redirect 301 "/paf-coaching/workday-hcm-function" https://www.quickdials.com/workday-hcm-functional
+ 
+ 
+  Redirect 301 "/microsoft-bi-online-training" https://www.quickdials.com/power-bi-training
+Redirect 301 "/microsoft-bi-training" https://www.quickdials.com/power-bi-training
+Redirect 301 "/qlikview-online-training" https://www.quickdials.com/qlikview-developer-online-training
+Redirect 301 "/qlikview-developer-training" https://www.quickdials.com/qlikview-developer-online-training
+Redirect 301 "/obiee-certification-online-training" https://www.quickdials.com/obiee-certification-training
+Redirect 301 "/ms-bi-ssis-online-training" https://www.quickdials.com/msbi-ssis-training
+Redirect 301 "/ms-bi-ssas-online-training" https://www.quickdials.com/msbi-ssas-training
+Redirect 301 "/ms-bi-ssrs-online-training" https://www.quickdials.com/msbi-ssrs-training
+Redirect 301 "/oracle-business-intelligence" https://www.quickdials.com/oracle-business-intelligence-training
+
+
+
+# Cache Control
+ 
+# GZIP Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/x-javascript
+</IfModule>
+
+# Browser Cache
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+</IfModule>
+
+# PHP Handler
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
+
+ 
+# php -- END cPanel-generated handler, do not edit
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php8_module>
+   php_flag display_errors Off
+   php_value max_execution_time 600
+   php_value max_input_time 600
+   php_value max_input_vars 1000
+   php_value memory_limit 2024M
+   php_value post_max_size 2024M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php82"
+   php_value upload_max_filesize 2024M
+   php_flag zlib.output_compression Off
+</IfModule>
+<IfModule lsapi_module>
+   php_flag display_errors Off
+   php_value max_execution_time 600
+   php_value max_input_time 600
+   php_value max_input_vars 1000
+   php_value memory_limit 2024M
+   php_value post_max_size 2024M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php82"
+   php_value upload_max_filesize 2024M
+   php_flag zlib.output_compression Off
+</IfModule>
+# END cPanel-generated php ini directives, do not edit
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php8_module>
+   php_flag display_errors Off
+   php_value max_execution_time 600
+   php_value max_input_time 36000
+   php_value max_input_vars 1000
+   php_value memory_limit 2024M
+   php_value post_max_size 2024M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php82"
+   php_value upload_max_filesize 2024M
+   php_flag zlib.output_compression Off
+</IfModule>
+<IfModule lsapi_module>
+   php_flag display_errors Off
+   php_value max_execution_time 600
+   php_value max_input_time 36000
+   php_value max_input_vars 1000
+   php_value memory_limit 2024M
+   php_value post_max_size 2024M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php82"
+   php_value upload_max_filesize 2024M
+   php_flag zlib.output_compression Off
+</IfModule>
+# END cPanel-generated php ini directives, do not edit
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php82” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

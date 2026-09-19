@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/quicksorg/quickdials.com/
+    - /bin/cp * $DEPLOYPATH 
