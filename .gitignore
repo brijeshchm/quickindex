@@ -19,7 +19,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
+ 
 /public 
 Homestead.json
 Homestead.yaml
