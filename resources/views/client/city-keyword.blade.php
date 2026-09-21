@@ -1,5 +1,5 @@
 @extends('client.layouts.app')
-@section('title','Local Businesses & Services in {{ $city }} | QuickDials')
+@section('title', 'Local Businesses & Services in ' . $city . ' | QuickDials')
 @section('description', 'Find trusted local businesses in {{ $city }} and service providers in Noida on QuickDials. Explore training institutes, home services, repairs, healthcare, property dealers, contractors and more.')
 @section('meta_robots')
 <meta name="robots" content="noindex, nofollow">
