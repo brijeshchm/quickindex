@@ -1,8 +1,7 @@
  
 @extends('client.layouts.app')
-@section('title', 'Contact Us | QuickDials - India’s Trusted Local Business Search Engine')
-@section('description', 'Contact QuickDials for business listings, customer support, advertising, partnership opportunities, and local business inquiries. Get in touch with India’s trusted local business search engine to connect with verified businesses and services across India.')
-@section('keywords', 'Contact QuickDials, QuickDials support, business listing support India, contact local business directory, QuickDials customer care, business inquiries, advertise on QuickDials, local business platform India, verified business support, QuickDials contact details, online business directory support')
+@section('title', 'Contact Us | QuickDials – India’s Local Business Search')
+@section('description', 'Contact QuickDials for business listings, customer support, advertising, partnerships, and local business inquiries. Connect with India’s trusted local business search engine.')
 @section('content') 
 @include('client.components.banner-section')
 <main class="relative mt-4">

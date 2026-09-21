@@ -1,8 +1,8 @@
 
 @extends('client.layouts.app')
-@section('title', 'Terms & Conditions | QuickDials - User Data & Privacy Protection')
-@section('description', 'Read the QuickDials Terms & Conditions to learn how we collect, use, store, and protect user information, personal data, cookies, and business details while ensuring privacy and security on our platform.')
-@section('keywords', 'QuickDials Terms & Conditions, user data protection, privacy protection, data security policy, personal information policy, website privacy terms, cookies policy, online privacy policy, business listing privacy, QuickDials legal policy, user information security')
+@section('title', 'Terms & Conditions | QuickDials – User Terms')
+@section('description', 'Read QuickDials Terms & Conditions covering user accounts, business listings, platform usage, payments, content, privacy, and responsibilities.')
+ 
 @section('content') 
 <style>
         [x-cloak] { display: none !important; }
