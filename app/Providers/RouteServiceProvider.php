@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -80,22 +82,21 @@ class RouteServiceProvider extends ServiceProvider
 	protected function removeIndexPhpFromUrl()
     {        
     
-       if (Str::contains(request()->getRequestUri(), '/index.php')  ) {
-     
+
+      $requestUri = request()->getRequestUri();
  
-            $url = str_replace('/index.php', '', request()->getRequestUri());
-            
-            $url = str_replace('public/', '', $url);
- 
-            if (strlen($url) > 0) {
+
+        if (Str::contains($requestUri, '/index.php')) {
+
+            $url = str_replace('/index.php', '', $requestUri);
+            $url = str_replace('/public/', '/', $url);
+
+            $url = empty($url) ? '/' : '/' . ltrim($url, '/');
+            header("Location: $url", true, 301);
                 
-                header("Location: $url", true, 301);
-              
-                exit;
-            }
+            exit;
         }
-        
-        
+       
         if (Str::contains(request()->getRequestUri(), '/public/index.php')  ) {
             $url = str_replace('public/index.php', '', request()->getRequestUri());
           
