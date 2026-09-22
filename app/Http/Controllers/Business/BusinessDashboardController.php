@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
 use App\Models\Client\Client; //model
+
 class BusinessDashboardController extends Controller
 {
     protected $danger_msg = '';
@@ -24,7 +25,7 @@ class BusinessDashboardController extends Controller
 
     }
 
-    
+
 
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class BusinessDashboardController extends Controller
     public function dashboard()
     {
         $client = auth()->guard('clients')->user();
- 
+
         if (!$client) {
             return redirect()->route('login');
         }
@@ -79,7 +80,7 @@ class BusinessDashboardController extends Controller
                 'assigned_leads.scrapLead',
                 'assigned_leads.id as assignId',
                 'assigned_leads.favorite_lead'
-               
+
             )
             ->paginate(30);
 
@@ -96,7 +97,7 @@ class BusinessDashboardController extends Controller
 
 
             // 🔹 Share Lead Details
-        
+
 
 
             $lead->share_address = "Greetings from {$businessName},\n"
@@ -143,20 +144,20 @@ class BusinessDashboardController extends Controller
                 $remark .= " " . trim($lead->remark);
             }
 
-        $lead->share_lead =
-        "Name: {$lead->name}\n" .
-        "Mobile: {$lead->mobile}\n" .
-        "Email: {$lead->email}\n" .
-        "Service: {$keyword}\n" .
-        "Location: {$location}\n" .
-        "remark: {$remark}";
+            $lead->share_lead =
+                "Name: {$lead->name}\n" .
+                "Mobile: {$lead->mobile}\n" .
+                "Email: {$lead->email}\n" .
+                "Service: {$keyword}\n" .
+                "Location: {$location}\n" .
+                "remark: {$remark}";
 
             $lead->remarks = $remark;
             return $lead;
         });
 
- 
- 
+
+
 
 
         // dd($leads_list);

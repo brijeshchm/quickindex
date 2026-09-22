@@ -32,10 +32,8 @@ class RazorpayController extends Controller
 
 	private function common(): array { 
  
-    // $clientID = auth()->guard('clients')->user()->id;
-    $clientID = '1748';
+    $clientID = auth()->guard('clients')->user()->id;     
     $client = Client::find($clientID); 
-
 	$leads = DB::table('leads')
 				   ->join('assigned_leads','leads.id','=','assigned_leads.lead_id')				  
 				   ->select('leads.*','assigned_leads.client_id','assigned_leads.lead_id','assigned_leads.created_at as created')				 

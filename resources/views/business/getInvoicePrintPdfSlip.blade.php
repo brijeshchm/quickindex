@@ -220,8 +220,10 @@ hr{
 			</table>			
 			<address>
 				<b style="font-size: 18px;">QuickDials Pvt Ltd</b>
-				<p> G-13, Sector-3 Noida, U.P, India </p>
-				<p>Phone : 120-49999</p>
+				<p> UNIT 101 OXFORD TOWERS, 139/88 HAL OLD </p>
+				<p>AIRPORT RD, H.A.L II Stage, Bangalore North,</p>
+				</p> Bangalore - 560008, Karnataka,India </p>
+				<p>Phone : 91-75-5943-5943</p>
 				<p>Email : info@quickdials.com</p>
 				<p>Website : www.quickdials.com</p>
 			 
@@ -383,9 +385,8 @@ hr{
 			 
 		</article>
 		<aside width="90%">
-			<h1><span ><b style="font-weight: 700;">Regd. Office:</b>G-13, Sector-3, Noida,Pin -201301 (UP), India.webite:-www.quickdials.com, cin:-G65HGGGAGAG</span></h1>
-			<div class="thank" style="text-align:center">
-				 
+			<h1><span ><b style="font-weight: 700;">Regd. Office:</b>Bangalore North, Bangalore - 560008, Karnataka,India, website:-www.quickdials.com, CIN:-U63112KA2026PTC215594</span></h1>
+			<div class="thank" style="text-align:center">				 
 				 
 			</div>
 		</aside>

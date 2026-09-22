@@ -1,4 +1,4 @@
-@extends('business.business.layouts.app')
+@extends('business.layouts.app')
 @section('title','Contact')
 @section('content')
 @php $cards=[['map-pin','Address',['203, Oxford Towers, 139, HAL Old Airport Rd, Kodihalli, Bengaluru','Karnataka, 560008']],['phone','Call Us',['+91 75-5943-5943']],['mail','Email Us',['info@quickdials.com','help@quickdials.com']],['clock','Open Hours',['Monday - Saturday','10:00AM - 6:00PM']]]; @endphp

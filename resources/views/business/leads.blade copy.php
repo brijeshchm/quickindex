@@ -1,324 +1,398 @@
 @extends('business.layouts.app')
-
-@section('title', 'Overview')
-
+@section('title','Leads')
 @section('content')
-
-    @php
-        $metrics = [
-            ['Profile Views', number_format($stats['profileViews']), $stats['viewsChangePct'], 'eye'],
-            ['Total Leads', number_format($stats['totalLeads']), $stats['leadsChangePct'], 'message-square'],
-            ['Total Calls', number_format($stats['totalCalls']), null, 'phone'],
-            ['Avg Rating', number_format($stats['avgRating'], 1), null, 'star'],
-        ];
-
-        $tiles = [
-            ['icon' => 'users', 'count' => $monthsFollow['total_leads'], 'label' => 'Total Leads', 'color' => 'text-gray-800'],
-            ['icon' => 'gauge', 'count' => $monthsFollow['interested'], 'label' => 'Interested', 'color' => 'text-green-600'],
-            ['icon' => 'phone-call', 'count' => $monthsFollow['follow_up'], 'label' => 'Follow Up', 'color' => 'text-gray-600'],
-            ['icon' => 'clock-alert', 'count' => $monthsFollow['pending_follow_up'], 'label' => 'Pending Follow Up', 'color' => 'text-red-700'],
-            ['icon' => 'graduation-cap', 'count' => $monthsFollow['joined'], 'label' => 'Joined', 'color' => 'text-gray-800'],
-        ];
+@php
+ 
+$filters=['all','new','contacted','favorites','converted','scrapLead'];
+$statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'border-amber-200 bg-amber-50 text-amber-700','converted'=>'border-emerald-200 bg-emerald-50 text-emerald-700','closed'=>'border-slate-200 bg-slate-100 text-slate-600'];
+// dd($leads->getCollection());
+$popupLeadSource = method_exists($leads, 'items') ? $leads->items() : $leads;
+$popupLeads = collect($popupLeadSource)->map(function ($lead) {
 
  
-        $popupLeadSource = method_exists($leads, 'items') ? $leads->items() : $leads;
+    return [
+        'assignId' => (int) $lead['assignId'],
+        'lead_id' => (int) $lead['lead_id'],
+        'name' => $lead['name'] ?? '',
+        'email' => $lead['email'] ?? '',
+        'mobile' => $lead['mobile'] ?? '',
+        'service' => $lead['kw_text'] ?? '',
+        'status_id' => (int) ($lead['status'] ?? 0),
+    ];
+})->values();
+@endphp
 
-        $popupLeads = collect($popupLeadSource)->map(function ($lead) {
-            return [
-                'assign_id' => (int) $lead->assign_id,
-                'lead_id' => (int) $lead->lead_id,
-                'name' => $lead->name ?? '',
-                'email' => $lead->email ?? '',
-                'mobile' => $lead->mobile ?? '',
-                'service' => $lead->kw_text ?? '',
-                'status_id' => (int) ($lead->status ?? 0),
-            ];
-        })->values();
-    @endphp
+ 
+<div class="animate-fade-in space-y-4 md:space-y-6"
+     
+     x-data="{
+   followup: null,
+   followupLeadId: null,
+   followupName: null,
+   followupEmail: null,
+   followupService: null,
+   openFollowup(assignId, leadId, name, email, service) {
+     this.followup = assignId;
+     this.followupLeadId = leadId;
+     this.followupName = name;
+     this.followupEmail = email;
+     this.followupService = service;
+     this.$nextTick(() => {
+       lucide.createIcons();
+       enquiryController.getAllFollowUps(leadId, 5);
+     });
+   }
+}"
+     
+     >
+    <div class="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <div class="md:hidden"><select onchange="window.location=this.value" class="form-input h-12 bg-white text-base font-medium shadow-sm">    
+    @foreach($leadsTabs as $key=>$label)    
+    <option value="{{ route('leads',['tab'=>$key]) }}" @selected($tab===$key)>{{ $label }}</option>
+    @endforeach
+    </select>
+    </div>
+    
+    <div>
+   <h1 class="font-display text-xl font-bold tracking-tight md:text-3xl">Leads Inbox</h1>
+   <p class="mt-1 text-sm text-slate-500 md:text-base">Manage inquiries and assign them to your team.</p>
+  </div>
+  <div class="hide-scrollbar flex w-full shrink-0 snap-x overflow-x-auto rounded-xl bg-secondary p-1 xl:w-auto">
+   @foreach($filters as $f)
+    <a href="{{ route('leads',['filter'=>$f]) }}" class="snap-start whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium capitalize transition {{ $filter===$f?'bg-card text-foreground shadow-sm':'text-slate-500 hover:text-foreground' }}">{{ $f }}</a>
+   @endforeach
+  </div>
+ </div>
 
-    <div class="animate-fade-in space-y-6 pb-8 md:space-y-8" x-data="followupManager()">
+ <div class="space-y-4">
+
+ @php
+ 
+//  dd($leads);
+ @endphp
+ @forelse($leads as $i => $lead)
+  @php
+//  dd($lead);
+ 
+   // FIX #1: match on the RAW lead id (lead_id), not the assignment id ($lead['id']).
+   $leadFus  = $followups->where('lead_id', $lead['lead_id'])->whereNotNull('notes')
+        ->where('notes', '!=', '');
+
+    $followDate = \Carbon\Carbon::parse($lead['followDate'])->startOfDay();
+ 
+   // FIX #2: 'status' isn't a key on the followups array — the boolean is 'done'.
+   
+    $assignee = "";
+ 
+    $pending = '';
+    $overdue = false;
+    $pastDays = 0;
+
+   if (!empty($lead->expected_date_time)  && !in_array($lead->status_name, [
+    'Meeting Close',
+    'Sales Close',
+    'Joined',
+    'Invalid Number',
+    ])) {
+        $followDate = \Carbon\Carbon::parse($lead->expected_date_time)->startOfDay();
+        $today = \Carbon\Carbon::today();
+        $overdue = $followDate->lt($today);
+        $pastDays = $overdue ? $followDate->diffInDays($today) : 0;
+    }
+
+
+  @endphp
+  <div class="card animate-slide-up stagger-{{ ($i % 5) + 1 }} relative overflow-hidden {{ $lead['scrapLead'] ? 'opacity-70 grayscale-[20%]' : '' }} {{ $lead['readLead'] == '0' ? 'assignedLeadsClick cursor-pointer bg-gray-200' : '' }}" data-assigned-id="{{ $lead['assignId'] }}" data-client-id="{{ $lead['clientId'] }}" >
+ 
+   <div class="flex flex-col lg:flex-row">
+    <div class="flex-1 border-b p-3 sm:p-6 lg:border-b-0 lg:border-r">
+     <div class="mb-3 flex flex-row flex-wrap items-start justify-between gap-2 sm:mb-4 sm:gap-3">
+      <div class="min-w-0 flex-1">
+       <div class="mb-1 flex items-center gap-2">
+        <h3 class="truncate font-display text-lg font-semibold sm:text-xl">{{ $lead['customerName'] }}</h3>
+        @if($lead['favorite'])<i data-lucide="star" class="h-4 w-4 fill-amber-500 text-amber-500"></i>@endif
+       </div>
+       <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 sm:mt-2 sm:text-sm">
+        <span class="flex items-center gap-1.5"><i data-lucide="phone" class="h-3.5 w-3.5"></i>{{ $lead['phone'] }}</span>
+        @if($lead['email'])<span class="flex items-center gap-1.5"><i data-lucide="mail" class="h-3.5 w-3.5"></i>{{ $lead['email'] }}</span>@endif
+       </div>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2">  
+  <div class="flex items-center gap-1 text-sm font-medium">
+    <i data-lucide="indian-rupee" class="h-4 w-4"></i>
+     
+    @if(!empty($lead['scrapLead']))
+        <span class="text-green-600">
+            {{ $lead['coins'] }}
+        </span>
+
+    @elseif(!empty($lead['coins']))
+        <span class="text-red-600">
+            -{{ $lead['coins'] }}
+        </span>
+    @endif
+</div>
+
+        @if(!$lead['favorite'])
+        <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary hover:text-amber-500 {{  !$lead['favorite'] ?'favorited':'' }}" data-favoritleads="{{ $lead['assignId'] }}" data-client-id="{{ $lead['clientId'] }}" title="Favorite"><i data-lucide="star" class="h-4 w-4"></i></button>
+        @endif
+
+        
+
+      </div>
+     </div>
+
+     <div class="mt-3 rounded-xl bg-secondary/30 p-3 sm:mt-4 sm:p-4">
+      <div class="mb-2 flex items-start justify-between gap-2">
+       <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500"><i data-lucide="clock" class="h-3.5 w-3.5"></i>Inquiry for: {{ $lead['service'] }}</p>
+       <span class="badge border capitalize px-1 {{ $statusClass[$lead['status']] ?? 'bg-secondary text-slate-600' }}">{{ $lead['status_label'] ?? $lead['status'] }}</span>
+      </div>
+      <p class="text-xs leading-relaxed text-slate-800 sm:text-sm">&ldquo;{!! $lead['message'] !!}&rdquo;</p>
+     </div>
+
+     <div class="mt-3 flex flex-wrap items-center justify-between gap-2 sm:mt-4">
+      <p class="shrink-0 text-xs text-slate-500">Received {{ \Carbon\Carbon::parse($lead['createdAt'])->format('M j, Y') }}</p>
+      {{-- FIX #4/#5: pass both ids explicitly, load the table immediately instead of waiting on the dropdown --}}
+      <button
+ type="button"
+ @click="openFollowup(
+    {{ $lead['assignId'] }},
+    {{ $lead['lead_id'] }},
+    @js($lead['customerName']),
+    @js($lead['email']),
+    @js($lead['service'])
+ )"
+ class="btn h-8 rounded-lg px-3 text-xs bg-emerald-500 text-white {{ $overdue ? 'border-destructive text-destructive bg-emerald-500' : ($pending ? 'border-primary text-primary bg-emerald-500' : '') }}">
+ <i data-lucide="eye" class="h-3.5 w-3.5"></i>Follow up
+ @if($pending)<span class="rounded bg-primary/10 px-1.5 py-0.5 text-primary">{{ $pending }}</span>@endif
+ @if($overdue)<span class="rounded bg-destructive px-1.5 py-0.5 text-white">{{ $pastDays }} Overdue</span>@endif
+</button>
+     </div>
+
+     @if($leadFus->count())
+      <details class="mt-3 rounded-xl border bg-white/70">
+       <summary class="cursor-pointer px-4 py-2 text-xs font-semibold text-slate-500">View Follow Up ({{ $leadFus->count() }})</summary>
+       <div class="space-y-2 border-t p-3">
+        @foreach($leadFus as $fu)
+         <div class="flex items-start justify-between gap-3 rounded-lg bg-secondary/40 p-3">
+          <div>
+           <p class="text-sm {{ $fu['outcome'] == 'Joined'? 'line-through text-slate-400' : '' }}">{{ $fu['notes'] }}</p>
+           <p class="mt-1 text-xs text-slate-500"><strong>Tag:</strong> {{ ucfirst($fu['outcome']) }} &middot; <strong>Next Date:</strong> {{ $fu['dueAt'] ? \Carbon\Carbon::parse($fu['dueAt'])->format('M j, g:i A') : 'No due date' }}</p>
+          </div>
+          <div class="flex gap-1">
+         
+            <input type="hidden" name="Joined" value="{{ $fu['outcome'] =='Joined' ? 0 : 1 }}">
+            <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-emerald-600"><i data-lucide="check" class="h-4 w-4"></i></button>
+          
+          
+          </div>
+         </div>
+        @endforeach
+       </div>
+      </details>
+     @endif
+    </div>
 
      
-        <div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-            <div>
-                <h1 class="font-display text-xl font-bold tracking-tight md:text-3xl">
-                    Overview
-                </h1>
-                <p class="mt-1 text-sm text-slate-500 md:text-base">
-                    Here's what's happening with your business today.
-                </p>
-            </div>
-
-        </div>
-
+    <div class="flex gap-2 bg-secondary/10 p-3 sm:p-6 lg:w-[240px] lg:flex-col lg:justify-center">
 
  
-        <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
-            @foreach($metrics as $i => $m)
-                <div class="card animate-slide-up stagger-{{ $i + 1 }} group relative overflow-hidden">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition group-hover:opacity-100">
-                    </div>
 
-                    <div class="relative flex flex-col gap-4 p-5">
-                        <div class="flex items-center justify-between">
-                            <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                                <i data-lucide="{{ $m[3] }}" class="h-5 w-5"></i>
-                            </span>
-
-                            @if($m[2] !== null)
-                                <span
-                                    class="badge {{ $m[2] >= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-destructive/10 text-destructive' }}">
-                                    <i data-lucide="{{ $m[2] >= 0 ? 'arrow-up-right' : 'arrow-down-right' }}" class="h-3 w-3"></i>
-                                    {{ abs($m[2]) }}%
-                                </span>
-                            @endif
-                        </div>
-
-                        <div>
-                            <p class="text-sm font-medium text-slate-500">{{ $m[0] }}</p>
-                            <h3 class="mt-1 font-display text-2xl font-bold">{{ $m[1] }}</h3>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-
- 
-        <div class="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-6">
-            @foreach($tiles as $tile)
-                <div
-                    class="animate-flipInY flex flex-col items-center rounded-lg border border-gray-100 bg-white p-3 text-center shadow-sm transition-shadow duration-200 hover:shadow-md">
-                    <div class="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <i data-lucide="{{ $tile['icon'] }}" class="h-7 w-7"></i>
-                    </div>
-
-                    <div class="text-3xl font-bold {{ $tile['color'] }}">
-                        {{ $tile['count'] }}
-                    </div>
-
-                    <h3 class="mt-2 text-sm font-semibold text-gray-600">
-                        {{ $tile['label'] }}
-                        <small class="mt-0.5 block text-xs text-gray-400">
-                            (Month in {{ now()->format('M Y') }})
-                        </small>
-                    </h3>
-                </div>
-            @endforeach
-        </div>
-
-
+     @if(!$lead['scrapLead'] && $lead['status'] === 'new')
+      <a href="tel:{{ preg_replace('/[^+\d]/','',$lead['phone']) }}" class="btn btn-primary w-full text-white"><i data-lucide="phone" class="h-4 w-4"></i>Call Now</a>
       
-        <div class="card">
-            <div class="flex items-center justify-between border-b px-4 py-4 sm:px-6">
-                <h2 class="font-display text-lg font-semibold">Follow Leads</h2>
-                <a href="{{ route('leads') }}" class="text-sm font-medium text-primary hover:underline">
-                    View All
-                </a>
+
+
+     @elseif(!$lead['scrapLead'] && $lead['status'] === 'contacted')
+            
+      <a href="tel:{{ preg_replace('/[^+\d]/','',$lead['phone']) }}" class="btn btn-primary w-full text-white"><i data-lucide="phone" class="h-4 w-4"></i>Call Again</a>
+     @else
+ 
+      <div class="flex flex-1 items-center justify-center gap-2 py-2 text-center lg:flex-col">
+       <span class="flex h-9 w-9 items-center justify-center rounded-full {{ $lead['status'] === 'converted' && !$lead['scrapLead'] ? 'bg-emerald-100 text-emerald-500' : 'bg-secondary text-slate-500' }}">
+        <i data-lucide="{{ $lead['scrapLead'] ? 'archive' : ($lead['status'] === 'converted' ? 'check-circle-2' : 'x-circle') }}" class="h-5 w-5"></i>
+       </span>
+       <p class="text-sm font-medium text-slate-500"> {{ $lead['scrapLead'] ? 'Scrap Lead' : ($lead['status'] === 'converted' ? 'Lead Converted' : 'Lead Lost') }}</p>
+      </div>
+     @endif
+
+        
+<div class="scrapLead" x-data="{ scrapOpen_{{ $lead['assignId'] }}: false }">
+
+    @if(empty($lead['scrapLead']) && empty($lead['scrapPay']) && $lead['status'] != 'converted' && empty($lead['favorite']))
+        <button
+            type="button"
+            @click="scrapOpen_{{ $lead['assignId'] }} = true"
+            class=" btn w-full bg-slate-950/40 text-white"
+        >
+            Scrap Lead
+        </button>
+    @endif
+
+<template x-teleport="body">
+
+    <div
+        x-cloak
+        x-show="scrapOpen_{{ $lead['assignId'] }}"
+        x-transition.opacity
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+    >
+
+        {{-- Dark background ONLY --}}
+        <div
+            class="absolute inset-0 bg-slate-950/40"
+        ></div>
+
+
+        {{-- Actual popup --}}
+        <div
+            class="relative z-[10000] flex
+               h-auto max-h-[95dvh]
+               w-full max-w-4xl
+               min-w-0
+               flex-col overflow-hidden
+               rounded-xl bg-white shadow-2xl
+               sm:max-h-[90vh] sm:rounded-2xl"
+        >
+
+            <!-- Header -->
+            <div
+                class="flex shrink-0 items-center justify-between
+                       border-b border-gray-200 bg-white p-5"
+            >
+                <h2 class="font-display text-xl font-semibold text-slate-900">
+                    Report an issue
+                </h2>
+
+                <button
+                    type="button"
+                    @click="scrapOpen_{{ $lead['assignId'] }} = false"
+                    class="flex h-9 w-9 items-center justify-center
+                           rounded-lg bg-secondary"
+                >
+                    <i data-lucide="x" class="h-4 w-4"></i>
+                </button>
             </div>
 
-            <div class="divide-y border-b">
-                @forelse($leads->getCollection() as $lead)
-                    @php
 
-                        $leadFus = $followups
-                            ->where('lead_id', $lead->lead_id)
-                            ->whereNotNull('notes')
-                            ->where('notes', '!=', '');
+            <!-- Scrollable Body -->
+            <div class="flex-1 overflow-x-hidden overflow-y-auto bg-white p-5">
 
-                        $pending = '';
-                        $overdue = false;
-                        $pastDays = 0;
+                <form
+                    id="scrap-form-{{ $lead['assignId'] }}"
+                    @submit.prevent="
+                        scrapController.submit(
+                            {{ $lead['assignId'] }},
+                            $event.target,
+                            () => scrapOpen_{{ $lead['assignId'] }} = false
+                        )
+                    "
+                    class="space-y-4"
+                >
+                    @csrf
 
-                        if (
-                            !empty($lead->expected_date_time) && !in_array($lead->status_name, [
-                                'Meeting Close',
-                                'Sales Close',
-                                'Joined',
-                                'Invalid Number',
-                            ])
-                        ) {
-                            $followDate = \Carbon\Carbon::parse($lead->expected_date_time)->startOfDay();
-                            $today = \Carbon\Carbon::today();
-                            $overdue = $followDate->lt($today);
-                            $pastDays = $overdue ? $followDate->diffInDays($today) : 0;
-                        }
+                    <p class="text-sm text-slate-600">
+                        Please tell us the problem:
+                    </p>
 
 
-                    @endphp
+                    <div class="space-y-2">
 
-                    <div class="p-4 sm:p-6">
-                        <div class="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-                            <div class="flex min-w-0 items-start gap-3">
-                                <span
-                                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display font-bold text-primary">
-                                    {{ strtoupper(substr($lead->name ?? 'L', 0, 1)) }}
+                        @php
+                            $scrapReasons = [
+                                1 => 'This Lead is just exploring & not planning to hire any tutor',
+                                2 => 'Enquiry is posted by a tutor, an institute, or a tutor agency',
+                                3 => 'Lead has selected the wrong category',
+                                4 => 'Lead has selected the wrong locality',
+                                5 => 'Lead is asking for only Female/Male tutor',
+                                6 => 'Lead phone number is invalid, unreachable, or no response',
+                                7 => 'This Lead has already hired a tutor for this requirement',
+                                8 => 'Lead is showing suspicious behaviour — possible payment scam or misuse',
+                            ];
+                        @endphp
+
+
+                        @foreach($scrapReasons as $value => $label)
+
+                            <label
+                                class="flex cursor-pointer items-start gap-3
+                                       rounded-xl border border-gray-200
+                                       bg-white p-3 text-sm transition
+                                       hover:bg-gray-50
+                                       has-[:checked]:border-primary
+                                       has-[:checked]:bg-primary/5"
+                            >
+
+                                 
+
+                                 <input
+                                    type="radio"
+                                    name="scrapLead"
+                                    value="{{ $value }}"
+                                    data-assigned-id="{{ $lead['assignId'] }}"
+                                    class="scrap-radio mt-0.5 h-4 w-4 shrink-0 accent-primary"
+                                    @if(isset($lead['scrapValue']) && (string) $lead['scrapValue'] === (string) $value) checked @endif
+                                >
+
+                                <span class="text-slate-700">
+                                    {{ $label }}
                                 </span>
 
-                                <div class="min-w-0">
-                                    <h3 class="truncate font-semibold">
-                                        {{ ucfirst($lead->name ?? 'Lead') }}
-                                    </h3>
+                            </label>
 
-                                    <p class="mt-0.5 break-words text-sm text-slate-500">
-                                        {{ $lead->kw_text }} · {{ $lead->mobile }}
-                                    </p>
+                        @endforeach
 
-                                    @if(!empty($lead->remark))
-                                        <p class="mt-1 line-clamp-1 text-sm">
-                                            {!! $lead->remark !!}
-                                        </p>
-                                        <p class="text-sm"><strong>Current Status: </strong> {{ $lead->status_name }}</p>
-
-                                    @endif
-
-                                    @if(!empty($lead->expected_date_time))
-                                        <p class="mt-1 text-xs text-slate-500">
-                                            {{ get_time(strtotime($lead->expected_date_time)) }} ago
-
-                                            @if($overdue)
-                                                <span class="ml-1 font-semibold text-red-600">
-                                                    · {{ $pastDays }} {{ \Illuminate\Support\Str::plural('day', $pastDays) }} overdue
-                                                </span>
-                                            @endif
-                                        </p>
-                                    @endif
-
-                                    @if(!empty($lead->status_name))
-                                        <p class="mt-1 line-clamp-1 text-sm">
-
-                                        </p>
-                                    @endif
-
-                                </div>
-                            </div>
-
-                            <div class="flex w-full flex-wrap gap-2 md:w-auto md:flex-nowrap">
-                                <a href="tel:{{ preg_replace('/[^+\d]/', '', $lead->mobile) }}"
-                                    class="btn btn-outline flex-1 md:flex-none">
-                                    <i data-lucide="phone" class="h-4 w-4"></i>
-                                    Call
-                                </a>
-
-
-
-                                <button type="button" @click="openFollowupAt({{ $loop->index }})"
-                                    class="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-emerald-600 md:flex-none">
-                                    <i data-lucide="eye" class="h-3.5 w-3.5"></i>
-                                    Follow Up
-                                </button>
-                            </div>
-                        </div>
-
-                        @if($leadFus->count())
-                            <details class="mt-4 rounded-xl border bg-white/70">
-                                <summary class="cursor-pointer px-4 py-2 text-xs font-semibold text-slate-500">
-                                    View Follow Up ({{ $leadFus->count() }})
-                                </summary>
-
-                                <div class="space-y-2 border-t p-3">
-                                    @foreach($leadFus as $fu)
-                                        <div class="flex items-start justify-between gap-3 rounded-lg bg-secondary/40 p-3">
-                                            <div class="min-w-0">
-                                                <p
-                                                    class="break-words text-sm {{ ($fu['outcome'] ?? '') === 'Joined' ? 'line-through text-slate-400' : '' }}">
-                                                    {{ $fu['notes'] ?? '' }}
-                                                </p>
-
-                                                <p class="mt-1 text-xs text-slate-500">
-                                                    <strong>Tag:</strong>
-                                                    {{ ucfirst($fu['outcome'] ?? '-') }}
-                                                    &middot;
-                                                    <strong>Next Date:</strong>
-                                                    {{ !empty($fu['dueAt']) ? \Carbon\Carbon::parse($fu['dueAt'])->format('M j, Y') : 'No due date' }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </details>
-                        @endif
                     </div>
-                @empty
-                    <div class="p-8 text-center text-slate-500">
-                        You're all caught up. No new leads waiting.
+
+
+                    <div
+                        class="flex justify-end gap-2
+                               border-t border-gray-100 pt-4"
+                    >
+
+                        <button
+                            type="button"
+                            @click="scrapOpen_{{ $lead['assignId'] }} = false"
+                            class="btn btn-outline"
+                        >
+                            Cancel
+                        </button>
+
+                 
                     </div>
-                @endforelse
+
+                </form>
+
             </div>
 
-            @if(method_exists($leads, 'links'))
-                <div class="px-4 py-4 sm:px-6">
-                    {{ $leads->links() }}
-                </div>
-            @endif
         </div>
 
- 
-        <div class="grid gap-6 md:grid-cols-3">
+    </div>
+
+</template>
 
 
-            <div class="card col-span-1 min-w-0 overflow-hidden md:col-span-2">
+</div>
+    </div>
+   </div>
+  </div>
+ @empty
+  <div class="card flex flex-col items-center justify-center py-20 text-center">
+   <span class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary"><i data-lucide="message-square-text" class="h-8 w-8 text-slate-400"></i></span>
+   <h3 class="font-display text-xl font-semibold">No leads found</h3>
+   <p class="mt-2 text-slate-500">No leads match this view right now.</p>
+  </div>
+ @endforelse
+ </div>
 
-                <!-- Header -->
-                <div class="border-b bg-secondary/20 px-3 py-4 sm:px-6 sm:py-5">
-                    <h2 class="font-display text-base font-semibold text-gray-900 sm:text-lg">
-                        Performance Trend (30 Days)
-                    </h2>
-                </div>
-
-                <!-- Chart -->
-                <div class="relative h-[220px] w-full min-w-0 p-3 sm:h-[280px] sm:p-5 md:h-[300px] md:p-6">
-                    <canvas id="performanceChart" class="!h-full !w-full"></canvas>
-                </div>
-
-            </div>
+ <div class="pt-2">
+  {{ $leads->links() }}
+ </div>
 
 
-            <div class="card flex flex-col">
-                <div class="flex items-center justify-between border-b bg-secondary/20 px-4 py-4 sm:px-6">
-                    <h2 class="flex items-center gap-2 font-display text-lg font-semibold">
-                        <i data-lucide="activity" class="h-4 w-4 text-primary"></i>
-                        Pending Follow Up
-                    </h2>
-                </div>
-
-                <div class="h-[300px] space-y-4 overflow-y-auto p-4">
-                    @forelse($recentActivity ?? [] as $a)
-                        <div class="flex gap-3">
-                            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary">
-                                <i data-lucide="message-square" class="h-4 w-4 text-primary"></i>
-                            </span>
-
-                            <div class="min-w-0 flex-1 border-b pb-4 last:border-0">
-                                <p class="break-words text-sm leading-snug">
-                                    {{ $a->remark }}
-                                </p>
-
-                                @if(!empty($a->expected_date_time))
-                                    <p class="mt-1 text-xs text-slate-500">
-                                        {{ \Carbon\Carbon::parse($a->expected_date_time)->format('M j, Y') }}
-                                    </p>
-                                @endif
-
-                                <p class="mt-1 text-xs text-slate-500">
-                                    {{ $a->status_name }}
-                                </p>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="flex h-full items-center justify-center text-center text-sm text-slate-500">
-                            No pending follow-ups.
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-
- 
-        <template x-teleport="body">
+       <template x-teleport="body">
             <div x-cloak x-show="followup !== null" x-transition.opacity
                 class="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden p-2 sm:p-4"
                 @keydown.escape.window="closeFollowup()">
@@ -506,10 +580,12 @@
             </div>
         </template>
 
-    </div>
 
+        
  
-    <div id="toast-container" class="pointer-events-none fixed right-4 top-4 z-[10050] flex w-full max-w-sm flex-col gap-2">
+</div>
+
+ <div id="toast-container" class="pointer-events-none fixed right-4 top-4 z-[10050] flex w-full max-w-sm flex-col gap-2">
     </div>
 
 
@@ -607,7 +683,7 @@
                     const lead = this.leads[index];
 
                     this.currentIndex = index;
-                    this.followup = lead.assign_id;
+                    this.followup = lead.assignId;
                     this.followupLeadId = lead.lead_id;
                     this.followupName = lead.name || '';
                     this.followupEmail = lead.email || '';
@@ -948,106 +1024,39 @@
         }
 
 
-        /* ================================================================
-           CHART + ICONS
-        ================================================================ */
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-
-            if (typeof initFollowupDatePicker === 'function') {
-                initFollowupDatePicker();
-            }
-
-            if (window.lucide) {
-                lucide.createIcons();
-            }
-
-            const chartEl = document.getElementById('performanceChart');
-
-            if (!chartEl || typeof Chart === 'undefined') {
-                return;
-            }
-
-            const labels = @json(array_column($series, 'date'));
-            const values = @json(array_column($series, 'views')).map(Number);
-
-            new Chart(chartEl, {
-                type: 'line',
-
-                data: {
-                    labels: labels,
-
-                    datasets: [{
-                        label: 'Leads',
-                        data: values,
-                        borderColor: 'hsl(230, 90%, 55%)',
-                        backgroundColor: 'rgba(62, 83, 238, 0.14)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointRadius: 0,
-                        pointHoverRadius: 5
-                    }]
-                },
-
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
-                    },
-
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    return 'Leads: ' + context.parsed.y;
-                                }
-                            }
-                        }
-                    },
-
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-
-                            ticks: {
-                                maxTicksLimit: 7,
-                                maxRotation: 0,
-                                autoSkip: true
-                            }
-                        },
-
-                        y: {
-                            beginAtZero: true,
-
-                            grid: {
-                                color: 'rgba(148, 163, 184, 0.18)'
-                            },
-
-                            ticks: {
-                                stepSize: 1,
-                                precision: 0,
-
-                                callback: function (value) {
-                                    return Number.isInteger(value)
-                                        ? value
-                                        : null;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        });
+        
     </script>
+
+ 
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<style>
+input[type="date"] {
+position: relative;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+opacity: 0;
+cursor: pointer;
+}
+</style>
+ 
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+ 
+    
+flatpickr("#expected_date_time", {
+    dateFormat: "d-m-Y",
+    minDate: "today",
+});
+
+});
+</script>
 @endsection

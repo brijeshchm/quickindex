@@ -1,180 +1,174 @@
 @extends('business.layouts.app')
-@section('title')
-Profile QuickDials
-@endsection 
-@section('keyword')
-Find Best It Training Centre near You, Find Best It Training Institute near You, Find Top 10 IT Training Institute near You, Find Best Entrance Exam Preparation Centre Near you, Top 10 Entrance Exam Centre Near you, Find Best Distance Education Centre Near You, Find Top 10 Distance Education Centre Near You, Find Best School And Colleges Near You, Find Top 10 school And College Near You, Get Education Loan, GET Free career Counselling, Find Best overseas education consultants Near you, Find Top 10 overseas education consultants Near you
-
-@endsection
-@section('description')
-Find Only Certified Training Institutes, Coaching Centers near you on QuickDials and Get Free counseling, Free Demo Classes, and Get Placement Assistence.
-@endsection
-@section('content')	
-
-  <main id="main" class="main">
-    <section class="section profile">
-      <div class="row">
-        
-        <div class="col-xl-12">
-
-          <div class="card">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-edit">Business Details</button>
-                </li>
-                <li class="nav-item profile_success">
-                    </li>
+@section('title','Profile')
+@section('content')
  
+<div class="animate-fade-in max-w-5xl space-y-4 md:space-y-6">
+    
+    <div><h1 class="font-display text-xl font-bold md:text-3xl">
+{{ $tabs[$tab] }}
+ 
+</h1>
 
-              </ul>
-              <div class="tab-content pt-2">
 
-             <style>
- .form-control {
-            flex: 1;
-            padding: 12px;
-            background: #f5f5f5;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            color: #000;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
+</div>
 
-        .form-control:focus {
-            outline: none;
-            border-color: #a5a2c9;
-            background: #fff;
-        }
-         .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 15px;
-        }
+<div> 
+ 
+<div id="autoSaveStatus"> </div>
 
-        .form-group label {
-            color: #000;
-            font-size: 1em;
-            flex: 0 0 150px;
-            letter-spacing: 1px;
-        }
+</div>
 
-              @media (max-width: 768px) {
-           
-            .form-group {
-                flex-direction: column;
-                align-items: flex-start;
-            }
 
-            .form-group label {
-                flex: none;
-            }
+ <div class="md:hidden"><select onchange="window.location=this.value" class="form-input h-12 bg-white text-base font-medium shadow-sm">
+    
+ @foreach($tabs as $key=>$label)
+    
+ <option value="{{ route('profile',['tab'=>$key]) }}" @selected($tab===$key)>{{ $label }}</option>@endforeach</select>
 
-            .form-control {
-                width: 100%;
-                border-radius: 4px;
-            }
+</div>
+ @if($tab==='general')
 
-            .verify-btn, .image-upload button, .save-btn {
-                border-radius: 4px;
-            }
-        }
-    .help-block{  
-    color: #ff0000;
-    position: relative;
 
-    margin-top: 61px;
-    display: block;
-    margin-left: -207px;
-    }
+ <form id="profileInfoForm" class="card space-y-6 p-6" action="{{ route('business.profile.info') }}"  method="POST" >    
+ @csrf    
+ <input type="hidden" name="redirect_tab" value="general">
+ <input type="hidden" name="client_id" value="{{ (isset($client->id)? $client->id:"") }}">
+  <div class="grid gap-4 md:grid-cols-3">
+    
+        <div class="space-y-2">
         
-              </style>
-             
-
-                <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
-                <form class="profile_info" id="profileInfoForm" method="POST" 
-    onsubmit="return businessController.editProfileInfo(this,<?php echo (isset($client->id)? $client->id:""); ?>)">
-    <input type="hidden" name="business_id" value="{{ old('middle_name',(isset($client)) ? $client->id:"")}}">
-
-    {{-- Auto-save status --}}
+            <label class="text-sm font-medium">Business Name</label>
+            
+            <input name="business_name" value="{{ $client->business_name }}" class="form-input auto-save-field">    
+        </div>
+      <div class="space-y-2">
+            
+        <label class="text-sm font-medium">Mobile</label>
+        
+        <input type="tel" name="mobile" value="{{ $client->mobile }}" class="form-input auto-save-field" placeholder="Enter mobile"  onkeypress="return isNumberKey(event);" maxlength="16">
+    
+        </div>
+      
+      <div class="space-y-2">
+        
+            <label class="text-sm font-medium">Email Address (Login)</label>
+            
+            <input name="email" value="{{ $client->email }}" class="form-input auto-save-field" placeholder="Enter email">    
+        </div>
+        
+        
+    
+  <div><label class="mb-2 block text-sm font-medium">Second Mobile</label>
+  
+  <input type="tel" name="second_mobile" value="{{ $client->second_mobile }}" class="form-input auto-save-field" placeholder="Enter Second Mobile" onkeypress="return isNumberKey(event);" maxlength="16"></div>
   
 
-    <div class="form-group">
-        <label>Business Name*:</label>                
-        <input name="business_name" type="text" class="form-control auto-save-field" value="{{ old('business_name',(isset($client)) ? $client->business_name:"")}}" placeholder="Please enter business name">
-        <label>Email*:</label>
-        <input name="email" type="email" class="form-control auto-save-field" id="Email" value="{{ old('email',(isset($client)) ? $client->email:"")}}" placeholder="Please enter Email">
+  
+    
+  <div><label class="mb-2 block text-sm font-medium">WhatsApp No:</label>
+  
+  <input type="tel" name="whatsapp" value="{{ $client->whatsapp }}" class="form-input auto-save-field" placeholder="Enter WhatsApp No" onkeypress="return isNumberKey(event);" maxlength="16"></div>
+  
+    
+  <div><label class="mb-2 block text-sm font-medium">Second WhatsApp No:</label>
+  
+  <input type="tel" name="second_whatsapp" value="{{ $client->second_whatsapp }}" class="form-input auto-save-field" placeholder="Second WhatsApp No" onkeypress="return isNumberKey(event);" maxlength="16"></div>
+  
+    
     </div>
+  
 
-    <div class="form-group">
-        <label>Mobile*:</label>                   
-        <input type="text" class="form-control auto-save-field" name="mobile" value="{{ old('mobile',(isset($client)) ? $client->mobile:"")}}" placeholder="Enter Mobile">
-        <label>WhatsApp No:</label>
-        <input type="text" class="form-control auto-save-field" name="whatsapp" value="{{ old('whatsapp',(isset($client)) ? $client->whatsapp:"")}}" placeholder="Enter whats app no">
-    </div>
+<div class="border-t pt-6">
+    <h3 class="mb-4 font-display text-lg font-semibold">Location Details</h3>
 
-    <div class="form-group">
-        <label>Country*:</label>
-        <select class="form-control auto-save-field" name="country"> 
-            <option value="101" @if ('101'== old('country')) selected @else {{ (isset($client) && $client->country == '101' ) ? "selected":"" }} @endif>India</option>
-        </select>
-        <label>State*:</label>                     
-        <select class="select2-single-state form-control state auto-save-field" name="state" onchange="get_city(this.value);">
-            @if($states)
+    <div class="grid gap-4 md:grid-cols-3">
+
+        <div>
+            <label class="mb-2 block text-sm font-medium">State</label>
+            <select id="state" name="state" class="form-input w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary">
+                <option value="">Select State</option>
                 @foreach($states as $state)
-                <option value="{{$state->id}}" @if ($state->id== old('state')) selected @else {{ (isset($client) && $client->state_id == $state->id ) ? "selected":"" }} @endif>{{$state->name}}</option>
+                    <option value="{{ $state->id }}" {{ $client->state_id == $state->id ? 'selected' : '' }}>
+                        {{ $state->name }}
+                    </option>
                 @endforeach
-            @endif
-        </select>
+            </select>
+        </div>
+
+        <div class="show_cityList">
+            <label class="mb-2 block text-sm font-medium">City</label>
+            <select id="city" name="city" class="form-input w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary">
+                <option value="">Select City</option>
+            </select>
+        </div>
+
+        <div class="select_zoneList">
+            <label class="mb-2 block text-sm font-medium">Zone</label>
+            <select id="zone" name="zone" class="form-input auto-save-field w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary">
+                <option value="">Select Zone</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="mb-2 block text-sm font-medium">Area</label>
+            <input type="text" name="area" value="{{ $client->area }}" class="form-input auto-save-field w-full rounded-md border-gray-300">
+        </div>
+        <div>
+            <label class="mb-2 block text-sm font-medium">Pincode</label>
+            <input type="text" name="pincode" value="{{ $client->pincode }}" class="form-input auto-save-field w-full rounded-md border-gray-300">
+        </div>
+        <div>
+            <label class="mb-2 block text-sm font-medium">Google Map</label>
+            <input type="text" name="business_map" value="{{ $client->business_map }}" class="form-input auto-save-field w-full rounded-md border-gray-300" placeholder="Google Map">
+        </div>
+
     </div>
+</div>
 
-    <div class="form-group">                 
-        <label>City*:</label>
-        <select class="form-control show_cityList search_city auto-save-field" name="city" onchange="select_zone(this.value);">
-            <option value="">Select City</option>
-        </select>           
-        <label>Zone:</label>
-        <select class="form-control select_zoneList search_zone auto-save-field" name="zone">
-            <option value="">Select Zone</option>		
-        </select>
-    </div>
+ 
+ 
+  <div class="border-t pt-6"> 
+  
+  <h3 class="mb-4 font-display text-lg font-semibold">Address & Hours</h3>
 
-    <div class="form-group">
-        <label>Area:</label>
-        <input type="text" class="form-control auto-save-field" name="area" value="{{ old('area',(isset($client->area)) ? $client->area:"")}}" placeholder="Enter Area">
-        <label>Pincode*:</label>
-        <input type="text" name="pincode" class="form-control auto-save-field" value="{{ old('pincode',(isset($client->pincode)) ? $client->pincode:"")}}" placeholder="Enter Pincode" maxlength="6">
-    </div> 
 
-    <div class="form-group">
-        <label>Landmark:</label>
-        <input name="landmark" type="text" class="form-control auto-save-field" value="{{ old('landmark',(isset($client)) ? $client->landmark:"")}}">
-        <label>Year of Establishment:</label>              
-        <select class="form-control auto-save-field" id="year_of_estb" name="year_of_estb">
+ <div class="grid gap-4 md:grid-cols-3">
+ 
+    
+<div><label class="mb-2 block text-sm font-medium">Landmark</label><input name="landmark" value="{{ $client->landmark }}" class="form-input auto-save-field"></div>
+
+
+<div><label class="mb-2 block text-sm font-medium">Full Address</label><input name="address" value="{{ $client->address }}" class="form-input auto-save-field"></div>
+
+ 
+
+   
+        <div class="space-y-2">
+            
+        <label class="text-sm font-medium">Year Established</label> 
+
+
+         <select class="form-input auto-save-field" id="year_of_estb" name="year_of_estb">
             <option value="">Select Year</option>
             <?php for($i= 1970; $i<=2050; $i++){ ?>
             <option value="<?php echo $i; ?>" @if ($i == old('year_of_estb')) selected @else {{ (isset($client) && $client->year_of_estb == $i ) ? "selected":"" }} @endif><?php echo $i; ?></option>
             <?php } ?>
         </select>
-    </div>
-
-    <div class="form-group">
-        <label>Address:</label>
-        <textarea name="address" class="form-control auto-save-field" style="height: 100px">{{ old('address',(isset($client)) ? $client->address:"")}}</textarea>
-    </div>
-    <div class="form-group">              
-        <label>Certifications:</label>                                
-        <input name="certifications" type="text" class="form-control auto-save-field" value="{{ old('certifications', $client->certifications ?? '') }}" placeholder="Enter Certifications Comma separated if more than">
-        <label>Google Map :</label>
-        <input name="business_map" type="text" class="form-control auto-save-field" value="{{ old('business_map', $client->business_map ?? '') }}" placeholder="Enter business Map">
-    </div>
     
-    <?php
+        </div>
+<div><label class="mb-2 block text-sm font-medium">Website</label><input name="website" value="{{ $client->website }}" class="form-input auto-save-field" placeholder="https://"></div>
+ 
+  
+
+
+
+
+</div>
+
+
+ @php
     $days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+
     $times = ["24:00" => "Open 24 Hrs", "00:00" => "Closed"];
     for ($h = 0; $h < 24; $h++) {
         foreach (['00', '30'] as $m) {
@@ -182,177 +176,801 @@ Find Only Certified Training Institutes, Coaching Centers near you on QuickDials
             $times[$key] = $key;
         }
     }
-    $time = !empty($client->time) ? json_decode($client->time) : [];
-    ?>
 
-    <?php foreach ($days as $day): ?>
-    <div class="form-group">
-        <div class="col-md-12" style="display: flex;"> 
-            <label class="font-weight-bold"><?= ucfirst($day); ?></label>
-            <div class="col-md-4">
-                <select class="form-control time-from auto-save-field" name="time[<?= $day; ?>][from]">
-                    <?php foreach ($times as $key => $value): ?>
-                        <option value="<?= $key; ?>" <?= (!empty($time->$day->from) && $time->$day->from == $key) ? 'selected' : '' ?>><?= $value; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-1 text-center"><strong>To</strong></div>
-            <div class="col-md-4">
-                <select class="form-control time-to auto-save-field" name="time[<?= $day; ?>][to]">
-                    <?php foreach ($times as $key => $value): ?>
-                        <option value="<?= $key; ?>" <?= (!empty($time->$day->to) && $time->$day->to == $key) ? 'selected' : '' ?>><?= $value; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-    </div>
-    <?php endforeach; ?>
+    // FIX: default to object, not array — avoids "read property on array" crash
+    $time = !empty($client->time) ? json_decode($client->time) : (object) [];
+@endphp
 
-    <div class="text-center"> 
-        <input type="hidden" name="savePersonal" value="savePersonalForm">
-        <button type="submit" class="btn btn-primary">Save & Continue</button>
+<div class="pt-6">
+    <div class="mb-4 flex items-center justify-between">
+        <h3 class="font-display text-lg font-semibold">Business Hours</h3>
+        
     </div>
-  <div id="autoSaveStatus" style="display:none;"></div>
-</form>
-                
-                 
-                 
+
+    <div class="space-y-3">
+        @foreach ($days as $day)
+            @php
+                $dayTime = $time->$day ?? null;
+                $fromVal = $dayTime->from ?? '';
+                $toVal   = $dayTime->to ?? '';
+            @endphp
+
+            <div class="flex flex-col gap-3 rounded-md border border-gray-200 p-3 sm:flex-row sm:items-center sm:gap-4">
+
+                <label class="w-28 shrink-0 text-sm font-semibold capitalize">
+                    {{ $day }}
+                </label>
+
+                <div class="flex flex-1 flex-col items-stretch gap-2 sm:flex-row sm:items-center">
+
+                    <select
+                        class="form-input time-from auto-save-field day-{{ $day }} w-full rounded-md border-gray-300 text-sm focus:border-primary focus:ring-primary sm:w-1/2"
+                        name="time[{{ $day }}][from]">
+                        @foreach ($times as $key => $label)
+                            <option value="{{ $key }}" {{ $fromVal === $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <span class="hidden text-center text-sm font-medium text-gray-500 sm:block sm:w-8">
+                        to
+                    </span>
+
+                    <select
+                        class="form-input time-to auto-save-field day-{{ $day }} w-full rounded-md border-gray-300 text-sm focus:border-primary focus:ring-primary sm:w-1/2"
+                        name="time[{{ $day }}][to]">
+                        @foreach ($times as $key => $label)
+                            <option value="{{ $key }}" {{ $toVal === $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+
                 </div>
-
-                 
-                
-              </div><!-- End Bordered Tabs -->
-
             </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-  </main><!-- End #main -->
- <script>
- 
-	window.onload = function()
-	{
-		var state 	='<?php echo $client->state_id; ?>';
-		var city 	= '<?php echo $client->city_id; ?>';	 
-    var zone 	= '<?php echo $client->zone_id; ?>';	 
-
-  
-		get_city(state,city); 
-    select_zone(city,zone); 
-	}	 
-
-function get_city(state,city){
-	var token = $('input[name=_token]').val();
-	$.ajax({
-	type: "post",	 
-	url: "{{URl('business/cities/getajaxcities')}}",
-	data: {sid:state,cid:city},
-	headers: {'X-CSRF-TOKEN': token},		
-	cache: false,
-	success: function(data)
-	{
-		$(".show_cityList").html(data);
-	}
-	});
-}
+        @endforeach
+    </div>
+</div>
 
 
-function select_zone(city,zone){
-	var token = $('input[name=_token]').val();
-	$.ajax({
-	type: "POST",	 
-	url: "{{URl('business/zone/getAjaxZone')}}",
-	data: {city:city,zone:zone},
-	headers: {'X-CSRF-TOKEN': token},		
-	cache: false,
-	success: function(data)
-	{
-		$(".select_zoneList").html(data);
-	}
-	});
-}
+</div>
+  <div class="sticky bottom-24 flex justify-end border-t bg-white/90 pt-5 backdrop-blur md:bottom-4"><button class="btn btn-primary"><i data-lucide="save" class="h-4 w-4"></i>Save Profile</button></div>
+ </form>
+
+ @endif
+</div>
+<div
+    id="toast-container"
+    class="pointer-events-none fixed right-4 top-4 z-[9999] flex w-80 flex-col gap-2"
+></div>
 
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-// ═══════════════════════════════════════════
-// AUTO-SAVE — Profile Info Form
-// ═══════════════════════════════════════════
-(function () {
-    var form          = document.getElementById('profileInfoForm');
-    var clientId       = "<?php echo (isset($client->id) ? $client->id : ''); ?>";
-    var debounceTimer  = null;
+<script>
+$(function () {
 
-    if (!form) return;
+    const clientId = @json($client->id ?? null);
 
-    var fields = form.querySelectorAll('.auto-save-field');
+    const initialState = @json($client->state_id ?? '');
+    const initialCity  = @json($client->city_id ?? '');
+    const initialZone  = @json($client->zone_id ?? '');
 
-    fields.forEach(function (field) {
+    const form = document.getElementById('profileInfoForm');
 
-        // ── Text/textarea: debounce while typing ──
-        if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA') {
-            field.addEventListener('input', function () {
+    let debounceTimer = null;
+    let isSaving = false;
+    let pendingSave = false;
+    let lastSnapshot = '';
+
+    if (form) {
+        lastSnapshot = $(form).serialize();
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CSRF Token
+    |--------------------------------------------------------------------------
+    */
+
+    function getToken() {
+        return $(form).find('input[name="_token"]').val()
+            || $('meta[name="csrf-token"]').attr('content');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Cities
+    |--------------------------------------------------------------------------
+    */
+
+    function getCity(state, selectedCity = '', callback = null) {
+
+        if (!state) {
+            $('#city').html('<option value="">Select City</option>');
+            $('#zone').html('<option value="">Select Zone</option>');
+
+            if (typeof callback === 'function') {
+                callback('');
+            }
+
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+
+            url: "{{ route('business.cities.ajax') }}",
+
+            data: {
+                sid: state,
+                cid: selectedCity
+            },
+
+            headers: {
+                'X-CSRF-TOKEN': getToken()
+            },
+
+            cache: false,
+
+            success: function (data) {
+
+                $('#city').html(data);
+
+                const cityId = $('#city').val() || selectedCity || '';
+
+                if (typeof callback === 'function') {
+                    callback(cityId);
+                }
+            },
+
+            error: function () {
+                showToast('Unable to load cities', 'error');
+            }
+        });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Zones
+    |--------------------------------------------------------------------------
+    */
+
+    function selectZone(city, selectedZone = '', callback = null) {
+
+        if (!city) {
+            $('#zone').html('<option value="">Select Zone</option>');
+
+            if (typeof callback === 'function') {
+                callback();
+            }
+
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+
+            url: "{{ route('business.zone.ajax') }}",
+
+            data: {
+                city: city,
+                zone: selectedZone
+            },
+
+            headers: {
+                'X-CSRF-TOKEN': getToken()
+            },
+
+            cache: false,
+
+            success: function (data) {
+
+                $('#zone').html(data);
+
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            },
+
+            error: function () {
+                showToast('Unable to load zones', 'error');
+            }
+        });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial State -> City -> Zone
+    |--------------------------------------------------------------------------
+    */
+
+    if (initialState) {
+
+        getCity(initialState, initialCity, function (cityId) {
+
+            selectZone(
+                initialCity || cityId,
+                initialZone
+            );
+
+        });
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | State Changed
+    |--------------------------------------------------------------------------
+    */
+
+    $(document).on('change', '#state', function () {
+
+        const stateId = $(this).val();
+
+        clearTimeout(debounceTimer);
+
+        getCity(stateId, '', function (cityId) {
+
+            selectZone(cityId, '', function () {
+
+                triggerAutoSave();
+
+            });
+
+        });
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | City Changed
+    |--------------------------------------------------------------------------
+    */
+
+    $(document).on('change', '#city', function () {
+
+        const cityId = $(this).val();
+
+        clearTimeout(debounceTimer);
+
+        selectZone(cityId, '', function () {
+
+            triggerAutoSave();
+
+        });
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto Save Fields
+    |--------------------------------------------------------------------------
+    */
+
+    if (form) {
+
+        /*
+        | Text/Input fields
+        */
+
+        $(form).on(
+            'input',
+            '.auto-save-field:not(select)',
+            function () {
+
                 clearTimeout(debounceTimer);
+
                 debounceTimer = setTimeout(function () {
                     triggerAutoSave();
                 }, 1500);
-            });
 
-            field.addEventListener('blur', function () {
+            }
+        );
+
+
+        /*
+        | Blur - save immediately
+        */
+
+        $(form).on(
+            'blur',
+            '.auto-save-field:not(select)',
+            function () {
+
                 clearTimeout(debounceTimer);
+
                 triggerAutoSave();
-            });
+
+            }
+        );
+
+
+        /*
+        | Other selects
+        |
+        | State and city are excluded because they need
+        | city/zone AJAX loading first.
+        */
+
+        $(form).on(
+            'change',
+            'select.auto-save-field:not(#state):not(#city)',
+            function () {
+
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(function () {
+
+                    triggerAutoSave();
+
+                }, 400);
+
+            }
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Manual Save
+        |--------------------------------------------------------------------------
+        */
+
+        form.addEventListener('submit', function (e) {
+
+            e.preventDefault();
+
+            clearTimeout(debounceTimer);
+
+            saveForm(true);
+
+        });
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Global Trigger
+    |--------------------------------------------------------------------------
+    */
+
+    window.triggerAutoSave = function () {
+
+        saveForm(false);
+
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Save Form
+    |--------------------------------------------------------------------------
+    */
+
+    function saveForm(isManual = false) {
+
+        if (!form) {
+            return;
         }
 
-        // ── Select dropdowns: save after slight delay ──
-        if (field.tagName === 'SELECT') {
-            field.addEventListener('change', function () {
-                // Wait for city/zone AJAX chains to finish populating
-                setTimeout(function () {
-                    triggerAutoSave();
-                }, 600);
-            });
+        const current = $(form).serialize();
+
+
+        /*
+        | Don't save if nothing changed
+        */
+
+        if (!isManual && current === lastSnapshot) {
+            return;
         }
+
+
+        /*
+        | If another save is running,
+        | queue another save.
+        */
+
+        if (isSaving) {
+
+            pendingSave = true;
+
+            return;
+        }
+
+
+        isSaving = true;
+        pendingSave = false;
+
+
+        showToast(
+            isManual ? 'Saving profile...' : 'Saving...',
+            'info',
+            1200
+        );
+
+
+        /*
+        | Remove previous validation errors
+        */
+
+        $(form)
+            .find('.form-input')
+            .removeClass('has-error border-red-500');
+
+
+        $(form)
+            .find('.help-block')
+            .remove();
+
+
+        /*
+        | AJAX Save
+        */
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: "{{ route('business.profile.info') }}",
+
+            data: current + '&client_id=' + encodeURIComponent(clientId ?? ''),
+
+            headers: {
+                'X-CSRF-TOKEN': getToken()
+            },
+
+            cache: false,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Success
+            |--------------------------------------------------------------------------
+            */
+
+            success: function (response) {
+
+                isSaving = false;
+
+                lastSnapshot = current;
+
+
+                showToast(
+                    isManual
+                        ? 'Profile saved successfully'
+                        : 'Saved',
+                    'success'
+                );
+
+
+                /*
+                | Something changed while request
+                | was running - save latest data.
+                */
+
+                if (
+                    pendingSave ||
+                    $(form).serialize() !== lastSnapshot
+                ) {
+
+                    pendingSave = false;
+
+                    setTimeout(function () {
+                        saveForm(false);
+                    }, 300);
+
+                }
+
+            },
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Error
+            |--------------------------------------------------------------------------
+            */
+
+            error: function (xhr) {
+
+                // IMPORTANT
+                isSaving = false;
+
+
+                let response = xhr.responseJSON;
+
+
+                if (
+                    response &&
+                    response.errors
+                ) {
+
+                    const errors = response.errors;
+
+
+                    Object.keys(errors).forEach(function (key) {
+
+                        const field = $(form).find(
+                            '[name="' + key + '"]'
+                        ).first();
+
+
+                        if (!field.length) {
+                            return;
+                        }
+
+
+                        field.addClass(
+                            'has-error border-red-500'
+                        );
+
+
+                        $('<span>', {
+                            class:
+                                'help-block mt-1 block text-sm font-medium text-red-600',
+
+                            text:
+                                errors[key][0]
+
+                        }).insertAfter(field);
+
+                    });
+
+
+                    showToast(
+                        'Please check validation errors',
+                        'error'
+                    );
+
+                }
+
+                else {
+
+                    showToast(
+                        xhr.status === 419
+                            ? 'Session expired. Please refresh the page.'
+                            : 'Something went wrong while saving',
+                        'error'
+                    );
+
+                }
+
+            }
+
+        });
+
+    }
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Toast Notification
+|--------------------------------------------------------------------------
+*/
+
+function showToast(
+    message,
+    type = 'success',
+    duration = 3000
+) {
+
+    const container =
+        document.getElementById('toast-container');
+
+
+    if (!container) return;
+
+
+    const styles = {
+
+        success: {
+
+            bg:
+                'bg-emerald-50 border-emerald-200 text-emerald-800',
+
+            icon: `
+                <svg
+                    class="h-5 w-5 shrink-0 text-emerald-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 13l4 4L19 7"
+                    />
+                </svg>
+            `
+        },
+
+
+        error: {
+
+            bg:
+                'bg-red-50 border-red-200 text-red-800',
+
+            icon: `
+                <svg
+                    class="h-5 w-5 shrink-0 text-red-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                    />
+                </svg>
+            `
+        },
+
+
+        info: {
+
+            bg:
+                'bg-blue-50 border-blue-200 text-blue-800',
+
+            icon: `
+                <svg
+                    class="h-5 w-5 shrink-0 animate-spin text-blue-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke-opacity=".25"
+                    />
+
+                    <path
+                        stroke-linecap="round"
+                        d="M21 12a9 9 0 00-9-9"
+                    />
+                </svg>
+            `
+        }
+
+    };
+
+
+    const style =
+        styles[type] || styles.success;
+
+
+    const toast =
+        document.createElement('div');
+
+
+    toast.className = `
+        pointer-events-auto
+        flex items-center gap-3
+        rounded-xl border
+        ${style.bg}
+        px-4 py-3
+        shadow-lg
+        transition-all
+        duration-300
+        translate-x-4
+        opacity-0
+    `;
+
+
+    toast.innerHTML = `
+
+        ${style.icon}
+
+        <p class="flex-1 text-sm font-medium">
+            ${escapeToastHtml(message)}
+        </p>
+
+        <button
+            type="button"
+            class="shrink-0 rounded p-1 opacity-60 hover:opacity-100"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    container.appendChild(toast);
+
+
+    requestAnimationFrame(function () {
+
+        toast.classList.remove(
+            'translate-x-4',
+            'opacity-0'
+        );
+
     });
 
-    function triggerAutoSave() {
-        if (typeof businessController !== 'undefined' && businessController.editProfileInfo) {
-            businessController.editProfileInfo(form, clientId);
-            showAutoSaveStatus('Saving...', 'info');
-        }
-    }
-})();
 
-function showAutoSaveStatus(text, type) {
-    var statusEl = document.getElementById('autoSaveStatus');
-    if (!statusEl) return;
+    function dismiss() {
 
-    statusEl.textContent = text;
-    statusEl.style.display = 'block';
-    statusEl.style.padding = '8px 12px';
-    statusEl.style.marginBottom = '10px';
-    statusEl.style.borderRadius = '4px';
-    statusEl.style.fontSize = '0.9em';
+        toast.classList.add(
+            'translate-x-4',
+            'opacity-0'
+        );
 
-    if (type === 'success') {
-        statusEl.style.background = '#d4edda';
-        statusEl.style.color = '#155724';
-    } else if (type === 'danger') {
-        statusEl.style.background = '#f8d7da';
-        statusEl.style.color = '#721c24';
-    } else {
-        statusEl.style.background = '#d1ecf1';
-        statusEl.style.color = '#0c5460';
-    }
 
-    if (type !== 'info') {
         setTimeout(function () {
-            statusEl.style.display = 'none';
-        }, 3000);
+
+            toast.remove();
+
+        }, 300);
+
     }
+
+
+    toast
+        .querySelector('button')
+        .addEventListener(
+            'click',
+            dismiss
+        );
+
+
+    setTimeout(
+        dismiss,
+        duration
+    );
+
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Prevent HTML inside toast message
+|--------------------------------------------------------------------------
+*/
+
+function escapeToastHtml(value) {
+
+    const div =
+        document.createElement('div');
+
+    div.textContent = value;
+
+    return div.innerHTML;
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Number Only
+|--------------------------------------------------------------------------
+*/
+
+function isNumberKey(e) {
+
+    const key =
+        e.keyCode || e.charCode;
+
+    return key >= 48 && key <= 57;
+
+}
 </script>
- @endsection
+
+ 
+ 
+
+@endsection

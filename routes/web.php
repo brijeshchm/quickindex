@@ -81,12 +81,8 @@ Route::middleware('auth:clients')->group(function () {
 // Auth::routes();
 
 Route::controller(DashboardController::class)->group(function(){
-	
- 
- 
- Route::get('/business/leads/{tab?}','leads')->name('leads');
-
-//   Route::patch('/leads/{id}','updateLead')->name('leads.update');
+	 
+ Route::get('/business/leads/{tab?}','leads')->name('leads'); 
  Route::post('/business/leads/{lead}/follow-ups','addFollowUp')->name('followups.add'); 
  Route::patch('/business/follow-ups/{id}','updateFollowUp')->name('followups.update'); 
  Route::delete('/business/follow-ups/{id}','deleteFollowUp')->name('followups.delete');
@@ -123,7 +119,7 @@ Route::post('/business/sign-out','signOut')->name('signout');
 
 	
 	Route::get('/business/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-	// Route::get('/business/leads', [EnquiryController::class, 'getLeads']);
+ 
 	Route::get('/business/enquiry', [EnquiryController::class, 'enquiry']);
 	Route::get('/business/lead-follow-up', [EnquiryController::class, 'leadFollowUp']);
 	//Route::get('/business/new-enquiry', [DashboardController::class, 'newEnquiry'])->name('new.enquiry');
@@ -496,7 +492,7 @@ Route::get('/failed', [App\Http\Controllers\Client\WebsiteRazorpayController::cl
 Route::match(['GET', 'HEAD'], '/business-details/{slug}', function ($slug) {
     return redirect('/businessdetails/' . $slug, 301);
 });
-
+ 
 // Route::get('search', [App\Http\Controllers\Client\CitySlugController::class, 'searchKW'])->name('kw.search');
 Route::get('/{city}', [CitySlugController::class, 'showCityOrService'])
     ->name('showCity');

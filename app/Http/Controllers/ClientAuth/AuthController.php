@@ -174,11 +174,7 @@ class AuthController extends Controller
     //     ], 401);
     // }
 	 public function clientLoginPost(Request $request)
-	 {
-
-	 
-
-			// dd($request->all());
+	 {			 
 			if($request->has('email')){
 				$validator = Validator::make($request->all(), [
 					'email'=>'required',
@@ -473,16 +469,7 @@ class AuthController extends Controller
         $lastName  = $parts[1] ?? '';
         $email     = $googleUser->getEmail();
 
-        // 1. Check if Guest (User) exists → redirect user/dashboard
-        $guest = Guest::where('email', $email)->first();
-        if ($guest) {
-			$request->session()->put('client.email',$guest->email);
-            auth()->guard('guest')->login($guest);
-			
-            return redirect('/user/dashboard');
-        }
-
-        // 2. Check if Client exists → redirect business/dashboard
+		  // 2. Check if Client exists → redirect business/dashboard
         $client = Client::where('email', $email)->first();
         if ($client) {
             Client::where('email', $email)
@@ -491,6 +478,16 @@ class AuthController extends Controller
             auth()->guard('clients')->loginUsingId($client->id);
             return redirect('/business/dashboard');
         }
+
+
+        // 1. Check if Guest (User) exists → redirect user/dashboard
+        $guest = Guest::where('email', $email)->first();
+        if ($guest) {
+			$request->session()->put('client.email',$guest->email);
+            auth()->guard('guest')->login($guest);			
+            return redirect('/user/dashboard');
+        }
+
 
         // 3. Neither exists → create Guest account
         $guest = Guest::create([
@@ -503,6 +500,8 @@ class AuthController extends Controller
 
         auth()->guard('guest')->login($guest);
         return redirect('/user/dashboard');
+
+
 
     } catch (\Exception $e) {
         return redirect('/business-owners')

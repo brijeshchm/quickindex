@@ -1,522 +1,1950 @@
 @extends('business.layouts.app')
-@section('title')
-    Recent Activity QuickDials
-@endsection
-@section('keyword')
-    Recent Activity
-@endsection
-@section('description')
-    Find Only Certified Training Institutes, Coaching Centers near you on QuickDials and Get Free counseling, Free Demo
-    Classes, and Get Placement Assistence.
-@endsection
+
+@section('title', 'Profile')
+
 @section('content')
 
-    <link rel="stylesheet" href="{{ asset('drag_drop/jquery.ezdz.min.css')}}">
-    <main id="main" class="main">
-        <section class="section profile">
-            <div class="row">
+ 
 
-                <div class="col-xl-12">
+<div class="animate-fade-in max-w-5xl space-y-4 md:space-y-6">
 
-                    <div class="card">
-                        <div class="card-body pt-3">
-                            <!-- Bordered Tabs -->
-                            <ul class="nav nav-tabs nav-tabs-bordered">
-                                <li class="nav-item">
-                                    <button class="nav-link active" data-bs-toggle="tab"
-                                        data-bs-target="#profile-edit">Recent Activity </button>
-                                </li>
+    {{-- Heading --}}
+    <div>
 
-                                <li class="nav-item profile_success">
-                                </li>
-                            </ul>
-                            <div class="tab-content pt-2">
+        <h1 class="font-display text-xl font-bold md:text-3xl">
+            {{ $tabs[$tab] ?? 'Recent Activity' }}
+        </h1>
+
+    </div>
 
 
-                                <style>
-                                    .award-box {
-                                        border: 1px solid #e0e0e0;
-                                        padding: 12px;
-                                        border-radius: 6px;
-                                        margin-bottom: 15px;
-                                        height: 215px;
-
-                                    }
-
-                                    .award-box label {
-                                        font-weight: 600;
-                                        margin-bottom: 6px;
-                                        display: block;
-                                    }
-
-                                    .award-preview img {
-                                        max-width: 100px;
-                                        border: 1px solid #ddd;
-                                        padding: 5px;
-                                    }
-
-                                    .pdf-box {
-                                        width: 100px;
-                                        height: 100px;
-                                        border: 1px solid #ddd;
-                                    }
-
-                                    .btn-sm {
-                                        height: 34px;
-                                    }
-
-                                    
-                                </style>
-<style>
-/* ═══════════════════════════════════════════
-   RECENT ACTIVITY CARD DESIGN
-═══════════════════════════════════════════ */
-.recent-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-    height: 100%;
-}
-.recent-card:hover {
-    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.1);
-}
-
-/* Header */
-.recent-card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 14px;
-    margin-bottom: 16px;
-    border-bottom: 1px dashed #e5e7eb;
-}
-.recent-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    color: white;
-    font-weight: 700;
-    font-size: 13px;
-}
-.recent-title {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-/* Media area */
-.recent-media {
-    margin-bottom: 16px;
-}
-
-/* Upload dropzone (when no image) */
-.upload-dropzone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 160px;
-    padding: 20px;
-    border: 2px dashed #d1d5db;
-    border-radius: 12px;
-    background: #f9fafb;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-}
-.upload-dropzone:hover {
-    border-color: #6366f1;
-    background: #eef2ff;
-}
-.upload-icon {
-    font-size: 32px;
-    color: #6366f1;
-    margin-bottom: 8px;
-}
-.upload-text {
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 4px;
-}
-.upload-hint {
-    font-size: 11px;
-    color: #9ca3af;
-}
-
-/* Preview (when image exists) */
-.media-preview {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
-}
-.media-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-}
-.pdf-wrap {
-    position: relative;
-}
-.pdf-box {
-    width: 100%;
-    height: 200px;
-    display: block;
-}
-.view-pdf {
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
-    font-size: 12px;
-    border-radius: 8px;
-    backdrop-filter: blur(4px);
-    background: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid #e5e7eb !important;
-}
-
-/* Remove button (top-right of preview) */
-.btn-remove {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(220, 38, 38, 0.95);
-    color: #ffffff;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-.btn-remove:hover {
-    background: #b91c1c;
-    color: #ffffff;
-    transform: scale(1.05);
-}
-
-/* Modern form fields */
-.recent-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.form-group-modern {
-    display: flex;
-    flex-direction: column;
-}
-.form-label-modern {
-    font-size: 12px;
-    font-weight: 600;
-    color: #6b7280;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-.form-control-modern {
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
-    color: #1f2937;
-    background: #ffffff;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-.form-control-modern:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-    outline: none;
-}
-.form-control-modern::placeholder {
-    color: #9ca3af;
-}
-textarea.form-control-modern {
-    resize: vertical;
-    min-height: 80px;
-}
-
-/* Mobile */
-@media (max-width: 576px) {
-    .recent-card { padding: 14px; }
-    .media-img, .pdf-box { height: 180px; }
-    .upload-dropzone { min-height: 140px; }
-}
-</style>
-
-                                <div class="tab-pane fade show active pt-3" id="profile-edit">
+    {{-- Global Auto Save Status --}}
+    <div
+        id="autoSaveStatus"
+        class="hidden"
+    ></div>
 
 
-                                    <form class="certificate_form" id="awardFrom" method="POST"
-                                        enctype="multipart/form-data">
-                                        <input type="hidden" name="business_id"
-                                            value="{{ old('business_id', (isset($client)) ? $client->id : "")}}">
+    {{-- Mobile Tabs --}}
+    <div class="md:hidden">
 
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <select
+            onchange="window.location=this.value"
+            class="form-input h-12 w-full bg-white text-base font-medium shadow-sm"
+        >
 
-                                  
+            @foreach($tabs as $key => $label)
+
+                <option
+                    value="{{ route('profile', ['tab' => $key]) }}"
+                    @selected($tab === $key)
+                >
+                    {{ $label }}
+                </option>
+
+            @endforeach
+
+        </select>
+
+    </div>
 
 
-<div class="row">
-    @for($i = 1; $i <= 6; $i++)
-        @php
-            // Dynamic field names — works for recent_img1...recent_img6
-            $imgField   = "recent_img{$i}";
-            $nameField  = "recent_name{$i}";
-            $paraField  = "recent_paragraph{$i}";
+    {{-- ============================================================
+         RECENT ACTIVITY
+    ============================================================= --}}
 
-            // Decode stored image JSON
-            $recentImg  = !empty($client->$imgField) ? json_decode($client->$imgField) : null;
-            $recentPath = $recentImg->large->src ?? '';
-            $recentUrl  = $recentPath ? asset($recentPath) : '';
-            $ext        = strtolower(pathinfo($recentPath, PATHINFO_EXTENSION));
+    @if($tab === 'recent')
 
-            // First one is required, rest optional
-            $isRequired = ($i === 1);
+        <form
+            id="recentActivityForm"
+            action="{{ route('recent.activity.save') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="space-y-6"
+        >
 
-            // Badge number (01, 02, 03...)
-            $badgeNum   = str_pad($i, 2, '0', STR_PAD_LEFT);
-        @endphp
+            @csrf
 
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="recent-card">
 
-                {{-- ── HEADER ── --}}
-                <div class="recent-card-header">
-                    <span class="recent-badge">{{ $badgeNum }}</span>
-                    <h6 class="recent-title">
-                        Recent Activity {{ $i }}
-                        @if($isRequired) <span class="text-danger">*</span> @endif
-                    </h6>
-                </div>
+            <input
+                type="hidden"
+                name="business_id"
+                value="{{ $client->id ?? '' }}"
+            >
 
-                {{-- ── IMAGE / FILE AREA ── --}}
-                <div class="recent-media">
-                    @if($recentPath)
-                        <div class="media-preview">
-                            @if($ext === 'pdf')
-                                <div class="pdf-wrap">
-                                    <embed src="{{ $recentUrl }}" type="application/pdf" class="pdf-box">
-                                    <a href="{{ $recentUrl }}" target="_blank" class="btn btn-light btn-sm view-pdf">
-                                        <i class="bi bi-eye"></i> View PDF
-                                    </a>
-                                </div>
-                            @else
-                                <img loading="lazy"
-                                     src="{{ $recentUrl }}"
-                                     alt="Recent activity {{ $i }}"
-                                     class="media-img">
-                            @endif
 
-                            <a href="{{ url("business/recent/{$imgField}/{$client->id}") }}"
-                               class="btn-remove"
-                               title="Remove"
-                               >
-                                <i class="bi bi-trash"></i>
-                            </a>
+            {{-- Header Card --}}
+            <div
+                class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+            >
+
+                <div class="border-b border-slate-200 px-5 py-4 md:px-6">
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+                        >
+
+                            <i
+                                data-lucide="activity"
+                                class="h-5 w-5"
+                            ></i>
+
                         </div>
-                    @else
-                        <label for="recent_img{{ $i }}_input" class="upload-dropzone">
-                            <i class="bi bi-cloud-arrow-up upload-icon"></i>
-                            <span class="upload-text">Click to upload</span>
-                            <small class="upload-hint">JPG, PNG, WEBP — max 5MB</small>
-                            <input type="file"
-                                   id="recent_img{{ $i }}_input"
-                                   name="{{ $imgField }}"
-                                   class="d-none preview-input"
-                                   accept=".jpg,.jpeg,.png,.webp"
-                                   @if($isRequired) required @endif>
-                        </label>
-                    @endif
+
+
+                        <div>
+
+                            <h3 class="font-display text-lg font-semibold text-slate-900">
+                                Recent Activities
+                            </h3>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                Add your latest events, updates and business activities.
+                            </p>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-                {{-- ── FIELDS ── --}}
-                <div class="recent-fields">
-                    <div class="form-group-modern">
-                        <label class="form-label-modern">Activity Name</label>
-                        <input type="text"
-                               name="{{ $nameField }}"
-                               class="form-control form-control-modern"
-                               value="{{ old($nameField, $client->$nameField ?? '') }}"
-                               placeholder="e.g. Event title {{ $i }}"
-                               @if($isRequired) required @endif>
-                    </div>
 
-                    <div class="form-group-modern">
-                        <label class="form-label-modern">Description</label>
-                        <textarea name="{{ $paraField }}"
-                                  class="form-control form-control-modern"
-                                  rows="3"
-                                  placeholder="Briefly describe this activity...">{{ old($paraField, $client->$paraField ?? '') }}</textarea>
-                    </div>
+                {{-- Activities --}}
+                <div
+                    class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 lg:grid-cols-3 md:p-6"
+                >
+
+                    @for($i = 1; $i <= 6; $i++)
+
+                        @php
+
+                            $imgField =
+                                'recent_img' . $i;
+
+                            $nameField =
+                                'recent_name' . $i;
+
+                            $paraField =
+                                'recent_paragraph' . $i;
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Existing image
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $recentImg =
+                                !empty($client->{$imgField})
+                                    ? json_decode($client->{$imgField})
+                                    : null;
+
+
+                            $recentPath =
+                                $recentImg->large->src ?? '';
+
+
+                            $recentUrl =
+                                $recentPath
+                                    ? asset($recentPath)
+                                    : '';
+
+
+                            $extension =
+                                strtolower(
+                                    pathinfo(
+                                        $recentPath,
+                                        PATHINFO_EXTENSION
+                                    )
+                                );
+
+
+                            $isRequired =
+                                ($i === 1);
+
+
+                            $badgeNum =
+                                str_pad(
+                                    $i,
+                                    2,
+                                    '0',
+                                    STR_PAD_LEFT
+                                );
+
+                        @endphp
+
+
+                        <div
+                            class="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-blue-300 hover:shadow-sm"
+                        >
+
+                            {{-- Card Header --}}
+                            <div
+                                class="mb-4 flex items-center justify-between"
+                            >
+
+                                <div class="flex items-center gap-2">
+
+                                    <span
+                                        class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600"
+                                    >
+                                        {{ $badgeNum }}
+                                    </span>
+
+
+                                    <h4
+                                        class="text-sm font-semibold text-slate-800"
+                                    >
+
+                                        Recent Activity {{ $i }}
+
+                                        @if($isRequired)
+
+                                            <span class="text-red-500">
+                                                *
+                                            </span>
+
+                                        @endif
+
+                                    </h4>
+
+                                </div>
+
+                            </div>
+
+
+
+                            {{-- =================================================
+                                 MEDIA
+                            ================================================== --}}
+
+                            <div
+                                id="recentMedia{{ $i }}"
+                                class="mb-4"
+                            >
+
+                                {{-- Existing Preview --}}
+                                <div
+                                    id="recentPreviewWrap{{ $i }}"
+                                    class="{{ $recentPath ? '' : 'hidden' }} relative overflow-hidden rounded-xl border border-slate-200 bg-white"
+                                >
+
+                                    @if($recentPath)
+
+                                        @if($extension === 'pdf')
+
+                                            <div
+                                                class="flex h-40 flex-col items-center justify-center gap-3"
+                                            >
+
+                                                <div
+                                                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-red-600"
+                                                >
+
+                                                    <i
+                                                        data-lucide="file-text"
+                                                        class="h-6 w-6"
+                                                    ></i>
+
+                                                </div>
+
+
+                                                <a
+                                                    href="{{ $recentUrl }}"
+                                                    target="_blank"
+                                                    class="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-100"
+                                                >
+                                                    View File
+                                                </a>
+
+                                            </div>
+
+                                        @else
+
+                                            <img
+                                                id="recentPreview{{ $i }}"
+                                                src="{{ $recentUrl }}"
+                                                alt="Recent activity {{ $i }}"
+                                                loading="lazy"
+                                                class="h-40 w-full object-cover"
+                                            >
+
+                                        @endif
+
+
+                                        {{-- Delete --}}
+                                        <button
+                                            type="button"
+                                            class="delete-recent-image absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white text-red-600 shadow-md hover:bg-red-50"
+                                            data-field="{{ $imgField }}"
+                                            data-index="{{ $i }}"
+                                            data-client="{{ $client->id }}"
+                                            title="Remove image"
+                                        >
+
+                                            <i
+                                                data-lucide="trash-2"
+                                                class="h-4 w-4"
+                                            ></i>
+
+                                        </button>
+
+                                    @else
+
+                                        <img
+                                            id="recentPreview{{ $i }}"
+                                            src=""
+                                            alt=""
+                                            class="h-40 w-full object-cover"
+                                        >
+
+                                    @endif
+
+                                </div>
+
+
+
+                                {{-- IMPORTANT:
+                                     Keep file input permanently in DOM.
+                                     Do NOT replace it with innerHTML.
+                                --}}
+
+                                <label
+                                    id="recentUploadBox{{ $i }}"
+                                    for="recent_img{{ $i }}_input"
+                                    class="{{ $recentPath ? 'hidden' : 'flex' }} h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white text-center transition hover:border-blue-500 hover:bg-blue-50/40"
+                                >
+
+                                    <div
+                                        class="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600"
+                                    >
+
+                                        <i
+                                            data-lucide="upload-cloud"
+                                            class="h-5 w-5"
+                                        ></i>
+
+                                    </div>
+
+
+                                    <span
+                                        class="text-sm font-semibold text-slate-700"
+                                    >
+                                        Click to upload
+                                    </span>
+
+
+                                    <span
+                                        class="mt-1 text-xs text-slate-400"
+                                    >
+                                        JPG, PNG, WEBP — Max 5MB
+                                    </span>
+
+                                </label>
+
+
+                                {{-- File input stays OUTSIDE preview HTML --}}
+                                <input
+                                    type="file"
+                                    id="recent_img{{ $i }}_input"
+                                    name="{{ $imgField }}"
+                                    data-index="{{ $i }}"
+                                    class="recent-file hidden"
+                                    accept=".jpg,.jpeg,.png,.webp"
+                                >
+
+                            </div>
+
+
+
+                            {{-- =================================================
+                                 NAME
+                            ================================================== --}}
+
+                            <div class="space-y-4">
+
+                                <div>
+
+                                    <label
+                                        class="mb-1.5 block text-xs font-medium text-slate-600"
+                                    >
+                                        Activity Name
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        name="{{ $nameField }}"
+                                        value="{{ old($nameField, $client->{$nameField} ?? '') }}"
+                                        class="auto-save-field w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                        placeholder="e.g. Event title {{ $i }}"
+                                        @if($isRequired) required @endif
+                                    >
+
+
+                                    <div
+                                        class="field-error mt-1 text-xs font-medium text-red-600"
+                                        data-error="{{ $nameField }}"
+                                    ></div>
+
+                                </div>
+
+
+
+                                {{-- Description --}}
+                                <div>
+
+                                    <label
+                                        class="mb-1.5 block text-xs font-medium text-slate-600"
+                                    >
+                                        Description
+                                    </label>
+
+
+                                    <textarea
+                                        name="{{ $paraField }}"
+                                        rows="3"
+                                        class="auto-save-field w-full resize-none rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                                        placeholder="Briefly describe this activity..."
+                                    >{{ old($paraField, $client->{$paraField} ?? '') }}</textarea>
+
+
+                                    <div
+                                        class="field-error mt-1 text-xs font-medium text-red-600"
+                                        data-error="{{ $paraField }}"
+                                    ></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @endfor
+
+                </div>
+
+
+
+                {{-- Footer --}}
+                <div
+                    class="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-5 py-4 md:px-6"
+                >
+
+                    <p
+                        id="recentLastSaved"
+                        class="text-xs text-slate-500"
+                    >
+                        Changes are saved automatically.
+                    </p>
+
+
+                    <button
+                        type="submit"
+                        id="recentSaveButton"
+                        class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+
+                        <i
+                            data-lucide="save"
+                            class="h-4 w-4"
+                        ></i>
+
+                        <span>
+                            Save Activities
+                        </span>
+
+                    </button>
+
                 </div>
 
             </div>
-        </div>
-    @endfor
+
+        </form>
+
+    @endif
+
 </div>
 
 
 
-                                  
+{{-- ================================================================
+     LOADER
+================================================================ --}}
+
+<div
+    id="recentLoader"
+    class="fixed inset-0 z-[9998] hidden items-center justify-center bg-slate-950/20 backdrop-blur-[1px]"
+>
+
+    <div
+        class="flex items-center gap-3 rounded-xl bg-white px-5 py-4 shadow-xl"
+    >
+
+        <svg
+            class="h-5 w-5 animate-spin text-blue-600"
+            fill="none"
+            viewBox="0 0 24 24"
+        >
+
+            <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+            ></circle>
+
+            <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4Z"
+            ></path>
+
+        </svg>
 
 
-                                    
+        <span class="text-sm font-medium text-slate-700">
+            Saving...
+        </span>
 
- 
+    </div>
 
-
-                                   
-
-                                    </form>
-
-
-                                </div>
-
-
-
-                            </div><!-- End Bordered Tabs -->
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-    </main><!-- End #main -->
-    <script type="text/javascript" src="{{asset('drag_drop/jquery-3.1.1.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('drag_drop/jquery.ezdz.min.js')}}"></script>
-    <script>
-
-
-        $('input[type="file"]').ezdz({
-            text: 'Drag & Drop Image',
-            validators: {
-                maxWidth: 6000,
-                maxHeight: 6000
-            },
-            reject: function (file, errors) {
-
-                if (errors.mimeType) {
-                    alert(file.name + ' must be an image.');
-                }
-                if (errors.maxWidth) {
-                    alert('Max width exceeded is greater than 6000');
-                }
-                if (errors.maxHeight) {
-                    alert('Max height exceeded is greater than 6000');
-                }
-            }
-        });
-
-        // });
-
-    </script>
+</div>
 
 
 
-    <script>
-        let autoSaveTimer = null;
+{{-- Toast --}}
+<div
+    id="toast-container"
+    class="pointer-events-none fixed right-4 top-4 z-[9999] flex w-80 max-w-[calc(100%-2rem)] flex-col gap-2"
+></div>
 
-        const form = document.getElementById('awardFrom');
 
-        form.addEventListener('change', function () {
-            clearTimeout(autoSaveTimer);
 
-            autoSaveTimer = setTimeout(() => {
-                autoSaveForm();
-            }, 800); // debounce
-        });
-        const clientId = "{{ isset($client->id) ? $client->id : '' }}";
+<script>
 
-        function autoSaveForm() {
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
 
-            const formData = new FormData(form);
-            showLoader();
-            fetch("{{ url('business/save-recent-activity-auto') }}", {
-                method: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                },
-                body: formData
-            })
-                .then(async (res) => {
-                    console.log(res);
-                    if (!res.ok) {
-                        // Validation error (422)
-                        const errorData = await res.json();
-                        throw errorData;
-                    }
+        const form =
+            document.getElementById(
+                'recentActivityForm'
+            );
 
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.status) {
-                        hideLoader();
-                        if (!form.dataset.saved) {
-                            form.dataset.saved = "true";
-                            setTimeout(() => {
-                                // form.reset();              
-                                // form.dataset.saved = "";    
-                            }, 500);
+
+        if (!form) {
+            return;
+        }
+
+
+        const token =
+            form.querySelector(
+                'input[name="_token"]'
+            ).value;
+
+
+        const saveButton =
+            document.getElementById(
+                'recentSaveButton'
+            );
+
+
+        const saveButtonText =
+            saveButton
+                ? saveButton.querySelector(
+                    'span'
+                )
+                : null;
+
+
+        let debounceTimer =
+            null;
+
+
+        let isSaving =
+            false;
+
+
+        let pendingSave =
+            false;
+
+
+        let pendingRefresh =
+            false;
+
+
+        let lastSnapshot =
+            getTextSnapshot();
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TEXT AUTO SAVE
+        |--------------------------------------------------------------------------
+        |
+        | Auto-save name / description after user stops typing.
+        | No refresh while typing.
+        |--------------------------------------------------------------------------
+        */
+
+        form
+            .querySelectorAll(
+                '.auto-save-field'
+            )
+            .forEach(
+                function (field) {
+
+                    field.addEventListener(
+                        'input',
+                        function () {
+
+                            clearFieldError(
+                                field.name
+                            );
+
+
+                            clearTimeout(
+                                debounceTimer
+                            );
+
+
+                            debounceTimer =
+                                setTimeout(
+                                    function () {
+
+                                        saveForm(
+                                            false
+                                        );
+
+                                    },
+                                    1200
+                                );
+
                         }
-
-                        $("#messaged").modal("show");
-                        $('#messaged .modal-title').text("Successfully");
-                        $('#messaged .modal-body').html("<div class='alert alert-success'>" + data.msg + "</div>");
-                        $('#messaged').modal({ keyboard: false, backdrop: 'static' });
-                        $('#messaged').css({ 'width': '100%' });
-                        setInterval(function () {
-                            $("#messaged").modal("hide");
-                        }, 3000);
+                    );
 
 
-                    } else {
-                        console.warn('Auto-save failed');
+                    /*
+                    | Save when field loses focus
+                    */
+
+                    field.addEventListener(
+                        'blur',
+                        function () {
+
+                            clearTimeout(
+                                debounceTimer
+                            );
+
+
+                            saveForm(
+                                false
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE SELECT
+        |--------------------------------------------------------------------------
+        |
+        | Preview -> auto upload -> refresh page.
+        |--------------------------------------------------------------------------
+        */
+
+        form
+            .querySelectorAll(
+                '.recent-file'
+            )
+            .forEach(
+                function (input) {
+
+                    input.addEventListener(
+                        'change',
+                        function () {
+
+                            const file =
+                                this.files[0];
+
+
+                            const index =
+                                this.dataset.index;
+
+
+                            if (!file) {
+                                return;
+                            }
+
+
+
+                            /*
+                            | Validate file
+                            */
+
+                            const allowedTypes = [
+
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp'
+
+                            ];
+
+
+                            if (
+                                !allowedTypes.includes(
+                                    file.type
+                                )
+                            ) {
+
+                                showToast(
+                                    'Only JPG, PNG and WEBP images are allowed.',
+                                    'error'
+                                );
+
+
+                                this.value =
+                                    '';
+
+
+                                return;
+
+                            }
+
+
+
+                            /*
+                            | Max 5 MB
+                            */
+
+                            if (
+                                file.size >
+                                5 * 1024 * 1024
+                            ) {
+
+                                showToast(
+                                    'Image must be less than 5 MB.',
+                                    'error'
+                                );
+
+
+                                this.value =
+                                    '';
+
+
+                                return;
+
+                            }
+
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | PREVIEW
+                            |--------------------------------------------------------------------------
+                            |
+                            | IMPORTANT:
+                            | Input is NOT removed from DOM.
+                            |--------------------------------------------------------------------------
+                            */
+
+                            previewImage(
+                                index,
+                                file
+                            );
+
+
+
+                            /*
+                            | Auto-upload and refresh
+                            */
+
+                            saveForm(
+                                true
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PREVIEW IMAGE
+        |--------------------------------------------------------------------------
+        */
+
+        function previewImage(
+            index,
+            file
+        ) {
+
+            const preview =
+                document.getElementById(
+                    'recentPreview' +
+                    index
+                );
+
+
+            const previewWrap =
+                document.getElementById(
+                    'recentPreviewWrap' +
+                    index
+                );
+
+
+            const uploadBox =
+                document.getElementById(
+                    'recentUploadBox' +
+                    index
+                );
+
+
+            if (
+                !preview ||
+                !previewWrap
+            ) {
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    preview.src =
+                        event.target.result;
+
+
+                    preview.classList.remove(
+                        'hidden'
+                    );
+
+
+                    previewWrap.classList.remove(
+                        'hidden'
+                    );
+
+
+                    if (uploadBox) {
+
+                        uploadBox.classList.add(
+                            'hidden'
+                        );
+
+
+                        uploadBox.classList.remove(
+                            'flex'
+                        );
+
                     }
-                })
-                .catch((err) => {
+
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | MANUAL SUBMIT
+        |--------------------------------------------------------------------------
+        */
+
+        form.addEventListener(
+            'submit',
+            function (event) {
+
+                event.preventDefault();
+
+
+                clearTimeout(
+                    debounceTimer
+                );
+
+
+                /*
+                | Manual save + page refresh
+                */
+
+                saveForm(
+                    true
+                );
+
+            }
+        );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SAVE
+        |--------------------------------------------------------------------------
+        |
+        | refreshPage = false:
+        | text auto-save
+        |
+        | refreshPage = true:
+        | image upload/manual save
+        |--------------------------------------------------------------------------
+        */
+
+        function saveForm(
+            refreshPage = false
+        ) {
+
+            const currentSnapshot =
+                getTextSnapshot();
+
+
+
+            /*
+            | Nothing changed
+            | unless file is selected.
+            */
+
+            const hasFile =
+                Array
+                    .from(
+                        form.querySelectorAll(
+                            '.recent-file'
+                        )
+                    )
+                    .some(
+                        function (input) {
+
+                            return (
+                                input.files &&
+                                input.files.length
+                            );
+
+                        }
+                    );
+
+
+            if (
+                !refreshPage &&
+                !hasFile &&
+                currentSnapshot === lastSnapshot
+            ) {
+
+                return;
+
+            }
+
+
+
+            /*
+            | Save already running
+            */
+
+            if (isSaving) {
+
+                pendingSave =
+                    true;
+
+
+                if (refreshPage) {
+
+                    pendingRefresh =
+                        true;
+
+                }
+
+
+                return;
+
+            }
+
+
+            isSaving =
+                true;
+
+
+            pendingSave =
+                false;
+
+
+            clearErrors();
+
+
+            setButtonSaving(
+                true
+            );
+
+
+            showStatus(
+                'Saving...',
+                'info'
+            );
+
+
+            showLoader();
+
+
+
+            const formData =
+                new FormData(
+                    form
+                );
+
+
+            fetch(
+                form.action,
+                {
+
+                    method:
+                        'POST',
+
+                    headers: {
+
+                        'X-CSRF-TOKEN':
+                            token,
+
+                        'Accept':
+                            'application/json',
+
+                        'X-Requested-With':
+                            'XMLHttpRequest'
+
+                    },
+
+                    body:
+                        formData
+
+                }
+            )
+
+            .then(
+                async function (
+                    response
+                ) {
+
+                    const data =
+                        await response
+                            .json()
+                            .catch(
+                                function () {
+
+                                    return {};
+
+                                }
+                            );
+
+
+                    if (!response.ok) {
+
+                        throw {
+
+                            status:
+                                response.status,
+
+                            data:
+                                data
+
+                        };
+
+                    }
+
+
+                    return data;
+
+                }
+            )
+
+            .then(
+                function (data) {
+
+                    isSaving =
+                        false;
+
 
                     hideLoader();
 
-                    if (err.errors) {
 
-                        let errorHtml = "<div class='alert alert-danger'><ul>";
+                    setButtonSaving(
+                        false
+                    );
 
-                        Object.keys(err.errors).forEach(function (key) {
-                            errorHtml += "<li>" + err.errors[key][0] + "</li>";
-                        });
 
-                        errorHtml += "</ul></div>";
 
-                        $("#messaged").modal("show");
-                        $('#messaged .modal-title').text("Validation Error");
-                        $('#messaged .modal-body').html(errorHtml);
+                    /*
+                    | Application-level failure
+                    */
 
-                    } else {
-                        console.error("Unexpected Error:", err);
+                    if (
+                        data.success === false ||
+                        data.status === false
+                    ) {
+
+                        showStatus(
+                            data.message ||
+                            data.msg ||
+                            'Save failed.',
+                            'danger'
+                        );
+
+
+                        return;
+
                     }
 
 
-                });
-        }
-    </script>
 
+                    /*
+                    | Saved
+                    */
+
+                    lastSnapshot =
+                        currentSnapshot;
+
+
+                    showStatus(
+                        'Saved successfully.',
+                        'success'
+                    );
+
+
+                    showToast(
+                        data.message ||
+                        data.msg ||
+                        'Recent activity saved successfully.',
+                        'success'
+                    );
+
+
+                    const lastSaved =
+                        document.getElementById(
+                            'recentLastSaved'
+                        );
+
+
+                    if (lastSaved) {
+
+                        lastSaved.textContent =
+                            'Last saved just now';
+
+                    }
+
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | AUTO REFRESH
+                    |--------------------------------------------------------------------------
+                    |
+                    | Refresh when:
+                    |
+                    | - image selected/uploaded
+                    | - manual Save button
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        refreshPage ||
+                        pendingRefresh
+                    ) {
+
+                        setTimeout(
+                            function () {
+
+                                window.location.reload();
+
+                            },
+                            700
+                        );
+
+
+                        return;
+
+                    }
+
+
+
+                    /*
+                    | Save latest pending text
+                    */
+
+                    if (
+                        pendingSave ||
+                        getTextSnapshot() !==
+                            lastSnapshot
+                    ) {
+
+                        pendingSave =
+                            false;
+
+
+                        setTimeout(
+                            function () {
+
+                                saveForm(
+                                    false
+                                );
+
+                            },
+                            250
+                        );
+
+                    }
+
+                }
+            )
+
+            .catch(
+                function (error) {
+
+                    isSaving =
+                        false;
+
+
+                    hideLoader();
+
+
+                    setButtonSaving(
+                        false
+                    );
+
+
+                    const data =
+                        error.data ||
+                        {};
+
+
+                    /*
+                    | Laravel validation
+                    */
+
+                    if (
+                        error.status === 422 &&
+                        data.errors
+                    ) {
+
+                        Object.keys(
+                            data.errors
+                        )
+                        .forEach(
+                            function (field) {
+
+                                showFieldError(
+                                    field,
+                                    data.errors[field][0]
+                                );
+
+                            }
+                        );
+
+
+                        showStatus(
+                            'Please check validation errors.',
+                            'danger'
+                        );
+
+
+                        showToast(
+                            'Please check validation errors.',
+                            'error'
+                        );
+
+
+                        return;
+
+                    }
+
+
+
+                    if (
+                        error.status === 419
+                    ) {
+
+                        showStatus(
+                            'Session expired. Please refresh page.',
+                            'danger'
+                        );
+
+
+                        return;
+
+                    }
+
+
+
+                    showStatus(
+                        data.message ||
+                        'Save failed. Please try again.',
+                        'danger'
+                    );
+
+
+                    showToast(
+                        data.message ||
+                        'Save failed. Please try again.',
+                        'error'
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DELETE IMAGE
+        |--------------------------------------------------------------------------
+        */
+
+        document.addEventListener(
+            'click',
+            function (event) {
+
+                const button =
+                    event.target.closest(
+                        '.delete-recent-image'
+                    );
+
+
+                if (!button) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+
+                const field =
+                    button.dataset.field;
+
+
+                const clientId =
+                    button.dataset.client;
+
+
+                if (
+                    !field ||
+                    !clientId
+                ) {
+
+                    return;
+
+                }
+
+
+
+                /*
+                | Optional confirmation
+                */
+
+                if (
+                    !confirm(
+                        'Remove this image?'
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                showLoader();
+
+
+                const deleteUrl =
+                    "{{ url('business/recent') }}"
+                    + '/'
+                    + encodeURIComponent(field)
+                    + '/'
+                    + encodeURIComponent(clientId);
+
+
+
+                fetch(
+                    deleteUrl,
+                    {
+
+                        method:
+                            'DELETE',
+
+                        headers: {
+
+                            'X-CSRF-TOKEN':
+                                token,
+
+                            'Accept':
+                                'application/json',
+
+                            'X-Requested-With':
+                                'XMLHttpRequest'
+
+                        }
+
+                    }
+                )
+
+                .then(
+                    async function (
+                        response
+                    ) {
+
+                        const data =
+                            await response
+                                .json()
+                                .catch(
+                                    function () {
+
+                                        return {};
+
+                                    }
+                                );
+
+
+                        if (!response.ok) {
+
+                            throw data;
+
+                        }
+
+
+                        return data;
+
+                    }
+                )
+
+                .then(
+                    function (data) {
+
+                        hideLoader();
+
+
+                        if (
+                            data.success === false ||
+                            data.status === false
+                        ) {
+
+                            throw data;
+
+                        }
+
+
+                        showToast(
+                            data.message ||
+                            data.msg ||
+                            'Image removed successfully.',
+                            'success'
+                        );
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | AUTO REFRESH AFTER DELETE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        setTimeout(
+                            function () {
+
+                                window.location.reload();
+
+                            },
+                            600
+                        );
+
+                    }
+                )
+
+                .catch(
+                    function () {
+
+                        hideLoader();
+
+
+                        showToast(
+                            'Unable to remove image.',
+                            'error'
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FORM SNAPSHOT
+        |--------------------------------------------------------------------------
+        |
+        | Only use text fields.
+        | Do not include files in snapshot.
+        |--------------------------------------------------------------------------
+        */
+
+        function getTextSnapshot() {
+
+            const params =
+                new URLSearchParams();
+
+
+            form
+                .querySelectorAll(
+                    '.auto-save-field'
+                )
+                .forEach(
+                    function (field) {
+
+                        params.append(
+                            field.name,
+                            field.value
+                        );
+
+                    }
+                );
+
+
+            return params.toString();
+
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUTTON
+        |--------------------------------------------------------------------------
+        */
+
+        function setButtonSaving(
+            saving
+        ) {
+
+            if (!saveButton) {
+                return;
+            }
+
+
+            saveButton.disabled =
+                saving;
+
+
+            if (saveButtonText) {
+
+                saveButtonText.textContent =
+                    saving
+                        ? 'Saving...'
+                        : 'Save Activities';
+
+            }
+
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOADER
+        |--------------------------------------------------------------------------
+        */
+
+        function showLoader() {
+
+            const loader =
+                document.getElementById(
+                    'recentLoader'
+                );
+
+
+            if (!loader) {
+                return;
+            }
+
+
+            loader.classList.remove(
+                'hidden'
+            );
+
+
+            loader.classList.add(
+                'flex'
+            );
+
+        }
+
+
+        function hideLoader() {
+
+            const loader =
+                document.getElementById(
+                    'recentLoader'
+                );
+
+
+            if (!loader) {
+                return;
+            }
+
+
+            loader.classList.add(
+                'hidden'
+            );
+
+
+            loader.classList.remove(
+                'flex'
+            );
+
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ERRORS
+        |--------------------------------------------------------------------------
+        */
+
+        function clearErrors() {
+
+            form
+                .querySelectorAll(
+                    '.field-error'
+                )
+                .forEach(
+                    function (element) {
+
+                        element.textContent =
+                            '';
+
+                    }
+                );
+
+
+            form
+                .querySelectorAll(
+                    '.auto-save-field'
+                )
+                .forEach(
+                    function (field) {
+
+                        field.classList.remove(
+                            'border-red-500'
+                        );
+
+                    }
+                );
+
+        }
+
+
+        function clearFieldError(
+            fieldName
+        ) {
+
+            const error =
+                form.querySelector(
+                    '[data-error="' +
+                    CSS.escape(
+                        fieldName
+                    ) +
+                    '"]'
+                );
+
+
+            if (error) {
+
+                error.textContent =
+                    '';
+
+            }
+
+        }
+
+
+        function showFieldError(
+            fieldName,
+            message
+        ) {
+
+            const field =
+                form.querySelector(
+                    '[name="' +
+                    CSS.escape(
+                        fieldName
+                    ) +
+                    '"]'
+                );
+
+
+            const error =
+                form.querySelector(
+                    '[data-error="' +
+                    CSS.escape(
+                        fieldName
+                    ) +
+                    '"]'
+                );
+
+
+            if (field) {
+
+                field.classList.add(
+                    'border-red-500'
+                );
+
+            }
+
+
+            if (error) {
+
+                error.textContent =
+                    message;
+
+            }
+
+        }
+
+    }
+);
+
+
+
+/*
+|--------------------------------------------------------------------------
+| STATUS
+|--------------------------------------------------------------------------
+*/
+
+function showStatus(
+    message,
+    type = 'info'
+) {
+
+    const status =
+        document.getElementById(
+            'autoSaveStatus'
+        );
+
+
+    if (!status) {
+        return;
+    }
+
+
+    const styles = {
+
+        success:
+            'border border-emerald-200 bg-emerald-50 text-emerald-800',
+
+        danger:
+            'border border-red-200 bg-red-50 text-red-800',
+
+        info:
+            'border border-blue-200 bg-blue-50 text-blue-800'
+
+    };
+
+
+    status.className =
+        'rounded-xl px-4 py-3 text-sm font-medium ' +
+        (
+            styles[type] ||
+            styles.info
+        );
+
+
+    status.textContent =
+        message;
+
+
+    status.classList.remove(
+        'hidden'
+    );
+
+
+    if (
+        type !== 'info'
+    ) {
+
+        setTimeout(
+            function () {
+
+                status.classList.add(
+                    'hidden'
+                );
+
+            },
+            3000
+        );
+
+    }
+
+}
+
+
+
+/*
+|--------------------------------------------------------------------------
+| TOAST
+|--------------------------------------------------------------------------
+*/
+
+function showToast(
+    message,
+    type = 'success',
+    duration = 3000
+) {
+
+    const container =
+        document.getElementById(
+            'toast-container'
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const classes = {
+
+        success:
+            'border-emerald-200 bg-emerald-50 text-emerald-800',
+
+        error:
+            'border-red-200 bg-red-50 text-red-800',
+
+        info:
+            'border-blue-200 bg-blue-50 text-blue-800'
+
+    };
+
+
+    const toast =
+        document.createElement(
+            'div'
+        );
+
+
+    toast.className =
+        `pointer-events-auto flex translate-x-4 items-center gap-3 rounded-xl border px-4 py-3 opacity-0 shadow-lg transition-all duration-300 ${classes[type] || classes.success}`;
+
+
+    toast.innerHTML = `
+
+        <p class="flex-1 text-sm font-medium">
+            ${escapeHtml(message)}
+        </p>
+
+        <button
+            type="button"
+            class="rounded p-1 text-lg leading-none opacity-60 hover:opacity-100"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    container.appendChild(
+        toast
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            toast.classList.remove(
+                'translate-x-4',
+                'opacity-0'
+            );
+
+        }
+    );
+
+
+    function dismiss() {
+
+        toast.classList.add(
+            'translate-x-4',
+            'opacity-0'
+        );
+
+
+        setTimeout(
+            function () {
+
+                toast.remove();
+
+            },
+            300
+        );
+
+    }
+
+
+    toast
+        .querySelector(
+            'button'
+        )
+        .addEventListener(
+            'click',
+            dismiss
+        );
+
+
+    setTimeout(
+        dismiss,
+        duration
+    );
+
+}
+
+
+
+function escapeHtml(
+    value
+) {
+
+    const div =
+        document.createElement(
+            'div'
+        );
+
+
+    div.textContent =
+        value || '';
+
+
+    return div.innerHTML;
+
+}
+
+</script>
 
 @endsection

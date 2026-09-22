@@ -148,11 +148,11 @@ class BusinessController extends Controller
 			$client->password = bcrypt($pass);
 			$first_name = preg_replace('/[^A-Za-z0-9]/', ' ', filter_var($request->input('first_name'), FILTER_SANITIZE_STRING));
 			$first_name = preg_replace('/\s+/', ' ', str_replace('&', '', trim($string)));
-			
+
 			$client->first_name = $first_name;
 			$last_name = preg_replace('/[^A-Za-z0-9]/', ' ', filter_var($request->input('last_name'), FILTER_SANITIZE_STRING));
 			$last_name = preg_replace('/\s+/', ' ', str_replace('&', '', trim($string)));
-			
+
 			$client->last_name = $last_name;
 			$client->city = $request->input('city');
 			$client->mobile = $request->input('mobile');
@@ -408,7 +408,7 @@ class BusinessController extends Controller
 		}
 
 	}
-	
+
 	public function businessFaqs(Request $request)
 	{
 		$clientID = auth()->guard('clients')->user()->id;
@@ -417,24 +417,24 @@ class BusinessController extends Controller
 		if ($request->has('search')) {
 			$search = $request->input('search');
 		}
-		
+
 		return view('business.business-faqs', ['search' => $search, 'client' => $client, 'clientID' => $clientID]);
 	}
 
 
 	public function saveBusinessFaqs(Request $request)
 	{
- 
+
 		if ($request->ajax()) {
 			try {
-				 $id= $request->client_id;
+				$id = $request->client_id;
 				if (!is_null($id)) {
 
 					$client = Client::withTrashed()->where('id', $id)->first();
 					$validator = Validator::make($request->all(), [
-						 				 
-						'faqq1' => 'nullable|string|max:2000',					 
-						 
+
+						'faqq1' => 'nullable|string|max:2000',
+
 					]);
 
 
@@ -444,7 +444,7 @@ class BusinessController extends Controller
 					}
 
 
-				 
+
 					$client->faqq1 = $request->input('faqq1');
 					$client->faqa1 = $request->input('faqa1');
 					$client->faqq2 = $request->input('faqq2');
@@ -469,7 +469,7 @@ class BusinessController extends Controller
 
 					$client->faqq10 = $request->input('faqq10');
 					$client->faqa10 = $request->input('faqa10');
-				 
+
 					if ($client->save()) {
 						$status = true;
 						$msg = 'Busineess overview Updated Successfully';
@@ -489,8 +489,8 @@ class BusinessController extends Controller
 			return response()->json(['status' => $status, 'msg' => $msg], $code);
 		}
 	}
-  
-	
+
+
 
 
 	public function businessOverview(Request $request)
@@ -501,7 +501,7 @@ class BusinessController extends Controller
 		if ($request->has('search')) {
 			$search = $request->input('search');
 		}
-	 
+
 		return view('business.business-overview', ['search' => $search, 'client' => $client]);
 	}
 	/*
@@ -516,14 +516,14 @@ class BusinessController extends Controller
 
 		if ($request->ajax()) {
 			try {
-				 
+
 				if (!is_null($id)) {
 
 					$client = Client::withTrashed()->where('id', $id)->first();
 					$validator = Validator::make($request->all(), [
-						 				 
-						'business_description' => 'nullable|string|max:2000',					 
-						 
+
+						'business_description' => 'nullable|string|max:2000',
+
 					]);
 
 
@@ -533,11 +533,11 @@ class BusinessController extends Controller
 					}
 
 
-				 
+
 					$client->business_description = $request->input('business_description');
 					$client->business_overview = $request->input('business_overview');
-				 
-				 
+
+
 					if ($client->save()) {
 						$status = true;
 						$msg = 'Busineess overview Updated Successfully';
@@ -557,7 +557,7 @@ class BusinessController extends Controller
 			return response()->json(['status' => $status, 'msg' => $msg], $code);
 		}
 	}
-	
+
 
 
 	public function businessMeta(Request $request)
@@ -568,7 +568,7 @@ class BusinessController extends Controller
 		if ($request->has('search')) {
 			$search = $request->input('search');
 		}
-	 
+
 		return view('business.business-meta', ['search' => $search, 'client' => $client]);
 	}
 	/*
@@ -580,20 +580,20 @@ class BusinessController extends Controller
 	 */
 	public function saveBusinessMeta(Request $request)
 	{
- 
+
 		if ($request->ajax()) {
 			try {
-				 $id = $request->client_id;
-				 
+				$id = $request->client_id;
+
 				if (!is_null($id)) {
 
 					$client = Client::withTrashed()->where('id', $id)->first();
 					$validator = Validator::make($request->all(), [
-						 				 					
+
 						'meta_title' => 'nullable|string|max:75',
 						// 'h1_heading' => 'nullable|string|max:275',					 
-						'meta_description' => 'nullable|string|max:170',		 
-						 
+						'meta_description' => 'nullable|string|max:170',
+
 					]);
 
 
@@ -603,13 +603,13 @@ class BusinessController extends Controller
 					}
 
 
-				 
+
 					$client->meta_title = $request->input('meta_title');
-				 
+
 					$client->meta_description = $request->meta_description;
 					$client->business_intro = $request->business_intro;
-				 
-			 
+
+
 					if ($client->save()) {
 						$status = true;
 						$msg = 'Busineess overview Updated Successfully';
@@ -629,7 +629,7 @@ class BusinessController extends Controller
 			return response()->json(['status' => $status, 'msg' => $msg], $code);
 		}
 	}
-	
+
 
 
 }

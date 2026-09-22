@@ -319,8 +319,7 @@ public function saveBusinessSocial(Request $request)
 				$errorsBag = $validator->getMessageBag()->toArray();
 				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
 			}
-
-// dd($request->facebook_url);
+ 
 			$client = Client::find($request->business_id);
 
 			$client->facebook_url = $request->facebook_url;

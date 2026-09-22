@@ -603,7 +603,7 @@ body{
     <div class="footer-inner">
       <div class="fo-office">
         <strong>Registered Office:</strong><br>
-        G-13, Sector-3, Noida, Pin Code — 201301 (UP), India<br>
+        UNIT 101 OXFORD TOWERS, 139/88 HAL OLD AIRPORT RD, H.A.L II Stage, Bangalore North, Bangalore - 560008, Karnataka,India<br>
         <span style="font-size:10.5px;">
           Support: <a href="https://www.quickdials.com/contact-us" target="_blank">help@quickdials.com</a>
           &nbsp;|&nbsp; Helpline: +91-75-9543-9543 &nbsp;|&nbsp;

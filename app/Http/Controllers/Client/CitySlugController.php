@@ -2593,7 +2593,7 @@ $reviewList = DB::table('clients')
      */
 	public function showCityWithService(Request $request, string $city, string $slug)
 	{
-
+ 
  
     $citySlug   = strtolower(trim($city));
     $keySlugRaw = strtolower(trim($slug));
@@ -2721,7 +2721,9 @@ $reviewList = DB::table('clients')
         return $this->getsearchlist($response, $slugUrl, $cityName);
     }
 
-    $clientMap = $this->getClientSlugMap(); // cached, in-memory
+    $clientMap = $this->getClientSlugMap();  
+
+ 
     $slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
 
     if ($slugUrl && $slugUrl !== $slug) {
@@ -2730,13 +2732,14 @@ $reviewList = DB::table('clients')
             'service_slug' => $slugUrl,
         ], 301);
     }
-
+ 
     if ($slugUrl) {
         if (!$this->clientsExists($slugUrl)) {
             abort(410);
 			//return redirect()->route('home');
         }
         $businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
+	 
         if (!$businessResponse) {
 				abort(410);
            // return redirect()->route('home');
@@ -3300,7 +3303,7 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 	$metaTitle = "Business Services in Delhi | QuickDials Local Business Directory";
 	$metaDescription = "Find trusted business services in Delhi on QuickDials. Explore verified service providers, professionals, consultants, and local business solutions near you.";
 	$keyword = "business services";
-
+ 
         return view('client.city-keyword', compact(
             'heroStats', 'categorySections', 'featured', 'featuredCategory','sidebarStats', 'category','city','metaTitle','metaDescription','keyword'
         ));

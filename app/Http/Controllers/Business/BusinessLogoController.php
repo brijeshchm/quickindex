@@ -36,7 +36,7 @@ class BusinessLogoController extends Controller
 	}
 	public function saveProfileLogo(Request $request)
 	{
-		// dd($request->all());
+		 
 		// if ($request->ajax()) {
 			$client = Client::find($request->input('business_id'));
 			$id = $request->input('business_id');
@@ -139,7 +139,7 @@ class BusinessLogoController extends Controller
 
 		$edit_data = array('logo' => "", );
 		$del = Client::where('id', $id)->update($edit_data);
-		return redirect('profile/media');
+		return redirect('business/profile/media');
 
 	}
 
@@ -165,7 +165,7 @@ class BusinessLogoController extends Controller
 		}
 		$edit_data = array('profile_pic' => "", );
 		$del = Client::where('id', $id)->update($edit_data);
-		return redirect('profile/media');
+		return redirect('business/profile/media');
 
 	}
 	public function uploadPictures(Request $request)

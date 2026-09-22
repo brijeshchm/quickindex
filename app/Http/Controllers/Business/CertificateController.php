@@ -642,7 +642,7 @@ class CertificateController extends Controller
 
 		$edit_data = array($slug => "", );
 		$del = Client::where('id', $id)->update($edit_data);
-		return redirect('business/business-certificate');
+		return redirect('business/profile/certs');
 	}
 
 	public function awardDel($slug, $id)
@@ -670,7 +670,7 @@ class CertificateController extends Controller
 		$edit_data = array($slug => "", );
 		$del = Client::where('id', $id)->update($edit_data);
 
-		return redirect('business/business-award');
+		return redirect('business/profile/awards');
 
 	}
 

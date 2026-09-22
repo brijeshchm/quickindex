@@ -103,7 +103,13 @@
 
     </div>
 
+ <div class="md:hidden"><select onchange="window.location=this.value" class="form-input h-12 bg-white text-base font-medium shadow-sm">
+    
+ @foreach($tabs as $key=>$label)
+    
+ <option value="{{ route('profile',['tab'=>$key]) }}" @selected($tab===$key)>{{ $label }}</option>@endforeach</select>
 
+</div>
 
     {{-- ============================================================
          BRAND IDENTITY

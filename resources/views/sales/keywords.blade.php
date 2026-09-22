@@ -1,4 +1,4 @@
-@extends('business.business.layouts.app')
+@extends('business.layouts.app')
 @section('title','Profile')
 @section('content')
 @php $tabs=['general'=>'Basic Info','personal'=>'Personal Details','seo'=>'SEO Meta','keywords'=>'Service Keywords','locations'=>'Service Areas','media'=>'Media & Gallery','awards'=>'Awards','certs'=>'Certificates','socials'=>'Social Links'];

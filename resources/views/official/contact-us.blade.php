@@ -1,7 +1,7 @@
  
 @extends('client.layouts.app')
 @section('title', 'Contact Us | QuickDials – India’s Local Business Search')
-@section('description', 'Contact QuickDials for business listings, customer support, advertising, partnerships, and local business inquiries. Connect with India’s trusted local business search engine.')
+@section('description', 'Contact QuickDials for business listings, customer support, advertising, partnerships, and local business enquiries across India.')
 @section('content') 
 @include('client.components.banner-section')
 <main class="relative mt-4">

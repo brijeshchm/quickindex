@@ -1,66 +1,232 @@
 @extends('business.layouts.app')
-@section('title','Leads')
+@section('title','Follow-ups')
 @section('content')
 @php
- 
- 
-$statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'border-amber-200 bg-amber-50 text-amber-700','converted'=>'border-emerald-200 bg-emerald-50 text-emerald-700','closed'=>'border-slate-200 bg-slate-100 text-slate-600'];
+
+$pending="";
+$done="";
+$overdue="";
 @endphp
-
+<div class="animate-fade-in space-y-5 md:space-y-6">
+ <div class="grid grid-cols-2 gap-3 md:grid-cols-6">
+    
+ <div class="card p-4"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">All Activity</p>
  
-<div class="animate-fade-in space-y-4 md:space-y-6"
-     
-     x-data="{
-   followup: null,
-   followupLeadId: null,
-   followupName: null,
-   followupEmail: null,
-   followupService: null,
-   openFollowup(assignId, leadId, name, email, service) {
-     this.followup = assignId;
-     this.followupLeadId = leadId;
-     this.followupName = name;
-     this.followupEmail = email;
-     this.followupService = service;
-     this.$nextTick(() => {
-       lucide.createIcons();
-       enquiryController.getAllFollowUps(leadId, 5);
-     });
-   }
-}"
-     
-     >
- <div class="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
+ <p class="mt-2 font-display text-2xl font-bold">{{ $followList['total_leads'] }}</p>
+</div>
 
-  <div class="md:hidden"><select onchange="window.location=this.value" class="form-input h-12 bg-white text-base font-medium shadow-sm">
-    
- @foreach($leadsTabs as $key=>$label)
-    
- <option value="{{ route('leads',['tab'=>$key]) }}" @selected($tab===$key)>{{ $label }}</option>@endforeach</select>
+<div class="card p-4"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">New Lead</p><p class="mt-2 font-display text-2xl font-bold text-emerald-600">{{ $followList['new_lead'] }}</p></div>
+
+<div class="card p-4"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Interested</p><p class="mt-2 font-display text-2xl font-bold text-primary">{{ $followList['interested'] }}</p></div>
+
+<div class="card p-4"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pending</p><p class="mt-2 font-display text-2xl font-bold text-destructive">{{ $followList['pending'] }}</p></div>
+
+<div class="card p-4"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Overdue</p><p class="mt-2 font-display text-2xl font-bold text-destructive">{{ $followList['overdue'] }}</p></div>
+
+<div class="card p-4"><p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Completed</p><p class="mt-2 font-display text-2xl font-bold text-emerald-600">{{ $followList['joined'] }}</p></div>
+
+</div>
+ <div class="card p-4">
+
+    <form method="GET" class="flex flex-col gap-3 lg:flex-row lg:items-end">
+
+        <div class="hide-scrollbar flex flex-1 flex-col gap-3 overflow-x-auto rounded-xl bg-secondary p-3 sm:flex-row sm:items-end">
+ 
+
+            {{-- Date From --}}
+            <div class="flex flex-col gap-1">
+                <label for="date_from" class="text-xs font-medium text-gray-600">
+                    Date from follow-up
+                </label>       
+
+                <input 
+                type="text"
+                name="date_from"
+                id="date_from"
+                value="{{ request('date_from') }}"
+                class="form-input lg:w-56 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Select date From"
+            >
+            </div>
+
+            {{-- Date To --}}
+            <div class="flex flex-col gap-1">
+                <label for="date_to" class="text-xs font-medium text-gray-600">
+                    Date to follow-up
+                </label>
+                <input
+                type="text"
+                name="date_to"               
+                id="date_to"
+                value="{{ request('date_to') }}"
+                class="form-input lg:w-56 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Select date To"
+                      
+                >
+            </div>
+
+            {{-- Status --}}
+            <div class="flex flex-col gap-1">
+                <label for="status" class="text-xs font-medium text-gray-600">
+                    Status
+                </label>
+                <select name="status" id="status" class="form-input lg:w-56">
+                    <option value="">Select Status</option>
+                    @if($statues)
+                    @foreach($statues as $tag)
+                        <option value="{{ $tag->id }}" @selected(request('status') == $tag->id)>
+                            {{ $tag->name }}
+                        </option>
+                    @endforeach
+                    @endif
+                </select>
+            </div>
+
+        </div>
+
+        {{-- Action buttons --}}
+        <div class="flex gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i data-lucide="filter" class="h-4 w-4"></i> Filter
+            </button>
+
+            @if(request('date_from') || request('date_to') || request('status'))
+                <a href="{{ route('followups') }}" class="btn btn-outline">
+                    <i data-lucide="filter-x" class="h-4 w-4"></i> Clear
+                </a>
+            @endif
+        </div>
+
+    </form>
 
 </div>
 
 
-  <div>
-   <h1 class="font-display text-xl font-bold tracking-tight md:text-3xl">New Leads</h1>
-   <p class="mt-1 text-sm text-slate-500 md:text-base">Manage inquiries and assign them to your team.</p>
-  </div>
+
+ <div class="space-y-3">
+    
+@php 
+$filters=['all','new','contacted','converted','favorites','archived'];
+$statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'border-amber-200 bg-amber-50 text-amber-700','converted'=>'border-emerald-200 bg-emerald-50 text-emerald-700','closed'=>'border-slate-200 bg-slate-100 text-slate-600'];
+ 
+// Leads available inside the Follow-Up popup on the current Laravel pagination page.
+$popupLeadSource = method_exists($leads, 'items') ? $leads->items() : $leads;
+$popupLeads = collect($popupLeadSource)->map(function ($lead) {
+    return [
+        'assign_id' => (int) $lead->assign_id,
+        'lead_id' => (int) $lead->lead_id,
+        'name' => $lead->name ?? '',
+        'email' => $lead->email ?? '',
+        'mobile' => $lead->mobile ?? '',
+        'service' => $lead->kw_text ?? '',
+        'status_id' => (int) ($lead->status ?? 0),
+    ];
+})->values();
+@endphp
+ 
+<script>
+window.followupManager = function () {
+    return {
+        followup: null,
+        followupLeadId: null,
+        followupName: '',
+        followupEmail: '',
+        followupMobile: '',
+        followupService: '',
+        followupStatusid: null,
+        currentIndex: -1,
+        leads: @js($popupLeads),
+
+        openFollowupAt(index) {
+            this.loadLead(index);
+        },
+
+        loadLead(index) {
+            if (index < 0 || index >= this.leads.length) return;
+
+            const lead = this.leads[index];
+
+            this.currentIndex = index;
+            this.followup = lead.assign_id;
+            this.followupLeadId = lead.lead_id;
+            this.followupName = lead.name || '';
+            this.followupEmail = lead.email || '';
+            this.followupMobile = lead.mobile || '';
+            this.followupService = lead.service || '';
+            this.followupStatusid = Number(lead.status_id || 0);
+
+            this.$nextTick(() => {
+                const form = document.getElementById('followup-form');
+                const select = document.getElementById('followup_status');
+                const dateInput = document.getElementById('expected_date_time');
+                const countSelect = document.querySelector('.follow-up-count');
+
+                // Remove previous lead validation/message and unsaved note/date.
+                if (form) {
+                    form.querySelectorAll('.validation-error').forEach(el => el.remove());
+                    form.querySelector('.followup-form-message')?.remove();
+
+                    const remark = form.querySelector('[name=remark]');
+                    if (remark) remark.value = '';
+
+                    form.dataset.afterSave = 'stay';
+                }
+
+                if (select) {
+                    select.value = String(lead.status_id || '');
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+
+                if (dateInput) {
+                    dateInput.value = '';
+                    dateInput.min = getLocalDateTime();
+                }
+
+                if (countSelect) countSelect.value = '5';
+
+                if (window.lucide) lucide.createIcons();
+                enquiryController.getAllFollowUps(lead.lead_id, 5);
+            });
+        },
+
+        previousLead() {
+            if (this.currentIndex <= 0) return;
+            this.loadLead(this.currentIndex - 1);
+        },
+
+        nextLead() {
+            if (this.currentIndex >= this.leads.length - 1) return;
+            this.loadLead(this.currentIndex + 1);
+        },
+
+        closeFollowup() {
+            this.followup = null;
+            this.currentIndex = -1;
+        }
+    };
+};
+</script>
+
+<div class="animate-fade-in space-y-4 md:space-y-6" x-data="followupManager()">
+ <div class="flex flex-col justify-between gap-4 xl:flex-row xl:items-end">
+ 
   <div class="hide-scrollbar flex w-full shrink-0 snap-x overflow-x-auto rounded-xl bg-secondary p-1 xl:w-auto">
   
   </div>
  </div>
 
- <div class="space-y-4">
+ <div class="space-y-4"> 
 
+ @php
+//  dd($leads->getCollection());
+ @endphp
  @forelse($leads as $i => $lead)
   @php
- 
-   // FIX #1: match on the RAW lead id (lead_id), not the assignment id ($lead['id']).
-   $leadFus  = $followups->where('lead_id', $lead['lead_id'])->whereNotNull('notes')
+  
+   $leadFus  = $followups->where('lead_id', $lead->lead_id)->whereNotNull('notes')
         ->where('notes', '!=', '');
- 
-     $assignee = "";
- 
+  
+    $assignee = "";
     $pending = '';
     $overdue = false;
     $pastDays = 0;
@@ -77,19 +243,19 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
         $pastDays = $overdue ? $followDate->diffInDays($today) : 0;
     }
   @endphp
-  <div class="card animate-slide-up stagger-{{ ($i % 5) + 1 }} relative overflow-hidden {{ $lead['scrapLead'] ? 'opacity-70 grayscale-[20%]' : '' }} {{ $lead['readLead'] == '0' ? 'assignedLeadsClick cursor-pointer bg-gray-200' : '' }}" data-assigned-id="{{ $lead['assignId'] }}" data-client-id="{{ $lead['clientId'] }}" >
+  <div class="card animate-slide-up stagger-{{ ($i % 5) + 1 }} relative overflow-hidden {{ $lead->favorite_lead ? 'opacity-70 grayscale-[20%]' : '' }} {{ $lead->readLead == '0' ? 'assignedLeadsClick cursor-pointer bg-gray-200' : '' }}" data-assigned-id="{{ $lead->assign_id }}" data-client-id="{{ $lead->client_id }}" >
  
    <div class="flex flex-col lg:flex-row">
     <div class="flex-1 border-b p-3 sm:p-6 lg:border-b-0 lg:border-r">
      <div class="mb-3 flex flex-row flex-wrap items-start justify-between gap-2 sm:mb-4 sm:gap-3">
       <div class="min-w-0 flex-1">
        <div class="mb-1 flex items-center gap-2">
-        <h3 class="truncate font-display text-lg font-semibold sm:text-xl">{{ ucfirst($lead['customerName']) }}</h3>
-        @if($lead['favorite'])<i data-lucide="star" class="h-4 w-4 fill-amber-500 text-amber-500"></i>@endif
+        <h3 class="truncate font-display text-lg font-semibold sm:text-xl">{{ ucfirst($lead->name) }}</h3>
+        @if($lead->favorite_lead)<i data-lucide="star" class="h-4 w-4 fill-amber-500 text-amber-500"></i>@endif
        </div>
        <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 sm:mt-2 sm:text-sm">
-        <span class="flex items-center gap-1.5"><i data-lucide="phone" class="h-3.5 w-3.5"></i>{{ $lead['phone'] }}</span>
-        @if($lead['email'])<span class="flex items-center gap-1.5"><i data-lucide="mail" class="h-3.5 w-3.5"></i>{{ $lead['email'] }}</span>@endif
+        <span class="flex items-center gap-1.5"><i data-lucide="phone" class="h-3.5 w-3.5"></i>{{ $lead->mobile }}</span>
+        @if($lead->email)<span class="flex items-center gap-1.5"><i data-lucide="mail" class="h-3.5 w-3.5"></i>{{ $lead->email }}</span>@endif
        </div>
       </div>
 
@@ -97,52 +263,67 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
   <div class="flex items-center gap-1 text-sm font-medium">
     <i data-lucide="indian-rupee" class="h-4 w-4"></i>
      
-    @if(!empty($lead['scrapLead']))
+    @if(!empty($lead->scrapLead))
         <span class="text-green-600">
-            {{ $lead['coins'] }}
+            {{ $lead->coins }}
         </span>
 
-    @elseif(!empty($lead['coins']))
+    @elseif(!empty($lead->coins))
         <span class="text-red-600">
-            -{{ $lead['coins'] }}
+            -{{ $lead->coins }}
         </span>
     @endif
 </div>
 
-        @if(!$lead['favorite'])
-        <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary hover:text-amber-500 {{  !$lead['favorite'] ?'favorited':'' }}" data-favoritleads="{{ $lead['assignId'] }}" data-client-id="{{ $lead['clientId'] }}" title="Favorite"><i data-lucide="star" class="h-4 w-4"></i></button>
+        @if(!$lead->favorite_lead)
+        <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary hover:text-amber-500 {{  !$lead->favorite_lead ?'favorited':'' }}" data-favoritleads="{{ $lead->assign_id }}" data-client-id="{{ $lead->client_id }}" title="Favorite"><i data-lucide="star" class="h-4 w-4"></i></button>
         @endif
-
-      
+ 
       </div>
      </div>
 
      <div class="mt-3 rounded-xl bg-secondary/30 p-3 sm:mt-4 sm:p-4">
       <div class="mb-2 flex items-start justify-between gap-2">
-       <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500"><i data-lucide="clock" class="h-3.5 w-3.5"></i>Inquiry for: {{ $lead['service'] }}</p>
-       <span class="badge border capitalize {{ $statusClass[$lead['status']] ?? 'bg-secondary text-slate-600' }}">{{ $lead['status_label'] ?? $lead['status'] }}</span>
+       <p class="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-500"><i data-lucide="clock" class="h-3.5 w-3.5"></i>Inquiry for: {{ $lead->kw_text }}</p>
+       <span class="badge border capitalize bg-secondary text-slate-600">{{ $lead->status_name ?? $lead->status_name }} </span>
+       
       </div>
-      <p class="text-xs leading-relaxed text-slate-800 sm:text-sm">&ldquo;{!! $lead['message'] !!}&rdquo;</p>
+      <p class="text-xs leading-relaxed text-slate-800 sm:text-sm">&ldquo;{!! $lead->remarks !!}&rdquo;</p>
+
+       <p class="text-sm"><strong>Current Status: </strong> {{ $lead->status_name }}</p>
+
+       
+        @if(!empty($lead->expected_date_time))
+        <p class="mt-1 text-xs text-slate-500">
+        {{ get_time(strtotime($lead->expected_date_time)) }} ago
+
+        @if($overdue)
+        <span class="ml-1 font-semibold text-red-600">
+        · {{ $pastDays }} {{ \Illuminate\Support\Str::plural('day', $pastDays) }} overdue
+        </span>
+        @endif
+        </p>
+        @endif
      </div>
 
-     <div class="mt-3 flex flex-wrap items-center justify-between gap-2 sm:mt-4">
-      <p class="shrink-0 text-xs text-slate-500">Received {{ \Carbon\Carbon::parse($lead['createdAt'])->format('M j, Y') }}</p>
-      {{-- FIX #4/#5: pass both ids explicitly, load the table immediately instead of waiting on the dropdown --}}
-      <button
- type="button"
- @click="openFollowup(
-    {{ $lead['assignId'] }},
-    {{ $lead['lead_id'] }},
-    @js($lead['customerName']),
-    @js($lead['email']),
-    @js($lead['service'])
- )"
- class="btn h-8 rounded-lg px-3 text-xs bg-emerald-500 text-white {{ $overdue ? 'border-destructive text-destructive bg-emerald-500' : ($pending ? 'border-primary text-primary bg-emerald-500' : '') }}">
- <i data-lucide="eye" class="h-3.5 w-3.5"></i>Follow up
- @if($pending)<span class="rounded bg-primary/10 px-1.5 py-0.5 text-primary">{{ $pending }}</span>@endif
+     <div class="mt-3 flex flex-wrap items-center justify-between gap-1 sm:mt-4">
+      <p class="shrink-0 text-xs text-slate-500">Received {{ \Carbon\Carbon::parse($lead->createdAt)->format('M j, Y') }},  Next Follow Up: {{ $lead->expected_date_time ? \Carbon\Carbon::parse($lead->expected_date_time)->format('M j, g:i A') : '' }}</p>
+
+
  
 
-  @if($overdue)<span class="rounded bg-destructive px-1.5 py-0.5 text-white">{{ $pastDays }} Overdue</span>@endif
+      <button >
+     
+      <a href="tel:{{ preg_replace('/[^+\d]/','',$lead->mobile) }}" class="btn btn-primary w-full text-white"><i data-lucide="phone" class="h-4 w-4"></i>Call Now</a>
+     
+   
+     </button>
+      <button
+ type="button"
+ @click="openFollowupAt({{ $loop->index }})"
+ class="btn h-8 rounded-lg px-3 text-xs bg-emerald-500 text-white hover:bg-emerald-600 {{ $overdue ? 'border-destructive text-destructive bg-emerald-500' : ($pending ? 'border-primary text-primary bg-emerald-500' : '') }}">
+ <i data-lucide="eye" class="h-3.5 w-3.5"></i>Follow up
+ 
 </button>
      </div>
 
@@ -160,43 +341,17 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
          
             <input type="hidden" name="Joined" value="{{ $fu['outcome'] =='Joined' ? 0 : 1 }}">
             <button class="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-emerald-600"><i data-lucide="check" class="h-4 w-4"></i></button>
-          
-          
+                   
           </div>
          </div>
         @endforeach
        </div>
       </details>
      @endif
-    </div>
-
+    </div>  
      
-    <div class="flex gap-2 bg-secondary/10 p-3 sm:p-6 lg:w-[240px] lg:flex-col lg:justify-center">
-
-
-
-     @if(!$lead['scrapLead'] && $lead['status'] === 'new')
-      <a href="tel:{{ preg_replace('/[^+\d]/','',$lead['phone']) }}" class="btn btn-primary w-full text-white"><i data-lucide="phone" class="h-4 w-4"></i>Call Now</a>
-    
-     @elseif(!$lead['scrapLead'] && $lead['status'] === 'contacted')
-      
-      
-      <a href="tel:{{ preg_replace('/[^+\d]/','',$lead['phone']) }}" class="btn btn-ghost flex-1"><i data-lucide="phone" class="h-4 w-4"></i>Call Again</a>
-     @else
-      <div class="flex flex-1 items-center justify-center gap-2 py-2 text-center lg:flex-col">
-       <span class="flex h-9 w-9 items-center justify-center rounded-full {{ $lead['status'] === 'converted' && !$lead['scrapLead'] ? 'bg-emerald-100 text-emerald-500' : 'bg-secondary text-slate-500' }}">
-        <i data-lucide="{{ $lead['scrapLead'] ? 'archive' : ($lead['status'] === 'converted' ? 'check-circle-2' : 'x-circle') }}" class="h-5 w-5"></i>
-       </span>
-       <p class="text-sm font-medium text-slate-500">{{ $lead['scrapLead'] ? 'Scrap Lead' : ($lead['status'] === 'converted' ? 'Lead Converted' : 'Lead Lost') }}</p>
-      </div>
-     @endif
-
-        
- 
-    </div>
    </div>
   </div>
-
  @empty
   <div class="card flex flex-col items-center justify-center py-20 text-center">
    <span class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary"><i data-lucide="message-square-text" class="h-8 w-8 text-slate-400"></i></span>
@@ -216,13 +371,8 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
         x-show="followup"
         x-transition.opacity
         class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-    >
-
-        {{-- Background overlay only --}}
-        <div class="absolute inset-0 bg-slate-950/40"></div>
-
-
-        {{-- Actual popup --}}
+    >     
+        <div class="absolute inset-0 bg-slate-950/40"></div>    
         <div
             class="relative z-[10000] flex
                h-auto max-h-[95dvh]
@@ -234,62 +384,73 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
         >
 
             <!-- Header -->
-            <div
-                class="flex shrink-0 items-center justify-between
-                       border-b border-gray-200 bg-white p-5"
-            >
+            <div class="flex shrink-0 items-center justify-between border-b border-gray-200 bg-white p-4 sm:p-5">
 
-                <div>
-                    <h2
-                        class="font-display text-xl font-semibold text-slate-900"
-                        x-text="followupName || 'Add Follow-up'"
-                    >
-                        Add Follow-up
-                    </h2>
-
-                    <div
-                        class="mt-1 flex flex-wrap items-center
-                               gap-x-3 gap-y-1 text-sm text-slate-500"
-                    >
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2">
+                        <h2
+                            class="truncate font-display text-lg font-semibold text-slate-900 sm:text-xl"
+                            x-text="followupName || 'Add Follow-Up'"
+                        ></h2>
 
                         <span
-                            class="flex items-center gap-1.5"
-                            x-show="followupEmail"
-                        >
-                            <i
-                                data-lucide="mail"
-                                class="h-3.5 w-3.5"
-                            ></i>
+                            x-show="leads.length"
+                            x-text="(currentIndex + 1) + ' / ' + leads.length"
+                            class="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600"
+                        ></span>
+                    </div>
 
+                    <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 sm:text-sm">
+                        <span class="flex items-center gap-1.5" x-show="followupEmail">
+                            <i data-lucide="mail" class="h-3.5 w-3.5"></i>
                             <span x-text="followupEmail"></span>
                         </span>
 
-
-                        <span
-                            class="flex items-center gap-1.5"
-                            x-show="followupService"
-                        >
-                            <i
-                                data-lucide="tag"
-                                class="h-3.5 w-3.5"
-                            ></i>
-
-                            <span x-text="followupService"></span>
+                        <span class="flex items-center gap-1.5" x-show="followupMobile">
+                            <i data-lucide="phone" class="h-3.5 w-3.5"></i>
+                            <span x-text="followupMobile"></span>
                         </span>
 
+                        <span class="flex items-center gap-1.5" x-show="followupService">
+                            <i data-lucide="tag" class="h-3.5 w-3.5"></i>
+                            <span x-text="followupService"></span>
+                        </span>
                     </div>
                 </div>
 
+                <div class="ml-3 flex shrink-0 items-center gap-1">
+                    <button
+                        type="button"
+                        @click="previousLead()"
+                        :disabled="currentIndex <= 0"
+                        class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-60 disabled:cursor-not-allowed disabled:opacity-40"
+                        title="Previous Lead"
+                    >
+                        <i data-lucide="chevron-left" class="h-4 w-4"></i>
+                        Previous
+                    </button>
 
-                <!-- Close -->
-                <button
-                    type="button"
-                    @click="followup = null"
-                    class="flex h-9 w-9 shrink-0 items-center
-                           justify-center rounded-lg bg-secondary"
-                >
-                    <i data-lucide="x" class="h-4 w-4"></i>
-                </button>
+                    <button
+                        type="button"
+                        @click="nextLead()"
+                        :disabled="currentIndex >= leads.length - 1"
+                        class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-60 disabled:cursor-not-allowed disabled:opacity-40"
+                        title="Next Lead"
+                    >
+                        <i data-lucide="chevron-right" class="h-4 w-4"></i>
+
+                        Next
+                    </button>
+
+                    <button
+                        type="button"
+                        @click="closeFollowup()"
+                        class="ml-1 flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-slate-600 hover:bg-slate-200"
+                        title="Close"
+                    >
+                        <i data-lucide="x" class="h-4 w-4"></i>
+                    </button>
+                </div>
 
             </div>
 
@@ -303,12 +464,24 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
                     :action="'/business/leads/' + followup + '/follow-ups'"
                     method="POST"
                     id="followup-form"
+                    data-after-save="stay"
                     class="space-y-4"
                     @submit.prevent="
-                        enquiryController.storeFollowUp(
-                            followup,
-                            $event.target
-                        )
+                        (async () => {
+                            const form = $event.target;
+                            const action = form.dataset.afterSave || 'stay';
+
+                            const saved = await enquiryController.storeFollowUp(
+                                followup,
+                                form
+                            );
+
+                            form.dataset.afterSave = 'stay';
+
+                            if (saved && action === 'next') {
+                                nextLead();
+                            }
+                        })()
                     "
                 >
 
@@ -327,39 +500,24 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
                         <div>
 
                             <label
-                                class="mb-2 block text-sm font-medium
-                                       text-slate-700"
-                            >
+                                class="mb-2 block text-sm font-medium text-slate-700" >
                                 Status
                             </label>
 
-                            <select
-                                name="status"
-                                id="followup_status"
-                                class="form-input"
-                                onchange="toggleFollowUpDate(this)"
-                            >
-
-                                <option value="">
-                                    Select Status
+                        <select
+                            name="status"
+                            id="followup_status"
+                            class="form-input"
+                            x-model.number="followupStatusid"
+                            @change="toggleFollowUpDate($event.target)"
+                        >
+                            <option value="">Select Status</option>
+                            @foreach($statues as $status)
+                                <option value="{{ $status->id }}" data-name="{{ strtolower(trim($status->name)) }}">
+                                    {{ $status->name }}
                                 </option>
-
-                                @if($statues)
-
-                                    @foreach($statues as $status)
-
-                                        <option
-                                            value="{{ $status->id }}"
-                                            data-name="{{ strtolower(trim($status->name)) }}"
-                                        >
-                                            {{ $status->name }}
-                                        </option>
-
-                                    @endforeach
-
-                                @endif
-
-                            </select>
+                            @endforeach
+                        </select>
 
                         </div>
 
@@ -377,7 +535,7 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
                                 </label>
 
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     name="expected_date_time"
                                     id="expected_date_time"
                                     class="form-input"
@@ -415,17 +573,29 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
                     </div>
 
 
-                    <!-- Save -->
-                    <div class="flex justify-end gap-2 pt-2">
+                    <!-- Navigation + Save -->
+                    <div class="flex justify-end border-t border-slate-200 pt-4">
 
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                        >
-                            Save Follow
-                        </button>
+    <div class="flex gap-2">
 
-                    </div>
+        <button
+            type="submit"
+            @click="$el.form.dataset.afterSave = 'next'"
+            :disabled="currentIndex >= leads.length - 1"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+            Save & Next
+
+            <i
+                data-lucide="arrow-right"
+                class="h-4 w-4"
+            ></i>
+
+        </button>
+
+    </div>
+
+</div>
 
                 </form>
 
@@ -522,7 +692,6 @@ $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'bo
                                     >
                                         Status
                                     </th>
-
                                     <th
                                         class="whitespace-nowrap
                                                px-4 py-3 text-left
@@ -566,7 +735,7 @@ function toggleFollowUpDate(select) {
     const statusName = selectedOption.dataset.name || '';
 
     const dateInput = document.getElementById('expected_date_time');
-    const applyBtn = document.getElementById('applyFollowUpDateBtn');
+    // const applyBtn = document.getElementById('applyFollowUpDateBtn');
 
     if (statusName === 'not interested') {
 
@@ -577,7 +746,7 @@ function toggleFollowUpDate(select) {
         dateInput.disabled = true;
 
         // Disable Apply button
-        applyBtn.disabled = true;
+        // applyBtn.disabled = true;
 
         // Tailwind disabled appearance
         dateInput.classList.add(
@@ -586,15 +755,15 @@ function toggleFollowUpDate(select) {
             'opacity-60'
         );
 
-        applyBtn.classList.add(
-            'cursor-not-allowed',
-            'opacity-50'
-        );
+        // applyBtn.classList.add(
+        //     'cursor-not-allowed',
+        //     'opacity-50'
+        // );
 
     } else {
 
         dateInput.disabled = false;
-        applyBtn.disabled = false;
+        // applyBtn.disabled = false;
 
         dateInput.classList.remove(
             'cursor-not-allowed',
@@ -602,10 +771,10 @@ function toggleFollowUpDate(select) {
             'opacity-60'
         );
 
-        applyBtn.classList.remove(
-            'cursor-not-allowed',
-            'opacity-50'
-        );
+        // applyBtn.classList.remove(
+        //     'cursor-not-allowed',
+        //     'opacity-50'
+        // );
     }
 }
 </script>
@@ -651,23 +820,18 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <script>
-
-
-
 window.enquiryController = {
 
     currentRequestId: 0,
 
     async storeFollowUp(leadId, form) {
 
-        if (!leadId || !form) return;
+        if (!leadId || !form) return false;
 
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+        const submitButtons = form.querySelectorAll('button[type="submit"]');
 
-        // Remove previous validation errors
+        // Remove previous validation errors.
         form.querySelectorAll('.validation-error').forEach(el => el.remove());
-
         form.querySelectorAll('.form-input').forEach(el => {
             el.classList.remove(
                 'border-red-500',
@@ -679,12 +843,10 @@ window.enquiryController = {
         });
 
         try {
+            submitButtons.forEach(button => button.disabled = true);
 
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = 'Saving...';
-            }
-
+            // Read raw lead id before changing/resetting fields.
+            const rawLeadId = form.querySelector('[name="lead_id"]')?.value;
             const formData = new FormData(form);
 
             const response = await fetch(`/business/leads/${leadId}/follow-ups`, {
@@ -701,52 +863,40 @@ window.enquiryController = {
             try {
                 data = await response.json();
             } catch (e) {
-                throw {
-                    message: 'Invalid server response.'
-                };
+                throw { message: 'Invalid server response.' };
             }
 
-            if (!response.ok) {
-                throw data;
-            }
+            if (!response.ok) throw data;
 
-            // Clear form after successful save
-            form.reset();
-
-            // Optional success message
             this.showFormMessage(
                 form,
-                data.message || 'Follow-up saved successfully.',
+                data.message || 'Follow-Up Saved Successfully.',
                 'success'
             );
 
-            /*
-             * IMPORTANT:
-             * leadId here is your assignment id.
-             * History requires raw lead_id.
-             */
-            const rawLeadId = form.querySelector('[name="lead_id"]')?.value;
-
+            // Refresh history for the lead that was just saved.
             if (rawLeadId) {
                 await this.getAllFollowUps(rawLeadId, 5);
             }
+
+            // Clear only fields that should not carry into the next lead.
+            const remark = form.querySelector('[name="remark"]');
+            const followDate = form.querySelector('[name="expected_date_time"]');
+
+            if (remark) remark.value = '';
+            if (followDate) followDate.value = '';
+
+            return true;
 
         } catch (error) {
 
             console.error('storeFollowUp failed:', error);
 
-            /*
-             * Laravel validation errors
-             */
             if (error.errors) {
-
                 Object.keys(error.errors).forEach(key => {
-
-                    const field = form.querySelector(`[name="${key}"]`);
-
+                    const field = form.querySelector(`[name="${CSS.escape(key)}"]`);
                     if (!field) return;
 
-                    // Red field border
                     field.classList.add(
                         'border-red-500',
                         'ring-1',
@@ -755,43 +905,30 @@ window.enquiryController = {
                         'focus:ring-red-500'
                     );
 
-                    // Error text
                     const errorText = document.createElement('p');
-
-                    errorText.className =
-                        'validation-error mt-1 text-xs font-medium text-red-600';
-
-                    errorText.textContent =
-                        Array.isArray(error.errors[key])
-                            ? error.errors[key][0]
-                            : error.errors[key];
+                    errorText.className = 'validation-error mt-1 text-xs font-medium text-red-600';
+                    errorText.textContent = Array.isArray(error.errors[key])
+                        ? error.errors[key][0]
+                        : error.errors[key];
 
                     field.insertAdjacentElement('afterend', errorText);
                 });
 
-                // Focus first invalid field
                 const firstInvalid = form.querySelector('.border-red-500');
-
-                if (firstInvalid) {
-                    firstInvalid.focus();
-                }
+                if (firstInvalid) firstInvalid.focus();
 
             } else {
-
                 this.showFormMessage(
                     form,
-                    error.message || 'Unable to save follow-up.',
+                    error.message || 'Unable to save follow up.',
                     'error'
                 );
             }
 
-        } finally {
+            return false;
 
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML =
-                    originalBtnText || 'Save Follow-up';
-            }
+        } finally {
+            submitButtons.forEach(button => button.disabled = false);
         }
     },
 
@@ -956,8 +1093,6 @@ document.addEventListener('click', function (e) {
         .then(data => {
           
             if (data.status) {
- 
-
                 el.classList.remove('assignedLeadsClick', 'cursor-pointer');
                 el.classList.add('bg-white');
             } else {
@@ -1038,48 +1173,7 @@ document.addEventListener('click', function (e) {
             // "loading" forever after the very first click
             el.classList.remove('is-loading');
         });
-});
-
-// document.addEventListener('click', function (e) {
-//     const el = e.target.closest('.favorited');
-//     if (!el) return;
-
-//     e.preventDefault();
- 
-//     const favoritleads = el.dataset.favoritleads;
- 
-//     const clientId = el.dataset.clientId;
-//     if (!favoritleads || !clientId  || el.classList.contains('is-loading')) return;
-
-//     el.classList.add('is-loading');
-
-//     fetch('/business/favoritleads', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-//             'X-Requested-With': 'XMLHttpRequest',
-//             'Accept': 'application/json',
-//         },
-//         body: JSON.stringify({ assingId: favoritleads,clientId:clientId }),
-//     })
-//         .then(res => res.json())
-//         .then(data => {
-          
-//             if (data.status) {
- 
-
-//                alert('Favorite lead updated');
-//             } else {
-//                alert('Favorite lead not updated');
-//             }
-//         })
-//         .catch(err => {
-             
-//             console.error('readLead request failed:', err);
-//         });
-// });
-
+}); 
 
 </script>
 
@@ -1258,6 +1352,11 @@ document.addEventListener('change', function (e) {
 });
 
 </script>
+      
+ 
+ 
+ </div>
+</div>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -1280,13 +1379,21 @@ cursor: pointer;
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
- 
-    
-flatpickr("#expected_date_time", {
+    flatpickr("#date_from", {
+        dateFormat: "d-m-Y",
+    });
+
+flatpickr("#date_to", {
+        dateFormat: "d-m-Y",
+    });
+
+    flatpickr("#expected_date_time", {
     dateFormat: "d-m-Y",
     minDate: "today",
 });
 
 });
 </script>
+
+
 @endsection

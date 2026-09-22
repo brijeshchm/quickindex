@@ -1,106 +1,1322 @@
 @extends('business.layouts.app')
-@section('title')
-Location Service | Location
-@endsection 
-@section('keyword')
-Find Best It Training Centre near You, Find Best It Training Institute near You, Find Top 10 IT Training Institute near You, Find Best Entrance Exam Preparation Centre Near you, Top 10 Entrance Exam Centre Near you, Find Best Distance Education Centre Near You, Find Top 10 Distance Education Centre Near You, Find Best School And Colleges Near You, Find Top 10 school And College Near You, Get Education Loan, GET Free career Counselling, Find Best overseas education consultants Near you, Find Top 10 overseas education consultants Near you
 
-@endsection
-@section('description')
-Find Only Certified Training Institutes, Coaching Centers near you on QuickDials and Get Free counseling, Free Demo Classes, and Get Placement Assistence.
-@endsection
-@section('content')	
+@section('title', 'Profile')
 
-  <main id="main" class="main">
-    <section class="section profile">
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="card">
-            <div class="card-body pt-3">
-              <!-- Bordered Tabs -->
-              <ul class="nav nav-tabs nav-tabs-bordered">
-                <li class="nav-item">
-                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-edit">Location Information</button>
-                </li>
-              </ul>
-              <div class="tab-content pt-2">
-                <div class="tab-pane fade show active profile-edit pt-3" id="profile-edit">
-                  <!-- Profile Edit Form -->
-                     <form class="profileSave" method="POST">
-                        <input type="hidden" name="business_id" value="{{$client->id}}">
-                      
-                   <!-- #endregion -->
- 
-                 
-                <div class="form-group">
-                    <label>City:</label>
-                    <select class="form-control">
-                        <option>Ms</option>
-                        <option>Mr</option>
-                        <option>Mrs</option>
-                    </select>
-                    <label>Zone:</label>
-                     <select class="form-control">
-                        <option>Single</option>
-                        <option>Married</option>
-                    </select>
-                </div>
-                
-                
-                
-            <div class="text-center"> 
-                 <input type="hidden" name="savePersonal" value="savePersonalForm">
-                <button type="submit" class="btn btn-primary">Save & Continue</button>
-        
-              </div>
+@section('content')
  
 
-                  
-                  </form><!-- End Profile Edit Form -->
+<div class="animate-fade-in max-w-5xl space-y-4 md:space-y-6">
 
-                </div>
-	<div class="row"> 
-      <table width="100%" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="datatable-assigned-zones" role="grid" aria-describedby="datatable-assigned-zones_info" style="width: 100%;">
-					<thead>
-					<tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="datatable-assigned-zones" rowspan="1" colspan="1" style="width: 152.333px;" aria-sort="ascending" aria-label="Zone: activate to sort column descending">Zone</th><th class="sorting" tabindex="0" aria-controls="datatable-assigned-zones" rowspan="1" colspan="1" style="width: 147.333px;" aria-label="City: activate to sort column ascending">City</th><th class="sorting" tabindex="0" aria-controls="datatable-assigned-zones" rowspan="1" colspan="1" style="width: 152px;" aria-label="Action: activate to sort column ascending">Action</th></tr>
-					</thead>
-					<tbody>
-            
-          <tr role="row" class="odd"><td class="sorting_1">Jaipur</td><td>Jaipur</td><td><a href="javascript:void(0)" onclick="assignedAreaController.editZoneClient(508)" title="Zone Edit"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>  
-        
-        </td></tr>
-          
-          <tr role="row" class="even"><td class="sorting_1">Allahabad</td><td>Allahabad</td><td><a href="javascript:void(0)" onclick="assignedAreaController.editZoneClient(395)" title="Zone Edit"><i class="bi bi-pencil-square" aria-hidden="true"></i></a> 
-        
-        
-        </td></tr>
-          
-          <tr role="row" class="odd"><td class="sorting_1">Anakapalle</td><td>Anakapalle</td><td><a href="javascript:void(0)" onclick="assignedAreaController.editZoneClient(383)" title="Zone Edit"><i class="bi bi-pencil-square" aria-hidden="true"></i></a>
-        
-        
-        </td></tr>
-          
-          <tr role="row" class="even"><td class="sorting_1">Ghaziabad</td><td>Ghaziabad</td><td><a href="javascript:void(0)" onclick="assignedAreaController.editZoneClient(291)" title="Zone Edit"><i class="fa fa-refresh" aria-hidden="true"></i></a> | <a href="javascript:assignedZoneController.delete(291)"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>
-          
-          <tr role="row" class="odd"><td class="sorting_1">Faridabad</td><td>Faridabad</td><td><a href="javascript:void(0)" onclick="assignedAreaController.editZoneClient(278)" title="Zone Edit"><i class="fa fa-refresh" aria-hidden="true"></i></a> | <a href="javascript:assignedZoneController.delete(278)"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>
-          
-          <tr role="row" class="even"><td class="sorting_1">Saket Delhi</td><td>Delhi</td><td><a href="javascript:void(0)" onclick="assignedAreaController.editZoneClient(271)" title="Zone Edit"><i class="bi bi-edit" aria-hidden="true"></i></a> </td></tr>
-        
-        
-        </tbody>
-      
-      </table>
-                
-              </div> 
-              </div> 
+    <div>
+        <h1 class="font-display text-xl font-bold md:text-3xl">
+            {{ $tabs[$tab] ?? '' }}
+        </h1>
+    </div>
 
-            </div>
-          </div>
+
+    {{-- Mobile Tabs --}}
+    <div class="md:hidden">
+
+        <select
+            onchange="window.location=this.value"
+            class="form-input h-12 bg-white text-base font-medium shadow-sm"
+        >
+
+            @foreach($tabs as $key => $label)
+
+                <option
+                    value="{{ route('profile', ['tab' => $key]) }}"
+                    @selected($tab === $key)
+                >
+                    {{ $label }}
+                </option>
+
+            @endforeach
+
+        </select>
+
+    </div>
+
+@if($tab === 'locations')
+
+<div class="card overflow-hidden">
+
+    {{-- Heading --}}
+    <div class="border-b p-6">
+
+        <h3 class="font-display text-lg font-semibold">
+            Service Areas
+        </h3>
+
+        <p class="mt-1 text-sm text-slate-500">
+            Specify cities and neighborhoods you serve.
+        </p>
+
+    </div>
+
+
+    {{-- ADD LOCATION --}}
+    <form
+        id="locationService"
+        action="{{ route('profile.locations.add') }}"
+        method="POST"
+        class="grid gap-4 bg-secondary/30 p-5 md:grid-cols-4"
+    >
+
+        @csrf
+
+        <input
+            type="hidden"
+            name="client_id"
+            value="{{ $client->id }}"
+        >
+
+
+        {{-- STATE --}}
+        <div>
+
+            <label class="mb-2 block text-xs font-medium">
+                State *
+            </label>
+
+            <select
+                id="state"
+                name="state_id"
+                class="form-input w-full"
+            >
+
+                <option value="">
+                    Select State
+                </option>
+
+                @foreach($states as $state)
+
+                    <option value="{{ $state->id }}">
+                        {{ $state->name }}
+                    </option>
+
+                @endforeach
+
+            </select>
 
         </div>
-      </div>
-    </section>
 
-  </main><!-- End #main -->
 
- @endsection
+        {{-- CITY --}}
+        <div>
+
+            <label class="mb-2 block text-xs font-medium">
+                City *
+            </label>
+
+            <select
+                id="city"
+                name="city_id"
+                class="form-input w-full"
+            >
+
+                <option value="">
+                    Select City
+                </option>
+
+            </select>
+
+        </div>
+
+
+        {{-- ZONE --}}
+        <div>
+
+            <label class="mb-2 block text-xs font-medium">
+                Area / Neighborhood *
+            </label>
+
+            <select
+                id="zone"
+                name="zone_id"
+                class="form-input w-full"
+            >
+
+                <option value="">
+                    Select Zone
+                </option>
+
+            </select>
+
+
+            {{-- OTHER INPUT --}}
+            <div
+                id="otherZoneWrap"
+                class="mt-3 hidden"
+            >
+
+                <input
+                    type="text"
+                    id="otherZone"
+                    name="other"
+                    class="form-input w-full"
+                    placeholder="Enter Area / Neighborhood"
+                >
+
+            </div>
+
+        </div>
+
+
+        {{-- BUTTON --}}
+        <div class="flex items-end">
+
+            <button
+                type="submit"
+                id="addLocationBtn"
+                class="btn btn-primary w-full"
+            >
+
+                <i
+                    data-lucide="plus"
+                    class="h-4 w-4"
+                ></i>
+
+                <span>
+                    Add Area
+                </span>
+
+            </button>
+
+        </div>
+
+
+        {{-- Validation --}}
+        <div
+            id="locationErrors"
+            class="md:col-span-4"
+        ></div>
+
+    </form>
+
+
+
+    {{-- LOCATION LIST --}}
+    <div id="locationListWrap">
+
+        <div
+            id="locationList"
+            class="grid gap-4 p-5 md:grid-cols-2"
+        >
+
+            @forelse($locations as $location)
+
+                <div
+                    class="location-row flex items-center justify-between rounded-xl border bg-white p-4"
+                >
+
+                    <div class="flex items-start gap-3">
+
+                        <span
+                            class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary"
+                        >
+
+                            <i
+                                data-lucide="map-pin"
+                                class="h-5 w-5"
+                            ></i>
+
+                        </span>
+
+
+                        <div>
+
+                            <p class="font-semibold">
+                                {{ $location->zone }}
+                            </p>
+
+                            <p class="text-xs text-slate-500">
+                                {{ $location->city }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- DELETE --}}
+                    <form
+                        action="{{ route('profile.locations.delete', $location->assign_id) }}"
+                        method="POST"
+                        class="location-delete-form"
+                    >
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button
+                            type="submit"
+                            class="delete-location-btn flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:bg-red-50"
+                        >
+
+                            <i
+                                data-lucide="trash-2"
+                                class="h-4 w-4"
+                            ></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            @empty
+
+                <div class="col-span-full p-8 text-center text-slate-500">
+                    No service areas added.
+                </div>
+
+            @endforelse
+
+        </div>
+
+
+        {{-- PAGINATION --}}
+        @if(method_exists($locations, 'links'))
+
+            <div
+                id="locationPagination"
+                class="border-t px-5 py-4"
+            >
+
+                {{ $locations->appends([
+                    'tab' => 'locations'
+                ])->links() }}
+
+            </div>
+
+        @endif
+
+    </div>
+
+</div>
+
+@endif
+
+
+ 
+   
+
+</div>
+
+
+{{-- Toast --}}
+<div
+    id="toast-container"
+    class="pointer-events-none fixed right-4 top-4 z-[9999] flex w-80 flex-col gap-2"
+></div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+
+$(document).ready(function () {
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CSRF
+    |--------------------------------------------------------------------------
+    */
+
+    function csrfToken() {
+
+        return $('#locationService')
+            .find('input[name="_token"]')
+            .val();
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD CITY
+    |--------------------------------------------------------------------------
+    */
+
+    function getCity(stateId) {
+
+        if (!stateId) {
+
+            $('#city').html(
+                '<option value="">Select City</option>'
+            );
+
+            $('#zone').html(
+                '<option value="">Select Zone</option>'
+            );
+
+            hideOtherZone();
+
+            return;
+        }
+
+
+        $('#city').html(
+            '<option value="">Loading...</option>'
+        );
+
+
+        $('#zone').html(
+            '<option value="">Select Zone</option>'
+        );
+
+
+        hideOtherZone();
+
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: "{{ route('business.cities.ajax') }}",
+
+            data: {
+                sid: stateId,
+                cid: ''
+            },
+
+            headers: {
+                'X-CSRF-TOKEN': csrfToken()
+            },
+
+            success: function (data) {
+
+                $('#city').html(data);
+
+            },
+
+            error: function () {
+
+                $('#city').html(
+                    '<option value="">Select City</option>'
+                );
+
+                showToast(
+                    'Unable to load cities',
+                    'error'
+                );
+
+            }
+
+        });
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOAD ZONE
+    |--------------------------------------------------------------------------
+    */
+
+    function getZone(cityId) {
+
+        if (!cityId) {
+
+            $('#zone').html(
+                '<option value="">Select Zone</option>'
+            );
+
+            hideOtherZone();
+
+            return;
+        }
+
+
+        $('#zone').html(
+            '<option value="">Loading...</option>'
+        );
+
+
+        hideOtherZone();
+
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: "{{ route('business.zone.ajax') }}",
+
+            data: {
+                city: cityId,
+                zone: ''
+            },
+
+            headers: {
+                'X-CSRF-TOKEN': csrfToken()
+            },
+
+            success: function (data) {
+
+                $('#zone').html(data);
+
+            },
+
+            error: function () {
+
+                $('#zone').html(
+                    '<option value="">Select Zone</option>'
+                );
+
+                showToast(
+                    'Unable to load areas',
+                    'error'
+                );
+
+            }
+
+        });
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | STATE CHANGE
+    |--------------------------------------------------------------------------
+    */
+
+    $('#state').on('change', function () {
+
+        const stateId = $(this).val();
+
+        getCity(stateId);
+
+    });
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CITY CHANGE
+    |--------------------------------------------------------------------------
+    */
+
+    $('#city').on('change', function () {
+
+        const cityId = $(this).val();
+
+        getZone(cityId);
+
+    });
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ZONE CHANGE - SHOW OTHER INPUT
+    |--------------------------------------------------------------------------
+    */
+
+    $('#zone').on('change', function () {
+
+        const selectedValue =
+            ($(this).val() || '')
+                .toString()
+                .trim()
+                .toLowerCase();
+
+
+        const selectedText =
+            ($(this).find('option:selected').text() || '')
+                .trim()
+                .toLowerCase();
+
+
+        /*
+        | Works in both cases:
+        |
+        | <option value="Other">Other</option>
+        |
+        | OR
+        |
+        | <option value="123">Other</option>
+        */
+
+        if (
+            selectedValue === 'other' ||
+            selectedText === 'other'
+        ) {
+
+            showOtherZone();
+
+        } else {
+
+            hideOtherZone();
+
+        }
+
+    });
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SHOW OTHER
+    |--------------------------------------------------------------------------
+    */
+
+    function showOtherZone() {
+
+        $('#otherZoneWrap')
+            .removeClass('hidden');
+
+        $('#otherZone')
+            .prop('required', true)
+            .focus();
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | HIDE OTHER
+    |--------------------------------------------------------------------------
+    */
+
+    function hideOtherZone() {
+
+        $('#otherZoneWrap')
+            .addClass('hidden');
+
+        $('#otherZone')
+            .prop('required', false)
+            .val('');
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ADD LOCATION
+    |--------------------------------------------------------------------------
+    */
+
+    $('#locationService').on('submit', function (e) {
+
+        e.preventDefault();
+
+
+        const form =
+            $(this);
+
+
+        const button =
+            $('#addLocationBtn');
+
+
+        /*
+        | Clear old validation
+        */
+
+        $('#locationErrors').html('');
+
+        form
+            .find('.help-block')
+            .remove();
+
+        form
+            .find('.border-red-500')
+            .removeClass('border-red-500');
+
+
+        /*
+        | Validation
+        */
+
+        if (!$('#state').val()) {
+
+            showFieldError(
+                $('#state'),
+                'Please select State.'
+            );
+
+            return;
+        }
+
+
+        if (!$('#city').val()) {
+
+            showFieldError(
+                $('#city'),
+                'Please select City.'
+            );
+
+            return;
+        }
+
+
+        if (!$('#zone').val()) {
+
+            showFieldError(
+                $('#zone'),
+                'Please select Area / Neighborhood.'
+            );
+
+            return;
+        }
+
+
+
+        /*
+        | Check whether OTHER is selected
+        */
+
+        const zoneValue =
+            ($('#zone').val() || '')
+                .toString()
+                .trim()
+                .toLowerCase();
+
+
+        const zoneText =
+            ($('#zone option:selected').text() || '')
+                .trim()
+                .toLowerCase();
+
+
+        const isOther =
+            zoneValue === 'other' ||
+            zoneText === 'other';
+
+
+
+        /*
+        | Validate Other textbox
+        */
+
+        if (
+            isOther &&
+            !$('#otherZone').val().trim()
+        ) {
+
+            showFieldError(
+                $('#otherZone'),
+                'Please enter Area / Neighborhood.'
+            );
+
+            $('#otherZone').focus();
+
+            return;
+        }
+
+
+
+        /*
+        | Disable button
+        */
+
+        button.prop(
+            'disabled',
+            true
+        );
+
+
+        button
+            .find('span')
+            .text('Adding...');
+
+
+        showToast(
+            'Adding service area...',
+            'info',
+            1000
+        );
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AJAX SAVE
+        |--------------------------------------------------------------------------
+        */
+
+        $.ajax({
+
+            type: 'POST',
+
+            url: form.attr('action'),
+
+            data: form.serialize(),
+
+            cache: false,
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SUCCESS
+            |--------------------------------------------------------------------------
+            */
+
+            success: function (response) {
+
+                button.prop(
+                    'disabled',
+                    false
+                );
+
+
+                button
+                    .find('span')
+                    .text('Add Area');
+
+
+                showToast(
+                    response.message ||
+                    'Service area added successfully',
+                    'success'
+                );
+
+
+                /*
+                | Reset Zone
+                */
+
+                $('#zone').val('');
+
+
+                /*
+                | Reset Other input
+                */
+
+                hideOtherZone();
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | AUTO REFRESH LOCATION LIST
+                |--------------------------------------------------------------------------
+                |
+                | No full page reload.
+                |
+                */
+
+                loadLocationPage(
+                    "{{ route('profile', ['tab' => 'locations']) }}"
+                );
+
+            },
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ERROR
+            |--------------------------------------------------------------------------
+            */
+
+            error: function (xhr) {
+
+                button.prop(
+                    'disabled',
+                    false
+                );
+
+
+                button
+                    .find('span')
+                    .text('Add Area');
+
+
+                if (
+                    xhr.status === 422 &&
+                    xhr.responseJSON &&
+                    xhr.responseJSON.errors
+                ) {
+
+                    const errors =
+                        xhr.responseJSON.errors;
+
+
+                    Object.keys(errors)
+                        .forEach(function (key) {
+
+                            const field =
+                                form
+                                    .find(
+                                        '[name="' + key + '"]'
+                                    )
+                                    .first();
+
+
+                            if (field.length) {
+
+                                showFieldError(
+                                    field,
+                                    errors[key][0]
+                                );
+
+                            }
+
+                        });
+
+
+                    showToast(
+                        'Please check validation errors',
+                        'error'
+                    );
+
+                    return;
+
+                }
+
+
+                if (xhr.status === 419) {
+
+                    showToast(
+                        'Session expired. Please refresh the page.',
+                        'error'
+                    );
+
+                    return;
+
+                }
+
+
+                showToast(
+                    xhr.responseJSON?.message ||
+                    'Something went wrong while saving',
+                    'error'
+                );
+
+            }
+
+        });
+
+    });
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | FIELD ERROR
+    |--------------------------------------------------------------------------
+    */
+
+    function showFieldError(
+        field,
+        message
+    ) {
+
+        field.addClass(
+            'border-red-500'
+        );
+
+
+        $('<span>', {
+
+            class:
+                'help-block mt-1 block text-sm font-medium text-red-600',
+
+            text:
+                message
+
+        }).insertAfter(field);
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE LOCATION
+    |--------------------------------------------------------------------------
+    */
+
+    $(document).on(
+        'submit',
+        '.location-delete-form',
+        function (e) {
+
+            e.preventDefault();
+
+
+            const form =
+                $(this);
+
+
+            const button =
+                form.find(
+                    '.delete-location-btn'
+                );
+
+
+            button.prop(
+                'disabled',
+                true
+            );
+
+
+            showToast(
+                'Deleting...',
+                'info',
+                800
+            );
+
+
+            $.ajax({
+
+                type: 'POST',
+
+                url:
+                    form.attr('action'),
+
+                data:
+                    form.serialize(),
+
+
+                success:
+                    function (response) {
+
+                        showToast(
+                            response.message ||
+                            'Service area deleted successfully',
+                            'success'
+                        );
+
+
+                        /*
+                        | Auto refresh after delete
+                        */
+
+                        loadLocationPage(
+                            window.currentLocationPage ||
+                            "{{ route('profile', ['tab' => 'locations']) }}"
+                        );
+
+                    },
+
+
+                error:
+                    function (xhr) {
+
+                        button.prop(
+                            'disabled',
+                            false
+                        );
+
+
+                        showToast(
+                            xhr.responseJSON?.message ||
+                            'Unable to delete service area',
+                            'error'
+                        );
+
+                    }
+
+            });
+
+        }
+    );
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AJAX PAGINATION
+    |--------------------------------------------------------------------------
+    */
+
+    $(document).on(
+        'click',
+        '#locationPagination a',
+        function (e) {
+
+            e.preventDefault();
+
+
+            const url =
+                $(this).attr('href');
+
+
+            if (!url) {
+                return;
+            }
+
+
+            loadLocationPage(url);
+
+        }
+    );
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | AUTO REFRESH LOCATION LIST
+    |--------------------------------------------------------------------------
+    */
+
+    function loadLocationPage(url) {
+
+        if (!url) {
+            return;
+        }
+
+
+        window.currentLocationPage =
+            url;
+
+
+        $('#locationListWrap')
+            .addClass(
+                'pointer-events-none opacity-50'
+            );
+
+
+        $.ajax({
+
+            url: url,
+
+            type: 'GET',
+
+            cache: false,
+
+
+            success: function (html) {
+
+                const newPage =
+                    new DOMParser()
+                        .parseFromString(
+                            html,
+                            'text/html'
+                        );
+
+
+                const newLocationList =
+                    newPage.querySelector(
+                        '#locationListWrap'
+                    );
+
+
+                if (newLocationList) {
+
+                    $('#locationListWrap')
+                        .html(
+                            newLocationList.innerHTML
+                        );
+
+                }
+
+
+                $('#locationListWrap')
+                    .removeClass(
+                        'pointer-events-none opacity-50'
+                    );
+
+
+                /*
+                | Reload Lucide icons
+                */
+
+                if (
+                    typeof lucide !==
+                    'undefined'
+                ) {
+
+                    lucide.createIcons();
+
+                }
+
+            },
+
+
+            error: function () {
+
+                $('#locationListWrap')
+                    .removeClass(
+                        'pointer-events-none opacity-50'
+                    );
+
+
+                showToast(
+                    'Unable to refresh service areas',
+                    'error'
+                );
+
+            }
+
+        });
+
+    }
+
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| TOAST
+|--------------------------------------------------------------------------
+*/
+
+function showToast(
+    message,
+    type = 'success',
+    duration = 3000
+) {
+
+    const container =
+        document.getElementById(
+            'toast-container'
+        );
+
+
+    if (!container) return;
+
+
+    const styles = {
+
+        success: {
+            bg:
+                'bg-emerald-50 border-emerald-200 text-emerald-800'
+        },
+
+        error: {
+            bg:
+                'bg-red-50 border-red-200 text-red-800'
+        },
+
+        info: {
+            bg:
+                'bg-blue-50 border-blue-200 text-blue-800'
+        }
+
+    };
+
+
+    const style =
+        styles[type] ||
+        styles.success;
+
+
+    const toast =
+        document.createElement(
+            'div'
+        );
+
+
+    toast.className =
+        `pointer-events-auto flex items-center gap-3 rounded-xl border ${style.bg} px-4 py-3 shadow-lg transition-all duration-300 translate-x-4 opacity-0`;
+
+
+    toast.innerHTML = `
+
+        <p class="flex-1 text-sm font-medium">
+            ${escapeHtml(message)}
+        </p>
+
+        <button
+            type="button"
+            class="shrink-0 rounded p-1"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    container.appendChild(
+        toast
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            toast.classList.remove(
+                'translate-x-4',
+                'opacity-0'
+            );
+
+        }
+    );
+
+
+    function dismiss() {
+
+        toast.classList.add(
+            'translate-x-4',
+            'opacity-0'
+        );
+
+
+        setTimeout(
+            function () {
+
+                toast.remove();
+
+            },
+            300
+        );
+
+    }
+
+
+    toast
+        .querySelector('button')
+        .addEventListener(
+            'click',
+            dismiss
+        );
+
+
+    setTimeout(
+        dismiss,
+        duration
+    );
+
+}
+
+
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement(
+            'div'
+        );
+
+    div.textContent =
+        value || '';
+
+    return div.innerHTML;
+
+}
+
+</script>
+   <style>
+   
+ 
+
+   
+
+    .select2-container .select2-selection--single{
+    height: 40px !important;
+
+    }
+</style>
+ 
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
+<script>
+
+      $('#state').select2();
+      $('#city').select2();
+      $('#zone').select2();
+      
+      </script>
+@endsection

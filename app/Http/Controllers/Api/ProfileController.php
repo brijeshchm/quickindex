@@ -96,7 +96,7 @@ class ProfileController extends Controller
                 'year_of_estb' => $user->year_of_estb,
                 'profile_pic' => $profile_pic,
                 'pictures' => $pictures,
-                'active_status' => $user->active_status,
+                 
             );
 
             return response()->json([
@@ -210,7 +210,7 @@ class ProfileController extends Controller
                     'year_of_estb' => $user->year_of_estb,
                     'profile_pic' => $profile_pic,
                     'pictures' => $pictures,
-                    'active_status' => $user->active_status,
+                    
                 );
 
                 $data['status'] = true;
@@ -276,8 +276,7 @@ class ProfileController extends Controller
                 'username' => $user->username,
                 'business_slug' => $user->business_slug,
                 'profile_pic' => $profile_pic,
-                'logo' => $logo,
-                'active_status' => $user->active_status,
+                'logo' => $logo,                
             );
 
             return response()->json([
@@ -400,7 +399,7 @@ class ProfileController extends Controller
                     'business_name' => $user->business_name,
                     'profile_pic' => $profile_pic,
                     'logo' => $logo,
-                    'active_status' => $user->active_status,
+                    
                 );
 
                 $message = "Profile logo successfully!";
@@ -488,7 +487,7 @@ class ProfileController extends Controller
                 'business_slug' => $user->business_slug,
                 'profile_pic' => $profile_pic,
                 'logo' => $logo,
-                'active_status' => $user->active_status,
+                 
             );
 
             return response()->json([
@@ -570,7 +569,7 @@ class ProfileController extends Controller
                 'business_slug' => $user->business_slug,
                 'profile_pic' => $profile_pic,
                 'logo' => $logo,
-                'active_status' => $user->active_status,
+                 
             );
 
             return response()->json([

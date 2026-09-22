@@ -1,4 +1,4 @@
-@extends('business.business.layouts.app')
+@extends('business.layouts.app')
 @section('title','Follow-ups')
 @section('content')
 @php

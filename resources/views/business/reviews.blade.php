@@ -1,7 +1,10 @@
 @extends('business.layouts.app')
 @section('title','Reviews')
 @section('content')
-@php $avg=count($reviews)?collect($reviews)->avg('rating'):0; @endphp
+@php 
+$avg=count($reviews)?collect($reviews->getCollection())->avg('rating'):0; 
+ 
+@endphp
 <div class="animate-fade-in space-y-5 md:space-y-6"><div>
     
 <h1 class="font-display text-xl font-bold md:text-3xl">Customer Reviews</h1>
@@ -21,7 +24,12 @@
  <div class="mt-1 flex gap-1">@for($s=1;$s<=5;$s++)<i data-lucide="star" class="h-4 w-4 {{ $s<=round($avg)?'fill-amber-500 text-amber-500':'text-slate-300' }}"></i>@endfor</div>
 
 
-</div><div class="sm:ml-auto"><p class="font-display text-2xl font-bold">{{ count($reviews) }}</p><p class="text-sm text-slate-500">Total reviews</p></div></div>
+</div>
+
+
+
+
+</div>
  <div class="space-y-4">
     
  @foreach($reviews as $i=>$review)
@@ -40,6 +48,14 @@
  
  @endforeach
 
+
+
 </div>
+
+ <div class="pt-2">
+  {{ $reviews->links() }}
+ </div>
+
+
 </div>
 @endsection

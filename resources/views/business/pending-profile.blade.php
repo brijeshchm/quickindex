@@ -35,6 +35,13 @@
             </summary>
             <ul class="mt-2 list-disc space-y-1 pl-4">
                 @foreach(array_slice($completion['missing_fields'], 0, 6) as $field)
+                @php          
+                if($field =='profile_pic'){
+                    $field = "Business Banner";
+                }
+                @endphp
+
+                   
                     <li>{{ ucwords(str_replace('_', ' ', $field)) }}</li>
                 @endforeach
             </ul>

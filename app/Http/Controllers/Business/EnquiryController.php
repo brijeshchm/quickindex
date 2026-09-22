@@ -298,7 +298,7 @@ class EnquiryController extends Controller
 
 	public function scrapLead(Request $request)
 	{
-	
+	 
 
 		$assignedLead = AssignedLead::find($request->assigned_id);
 		$coinsLeads = DB::table('assigned_leads')->where('lead_id', $assignedLead->lead_id)->where('scrapPay', '0')->get();
@@ -352,7 +352,7 @@ class EnquiryController extends Controller
 
 	public function favoritleads(Request $request)
 	{
-
+dd($request->all());
 		$assignedLead = AssignedLead::find($request->assingId);
 
 		if (!$assignedLead) {
