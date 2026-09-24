@@ -484,10 +484,10 @@ class AuthController extends Controller
 				$request->session()->put('client.email', $client->email);
 				auth()->guard('clients')->loginUsingId($client->id);
 				
-			 
+			 	$guest = Guest::where('email', $email)->first();
 				$request->session()->put('switch_accounts', [
 					'client_id' => $client->id,
-					'guest_id' =>0,
+					'guest_id' =>$guest->id?$guest->id:"",
 				]);
 
 				return redirect('/business/dashboard');
@@ -518,10 +518,10 @@ class AuthController extends Controller
 				
 				$request->session()->put('client.email', $client->email);
 				auth()->guard('clients')->loginUsingId($client->id);	
-			 
+			 	$guest = Guest::where('email', $email)->first();
 				$request->session()->put('switch_accounts', [
 					'client_id' => $client->id,
-					'guest_id' =>0,
+					'guest_id' =>$guest->id?$guest->id:"",
 				]);
 
 				return redirect('/business/dashboard');
@@ -666,8 +666,7 @@ class AuthController extends Controller
 		$accounts = $request->session()->get('switch_accounts');
 		  
 		if (!is_array($accounts)) {
-			return redirect('/business-owners')
-				->with('error', 'Please sign in with Google again.');
+			return redirect()->route('home');
 		}
 
 		if ($type === 'clients' && Auth::guard('guest')->check()) {
