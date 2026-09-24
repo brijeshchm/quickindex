@@ -236,11 +236,22 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
     <span>Follow-up</span>
 </a>
 
-<a href="#"
+<a href="{{ route('account', ['tab' => 'package']) }}"
    class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
-    <i data-lucide="bell" class="h-4 w-4 shrink-0"></i>
-    <span>View all notifications</span>
-    <i data-lucide="arrow-right" class="ml-auto h-4 w-4"></i>
+    <i data-lucide="package" class="h-4 w-4 shrink-0"></i>
+    <span>Package</span>
+</a>
+
+<a href="{{ route('account', ['tab' => 'invoices']) }}"
+   class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+    <i data-lucide="receipt-text" class="h-4 w-4 shrink-0"></i>
+    <span>Invoices</span>
+</a>
+
+<a href="{{ route('account', ['tab' => 'settings']) }}"
+   class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+    <i data-lucide="settings" class="h-4 w-4 shrink-0"></i>
+    <span>Settings</span>
 </a>
             <a href="{{ route('clientLogout') }}" class="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-xs font-semibold text-destructive hover:bg-destructive/20"><i data-lucide="log-out" class="h-3.5 w-3.5"></i> Sign out</a>
 
@@ -496,13 +507,32 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
     <i data-lucide="calendar-clock" class="h-4 w-4 shrink-0 text-amber-600"></i>
     <span>Follow-up</span>
 </a>
-
-<a href="#"
+<a href="{{ route('profile', ['tab' => 'general']) }}"
    class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
     <i data-lucide="bell" class="h-4 w-4 shrink-0"></i>
-    <span>View all notifications</span>
-    <i data-lucide="arrow-right" class="ml-auto h-4 w-4"></i>
+    <span>Profile </span>
+    
 </a>
+ <a href="{{ route('account', ['tab' => 'package']) }}"
+   class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+    <i data-lucide="package" class="h-4 w-4 shrink-0"></i>
+    <span>Package</span>
+</a>
+
+<a href="{{ route('account', ['tab' => 'invoices']) }}"
+   class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+    <i data-lucide="receipt-text" class="h-4 w-4 shrink-0"></i>
+    <span>Invoices</span>
+</a>
+
+<a href="{{ route('account', ['tab' => 'settings']) }}"
+   class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
+    <i data-lucide="settings" class="h-4 w-4 shrink-0"></i>
+    <span>Settings</span>
+</a>
+
+
+
 
             <a
                 href="{{ route('clientLogout') }}"
