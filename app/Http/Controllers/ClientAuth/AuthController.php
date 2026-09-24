@@ -467,7 +467,7 @@ class AuthController extends Controller
 	}
 
 
-	public function handleGoogleCallback_olddd(Request $request)
+	public function handleGoogleCallback(Request $request)
 	{
 		try {
 			$googleUser = Socialite::driver('google')->stateless()->user();
@@ -483,6 +483,13 @@ class AuthController extends Controller
 					->update(['google_id' => $googleUser->getId()]);
 				$request->session()->put('client.email', $client->email);
 				auth()->guard('clients')->loginUsingId($client->id);
+				
+			 
+				$request->session()->put('switch_accounts', [
+					'client_id' => $client->id,
+					'guest_id' =>0,
+				]);
+
 				return redirect('/business/dashboard');
 			}
 
@@ -508,7 +515,16 @@ class AuthController extends Controller
 				}
 				Client::where('email', $googleUser->getEmail())
 					->update(['username' => strtoupper(substr($emailname, 0, 2)) . $clientIDToAppend]);
+				
+				$request->session()->put('client.email', $client->email);
+				auth()->guard('clients')->loginUsingId($client->id);	
+			 
+				$request->session()->put('switch_accounts', [
+					'client_id' => $client->id,
+					'guest_id' =>0,
+				]);
 
+				return redirect('/business/dashboard');
 
 			}
 
@@ -544,7 +560,7 @@ class AuthController extends Controller
 		}
 	}
 
-	public function handleGoogleCallback(Request $request)
+	public function handleGoogleCallback_neww(Request $request)
 	{
 		try {
 			$googleUser = Socialite::driver('google')->stateless()->user();
