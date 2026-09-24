@@ -18,15 +18,25 @@ class LogoutController extends Controller
 	}
 
 	
-	public function clientLogout()
+	public function clientLogout(Request $request)
 	{
 		Auth::guard('clients')->logout();
+		Auth::guard('guest')->logout();
+		Auth::guard('developer')->logout();
+		$request->session()->invalidate();
+
+		if ($request->session()->has('switch_accounts')) {
+		$request->session()->forget('switch_accounts');
+		}
 		return redirect('business-owners');
 	}
 	
-	public function salesLogout()
+	public function salesLogout(Request $request)
 	{
 		Auth::guard('sales')->logout();
+		Auth::guard('clients')->logout();
+		Auth::guard('guest')->logout();
+		$request->session()->invalidate();
 		return redirect('business-owners');
 	}
 }

@@ -462,16 +462,16 @@ if(!empty($clientcheck)){
         {{-- Header: profile info --}}
         <div class="px-4 py-3.5 bg-gradient-to-br from-indigo-50 to-blue-50 border-b border-gray-100">
             <div class="flex items-center gap-3">
-                <img src="{{ $profileImg }}"
-                     onerror="this.src='{{ asset('client/images/user.png') }}'"
-                     loading="lazy" decoding="async"
-                     alt="{{ $businessName }}"
-                     class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-md shrink-0">
+                
                 <div class="min-w-0 flex-1">
-                    <p class="text-sm font-bold text-gray-900 truncate">{{ ucfirst($businessName) }}</p>
-                    @if(!empty($client->email))
-                        <p class="text-xs text-gray-500 truncate">{{ $client->email }}</p>
-                    @endif
+                      
+
+                    @if(auth('guest')->check() && session()->has('switch_accounts'))
+                    <a href="{{ route('account.switch', ['type' => 'clients']) }}"
+                    class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700">
+                    <i data-lucide="arrow-left-right" class="h-4 w-4 shrink-0"></i>
+                    <span>Switch Account to</span>
+                    </a>@endif
                 </div>
             </div>
         </div>

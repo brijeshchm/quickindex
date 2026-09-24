@@ -93,7 +93,78 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
             
             @endif
         </header>
-        <header class="sticky top-0 z-10 hidden h-16 items-center justify-between border-b bg-background/80 px-8 backdrop-blur-md md:flex"><h1 class="font-display text-xl font-semibold">{{ $pageName }}</h1><div class="flex items-center gap-6"><div class="flex items-center gap-3 rounded-xl border bg-secondary/50 px-3 py-1.5">@if(request()->routeIs('leads'))<form action="{{ route('account.update') }}" method="POST" class="flex items-center gap-2 border-r pr-3">@csrf @method('PATCH')<input type="hidden" name="pauseLeads" value="{{ $account['pauseLeads']?0:1 }}"><span class="text-sm font-medium text-slate-500">Pause Leads</span><button class="relative h-6 w-11 rounded-full {{ $account['pauseLeads']?'bg-primary':'bg-slate-300' }}"><span class="absolute top-1 h-4 w-4 rounded-full bg-white transition {{ $account['pauseLeads']?'left-6':'left-1' }}"></span></button></form>@endif<a href="{{ route('account') }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">{{ number_format($account['coins']) }}</span></a></div><button class="relative flex h-9 w-9 items-center justify-center rounded-full border bg-card text-slate-500 shadow-sm"><i data-lucide="bell" class="h-4 w-4"></i><span class="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-accent"></span></button></div></header>
+        <header class="sticky top-0 z-10 hidden h-16 items-center justify-between border-b bg-background/80 px-8 backdrop-blur-md md:flex"><h1 class="font-display text-xl font-semibold">{{ $pageName }}</h1><div class="flex items-center gap-6">
+            
+        <div class="flex items-center gap-3 rounded-xl border bg-secondary/50 px-3 py-1.5">@if(request()->routeIs('leads'))<form action="{{ route('account.update') }}" method="POST" class="flex items-center gap-2 border-r pr-3">@csrf @method('PATCH')<input type="hidden" name="pauseLeads" value="{{ $account['pauseLeads']?0:1 }}"><span class="text-sm font-medium text-slate-500">Pause Leads</span><button class="relative h-6 w-11 rounded-full {{ $account['pauseLeads']?'bg-primary':'bg-slate-300' }}"><span class="absolute top-1 h-4 w-4 rounded-full bg-white transition {{ $account['pauseLeads']?'left-6':'left-1' }}"></span></button></form>@endif<a href="{{ route('account') }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">{{ number_format($account['coins']) }}</span></a></div>
+        
+        <!-- <button class="relative flex h-9 w-9 items-center justify-center rounded-full border bg-card text-slate-500 shadow-sm"><i data-lucide="bell" class="h-4 w-4"></i><span class="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-accent"></span></button> -->
+
+
+
+        <div class="relative" id="notificationMenu">
+    <button
+        type="button"
+        id="notificationButton"
+        aria-label="Notifications"
+        aria-expanded="false"
+        aria-controls="notificationDropdown"
+        class="relative flex h-9 w-9 items-center justify-center rounded-full border bg-card text-slate-500 shadow-sm"
+    >
+        <i data-lucide="bell" class="h-4 w-4"></i>
+        <span class="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-accent"></span>
+    </button>
+
+    <div
+        id="notificationDropdown"
+        class="absolute right-0 z-50 mt-2 hidden w-72 rounded-lg border bg-white p-2 shadow-lg"
+    >
+        <div class="border-b px-3 py-2 font-semibold text-slate-800">
+            Notifications
+        </div>
+
+        <a href="#" class="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
+            New enquiry received
+        </a>
+        <a href="#" class="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
+            Follow-up scheduled for today
+        </a>
+        <a href="#" class="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
+            View all notifications
+        </a>
+    </div>
+</div>
+
+<script>
+    const menu = document.getElementById('notificationMenu');
+    const button = document.getElementById('notificationButton');
+    const dropdown = document.getElementById('notificationDropdown');
+
+    button.addEventListener('click', () => {
+        const isOpen = !dropdown.classList.contains('hidden');
+        dropdown.classList.toggle('hidden', isOpen);
+        button.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!menu.contains(event.target)) {
+            dropdown.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            dropdown.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>
+
+
+    
+        </div>
+
+</header>
         <div class="mx-auto w-full max-w-6xl flex-1 p-3 md:p-8">@yield('content')</div>
     </main>
     <nav class="glass-nav pb-safe fixed inset-x-0 bottom-0 z-40 border-t md:hidden"><div class="hide-scrollbar flex items-center justify-around overflow-x-auto px-2 py-2">

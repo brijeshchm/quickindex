@@ -27,7 +27,7 @@ class ClientDetailController extends Controller
 
         $newSlug = strtolower(str_replace(' ', '-', trim($slug)));   
         $keywordMap = $this->getClientSlugMap(); 
- 
+  
         $slugUrl    = $this->resolveBestCandidate($newSlug, $keywordMap);
 
         if ($slugUrl && $slugUrl !== $slug) {

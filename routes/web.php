@@ -42,15 +42,7 @@ Route::middleware('auth:guest')->group(function () {
 
 });
 
-// Language switcher
-Route::post('/language/change', function (\Illuminate\Http\Request $request) {
-    $locale = $request->input('locale', 'en');
-    if (in_array($locale, ['en', 'hi', 'es'])) {
-        session(['locale' => $locale]);
-        app()->setLocale($locale);
-    }
-    return back();
-})->name('language.change');
+ 
 
 
  Route::get('/cache-clear/', function () {
@@ -295,13 +287,13 @@ Route::post('/business/sign-out','signOut')->name('signout');
 
 
 /*login otp mobile */
-//Route::get('/client-login', [App\Http\Controllers\ClientAuth\AuthController::class, 'clientLogin'])->name('clientAuth.Login');
-
  
 
 Route::get('/google-login', [App\Http\Controllers\ClientAuth\AuthController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [App\Http\Controllers\ClientAuth\AuthController::class, 'handleGoogleCallback']);
-
+Route::get('/switch-account/{type}', [App\Http\Controllers\ClientAuth\AuthController::class, 'switchAccount'])
+    ->whereIn('type', ['clients', 'guest'])
+    ->name('account.switch');
 
 
 Route::post('/developer/login', [App\Http\Controllers\Auth\AuthController::class, 'authenticate']);

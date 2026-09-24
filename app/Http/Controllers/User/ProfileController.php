@@ -257,9 +257,15 @@ class ProfileController extends Controller
     }
 	
 	
-   public function userLogout()
+   public function userLogout(Request $request)
 	{  
+		Auth::guard('clients')->logout();
 		Auth::guard('guest')->logout();
+		Auth::guard('developer')->logout();
+		$request->session()->invalidate();
+        if ($request->session()->has('switch_accounts')) {
+        $request->session()->forget('switch_accounts');
+        }
 		return redirect('business-owners');
 	}
 	

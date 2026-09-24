@@ -346,7 +346,97 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
         <a href="{{ route('account') }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">Remaining Cons:{{ number_format($account['coins']) }}</span></a>    
         </div>
         
-    <button class="relative flex h-9 w-9 items-center justify-center rounded-full border bg-card text-slate-500 shadow-sm"><i data-lucide="bell" class="h-4 w-4"></i><span class="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-accent"></span></button>
+    <!-- <button class="relative flex h-9 w-9 items-center justify-center rounded-full border bg-card text-slate-500 shadow-sm"><i data-lucide="bell" class="h-4 w-4"></i><span class="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-card bg-accent"></span></button> -->
+
+<div class="relative" id="notificationMenu">
+
+    <button
+        type="button"
+        id="notificationButton"
+        aria-label="Notifications"
+        aria-expanded="false"
+        aria-controls="notificationDropdown"
+        class="relative flex h-9 w-9 items-center justify-center rounded-full border bg-card text-slate-500 shadow-sm"
+    >
+        <img
+                    src="{{ asset('client/images/user.png') }}"
+                    loading="lazy"
+                    decoding="async"
+                    alt="{{ $profile['name'] }}"
+                    class="h-9 w-11 shrink-0 rounded-full border-2 border-white object-cover shadow-md"
+                >
+                <div class="min-w-0 flex-1">
+                    <p class="truncate text-sm font-bold text-gray-900">
+                        {{ ucfirst($profile['name']) }}
+                    </p>
+                  
+                </div>
+    </button>
+
+    <div
+        id="notificationDropdown"
+        class="absolute right-0 z-50 mt-2 hidden w-72 overflow-hidden rounded-lg border bg-white shadow-lg"
+    >
+        <div class="border-b px-4 py-3 text-sm font-semibold text-slate-800">
+            <!-- //&& session()->has('switch_accounts') -->
+        @if(auth('clients')->check() && session()->has('switch_accounts'))
+        <a href="{{ route('account.switch', ['type' => 'guest']) }}"
+        class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-700">
+        <i data-lucide="arrow-left-right" class="h-4 w-4 shrink-0"></i>
+        <span>Switch Account to</span>
+        </a>@endif
+
+ 
+
+
+        </div>
+
+        <div class="p-2">
+            <a href="{{ route('leads',['tab'=>'new-lead']) }}" class="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
+                New enquiry received
+            </a>
+            <a href="{{ route('followups') }}" class="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
+                Follow-up
+            </a>
+            <a href="#" class="block rounded-md px-3 py-2 text-sm text-slate-700 hover:bg-slate-100">
+                View all notifications
+            </a>
+        </div>
+
+         
+    </div>
+</div>
+
+<script>
+    const menu = document.getElementById('notificationMenu');
+    const button = document.getElementById('notificationButton');
+    const dropdown = document.getElementById('notificationDropdown');
+
+    button.addEventListener('click', () => {
+        const willOpen = dropdown.classList.contains('hidden');
+        dropdown.classList.toggle('hidden', !willOpen);
+        button.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!menu.contains(event.target)) {
+            dropdown.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            dropdown.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    });
+</script>
+
+
+ 
+
+
 
     </div>
 
