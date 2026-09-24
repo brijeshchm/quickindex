@@ -589,12 +589,12 @@ class AuthController extends Controller
 
 
 
-			if (
-				($client && !$client->google_id) ||
-				($guest && !$guest->google_id)
-			) {
-				throw new \RuntimeException('Existing account needs to be linked first.');
-			}
+			// if (
+			// 	($client && !$client->google_id) ||
+			// 	($guest && !$guest->google_id)
+			// ) {
+			// 	throw new \RuntimeException('Existing account needs to be linked first.');
+			// }
 
 			if (!$client) {
 				$client = Client::create([
