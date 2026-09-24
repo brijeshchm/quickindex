@@ -549,8 +549,11 @@ class AuthController extends Controller
 		try {
 			$googleUser = Socialite::driver('google')->stateless()->user();
 
+			$googleId = $googleUser->getId();	 
+			$parts = explode(' ', $googleUser->getName(), 2);
+			$firstName = $parts[0];
+			$lastName = $parts[1] ?? '';
 			$email = $googleUser->getEmail();
-			$googleId = $googleUser->getId();
 
 			if (!$email || !$googleId) {
 				throw new \RuntimeException('Google account email is unavailable.');
@@ -564,12 +567,12 @@ class AuthController extends Controller
 			$client = Client::where('email', $email)->first();
 			$guest = Guest::where('email', $email)->first();
 
-			if (
-				($client && $client->google_id && $client->google_id !== $googleId) ||
-				($guest && $guest->google_id && $guest->google_id !== $googleId)
-			) {
-				throw new \RuntimeException('Google account does not match.');
-			}
+			// if (
+			// 	($client && $client->google_id && $client->google_id !== $googleId) ||
+			// 	($guest && $guest->google_id && $guest->google_id !== $googleId)
+			// ) {
+			// 	throw new \RuntimeException('Google account does not match.');
+			// }
 
 			if ($client) {
 				Client::where('email', $email)
