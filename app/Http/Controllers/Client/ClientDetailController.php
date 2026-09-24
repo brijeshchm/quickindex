@@ -26,7 +26,7 @@ class ClientDetailController extends Controller
 	{
 
         $newSlug = strtolower(str_replace(' ', '-', trim($slug)));   
-        $keywordMap = $this->getClientSlugMap(); // cached, in-memory
+        $keywordMap = $this->getClientSlugMap(); 
  
         $slugUrl    = $this->resolveBestCandidate($newSlug, $keywordMap);
 
@@ -258,12 +258,14 @@ class ClientDetailController extends Controller
 	 
 
 	}
-	private function getClientSlugMap(): array
-	{
-		return Cache::remember('client_slug_map', now()->addHours(6), function () {
-			return DB::table('clients')->pluck('business_slug','business_slug')->all();
-		});
-	}
+
+    private function getClientSlugMap(): array
+    {
+        return DB::table('clients')
+            ->pluck('business_slug', 'business_slug')
+            ->all();
+    }
+	
     private function resolveBestCandidate(string $inputSlug, array $slugMap): ?string
 	{
 		$tokens = array_values(array_filter(explode('-', $inputSlug), fn ($p) => $p !== ''));
