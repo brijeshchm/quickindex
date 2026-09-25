@@ -1,6 +1,19 @@
 <x-layouts.sales.app title="Vendors · Vendorflow" header="Vendors">
     <div class="space-y-5">
-        <div class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end"><div><p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a14f47]">Vendor directory</p><h1 class="mt-2 font-display text-3xl font-semibold tracking-[-0.045em]">Manage vendors</h1><p class="mt-1 text-sm text-[#718394]">Keep profiles accurate, assignments clear, and every follow-up visible.</p></div><div class="flex gap-2"><a href="{{ route('sales.vendors.export', request()->query()) }}" class="inline-flex h-10 items-center justify-center rounded-xl border border-[#d5e0e7] bg-white px-3.5 text-sm font-semibold text-[#435b6d] hover:bg-[#f6fafc]">Export CSV</a><a href="{{ route('sales.vendors.create') }}" class="inline-flex h-10 items-center justify-center rounded-xl bg-[#a14f47] px-4 text-sm font-semibold text-white hover:bg-[#8f433d]">+ Add vendor</a></div></div>
+        <div class="flex w-full items-center justify-between gap-3">
+    <p class="min-w-0 text-xs font-semibold uppercase tracking-wider text-[#a14f47] sm:tracking-[0.16em]">
+        Vendor directory
+    </p>
+
+    <a href="{{ route('sales.vendors.create') }}"
+       class="inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-[#a14f47] px-3 text-xs font-semibold text-white transition hover:bg-[#8f433d] sm:px-4 sm:text-sm">
+        <span class="text-lg leading-none">+</span>
+        <span>Add vendor</span>
+    </a>
+</div>
+
+
+
         <form method="GET" class="rounded-2xl border border-[#dfe7ec] bg-white p-4 shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
             <div class="grid gap-3 lg:grid-cols-5">
                 <label class="lg:col-span-2"><span class="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9aa9b5]">Search vendors</span><input name="search" value="{{ request('search') }}" placeholder="Name, owner, city or category..." class="h-10 w-full rounded-lg border border-[#dfe7ec] bg-[#fbfcfd] px-3 text-xs outline-none focus:border-[#315b80]"></label>

@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="rounded-2xl border border-[#dfe7ec] bg-white p-5 shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
-            <div class="flex items-center justify-between"><div><p class="text-sm font-semibold">Recent vendors</p><p class="mt-1 text-xs text-[#718394]">The latest accounts moving through your workspace.</p></div><a href="" class="text-xs font-semibold text-[#315b80] hover:text-[#a14f47]">View all vendors →</a></div>
+            <div class="flex items-center justify-between"><div><p class="text-sm font-semibold">Recent vendors</p><p class="mt-1 text-xs text-[#718394]">The latest accounts moving through your workspace.</p></div><a href="{{ url('sales/vendors') }}" class="text-xs font-semibold text-[#315b80] hover:text-[#a14f47]">View all vendors →</a></div>
             <div class="mt-5 divide-y divide-[#edf1f3]">
                 
             @forelse ($recentVendors as $vendor)

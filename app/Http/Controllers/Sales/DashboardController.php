@@ -28,13 +28,13 @@ class DashboardController extends Controller
 	public function index(Request $request)
 	{
 
- 
+ 		$sales = Auth::guard('sales')->user();
 
-		$totalClientsCount = Client::count();
+		$totalClientsCount = Client::where('created_by',$sales->id)->count();
 
-		$totalPaidClientsCount = Client::where('paid_status', '1')->count();
-		$totalRegClientsThisMonth = Client::where('paid_status', '1')->whereMonth('created_at', '=', date('m'))->count();
-		$totalPendingRenewals = Client::where('paid_status', '0')->count();
+		$totalPaidClientsCount = Client::where('created_by',$sales->id)->where('paid_status', '1')->count();
+		$totalRegClientsThisMonth = Client::where('created_by',$sales->id)->where('paid_status', '1')->whereMonth('created_at', '=', date('m'))->count();
+		$totalPendingRenewals = Client::where('created_by',$sales->id)->where('paid_status', '0')->count();
 
 
 		$citieslists = Citieslists::all();
@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
 		return view('sales.dashboard', [
 			'summary' => $summary,
-            'recentVendors' => Client::latest()->limit(5)->get(),
+            'recentVendors' => Client::where('created_by',$sales->id)->latest()->limit(5)->get(),
 		]);
 
 
@@ -82,6 +82,8 @@ class DashboardController extends Controller
 	 */
 	public function getPaidClients(Request $request)
 	{
+
+	$sales = Auth::guard('sales')->user();
 		if ($request->ajax()) {		 
 
 			$leads = DB::table('clients');
@@ -263,6 +265,8 @@ class DashboardController extends Controller
 	public function getpendingLeadsDashboard(Request $request)
 	{
 
+
+	$sales = Auth::guard('sales')->user();
 		if ($request->ajax()) {
 			 
 			$leads = DB::table('leads as leads');	 
@@ -381,10 +385,10 @@ class DashboardController extends Controller
 		} else {
 
 
-			$totalClientsCount = Client::count();
-			$totalPaidClientsCount = Client::where('paid_status', '1')->count();
-			$totalRegClientsThisMonth = Client::where('paid_status', '1')->whereMonth('created_at', '=', date('m'))->count();
-			$totalPendingRenewals = Client::where('paid_status', '0')->count();
+			$totalClientsCount = Client::where('created_by',$sales->id)->count();
+			$totalPaidClientsCount = Client::where('created_by',$sales->id)->where('paid_status', '1')->count();
+			$totalRegClientsThisMonth = Client::where('created_by',$sales->id)->where('paid_status', '1')->whereMonth('created_at', '=', date('m'))->count();
+			$totalPendingRenewals = Client::where('created_by',$sales->id)->where('paid_status', '0')->count();
 			//$totalPendingRenewals = DB::table('clients')->sum(DB::raw('CASE WHEN ((paid_status=\'0\') || ((DATE(expired_on)<=DATE_ADD(curdate(), INTERVAL 15 DAY)))) THEN 1 ELSE 0 END'));
 
 			$Cities = DB::table('clients')

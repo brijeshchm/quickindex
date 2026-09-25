@@ -53,10 +53,10 @@ class Client extends Model
         return $query->when($search, function (Builder $query, string $search): void {
             $query->where(function (Builder $query) use ($search): void {
                 $query->where('business_name', 'like', "%{$search}%")
-                    ->orWhere('owner_name', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('city', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%");
+                    ->orWhere('business_slug', 'like', "%{$search}%");
             });
         });
     }

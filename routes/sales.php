@@ -7,9 +7,9 @@ Route::get('/logout',[App\Http\Controllers\Auth\AuthSalesController::class,'logo
 Route::get('/dashboard',[App\Http\Controllers\Sales\DashboardController::class, 'index'])->name('dashboard');
 
 
-  Route::get('/vendors/export', [VendorController::class, 'export'])->name('vendors.export');
+    Route::get('/vendors/export', [VendorController::class, 'export'])->name('vendors.export');
     Route::patch('/vendors/{vendor}/status', [VendorController::class, 'toggleStatus'])
-        ->name('vendors.status');
+    ->name('vendors.status');
     Route::resource('vendors', VendorController::class)->except(['show']);
 
 

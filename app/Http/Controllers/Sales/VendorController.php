@@ -11,6 +11,7 @@ use App\Models\Banksdetails;
 use App\Models\ClientCategory;
 use App\Models\ParentCategory;
 use App\Models\Occupation;
+use App\Models\Discussions;
 use App\Models\Keyword;
 use App\Models\AssignedClientCategory;
 use Illuminate\Http\RedirectResponse;
@@ -18,17 +19,19 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use DB;
+use Auth;
 class VendorController extends Controller
 {
     public function index(Request $request): View
     {
 
+		$sales = Auth::guard('sales')->user();
+ 
     $vendors = Client::query()
             ->search($request->string('search')->toString())
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')->toString()))
-            ->when($request->filled('city'), fn ($query) => $query->where('city', $request->string('city')->toString()))
-            ->when($request->filled('category'), fn ($query) => $query->where('category', $request->string('category')->toString()))
-            ->when($request->filled('sales_executive'), fn ($query) => $query->where('sales_executive', $request->string('sales_executive')->toString()))
+            ->when($request->filled('city'), fn ($query) => $query->where('city', $request->string('city')->toString()))    
+            ->where('created_by',$sales->id)        
             ->latest()
             ->paginate(15)
             ->withQueryString();
@@ -46,11 +49,18 @@ class VendorController extends Controller
 
     public function create(): View
     {
- 
+
+        $sales = Auth::guard('sales')->user();
+        $citylist = Citieslists::all();
+        $statesis = State::get();     
+
+
         return view('sales.vendors.edit', [
             'vendor' => new Client(['status' => 'pending']),
-            'tabVendors' => Client::query()->latest()->limit(12)->get(['id', 'business_name', 'status']),
+            'tabVendors' => Client::query()->latest()->limit(12)->where('created_by',$sales->id)->get(['id', 'business_name', 'status']),
             'isCreating' => true,
+            'citylist' => $citylist,
+            'statesis' => $statesis,             
         ]);
     }
 
@@ -67,12 +77,13 @@ class VendorController extends Controller
     {
 
    
-   
+         $sales = Auth::guard('sales')->user();
 
 
     $citylist = Citieslists::all();
     $clientCategories = ClientCategory::all();
     $parentCategory = ParentCategory::all();
+    $discussions = Discussions::where('client_id',$sales->id)->get();
 
 	$kwds = DB::table('assigned_kwds')
 				->join('citylists', 'assigned_kwds.city_id', '=', 'citylists.id')
@@ -111,7 +122,7 @@ class VendorController extends Controller
 					->where('assigned_kwds.client_id', $vendor->id);
 			})->get();
 
-        return view('sales.vendors.edit', ['vendor' => $vendor, 'kwds' => $kwds, 'request' => $request, 'distinctCities' => $distinctCities, 'clientCategories' => $clientCategories, 'assignedClientCategories' => $assignedClientCategories, 'citylist' => $citylist, 'parentCategory' => $parentCategory, 'moderesults' => $moderesults, 'statesis' => $statesis, 'occupations' => $occupations, 'keywordlist' => $keywordlists, 'isCreating' => true,]);
+        return view('sales.vendors.edit', ['vendor' => $vendor,'discussions'=>$discussions, 'kwds' => $kwds, 'request' => $request, 'distinctCities' => $distinctCities, 'clientCategories' => $clientCategories, 'assignedClientCategories' => $assignedClientCategories, 'citylist' => $citylist, 'parentCategory' => $parentCategory, 'moderesults' => $moderesults, 'statesis' => $statesis, 'occupations' => $occupations, 'keywordlist' => $keywordlists, 'isCreating' => true,]);
     }
 
     public function update(Request $request, Client $vendor): RedirectResponse
@@ -130,6 +141,8 @@ class VendorController extends Controller
 
     public function toggleStatus(Client $vendor): RedirectResponse
     {
+
+    dd($vendor);
         $vendor->update([
             'status' => $vendor->status === 'active' ? 'inactive' : 'active',
         ]);
@@ -142,30 +155,24 @@ class VendorController extends Controller
         $vendors = Client::query()
             ->search($request->string('search')->toString())
             ->latest()
-            ->get(['id', 'business_name', 'owner_name', 'email', 'mobile', 'city', 'category', 'status', 'sales_executive', 'created_at']);
+            ->get(['id', 'business_name', 'first_name', 'email', 'mobile', 'city','created_at']);
 
         $rows = collect([[
             'Vendor ID',
-            'Business Name',
-            'Owner Name',
+            'Business Name',           
             'Email',
             'Mobile',
-            'City',
-            'Category',
-            'Status',
-            'Sales Executive',
+            'City',            
             'Created Date',
         ]])
             ->merge($vendors->map(fn (Client $vendor): array => [
                 $vendor->id,
-                $vendor->business_name,
-                $vendor->owner_name,
+                $vendor->business_name,                
                 $vendor->email,
                 $vendor->mobile,
                 $vendor->city,
-                $vendor->category,
-                $vendor->status,
-                $vendor->sales_executive,
+               
+               
                 $vendor->created_at?->toDateString(),
             ]));
 
@@ -184,7 +191,7 @@ class VendorController extends Controller
     {
         return $request->validate([
             'business_name' => ['required', 'string', 'max:160'],
-            'owner_name' => ['required', 'string', 'max:120'],
+         
             'email' => ['required', 'email', 'max:160'],
             'mobile' => ['required', 'string', 'max:30'],
             'alternate_mobile' => ['nullable', 'string', 'max:30'],
