@@ -437,7 +437,7 @@
                         <label for="sirName" class="{{ $labelClass }}">Title *</label>
                         <select id="sirName" name="sirName" class="{{ $inputClass }} auto-save-field">
                             <option value="">Select title</option>
-                            @foreach(['Ms', 'Mr', 'Mrs'] as $title)
+                            @foreach(['Ms', 'Mr', 'Mrs','Dr','Miss'] as $title)
                                 <option value="{{ $title }}"
                                     @selected(old('sirName', $vendor?->sirName) === $title)>
                                     {{ $title }}

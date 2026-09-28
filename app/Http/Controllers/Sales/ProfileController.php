@@ -16,6 +16,7 @@ use DB;
 use Mail;
 use Excel;
 use session;
+use Str;
 use App\Http\Controllers\SitemapsController as SMC;
 use App\Models\PaymentHistory;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ use App\Models\Keyword;
 use App\Models\LeadFollowUp;
 use App\Models\Status;
 use App\Models\AssignedLead;
+use Illuminate\Validation\ValidationException;
 use App\Models\AssigneddArea;
 use App\Models\Citieslists;
 use App\Models\AssignedZone;
@@ -48,6 +50,7 @@ class ProfileController extends Controller
 	) {
 		$this->clientCommonService = $clientCommonService;
 	}
+
 
 	public function profileInfo(Request $request)
 	{
@@ -174,6 +177,112 @@ class ProfileController extends Controller
 	}
 
  
+
+public function vendorRegister(Request $request)
+{
+    $salesUser = auth('sales')->user();
+    abort_unless($salesUser, 403);
+ 
+    // Attached form submits citylists.id, not the city name.
+    $validated = $request->validate([
+        'business_name' => ['required', 'string', 'max:255'],
+        'first_name'    => ['nullable', 'string', 'max:100'],
+        'last_name'     => ['nullable', 'string', 'max:100'],
+        'email'         => ['required', 'email', 'max:255'],
+        'mobile'        => [
+            'required',
+            'regex:/^[1-9][0-9]{9}$/',
+            Rule::unique('clients', 'mobile'),
+        ],
+        'city'          => [
+            'required',
+            'integer',
+            Rule::exists('citylists', 'id'),
+        ],
+    ], [
+        'mobile.regex' => 'Enter a valid 10-digit mobile number that does not start with 0.',
+    ]);
+
+    $city = DB::table('citylists')
+        ->where('id', $validated['city'])
+        ->firstOrFail();
+
+    $businessName = trim(
+        preg_replace('/\s+/', ' ', $validated['business_name'])
+    );
+
+    // Match the actual value stored in clients.city.
+    $duplicateBusiness = Client::where('business_name', $businessName)
+        ->where('city', $city->city)
+        ->exists();
+
+    if ($duplicateBusiness) {
+        throw ValidationException::withMessages([
+            'business_name' => 'This business name is already registered in the selected city.',
+        ]);
+    }
+
+    $baseSlug = Str::slug($businessName);
+
+    if ($baseSlug === '') {
+        throw ValidationException::withMessages([
+            'business_name' => 'Enter a valid business name.',
+        ]);
+    }
+
+    $slug = $baseSlug;
+    $suffix = 2;
+
+    while (Client::where('business_slug', $slug)->exists()) {
+        $slug = $baseSlug . '-' . $suffix++;
+    }
+
+    // Generate the password only if your vendor login needs it.
+    // Deliver it through your existing secure invitation/reset flow.
+    $temporaryPassword = Str::random(16);
+
+    $client = DB::transaction(function () use (
+        $validated,
+        $salesUser,
+        $businessName,
+        $city,
+        $slug,
+        $temporaryPassword
+    ) {
+        $client = new Client;
+
+        $client->business_name = $businessName;
+        $client->business_slug = $slug;
+        $client->first_name = trim($validated['first_name'] ?? '');
+        $client->last_name = trim($validated['last_name'] ?? '');
+        $client->email = $validated['email'];
+        $client->mobile = $validated['mobile'];
+
+        $client->city_id = $city->id;
+        $client->city = $city->city;
+		$pass = rand(000001, 999999);
+		$client->password = bcrypt($pass);
+       
+        $client->max_kw = 999;
+        $client->client_type = 'gold';
+        $client->active_status = '1';
+        $client->created_by = $salesUser->id;
+
+        $client->save();
+
+        $paddedId = str_pad((string) $client->id, 4, '0', STR_PAD_LEFT);
+        $cityPrefix = strtoupper(substr($city->city, 0, 2));
+
+        $client->username = $cityPrefix . $paddedId;
+        $client->save();
+
+        return $client;
+    });
+
+    return redirect()
+        ->route('sales.vendors.index')
+        ->with('success_msg', 'Business registered successfully.');
+}
 
 public function saveBusinessSocial(Request $request)
 {

@@ -60,9 +60,9 @@ class VendorController extends Controller
         $statesis = State::get();     
 
 
-        return view('sales.vendors.edit', [
+        return view('sales.vendors.create', [
             'vendor' => new Client(['status' => 'pending']),
-            'tabVendors' => Client::query()->latest()->limit(12)->where('created_by',$sales->id)->get(['id', 'business_name', 'status']),
+            'tabVendors' => Client::query()->latest()->limit(12)->where('created_by',$sales->id)->get(['id', 'business_name', 'active_status']),
             'isCreating' => true,
             'citylist' => $citylist,
             'statesis' => $statesis,             
@@ -956,6 +956,6 @@ class VendorController extends Controller
         return response()->json($payments);
     }
 
-    
+
 
 }
