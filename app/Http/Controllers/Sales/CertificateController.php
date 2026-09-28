@@ -66,7 +66,7 @@ class CertificateController extends Controller
 	public function autoSaveCertificate(Request $request)
 	{
 
-
+// dd($request->all());
 
 		$validator = Validator::make($request->all(), [
 
@@ -286,6 +286,39 @@ class CertificateController extends Controller
 
 
 	}
+
+
+	public function certificateDel($slug, $id)
+	{
+
+		$delet_data = Client::findOrFail($id);
+// dd($delet_data);
+		$client = Client::find($id);
+
+		if ($delet_data->$slug != '') {
+			$image = json_decode($delet_data->$slug);
+
+			$large = '' . $image->large->src;
+			if (!empty($image->thumbnail->src)) {
+				$thumbnail = '' . $image->thumbnail->src;
+				if (file_exists($thumbnail)) {
+					unlink($thumbnail);
+				}
+			}
+			if (file_exists($large)) {
+				unlink($large);
+			}
+		}
+
+		$edit_data = array($slug => "", );
+		$del = Client::where('id', $id)->update($edit_data);
+		return redirect('sales/vendors/'.$id.'/edit?section=certificates');
+
+		 
+	}
+
+
+
 
 	public function getBusinessAward(Request $request)
 	{
@@ -618,32 +651,7 @@ class CertificateController extends Controller
 		return $finalName;
 	}
 
-	public function certificateDel($slug, $id)
-	{
-
-		$delet_data = Client::findOrFail($id);
-
-		$client = Client::find($id);
-
-		if ($delet_data->$slug != '') {
-			$image = json_decode($delet_data->$slug);
-
-			$large = '' . $image->large->src;
-			if (!empty($image->thumbnail->src)) {
-				$thumbnail = '' . $image->thumbnail->src;
-				if (file_exists($thumbnail)) {
-					unlink($thumbnail);
-				}
-			}
-			if (file_exists($large)) {
-				unlink($large);
-			}
-		}
-
-		$edit_data = array($slug => "", );
-		$del = Client::where('id', $id)->update($edit_data);
-		return redirect('business/profile/certs');
-	}
+	 
 
 	public function awardDel($slug, $id)
 	{
@@ -669,8 +677,8 @@ class CertificateController extends Controller
 
 		$edit_data = array($slug => "", );
 		$del = Client::where('id', $id)->update($edit_data);
-
-		return redirect('business/profile/awards');
+		return redirect('sales/vendors/'.$id.'/edit?section=awards');
+		 
 
 	}
 
@@ -775,7 +783,7 @@ public function saveBusinessRecentActivity(Request $request)
         $client->save();
         return response()->json([
             'status' => 1,
-            'msg'    => 'Updated successfully!',
+            'msg'    => 'Recent successfully!',
         ], 200);
     } catch (\Exception $e) {
         \Log::error('saveBusinessRecentActivity error: ' . $e->getMessage());
@@ -832,17 +840,7 @@ protected function deleteOldImage($jsonString)
 
 		$edit_data = array($slug => "", );
 		$del = Client::where('id', $id)->update($edit_data);
-		if($del){
-   			return response()->json([
-            'status' => true,
-            'msg'    => 'Delete successfully!',
-        ], 200);
-		}else{
-			return response()->json([
-            'status' => false,
-            'msg'    => 'Not Delete successfully!',
-        ], 200);
-		}
+		return redirect('sales/vendors/'.$id.'/edit?section=recent-activity');
 
 	}
 

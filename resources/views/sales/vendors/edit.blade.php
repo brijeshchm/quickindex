@@ -2160,7 +2160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </div>
                         </div>
 
-                        {{-- Input हमेशा रखें, ताकि saved image replace भी हो सके --}}
+                     
                         <input
                             id="gallery-{{ $fieldName }}"
                             type="file"
@@ -2184,7 +2184,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 aria-label="Remove image {{ $slot }}"
                             >
                                 <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
-                                Remove
+                                
                             </button>
                         </div>
                     </div>
@@ -2206,576 +2206,255 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     </form>
 </section>
+ 
+<section x-show="activeSection === 'certificates'" x-cloak>
+    @php
+        $certificates = [
+            ['field' => 'pan_certificate',    'number' => 'pan_no',  'label' => 'PAN certificate'],
+            ['field' => 'iso_certificate',    'number' => 'iso_no',  'label' => 'ISO certificate'],
+            ['field' => 'gst_certificate',    'number' => 'gst_no',  'label' => 'GST certificate'],
+            ['field' => 'cin_certificate',    'number' => 'cin_no',  'label' => 'CIN certificate'],
+            ['field' => 'msme_certificate',   'number' => 'msme_no', 'label' => 'MSME certificate'],
+            ['field' => 'coi_certificate',    'number' => 'coi_no',  'label' => 'Certificate of Incorporation'],
+            ['field' => 'other_certificate1', 'number' => null,     'label' => 'Other certificate 1'],
+            ['field' => 'other_certificate2', 'number' => null,     'label' => 'Other certificate 2'],
+            ['field' => 'other_certificate3', 'number' => null,     'label' => 'Other certificate 3'],
+        ];
 
-<!--            
-           <section
-                x-show="activeSection === 'gallery'"
-                x-cloak
-            >
+        $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
+    @endphp
 
+    <form
+        id="certificateForm"
+        action="{{ route('sales.business.certificate') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        data-auto-save
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+    >
+        @csrf
 
-        @php
-            $pictures = [];
+        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="business_id" value="{{ $vendor->id }}">
 
-            if (!empty($vendor?->pictures)) {
-                $decoded = @unserialize($vendor->pictures, ['allowed_classes' => false]);
-                $pictures = is_array($decoded) ? $decoded : [];
-            }
-        @endphp
+        <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+            <h2 class="text-lg font-bold text-slate-900">
+                Business certificates
+            </h2>
+            <p class="mt-1 text-sm text-slate-500">
+                Add registration details and upload certificate images.
+            </p>
+        </div>
 
-        <form
-        data-image-dropzone
-            id="uploadGalleryform"
-            action="{{ route('sales.gallery.upload') }}"
-            method="POST"
-            data-auto-save
-            enctype="multipart/form-data"
-            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-        >
-            @csrf
-            <input type="hidden" name="client_id" value="{{ $vendor->id }}">
-            <input type="hidden" name="business_id" value="{{ $vendor->id }}">
-            <input type="hidden" name="upload_pics" value="upload_pics">
+        <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7 xl:grid-cols-3">
+            @foreach($certificates as $certificate)
+                @php
+                    $field = $certificate['field'];
+                    $numberField = $certificate['number'];
 
-            <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
-                <h2 class="text-lg font-bold text-slate-900">Business gallery</h2>
-                <p class="mt-1 text-sm text-slate-500">
-                    Upload up to 30 business images.
-                </p>
-            </div>
+                    $fileData = json_decode(data_get($vendor, $field) ?? '{}', true);
+                    $fileData = is_array($fileData) ? $fileData : [];
 
-            <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
-        @for($i = 0; $i < 30; $i++)
-            @php
-                $fieldName = 'image' . ($i + 1);
-                $imageSrc = data_get($pictures, "$i.large.src");
-            @endphp
+                    $path = data_get($fileData, 'large.src');
 
-            <div
-                id="{{ $fieldName }}"
-                class="rounded-xl border border-slate-200 bg-slate-50 p-4"
-            >
-                <div class="mb-3 flex items-center justify-between">
-                    <label
-                        for="gallery-{{ $fieldName }}"
-                        class="text-sm font-semibold text-slate-800"
-                    >
-                        Image {{ $i + 1 }}
-                    </label>
+                    // Show previews only for supported image files.
+                    $extension = strtolower(pathinfo((string) $path, PATHINFO_EXTENSION));
+                    $hasImage = $path && in_array(
+                        $extension,
+                        ['jpg', 'jpeg', 'png', 'webp'],
+                        true
+                    );
 
-                    <span class="text-xs text-slate-500">
-                        {{ $imageSrc ? 'Uploaded' : 'Empty' }}
-                    </span>
-                </div>
+                    $imageUrl = $hasImage
+                        ? asset(ltrim($path, '/'))
+                        : '';
+                @endphp
 
-                {{-- Keep this wrapper for your existing remove-thumbnail JS --}}
-                <span class="img-help block">
-                    @if($imageSrc)
-                        <img
-                            data-image-preview
-                            src="{{ asset(ltrim($imageSrc, '/')) }}"
-                            alt="Gallery image {{ $i + 1 }}"
-                            loading="lazy"
-                            class="h-32 w-full rounded-lg border border-slate-200 bg-white object-cover"
-                        >
+                <div class="flex flex-col rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <h3 class="text-sm font-bold text-slate-900">
+                        {{ $certificate['label'] }}
+                    </h3>
 
-                        <button
-                            type="button"
-                            class="remove-thumbnail mt-3 inline-flex items-center gap-2 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100"
-                            data-srno="{{ $fieldName }}"
-                            aria-label="Remove image {{ $i + 1 }}"
-                        >
-                             <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
-                        </button>
-                    @else
-                        <label
-                            for="gallery-{{ $fieldName }}"
-                            class="flex h-32 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white text-center hover:border-blue-400 hover:bg-blue-50"
-                        >
-                            <span class="text-2xl text-slate-400">+</span>
-                            <span class="mt-1 text-xs font-medium text-slate-600">
-                                Choose an image
-                            </span>
-                        </label>
-
-                        <input 
-                            id="gallery-{{ $fieldName }}"
-                            type="file"
-                            name="{{ $fieldName }}"
-                            accept=".png,.jpg,.jpeg,.webp,.svg"
-                            class="fff mt-3 block w-full text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-100 file:px-3 file:py-2 file:font-semibold file:text-blue-700 hover:file:bg-blue-200 auto-save-field"
-                        >
-                    @endif
-                </span>
-
-                @error($fieldName)
-                    <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-        @endfor
-    </div>
-
-    <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
-        <button
-            type="submit"
-            class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-amber-400 sm:w-auto"
-        >
-            Save gallery images
-        </button>
-    </div>
-</form>
-
-           </section> -->
-
-
-           <section
-                x-show="activeSection === 'certificates'"
-                x-cloak
-            >
-@php
-    
-
-    $certificates = [
-        ['field' => 'pan_certificate',  'number' => 'pan_no',  'label' => 'PAN certificate'],
-        ['field' => 'iso_certificate',  'number' => 'iso_no',  'label' => 'ISO certificate'],
-        ['field' => 'gst_certificate',  'number' => 'gst_no',  'label' => 'GST certificate'],
-        ['field' => 'cin_certificate',  'number' => 'cin_no',  'label' => 'CIN certificate'],
-        ['field' => 'msme_certificate', 'number' => 'msme_no', 'label' => 'MSME certificate'],
-        ['field' => 'coi_certificate',  'number' => 'coi_no',  'label' => 'Certificate of Incorporation'],
-        ['field' => 'other_certificate1', 'number' => null, 'label' => 'Other certificate 1'],
-        ['field' => 'other_certificate2', 'number' => null, 'label' => 'Other certificate 2'],
-        ['field' => 'other_certificate3', 'number' => null, 'label' => 'Other certificate 3'],
-    ];
-
-    $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
-@endphp
-
-<form
-    id="certificateForm"
-    class="certificate_form overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    action="{{ route('sales.business.certificate') }}"
-    method="POST"
-    data-auto-save
-    enctype="multipart/form-data"
->
-    @csrf
-    <input type="hidden" name="client_id" value="{{ $vendor->id }}">
-    <input type="hidden" name="business_id" value="{{ $vendor?->id }}">
-
-    <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
-        <h2 class="text-lg font-bold text-slate-900">Business certificates</h2>
-        <p class="mt-1 text-sm text-slate-500">
-            Add registration details and upload supporting documents.
-        </p>
-    </div>
-
-    <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7 xl:grid-cols-3">
-        @foreach($certificates as $certificate)
-            @php
-                $field = $certificate['field'];
-                $numberField = $certificate['number'];
-
-                $fileData = json_decode(data_get($vendor, $field) ?? '{}', true);
-                $fileData = is_array($fileData) ? $fileData : [];
-
-                $path = data_get($fileData, 'large.src');
-                $fileUrl = $path ? asset(ltrim($path, '/')) : null;
-                $isPdf = $path && strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'pdf';
-            @endphp
-
-            <section class="flex flex-col rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <h3 class="text-sm font-bold text-slate-900">
-                    {{ $certificate['label'] }}
-                </h3>
-
-                @if($numberField)
-                    <div class="mt-4">
-                        <label
-                            for="{{ $numberField }}"
-                            class="block text-sm font-semibold text-slate-700"
-                        >
-                            {{ strtoupper(str_replace('_no', '', $numberField)) }} number
-                        </label>
-
-                        <input
-                            id="{{ $numberField }}"
-                            type="text"
-                            name="{{ $numberField }}"
-                            value="{{ old($numberField, data_get($vendor, $numberField)) }}"
-                            placeholder="Enter {{ $certificate['label'] }} number"
-                            class="{{ $inputClass }}"
-                        >
-
-                        @error($numberField)
-                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                @endif
-
-                <div class="mt-4 flex-1">
-                    @if($fileUrl)
-                        <div class="images-div overflow-hidden rounded-lg border border-slate-200 bg-white">
-                            @if($isPdf)
-                                <div class="flex h-36 items-center justify-center bg-red-50 text-sm font-bold text-red-700">
-                                    PDF document
-                                </div>
-                            @else
-                                <img
-                                    src="{{ $fileUrl }}"
-                                    alt="{{ $certificate['label'] }}"
-                                    loading="lazy"
-                                    class="h-36 w-full object-contain"
-                                >
-                            @endif
-                        </div>
-
-                        <div class="mt-3 flex flex-wrap gap-2">
-                            <a
-                                href="{{ $fileUrl }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="inline-flex items-center rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100"
+                    @if($numberField)
+                        <div class="mt-4">
+                            <label
+                                for="{{ $numberField }}"
+                                class="block text-sm font-semibold text-slate-700"
                             >
-                                View document
-                            </a>
+                                {{ strtoupper(str_replace('_no', '', $numberField)) }} number
+                            </label>
 
-                            @if($vendor?->id)
-                                <a
-                                    href="{{ url('developer/clients/certificate/'.$field.'/'.$vendor->id) }}"
-                                    class="inline-flex items-center rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
-                                >
-                                    Remove
-                                </a>
-                            @endif
+                            <input
+                                id="{{ $numberField }}"
+                                type="text"
+                                name="{{ $numberField }}"
+                                value="{{ old($numberField, data_get($vendor, $numberField)) }}"
+                                placeholder="Enter {{ $certificate['label'] }} number"
+                                class="{{ $inputClass }} auto-save-field"
+                            >
+
+                            @error($numberField)
+                                <p class="mt-1 text-xs text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
-                    @else
-                        <label
-                            for="{{ $field }}"
-                            class="block text-sm font-semibold text-slate-700"
+                    @endif
+
+                    <div class="mt-4 flex flex-1 flex-col">
+                        
+                        <div
+                            data-certificate-dropzone="{{ $field }}"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Choose or drop {{ $certificate['label'] }}"
+                            class="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white p-4 text-center transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                            Upload document
-                        </label>
+                            <img
+                                data-certificate-image
+                                src="{{ $imageUrl }}"
+                                alt="{{ $certificate['label'] }} preview"
+                                class="max-h-32 max-w-full object-contain {{ $hasImage ? '' : 'hidden' }}"
+                            >
+
+                            <div
+                                data-certificate-empty
+                                class="{{ $hasImage ? 'hidden' : '' }}"
+                            >
+                                <span class="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                    <i data-lucide="cloud-upload" class="h-6 w-6"></i>
+                                </span>
+                                <span class="block text-xs font-semibold text-slate-700">
+                                    Click or drop image
+                                </span>
+                            </div>
+                        </div>
 
                         <input
                             id="{{ $field }}"
                             type="file"
                             name="{{ $field }}"
-                            accept=".jpg,.jpeg,.png,.webp,.pdf"
-                            class="mt-2 block w-full rounded-xl border border-slate-300 bg-white text-xs text-slate-700 file:mr-3 file:border-0 file:bg-blue-50 file:px-3 file:py-2.5 file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-                        >
-                    @endif
-
-                    @error($field)
-                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </section>
-        @endforeach
-    </div>
-
-    <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
-        <button
-            type="submit"
-            class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
-        >
-            Save certificates
-        </button>
-    </div>
-</form>
-
-
-
-           </section>
-
-
-           <section
-                x-show="activeSection === 'awards'"
-                x-cloak
-            >
-
-@php
-     
-
-    $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
-@endphp
-
-<form
-    id="awardFrom"
-    class="award_form overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    action="{{ route('sales.save-award-auto') }}"
-    method="POST"
-    data-auto-save
-    enctype="multipart/form-data"
->
-    @csrf
-    <input type="hidden" name="client_id" value="{{ $vendor->id }}">
-    <input type="hidden" name="business_id" value="{{ $vendor?->id }}">
-
-    <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
-        <h2 class="text-lg font-bold text-slate-900">Business awards</h2>
-        <p class="mt-1 text-sm text-slate-500">
-            Add award names and upload their supporting images or documents.
-        </p>
-    </div>
-
-    <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7 xl:grid-cols-3">
-        @for($i = 1; $i <= 9; $i++)
-            @php
-                $nameField = 'award_name' . $i;
-                $imageField = 'award_img' . $i;
-
-                $awardData = json_decode(
-                    data_get($vendor, $imageField) ?? '{}',
-                    true
-                );
-
-                $awardData = is_array($awardData) ? $awardData : [];
-                $imagePath = data_get($awardData, 'large.src');
-                $imageUrl = $imagePath ? asset(ltrim($imagePath, '/')) : null;
-                $isPdf = $imagePath
-                    && strtolower(pathinfo($imagePath, PATHINFO_EXTENSION)) === 'pdf';
-            @endphp
-
-            <section class="flex flex-col rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <h3 class="text-sm font-bold text-slate-900">
-                    Award {{ $i }}
-                </h3>
-
-                <div class="mt-4">
-                    <label
-                        for="{{ $nameField }}"
-                        class="block text-sm font-semibold text-slate-700"
-                    >
-                        Award name
-                    </label>
-
-                    <input
-                        id="{{ $nameField }}"
-                        type="text"
-                        name="{{ $nameField }}"
-                        value="{{ old($nameField, data_get($vendor, $nameField)) }}"
-                        placeholder="Enter award name"
-                        class="{{ $inputClass }}"
-                    >
-
-                    @error($nameField)
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="mt-4 flex-1">
-                    @if($imageUrl)
-                        <div class="images-div overflow-hidden rounded-lg border border-slate-200 bg-white">
-                            @if($isPdf)
-                                <div class="flex h-36 items-center justify-center bg-red-50 text-sm font-bold text-red-700">
-                                    PDF document
-                                </div>
-                            @else
-                                <img
-                                    src="{{ $imageUrl }}"
-                                    alt="Award {{ $i }}"
-                                    loading="lazy"
-                                    class="h-36 w-full object-contain"
-                                >
-                            @endif
-                        </div>
-
-                        <div class="mt-3 flex flex-wrap gap-2">
-                            <a
-                                href="{{ $imageUrl }}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100"
-                            >
-                                View
-                            </a>
-
-                            @if($vendor?->id)
-                                <a
-                                    href="{{ url('developer/clients/award/'.$imageField.'/'.$vendor->id) }}"
-                                    class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
-                                >
-                                    Remove
-                                </a>
-                            @endif
-                        </div>
-                    @else
-                        <label
-                            for="{{ $imageField }}"
-                            class="block text-sm font-semibold text-slate-700"
-                        >
-                            Upload award file
-                        </label>
-
-                        <input
-                            id="{{ $imageField }}"
-                            type="file"
-                            name="{{ $imageField }}"
-                            accept=".jpg,.jpeg,.png,.webp,.pdf"
-                            class="mt-2 block w-full rounded-xl border border-slate-300 bg-white text-xs text-slate-700 file:mr-3 file:border-0 file:bg-blue-50 file:px-3 file:py-2.5 file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-                        >
-                    @endif
-
-                    @error($imageField)
-                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </section>
-        @endfor
-    </div>
-
-    <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
-        <button
-            type="submit"
-            class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
-        >
-            Save awards
-        </button>
-    </div>
-</form>
-
-
-           </section>
-           <section
-                x-show="activeSection === 'recent-activity'"
-                x-cloak
-            >
-
-@php
-    
-
-    $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
-@endphp
-
-<form
-    id="recentActivityFrom"
-    class="recent_form overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    data-auto-save
-     action="{{ route('sales.recent.activity') }}"
-    method="POST"
-    enctype="multipart/form-data"
->
-    @csrf
-
-    <input type="hidden" name="business_id" value="{{ $vendor?->id }}">
-
-    <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
-        <h2 class="text-lg font-bold text-slate-900">Recent activities</h2>
-        <p class="mt-1 text-sm text-slate-500">
-            Add up to six activities with an image, title and description.
-        </p>
-    </div>
-
-    <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7 xl:grid-cols-3">
-        @for($i = 1; $i <= 6; $i++)
-            @php
-                $imgField = "recent_img{$i}";
-                $nameField = "recent_name{$i}";
-                $paraField = "recent_paragraph{$i}";
-
-                $imageData = json_decode(
-                    data_get($vendor, $imgField) ?? '{}',
-                    true
-                );
-
-                $imageData = is_array($imageData) ? $imageData : [];
-                $imagePath = data_get($imageData, 'large.src');
-                $imageUrl = $imagePath ? asset(ltrim($imagePath, '/')) : null;
-
-                $isPdf = $imagePath
-                    && strtolower(pathinfo($imagePath, PATHINFO_EXTENSION)) === 'pdf';
-
-                $isRequired = $i === 1;
-            @endphp
-
-            <section class="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                {{-- Card heading --}}
-                <div class="flex items-center gap-3 border-b border-slate-200 px-4 py-3">
-                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-xs font-bold text-blue-700">
-                        {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
-                    </span>
-
-                    <h3 class="text-sm font-bold text-slate-900">
-                        Recent activity {{ $i }}
-                        @if($isRequired)
-                            <span class="text-red-600">*</span>
-                        @endif
-                    </h3>
-                </div>
-
-                <div class="flex-1 space-y-4 p-4">
-                    {{-- Existing image or upload --}}
-                    @if($imageUrl)
-                        <div class="relative overflow-hidden rounded-xl border border-slate-200 bg-white">
-                            @if($isPdf)
-                                <div class="flex h-40 items-center justify-center bg-red-50 text-sm font-bold text-red-700">
-                                    PDF document
-                                </div>
-                            @else
-                                <img
-                                    src="{{ $imageUrl }}"
-                                    alt="Recent activity {{ $i }}"
-                                    loading="lazy"
-                                    class="h-40 w-full object-cover"
-                                >
-                            @endif
-
-                            <div class="flex flex-wrap gap-2 border-t border-slate-100 p-3">
-                                <a
-                                    href="{{ $imageUrl }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100"
-                                >
-                                    View file
-                                </a>
-
-                                @if($vendor?->id)
-                                    <a
-                                        href="{{ url("developer/clients/recent/{$imgField}/{$vendor->id}") }}"
-                                        onclick="return confirm('Remove this file?')"
-                                        class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
-                                    >
-                                        Remove
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    @else
-                        <label
-                            for="{{ $imgField }}_input"
-                            class="flex h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white px-3 text-center transition hover:border-blue-400 hover:bg-blue-50"
-                        >
-                            <span class="text-3xl text-blue-500">+</span>
-                            <span class="mt-1 text-sm font-semibold text-slate-700">
-                                Click to upload
-                            </span>
-                            <span class="mt-1 text-xs text-slate-500">
-                                JPG, PNG or WEBP · max 5 MB
-                            </span>
-                        </label>
-
-                        <input
-                            id="{{ $imgField }}_input"
-                            type="file"
-                            name="{{ $imgField }}"
                             accept=".jpg,.jpeg,.png,.webp"
-                            @required($isRequired)
-                            class="preview-input block w-full text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-100 file:px-3 file:py-2 file:font-semibold file:text-blue-700 hover:file:bg-blue-200"
+                            class="auto-save-field sr-only"
                         >
-                    @endif
 
-                    @error($imgField)
-                        <p class="text-xs text-red-600">{{ $message }}</p>
-                    @enderror
+                        <p
+                            data-certificate-filename="{{ $field }}"
+                            class="mt-2 truncate text-xs text-slate-500"
+                        >
+                            JPG, PNG or WEBP · maximum 5 MB
+                        </p>
 
-                    {{-- Activity name --}}
-                    <div>
+
+                        <div class="mt-auto flex flex-wrap gap-2 pt-3">
+                            
+
+                            {{-- Old PDF records can still be removed --}}
+                            @if($path)
+                                <a
+                                    href="{{ route('sales.certificate.delete',['slug'=>$field,'id'=>$vendor->id]) }}"
+                                    onclick="return confirm('Remove this certificate?')"
+                                    class="inline-flex items-center rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+                                >
+                                      <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                                
+                                </a>
+                            @endif
+                        </div>
+
+                        @error($field)
+                            <p class="mt-2 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
+            <button
+                type="submit"
+                class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
+            >
+                Save certificates
+            </button>
+        </div>
+    </form>
+</section>
+ 
+
+ 
+
+<section x-show="activeSection === 'awards'" x-cloak>
+    @php
+        $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
+    @endphp
+
+    <form
+        id="awardForm"
+        action="{{ route('sales.save-award-auto') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        data-auto-save
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+    >
+        @csrf
+
+        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="business_id" value="{{ $vendor->id }}">
+
+        <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+            <h2 class="text-lg font-bold text-slate-900">
+                Business awards
+            </h2>
+            <p class="mt-1 text-sm text-slate-500">
+                Add award names and upload supporting images.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7 xl:grid-cols-3">
+            @for($i = 1; $i <= 9; $i++)
+                @php
+                    $nameField = 'award_name' . $i;
+                    $imageField = 'award_img' . $i;
+
+                    $awardData = json_decode(
+                        data_get($vendor, $imageField) ?? '{}',
+                        true
+                    );
+
+                    $awardData = is_array($awardData) ? $awardData : [];
+
+                    $imagePath = data_get($awardData, 'large.src');
+
+                    $extension = strtolower(
+                        pathinfo((string) $imagePath, PATHINFO_EXTENSION)
+                    );
+
+                    $hasImage = $imagePath
+                        && in_array(
+                            $extension,
+                            ['jpg', 'jpeg', 'png', 'webp'],
+                            true
+                        );
+
+                    $imageUrl = $hasImage
+                        ? asset(ltrim($imagePath, '/'))
+                        : '';
+                @endphp
+
+                <div class="flex flex-col rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <h3 class="text-sm font-bold text-slate-900">
+                        Award {{ $i }}
+                    </h3>
+
+                    <div class="mt-4">
                         <label
                             for="{{ $nameField }}"
                             class="block text-sm font-semibold text-slate-700"
                         >
-                            Activity name
+                            Award name
                         </label>
 
                         <input
@@ -2783,60 +2462,302 @@ document.addEventListener('DOMContentLoaded', function () {
                             type="text"
                             name="{{ $nameField }}"
                             value="{{ old($nameField, data_get($vendor, $nameField)) }}"
-                            placeholder="Enter activity title"
-                            @required($isRequired)
-                            class="{{ $inputClass }}"
+                            placeholder="Enter award name"
+                            class="{{ $inputClass }} auto-save-field"
                         >
 
                         @error($nameField)
-                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
                         @enderror
                     </div>
 
-                    {{-- Description --}}
-                    <div>
-                        <label
-                            for="{{ $paraField }}"
-                            class="block text-sm font-semibold text-slate-700"
+                    <div class="mt-4 flex flex-1 flex-col">
+                        <div
+                            data-certificate-dropzone="{{ $imageField }}"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Choose or drop award {{ $i }} image"
+                            class="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white p-4 text-center transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-                            Description
-                        </label>
+                            <img
+                                data-certificate-image
+                                src="{{ $imageUrl }}"
+                                alt="Award {{ $i }} preview"
+                                class="max-h-32 max-w-full object-contain {{ $hasImage ? '' : 'hidden' }}"
+                            >
 
-                        <textarea
-                            id="{{ $paraField }}"
-                            name="{{ $paraField }}"
-                            rows="3"
-                            placeholder="Briefly describe this activity"
-                            class="{{ $inputClass }}"
-                        >{{ old($paraField, data_get($vendor, $paraField)) }}</textarea>
+                            <div
+                                data-certificate-empty
+                                class="{{ $hasImage ? 'hidden' : '' }}"
+                            >
+                                <span class="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                    <i data-lucide="cloud-upload" class="h-6 w-6"></i>
+                                </span>
 
-                        @error($paraField)
-                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                <span class="block text-xs font-semibold text-slate-700">
+                                    Click or drop award image
+                                </span>
+                            </div>
+                        </div>
+
+                        {{-- Always keep the input so an existing image can be replaced --}}
+                        <input
+                            id="{{ $imageField }}"
+                            type="file"
+                            name="{{ $imageField }}"
+                            accept=".jpg,.jpeg,.png,.webp"
+                            class="auto-save-field sr-only"
+                        >
+
+                        <p
+                            data-certificate-filename="{{ $imageField }}"
+                            class="mt-2 truncate text-xs text-slate-500"
+                        >
+                            JPG, PNG or WEBP · maximum 5 MB
+                        </p>
+
+                        <div class="mt-auto flex flex-wrap gap-2 pt-3">
+                         
+
+                            {{-- Also lets you remove an older non-image file --}}
+                            @if($imagePath)
+                                <a
+                                    href="{{ route('sales.award.delete',['slug'=>$imageField,'id'=>$vendor->id]) }}"
+                                    onclick="return confirm('Remove this saved award file?')"
+                                    class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+                                >
+                                    <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                                </a>
+                            @endif
+                        </div>
+
+                        @error($imageField)
+                            <p class="mt-2 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
                         @enderror
                     </div>
                 </div>
-            </section>
-        @endfor
-    </div>
+            @endfor
+        </div>
 
-    <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
-        <button
-            type="submit"
-            class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 transition hover:bg-amber-400 sm:w-auto"
-        >
-            Save activities
-        </button>
-    </div>
-</form>
+        <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
+            <button
+                type="submit"
+                class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
+            >
+                Save awards
+            </button>
+        </div>
+    </form>
+</section>
 
 
-           </section>
+ <section x-show="activeSection === 'recent-activity'" x-cloak>
+    @php
+        $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
+    @endphp
+
+    <form
+        id="recentActivityForm"
+        action="{{ route('sales.recent.activity') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        data-auto-save
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+    >
+        @csrf
+
+        <input type="hidden" name="business_id" value="{{ $vendor->id }}">
+
+        <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+            <h2 class="text-lg font-bold text-slate-900">
+                Recent activities
+            </h2>
+            <p class="mt-1 text-sm text-slate-500">
+                Add up to six activities with an image, title and description.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7 xl:grid-cols-3">
+            @for($i = 1; $i <= 6; $i++)
+                @php
+                    $imgField = "recent_img{$i}";
+                    $nameField = "recent_name{$i}";
+                    $paraField = "recent_paragraph{$i}";
+
+                    $imageData = json_decode(
+                        data_get($vendor, $imgField) ?? '{}',
+                        true
+                    );
+
+                    $imageData = is_array($imageData) ? $imageData : [];
+                    $imagePath = data_get($imageData, 'large.src');
+
+                    $extension = strtolower(
+                        pathinfo((string) $imagePath, PATHINFO_EXTENSION)
+                    );
+
+                    $hasImage = $imagePath
+                        && in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true);
+
+                    $imageUrl = $hasImage
+                        ? asset(ltrim($imagePath, '/'))
+                        : '';
+                @endphp
+
+                <div class="flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                    <div class="flex items-center gap-3 border-b border-slate-200 px-4 py-3">
+                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-xs font-bold text-blue-700">
+                            {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
+                        </span>
+
+                        <h3 class="text-sm font-bold text-slate-900">
+                            Recent activity {{ $i }}
+                            @if($i === 1)
+                                <span class="text-red-600">*</span>
+                            @endif
+                        </h3>
+                    </div>
+
+                    <div class="flex-1 space-y-4 p-4">
+                        {{-- Dropzone --}}
+                        <div>
+                            <div
+                                data-recent-dropzone="{{ $imgField }}"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Choose or drop recent activity {{ $i }} image"
+                                class="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white p-3 text-center transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <img
+                                    data-recent-preview
+                                    src="{{ $imageUrl }}"
+                                    alt="Recent activity {{ $i }} preview"
+                                    class="max-h-36 max-w-full rounded-lg object-contain {{ $hasImage ? '' : 'hidden' }}"
+                                >
+
+                                <div
+                                    data-recent-placeholder
+                                    class="{{ $hasImage ? 'hidden' : '' }}"
+                                >
+                                    <span class="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                        <i data-lucide="image-up" class="h-6 w-6"></i>
+                                    </span>
+
+                                    <span class="block text-sm font-semibold text-slate-700">
+                                        Click or drop image
+                                    </span>
+                                </div>
+                            </div>
+
+                            {{-- Input हमेशा रखें ताकि saved image replace हो सके --}}
+                            <input
+                                id="{{ $imgField }}"
+                                type="file"
+                                name="{{ $imgField }}"
+                                accept=".jpg,.jpeg,.png,.webp"
+                                class="auto-save-field sr-only"
+                            >
+
+                            <p
+                                data-recent-file-name="{{ $imgField }}"
+                                class="mt-2 truncate text-xs text-slate-500"
+                            >
+                                JPG, PNG or WEBP · maximum 5 MB
+                            </p>
+
+                            @if($imagePath)
+                                <a
+                                    href="{{ route("sales.recent.delete",['slug'=>$imgField,'id'=>$vendor->id]) }}"
+                                    onclick="return confirm('Remove this activity image?')"
+                                    class="mt-2 inline-flex rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+                                >
+                                    <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                                </a>
+                            @endif
+
+                            @error($imgField)
+                                <p class="mt-1 text-xs text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        {{-- Activity name --}}
+                        <div>
+                            <label
+                                for="{{ $nameField }}"
+                                class="block text-sm font-semibold text-slate-700"
+                            >
+                                Activity name
+                            </label>
+
+                            <input
+                                id="{{ $nameField }}"
+                                type="text"
+                                name="{{ $nameField }}"
+                                value="{{ old($nameField, data_get($vendor, $nameField)) }}"
+                                placeholder="Enter activity title"
+                                class="{{ $inputClass }} auto-save-field"
+                            >
+
+                            @error($nameField)
+                                <p class="mt-1 text-xs text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        {{-- Description --}}
+                        <div>
+                            <label
+                                for="{{ $paraField }}"
+                                class="block text-sm font-semibold text-slate-700"
+                            >
+                                Description
+                            </label>
+
+                            <textarea
+                                id="{{ $paraField }}"
+                                name="{{ $paraField }}"
+                                rows="3"
+                                placeholder="Briefly describe this activity"
+                                class="{{ $inputClass }} auto-save-field"
+                            >{{ old($paraField, data_get($vendor, $paraField)) }}</textarea>
+
+                            @error($paraField)
+                                <p class="mt-1 text-xs text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            @endfor
+        </div>
+
+        <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
+            <button
+                type="submit"
+                class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
+            >
+                Save activities
+            </button>
+        </div>
+    </form>
+</section>
+
+
+
            <section
                 x-show="activeSection === 'assigned-keywords'"
                 x-cloak
             >
 @php
-    $updateUrl = url('developer/clients/update/'.$vendor->username);
+    $updateUrl = url('developer/clients/update/'.$vendor->id);
     $currentUser = auth()->user();
 
     $canExport = $currentUser
@@ -2858,7 +2779,7 @@ document.addEventListener('DOMContentLoaded', function () {
         id="kw_form"
         name="kw_form"
         data-auto-save
-        action="{{ route('sales.keywords.add') }}"
+        action="{{ route('sales.assignKeywords.add') }}"
         method="POST"
         enctype="multipart/form-data"
         class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
@@ -2880,38 +2801,130 @@ document.addEventListener('DOMContentLoaded', function () {
             </p>
         </div>
 
-        <div class="p-5 sm:p-6">
+
+<div class="p-5 sm:p-6">
+    <label
+        for="keyword-search"
+        class="block text-sm font-semibold text-slate-700"
+    >
+        Keywords
+    </label>
+
+    <input
+        id="keyword-search"
+        type="search"
+        placeholder="Search keywords..."
+        autocomplete="off"
+        class="mt-2 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+    >
+
+    <div
+        id="keyword-options"
+        class="mt-2 max-h-64 overflow-y-auto rounded-xl border border-slate-300 bg-white p-2"
+    >
+        @forelse(($keywordlist ?? []) as $keyword)
             <label
-                for="keyword"
-                class="block text-sm font-semibold text-slate-700"
+                data-keyword-option
+                data-keyword-text="{{ mb_strtolower($keyword->keyword) }}"
+                class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-blue-50"
             >
-                Keywords
+                <input
+                    type="checkbox"
+                    name="keyword[]"
+                    value="{{ $keyword->id }}"
+                    @checked(in_array(
+                        (string) $keyword->id,
+                        array_map('strval', (array) old('keyword', [])),
+                        true
+                    ))
+                    class="keyword-checkbox h-4 w-4 shrink-0 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                >
+
+                <span>{{ $keyword->keyword }}</span>
             </label>
+        @empty
+            <p class="px-3 py-4 text-sm text-slate-500">
+                No keywords available.
+            </p>
+        @endforelse
 
-            <select
-                id="keyword"
-                name="keyword[]"
-                multiple
-                class="select2_single keyword_m mt-2 block min-h-32 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-            >
-                @foreach(($keywordlist ?? []) as $keyword)
-                    <option
-                        value="{{ $keyword->id }}"
-                        @selected(in_array(
-                            (string) $keyword->id,
-                            array_map('strval', old('keyword', [])),
-                            true
-                        ))
-                    >
-                        {{ $keyword->keyword }}
-                    </option>
-                @endforeach
-            </select>
+        <p
+            id="keyword-no-results"
+            class="hidden px-3 py-4 text-sm text-slate-500"
+        >
+            No matching keywords found.
+        </p>
+    </div>
 
-            @error('keyword')
-                <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+    <p id="keyword-selected-count" class="mt-2 text-xs text-slate-500">
+        0 keywords selected
+    </p>
+
+    @error('keyword')
+        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+    @enderror
+
+    @error('keyword.*')
+        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+    @enderror
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('kw_form');
+    const search = document.getElementById('keyword-search');
+    const count = document.getElementById('keyword-selected-count');
+    const noResults = document.getElementById('keyword-no-results');
+
+    if (!form || !search || !count || !noResults) return;
+
+    const options = Array.from(
+        form.querySelectorAll('[data-keyword-option]')
+    );
+
+    function updateCount() {
+        const selected = form.querySelectorAll(
+            '.keyword-checkbox:checked'
+        ).length;
+
+        count.textContent =
+            `${selected} keyword${selected === 1 ? '' : 's'} selected`;
+    }
+
+    search.addEventListener('input', function () {
+        const term = search.value.trim().toLocaleLowerCase();
+        let visible = 0;
+
+        options.forEach(function (option) {
+            const matches = option.dataset.keywordText.includes(term);
+            option.classList.toggle('hidden', !matches);
+
+            if (matches) visible++;
+        });
+
+        noResults.classList.toggle('hidden', visible !== 0);
+    });
+
+    form.addEventListener('change', function (event) {
+        if (event.target.matches('.keyword-checkbox')) {
+            updateCount();
+        }
+    });
+
+    form.addEventListener('submit', function (event) {
+        if (!form.querySelector('.keyword-checkbox:checked')) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            alert('Select at least one keyword.');
+        }
+    }, true);
+
+    updateCount();
+});
+</script>
+
+        
 
         <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
             {{-- Kept for existing JS that calls .reset_kw_submit --}}
@@ -2927,65 +2940,372 @@ document.addEventListener('DOMContentLoaded', function () {
     </form>
 
     {{-- Assigned keywords --}}
+
+
+
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
-            <h2 class="text-lg font-bold text-slate-900">Assigned keywords</h2>
-        </div>
+    <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+        <h2 class="text-lg font-bold text-slate-900">
+            Assigned keywords
+        </h2>
+    </div>
 
-        <div class="w-full overflow-x-auto">
-            <table
-                id="datatable-assigned-keywords"
-                class="w-full min-w-[650px] border-collapse text-left text-sm"
-            >
-                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
-                    <tr>
-                        <th class="w-12 px-4 py-3">
-                            <input
-                                id="check-all"
-                                type="checkbox"
-                                aria-label="Select all keywords"
-                                class="check-box h-4 w-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                            >
-                        </th>
-                        <th class="px-4 py-3 font-semibold">Keyword</th>
-                        <th class="px-4 py-3 font-semibold">Child category</th>
-                        <th class="px-4 py-3 font-semibold">Parent category</th>
-                        <th class="px-4 py-3 font-semibold">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100"></tbody>
-            </table>
-        </div>
-
-        @if($canExport || $canDelete)
-            <div class="flex flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:flex-row sm:justify-end sm:px-6">
-                @if($canExport)
-                    <form action="{{ $updateUrl }}" method="POST">
-                        @csrf
-                         <input type="hidden" name="client_id" value="{{ $vendor->id }}">
-                        <button
-                            type="submit"
-                            name="kw-export"
-                            value="Export"
-                            class="inline-flex min-h-10 w-full items-center justify-center rounded-xl border border-emerald-600 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 sm:w-auto"
+    <div class="w-full overflow-x-auto">
+        <table
+            id="assigned-keywords-table"
+            class="w-full min-w-[650px] border-collapse text-left text-sm"
+        >
+            <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+                <tr>
+                    <th class="w-12 px-4 py-3">
+                        <input
+                            id="keywords-check-all"
+                            type="checkbox"
+                            aria-label="Select all keywords on this page"
+                            class="h-4 w-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                         >
-                            Export
-                        </button>
-                    </form>
-                @endif
+                    </th>
+                    <th class="px-4 py-3 font-semibold">Keyword</th>
+                    <th class="px-4 py-3 font-semibold">Child category</th>
+                    <th class="px-4 py-3 font-semibold">Parent category</th>
+                    <th class="px-4 py-3 font-semibold">Action</th>
+                </tr>
+            </thead>
 
-                @if($canDelete)
-                    <button
-                        type="button"
-                        onclick="assignedKeywordController.deleteSelectedAssignedKwds()"
-                        class="inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto"
-                    >
-                        Delete selected
-                    </button>
-                @endif
-            </div>
-        @endif
-    </section>
+            <tbody id="assigned-keywords-body" class="divide-y divide-slate-100">
+                <tr>
+                    <td colspan="5" class="px-4 py-8 text-center text-slate-500">
+                        Loading keywords...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-5 py-4 sm:px-6">
+        <p id="keywords-page-info" class="text-xs text-slate-500"></p>
+
+        <div class="flex items-center gap-2">
+            <button
+                id="keywords-prev"
+                type="button"
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+                Previous
+            </button>
+
+            <button
+                id="keywords-next"
+                type="button"
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+                Next
+            </button>
+        </div>
+    </div>
+
+    @if($canDelete)
+        <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
+            <button
+                id="keywords-delete-selected"
+                type="button"
+                disabled
+                class="inline-flex min-h-10 items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+                Delete selected (<span id="keywords-selected-count">0</span>)
+            </button>
+        </div>
+    @endif
+</section>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const body = document.getElementById('assigned-keywords-body');
+    const checkAll = document.getElementById('keywords-check-all');
+    const prev = document.getElementById('keywords-prev');
+    const next = document.getElementById('keywords-next');
+    const pageInfo = document.getElementById('keywords-page-info');
+    const deleteSelected = document.getElementById('keywords-delete-selected');
+    const selectedCount = document.getElementById('keywords-selected-count');
+
+    if (!body || !checkAll || !prev || !next || !pageInfo) return;
+
+    const listUrl = @json(route('sales.assignedKeywords.list'));
+    const deleteUrlTemplate = @json(
+        route('sales.assignKeywords.delete', ['id' => '__ID__'])
+    );
+
+    
+    const bulkDeleteUrl = @json(
+    route('sales.assignKeywords.bulkDelete', ['id' => $vendor->id])
+);
+    const csrfToken = @json(csrf_token());
+    const clientId = @json($vendor->id);
+
+    const selectedIds = new Set();
+    let currentPage = 1;
+    let lastPage = 1;
+
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value ?? '';
+        return div.innerHTML;
+    }
+
+    function updateSelection() {
+        if (selectedCount) selectedCount.textContent = selectedIds.size;
+        if (deleteSelected) deleteSelected.disabled = selectedIds.size === 0;
+
+        const boxes = Array.from(
+            body.querySelectorAll('.keyword-row-checkbox')
+        );
+
+        checkAll.checked =
+            boxes.length > 0 && boxes.every(box => box.checked);
+
+        checkAll.indeterminate =
+            boxes.some(box => box.checked) && !checkAll.checked;
+    }
+
+    async function loadKeywords(page = 1) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="5" class="px-4 py-8 text-center text-slate-500">
+                    Loading keywords...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const url = new URL(listUrl, window.location.origin);
+            url.searchParams.set('client_id', clientId);
+            url.searchParams.set('page', page);
+            url.searchParams.set('per_page', 10);
+
+            const response = await fetch(url, {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const result = await response.json();
+
+            // Expected Laravel paginator response:
+            // {data: [...], current_page: 1, last_page: 3, total: 25}
+            currentPage = result.current_page;
+            lastPage = result.last_page;
+
+            body.innerHTML = result.data.length
+                ? result.data.map(function (item) {
+                    const id = Number(item.assign_id);
+
+                    return `
+                        <tr>
+                            <td class="px-4 py-3">
+                                <input
+                                    type="checkbox"
+                                    value="${id}"
+                                    ${selectedIds.has(id) ? 'checked' : ''}
+                                    class="keyword-row-checkbox h-4 w-4 rounded border-slate-300 text-blue-600"
+                                >
+                            </td>
+
+                            <td class="px-4 py-3 font-medium text-slate-800">
+                                ${escapeHtml(item.keyword)}
+                            </td>
+
+                            <td class="px-4 py-3 text-slate-600">
+                                ${escapeHtml(item.child_category)}
+                            </td>
+
+                            <td class="px-4 py-3 text-slate-600">
+                                ${escapeHtml(item.parent_category)}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                ${deleteSelected ? `
+                                    <button
+                                        type="button"
+                                        data-delete-keyword="${id}"
+                                        class="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100"
+                                    >
+                                        Delete
+                                    </button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `;
+                }).join('')
+                : `
+                    <tr>
+                        <td colspan="5" class="px-4 py-8 text-center text-slate-500">
+                            No assigned keywords found.
+                        </td>
+                    </tr>
+                `;
+
+            pageInfo.textContent =
+                `Page ${currentPage} of ${lastPage} · ${result.total} keywords`;
+
+            prev.disabled = currentPage <= 1;
+            next.disabled = currentPage >= lastPage;
+
+            updateSelection();
+        } catch (error) {
+            console.error('Keyword list failed:', error);
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-4 py-8 text-center text-red-600">
+                        Could not load keywords.
+                    </td>
+                </tr>
+            `;
+
+            updateSelection();
+        }
+    }
+
+    
+
+    async function deleteOne(id) {
+    const url = deleteUrlTemplate.replace('__ID__', String(id));
+
+    const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(result.message || `Delete failed (${response.status})`);
+    }
+
+    return result;
+}
+
+    body.addEventListener('change', function (event) {
+        if (!event.target.matches('.keyword-row-checkbox')) return;
+
+        const id = Number(event.target.value);
+
+        if (event.target.checked) {
+            selectedIds.add(id);
+        } else {
+            selectedIds.delete(id);
+        }
+
+        updateSelection();
+    });
+
+    checkAll.addEventListener('change', function () {
+        body.querySelectorAll('.keyword-row-checkbox').forEach(function (box) {
+            box.checked = checkAll.checked;
+
+            const id = Number(box.value);
+
+            if (box.checked) {
+                selectedIds.add(id);
+            } else {
+                selectedIds.delete(id);
+            }
+        });
+
+        updateSelection();
+    });
+
+    body.addEventListener('click', async function (event) {
+        const button = event.target.closest('[data-delete-keyword]');
+        if (!button) return;
+
+        const id = Number(button.dataset.deleteKeyword);
+        if (!confirm('Delete this assigned keyword?')) return;
+
+        button.disabled = true;
+
+        try {
+            await deleteOne(id);
+            selectedIds.delete(id);
+            await loadKeywords(currentPage);
+        } catch (error) {
+            console.error(error);
+            alert('Keyword could not be deleted.');
+            button.disabled = false;
+        }
+    });
+
+    if (deleteSelected) {
+    deleteSelected.addEventListener('click', async function () {
+        const ids = Array.from(selectedIds);
+
+        if (!ids.length) return;
+        if (!confirm(`Delete ${ids.length} selected keywords?`)) return;
+
+        deleteSelected.disabled = true;
+
+        try {
+            const response = await fetch(bulkDeleteUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ ids: ids })
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message || `Bulk delete failed (${response.status})`
+                );
+            }
+
+            selectedIds.clear();
+            updateSelection();
+
+            await loadKeywords(currentPage);
+
+            if (typeof showToast === 'function') {
+                showToast(result.message || 'Keywords removed.', 'success');
+            }
+        } catch (error) {
+            console.error('Bulk delete failed:', error);
+            alert(error.message);
+            updateSelection();
+        }
+    });
+}
+
+    prev.addEventListener('click', function () {
+        if (currentPage > 1) loadKeywords(currentPage - 1);
+    });
+
+    next.addEventListener('click', function () {
+        if (currentPage < lastPage) loadKeywords(currentPage + 1);
+    });
+
+    loadKeywords();
+
+    // Call this after the Assign keywords AJAX request succeeds:
+    window.refreshAssignedKeywords = function () {
+        loadKeywords(currentPage);
+    };
+});
+</script>
+  
+
+
 </div>
 
 
@@ -2999,7 +3319,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             @php
-                $updateUrl = route('sales.accountSettings',$vendor->username);
+                $updateUrl = route('sales.vendor.accountSettings',$vendor->id);
                 $currentUser = auth()->user();
 
                 $canManagePackage = $currentUser
@@ -3043,6 +3363,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 id="{{ $status['id'] }}"
                                 action="{{ $updateUrl }}"
                                 method="POST"
+                                data-auto-save
                                 class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4"
                             >
                                 @csrf
@@ -3062,7 +3383,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         name="{{ $status['field'] }}"
                                         value="1"
                                         @checked((string) old($status['field'], data_get($vendor, $status['field'])) === '1')
-                                        class="{{ $status['field'] }} h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                                        class="{{ $status['field'] }} h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 auto-save-field"
                                     >
 
                                     <button type="submit" class="text-xs font-bold text-blue-700 hover:underline">
@@ -3080,10 +3401,11 @@ document.addEventListener('DOMContentLoaded', function () {
             id="submitAssignClient"
             action="{{ $updateUrl }}"
             method="POST"
+            data-auto-save
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
         >
             @csrf
-            <input type="hidden" name="client_id" value="{{ $vendor->username }}">
+            <input type="hidden" name="client_id" value="{{ $vendor->id }}">
             <input type="hidden" name="submit_client_assign" value="1">
 
             <label for="created_by" class="text-sm font-semibold text-slate-700">
@@ -3094,7 +3416,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <select
                     id="created_by"
                     name="created_by"
-                    class="select2-single assign_client {{ $fieldClass }}"
+                    class="select2-single assign_client {{ $fieldClass }} auto-save-field"
                 >
                     @foreach($userList as $user)
                         <option
@@ -3121,10 +3443,11 @@ document.addEventListener('DOMContentLoaded', function () {
             id="submitClientCategoryService"
             action="{{ $updateUrl }}"
             method="POST"
+            data-auto-save
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
         >
             @csrf
-            <input type="hidden" name="client_id" value="{{ $vendor->username }}">
+            <input type="hidden" name="client_id" value="{{ $vendor->id }}">
             <input type="hidden" name="client_cat_service" value="1">
 
             <label for="category_service" class="text-sm font-semibold text-slate-700">
@@ -3134,7 +3457,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <select
                 id="category_service"
                 name="category_service"
-                class="client_cat_service select2-cat-service {{ $fieldClass }}"
+                class="client_cat_service select2-cat-service {{ $fieldClass }} auto-save-field"
             >
                 @foreach($categoryServices as $key => $value)
                     <option
@@ -3153,11 +3476,12 @@ document.addEventListener('DOMContentLoaded', function () {
             id="submitClientType"
             action="{{ $updateUrl }}"
             method="POST"
+            data-auto-save
             class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
         >
             @csrf
             <input type="hidden" name="submit_client_type" value="1">
-            <input type="hidden" name="client_id" value="{{ $vendor->username }}">
+            <input type="hidden" name="client_id" value="{{ $vendor->id }}">
             <label for="client_type" class="text-sm font-semibold text-slate-700">
                 Client package
             </label>
@@ -3166,7 +3490,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <select
                     id="client_type"
                     name="client_type"
-                    class="select2-single client_type {{ $fieldClass }}"
+                    class="select2-single client_type {{ $fieldClass }} auto-save-field"
                 >
                     @foreach($clientTypes as $key => $value)
                         <option
@@ -3205,10 +3529,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     id="yearly_subs_form"
                     action="{{ $updateUrl }}"
                     method="POST"
+                    data-auto-save
                     class="rounded-xl border border-slate-200 bg-slate-50 p-4"
                 >
                     @csrf
-                    <input type="hidden" name="client_id" value="{{ $vendor->username }}"> 
+                    <input type="hidden" name="client_id" value="{{ $vendor->id }}"> 
                     <p class="text-sm font-bold text-slate-900">Subscription dates</p>
 
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -3222,7 +3547,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 name="expired_from"
                                 value="{{ old('expired_from', $vendor->expired_from ? \Illuminate\Support\Carbon::parse($vendor->expired_from)->format('Y-m-d') : '') }}"
                                 @disabled(!$canManageSubscription)
-                                class="x_date {{ $fieldClass }}"
+                                class="x_date {{ $fieldClass }} auto-save-field"
                             >
                         </div>
 
@@ -3236,7 +3561,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 name="expired_on"
                                 value="{{ old('expired_on', $vendor->expired_on ? \Illuminate\Support\Carbon::parse($vendor->expired_on)->format('Y-m-d') : '') }}"
                                 @disabled(!$canManageSubscription)
-                                class="y_date {{ $fieldClass }}"
+                                class="y_date {{ $fieldClass }} auto-save-field"
                             >
                         </div>
                     </div>
@@ -3251,10 +3576,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     id="max_kw_form"
                     action="{{ $updateUrl }}"
                     method="POST"
+                    data-auto-save
                     class="rounded-xl border border-slate-200 bg-slate-50 p-4"
                 >
                     @csrf
-                    <input type="hidden" name="client_id" value="{{ $vendor->username }}">
+                    <input type="hidden" name="client_id" value="{{ $vendor->id }}">
                     <label for="max_kw" class="text-sm font-semibold text-slate-700">
                         Maximum keywords
                     </label>
@@ -3267,7 +3593,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         step="1"
                         value="{{ old('max_kw', $vendor->max_kw) }}"
                         @disabled(!$canManageSubscription)
-                        class="{{ $fieldClass }}"
+                        class="{{ $fieldClass }} auto-save-field"
                     >
 
                     @if($canManageSubscription)
@@ -3281,10 +3607,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         id="free_coins_form"
                         action="{{ $updateUrl }}"
                         method="POST"
+                        data-auto-save
                         class="rounded-xl border border-slate-200 bg-slate-50 p-4"
                     >
                         @csrf
-                        <input type="hidden" name="client_id" value="{{ $vendor->username }}">
+                        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
                         <input type="hidden" name="amt" value="555">
                         <input type="hidden" name="submit_free_amt" value="1">
 
@@ -3306,17 +3633,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
            </section>
 
-<section x-show="activeSection === 'leads'" x-cloak>
+ <section x-show="activeSection === 'leads'" x-cloak>
     <div class="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="border-b border-slate-200 px-4 py-4 sm:px-6">
             <h2 class="text-base font-bold text-slate-900">All leads</h2>
+
+            <input
+                id="vendor-leads-search"
+                type="search"
+                placeholder="Search name, mobile, email or course..."
+                class="mt-3 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 sm:max-w-sm"
+            >
         </div>
 
         <div class="w-full overflow-x-auto">
-            <table
-                id="datatable-view-all-leads"
-                class="w-full min-w-[850px] border-collapse text-left text-sm"
-            >
+            <table class="w-full min-w-[850px] border-collapse text-left text-sm">
                 <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
                     <tr>
                         <th class="whitespace-nowrap px-4 py-3">Name</th>
@@ -3328,11 +3659,181 @@ document.addEventListener('DOMContentLoaded', function () {
                         <th class="whitespace-nowrap px-4 py-3">Action</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 bg-white"></tbody>
+
+                <tbody id="vendor-leads-body" class="divide-y divide-slate-100 bg-white">
+                    <tr>
+                        <td colspan="7" class="px-4 py-8 text-center text-slate-500">
+                            Loading leads...
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-4 py-4 sm:px-6">
+            <p id="vendor-leads-page-info" class="text-xs text-slate-500"></p>
+
+            <div class="flex gap-2">
+                <button
+                    id="vendor-leads-prev"
+                    type="button"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-40"
+                >
+                    Previous
+                </button>
+
+                <button
+                    id="vendor-leads-next"
+                    type="button"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-40"
+                >
+                    Next
+                </button>
+            </div>
+        </div>
     </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const body = document.getElementById('vendor-leads-body');
+    const search = document.getElementById('vendor-leads-search');
+    const pageInfo = document.getElementById('vendor-leads-page-info');
+    const prev = document.getElementById('vendor-leads-prev');
+    const next = document.getElementById('vendor-leads-next');
+
+    if (!body || !search || !pageInfo || !prev || !next) return;
+
+    const listUrl = @json(
+        route('sales.vendor.getLeads', ['id' => $vendor->id])
+    );
+
+    let currentPage = 1;
+    let lastPage = 1;
+    let searchTimer = null;
+    let latestRequest = 0;
+
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value ?? '';
+        return div.innerHTML;
+    }
+
+    async function loadLeads(page = 1) {
+        const requestNumber = ++latestRequest;
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="7" class="px-4 py-8 text-center text-slate-500">
+                    Loading leads...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const url = new URL(listUrl, window.location.origin);
+            url.searchParams.set('page', page);
+            url.searchParams.set('per_page', 10);
+            url.searchParams.set('search', search.value.trim());
+
+            const response = await fetch(url, {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const result = await response.json();
+
+            // Ignore an older search response arriving after a newer one.
+            if (requestNumber !== latestRequest) return;
+
+            currentPage = result.current_page;
+            lastPage = result.last_page;
+
+            body.innerHTML = result.data.length
+                ? result.data.map(function (lead) {
+                    const leadId = Number(lead.lead_id);
+
+                    return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-4 py-3 font-medium text-slate-800">
+                                ${escapeHtml(lead.name)}
+                            </td>
+                            <td class="px-4 py-3">${escapeHtml(lead.mobile)}</td>
+                            <td class="px-4 py-3">${escapeHtml(lead.email)}</td>
+                            <td class="px-4 py-3">${escapeHtml(lead.course)}</td>
+                            <td class="px-4 py-3">${escapeHtml(lead.city)}</td>
+                            <td class="whitespace-nowrap px-4 py-3">
+                                ${escapeHtml(lead.date)}
+                            </td>
+                            <td class="px-4 py-3">
+                                <button
+                                    type="button"
+                                    data-followup-lead="${leadId}"
+                                    class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100"
+                                >
+                                    Follow up
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('')
+                : `
+                    <tr>
+                        <td colspan="7" class="px-4 py-8 text-center text-slate-500">
+                            No leads found.
+                        </td>
+                    </tr>
+                `;
+
+            pageInfo.textContent =
+                `Page ${currentPage} of ${lastPage} · ${result.total} leads`;
+
+            prev.disabled = currentPage <= 1;
+            next.disabled = currentPage >= lastPage;
+        } catch (error) {
+            if (requestNumber !== latestRequest) return;
+
+            console.error('Leads load failed:', error);
+            body.innerHTML = `
+                <tr>
+                    <td colspan="7" class="px-4 py-8 text-center text-red-600">
+                        Could not load leads.
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    search.addEventListener('input', function () {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => loadLeads(1), 350);
+    });
+
+    prev.addEventListener('click', function () {
+        if (currentPage > 1) loadLeads(currentPage - 1);
+    });
+
+    next.addEventListener('click', function () {
+        if (currentPage < lastPage) loadLeads(currentPage + 1);
+    });
+
+    body.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-followup-lead]');
+        if (!button) return;
+
+        const leadId = Number(button.dataset.followupLead);
+
+        if (Number.isSafeInteger(leadId) && window.pushLeadController) {
+            pushLeadController.getLeadFollowupForm(leadId);
+        }
+    });
+
+    loadLeads();
+});
+</script>
 </section>
+
 
  
 
@@ -3410,10 +3911,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     <form
         method="POST"
-        action=""
+         data-auto-save
+        action="{{ route('sales.remarkDiscussion.add',['id'=>$vendor->id]) }}"
         class="space-y-4 p-5"
     >
         @csrf
+
+        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="amt" value="555">
+        <input type="hidden" name="submitClientDiscussion" value="1">
 
         <div>
             <label for="discussion-status" class="block text-sm font-semibold text-slate-700">
@@ -3496,14 +4002,193 @@ document.addEventListener('DOMContentLoaded', function () {
     </form>
 </dialog>
 
-@if($errors->hasAny(['status', 'remark', 'discussed_at', 'follow_up_at']))
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('discussion-dialog')?.showModal();
-        });
-    </script>
-@endif
+ <div class="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-4 py-4 sm:px-6">
+        <h2 class="text-base font-bold text-slate-900">
+            All discussions
+        </h2>
 
+        <input
+            id="vendor-discussion-search"
+            type="search"
+            placeholder="Search name or discussion..."
+            class="mt-3 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 sm:max-w-sm"
+        >
+    </div>
+
+    <div class="w-full overflow-x-auto">
+        <table class="w-full min-w-[650px] border-collapse text-left text-sm">
+            <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+                <tr>
+                    <th class="w-48 px-4 py-3">Name</th>
+                    <th class="px-4 py-3">Discussion</th>
+                </tr>
+            </thead>
+
+            <tbody
+                id="vendor-discussion-body"
+                class="divide-y divide-slate-100 bg-white"
+            >
+                <tr>
+                    <td colspan="2" class="px-4 py-8 text-center text-slate-500">
+                        Loading discussions...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-4 py-4 sm:px-6">
+        <p
+            id="vendor-discussion-page-info"
+            class="text-xs text-slate-500"
+        ></p>
+
+        <div class="flex gap-2">
+            <button
+                id="vendor-discussion-prev"
+                type="button"
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-40"
+            >
+                Previous
+            </button>
+
+            <button
+                id="vendor-discussion-next"
+                type="button"
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-40"
+            >
+                Next
+            </button>
+        </div>
+    </div>
+</div>
+ 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const body = document.getElementById('vendor-discussion-body');
+    const search = document.getElementById('vendor-discussion-search');
+    const pageInfo = document.getElementById('vendor-discussion-page-info');
+    const prev = document.getElementById('vendor-discussion-prev');
+    const next = document.getElementById('vendor-discussion-next');
+
+    if (!body || !search || !pageInfo || !prev || !next) return;
+
+    const listUrl = @json(
+        route('sales.getdescussion.list', ['id' => $vendor->id])
+    );
+
+    let currentPage = 1;
+    let lastPage = 1;
+    let searchTimer = null;
+    let latestRequest = 0;
+
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value ?? '';
+        return div.innerHTML;
+    }
+
+    async function loadDiscussions(page = 1) {
+        const requestNumber = ++latestRequest;
+
+        body.innerHTML = `
+            <tr>
+                <td colspan="2" class="px-4 py-8 text-center text-slate-500">
+                    Loading discussions...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const url = new URL(listUrl, window.location.origin);
+            url.searchParams.set('page', page);
+            url.searchParams.set('per_page', 10);
+            url.searchParams.set('search', search.value.trim());
+
+            const response = await fetch(url, {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            // Ignore older search results arriving later.
+            if (requestNumber !== latestRequest) return;
+
+            currentPage = result.current_page;
+            lastPage = result.last_page;
+
+            body.innerHTML = result.data.length
+                ? result.data.map(function (item) {
+                    return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-4 py-3 align-top font-semibold text-slate-800">
+                                ${escapeHtml(item.name)}
+                            </td>
+                            <td class="whitespace-pre-wrap break-words px-4 py-3 text-slate-700">
+                                ${escapeHtml(item.discussion)}
+                            </td>
+                        </tr>
+                    `;
+                }).join('')
+                : `
+                    <tr>
+                        <td colspan="2" class="px-4 py-8 text-center text-slate-500">
+                            No discussions found.
+                        </td>
+                    </tr>
+                `;
+
+            pageInfo.textContent =
+                `Page ${currentPage} of ${lastPage} · ${result.total} discussions`;
+
+            prev.disabled = currentPage <= 1;
+            next.disabled = currentPage >= lastPage;
+        } catch (error) {
+            if (requestNumber !== latestRequest) return;
+
+            console.error('Discussions load failed:', error);
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="2" class="px-4 py-8 text-center text-red-600">
+                        Could not load discussions.
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    search.addEventListener('input', function () {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => loadDiscussions(1), 350);
+    });
+
+    prev.addEventListener('click', function () {
+        if (currentPage > 1) {
+            loadDiscussions(currentPage - 1);
+        }
+    });
+
+    next.addEventListener('click', function () {
+        if (currentPage < lastPage) {
+            loadDiscussions(currentPage + 1);
+        }
+    });
+
+    loadDiscussions();
+
+     
+    window.refreshVendorDiscussions = function () {
+        loadDiscussions(1);
+    };
+});
+</script>
 
            </section>
 
@@ -3529,13 +4214,13 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="space-y-6">
     <form
         class="order_validation overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-        action=""
+        action="{{ route('sales.payment.save',['id'=>$vendor->id]) }}"
         method="POST"
-        onsubmit="return client.submitClientPayOrder(this)"
+        data-auto-save
     >
         @csrf
 
-        <input type="hidden" name="client_id" value="{{ $vendor->username }}">
+        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
         <input type="hidden" name="pay-submit" value="savepay">
 
         <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
@@ -3737,47 +4422,330 @@ document.addEventListener('DOMContentLoaded', function () {
     </form>
 
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="border-b border-slate-200 px-5 py-4 sm:px-7">
-            <h2 class="text-lg font-bold text-slate-900">Payment history</h2>
-        </div>
+    <div class="border-b border-slate-200 px-5 py-4 sm:px-7">
+        <h2 class="text-lg font-bold text-slate-900">
+            Payment history
+        </h2>
+    </div>
 
-        <div class="w-full overflow-x-auto">
-            <table id="datatable-payment-history"
-                   class="w-full min-w-[1100px] border-collapse text-left text-sm">
-                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
-                    <tr>
-                        @foreach([
-                            'Date', 'Paid Amount', 'GST', 'Total Amount',
-                            'Pay Mode', 'Order PDF', 'Proforma Invoice',
-                            'Invoice PDF', 'Action'
-                        ] as $heading)
-                            <th class="whitespace-nowrap px-4 py-3 font-semibold">
-                                {{ $heading }}
-                            </th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100"></tbody>
-            </table>
+    <div class="w-full overflow-x-auto">
+        <table
+            id="datatable-payment-history"
+            class="w-full min-w-[1100px] border-collapse text-left text-sm"
+        >
+            <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+                <tr>
+                    @foreach([
+                        'Date', 'Paid Amount', 'GST', 'Total Amount',
+                        'Pay Mode', 'Order PDF', 'Proforma Invoice',
+                        'Invoice PDF', 'Action'
+                    ] as $heading)
+                        <th class="whitespace-nowrap px-4 py-3 font-semibold">
+                            {{ $heading }}
+                        </th>
+                    @endforeach
+                </tr>
+            </thead>
+
+            <tbody id="payment-history-body" class="divide-y divide-slate-100 bg-white">
+                <tr>
+                    <td colspan="9" class="px-4 py-8 text-center text-slate-500">
+                        Loading payments...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-5 py-4 sm:px-7">
+        <p id="payment-history-page-info" class="text-xs text-slate-500"></p>
+
+        <div class="flex gap-2">
+            <button id="payment-history-prev" type="button"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-40">
+                Previous
+            </button>
+
+            <button id="payment-history-next" type="button"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-40">
+                Next
+            </button>
         </div>
-    </section>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const body = document.getElementById('payment-history-body');
+    const info = document.getElementById('payment-history-page-info');
+    const prev = document.getElementById('payment-history-prev');
+    const next = document.getElementById('payment-history-next');
+
+    if (!body || !info || !prev || !next) return;
+
+    const listUrl = @json(
+        route('sales.payment.list', ['id' => $vendor->username])
+    );
+
+    let currentPage = 1;
+    let lastPage = 1;
+
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value ?? '';
+        return div.innerHTML;
+    }
+
+    function amount(value) {
+        const number = Number(value);
+        return Number.isFinite(number)
+            ? '₹' + number.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })
+            : '—';
+    }
+
+    async function loadPayments(page = 1) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="9" class="px-4 py-8 text-center text-slate-500">
+                    Loading payments...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const url = new URL(listUrl, window.location.origin);
+            url.searchParams.set('page', page);
+            url.searchParams.set('per_page', 10);
+
+            const response = await fetch(url, {
+                credentials: 'same-origin',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const result = await response.json();
+
+            currentPage = result.current_page;
+            lastPage = result.last_page;
+
+            body.innerHTML = result.data.length
+                ? result.data.map(function (payment) {
+                    const id = Number(payment.id);
+                    if (!Number.isSafeInteger(id) || id <= 0) return '';
+
+                    return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="whitespace-nowrap px-4 py-3">
+                                ${escapeHtml(payment.date)}
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-3">
+                                ${amount(payment.paid_amount)}
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-3">
+                                ${amount(payment.gst_tax)}
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-3 font-semibold">
+                                ${amount(payment.total_amount)}
+                            </td>
+                            <td class="px-4 py-3">
+                                ${escapeHtml(payment.payment_mode)}
+                            </td>
+                            <td class="px-4 py-3">
+                                <button type="button"
+                                        data-payment-action="order"
+                                        data-sid="${id}"
+                                        class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">
+                                    Order PDF
+                                </button>
+                            </td>
+                            <td class="px-4 py-3">
+                                <button type="button"
+                                        data-payment-action="proforma"
+                                        data-sid="${id}"
+                                        class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">
+                                    Proforma PDF
+                                </button>
+                            </td>
+                            <td class="px-4 py-3">
+                                ${Number(payment.invoice_status) === 1
+                                    ? `<button type="button"
+                                               data-payment-action="invoice"
+                                               data-sid="${id}"
+                                               class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">
+                                           Invoice PDF
+                                       </button>`
+                                    : '<span class="text-xs text-amber-700">Pending</span>'}
+                            </td>
+                            <td class="px-4 py-3 text-slate-400">—</td>
+                        </tr>
+                    `;
+                }).join('')
+                : `
+                    <tr>
+                        <td colspan="9" class="px-4 py-8 text-center text-slate-500">
+                            No payment history found.
+                        </td>
+                    </tr>
+                `;
+
+            info.textContent =
+                `Page ${currentPage} of ${lastPage} · ${result.total} payments`;
+
+            prev.disabled = currentPage <= 1;
+            next.disabled = currentPage >= lastPage;
+        } catch (error) {
+            console.error('Payment history failed:', error);
+            body.innerHTML = `
+                <tr>
+                    <td colspan="9" class="px-4 py-8 text-center text-red-600">
+                        Could not load payment history.
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    prev.addEventListener('click', function () {
+        if (currentPage > 1) loadPayments(currentPage - 1);
+    });
+
+    next.addEventListener('click', function () {
+        if (currentPage < lastPage) loadPayments(currentPage + 1);
+    });
+
+    loadPayments();
+});
+</script>
+
+
+
 </div>
 
 <script>
-    function togglePaymentModeFields(mode) {
-        document.querySelectorAll('.payment-mode-field').forEach(field => {
-            const selected = field.dataset.paymentMode === mode;
-            field.classList.toggle('hidden', !selected);
+     
 
-            // "bank" extra card field was present in the original form.
-            // Keep its bank-specific visibility separate from other bank fields.
-        });
-    }
+function handlingPaiAmt() {
+	
+	var paid_amount = jQuery('#paid_amount');
+	var paid_am= parseInt(paid_amount.val());
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const select = document.getElementById('stud-payment_mode');
-        if (select) togglePaymentModeFields(select.value);
-    });
+	var coins = jQuery('#coins_per_lead');
+    
+	if( paid_am <= 0 ){
+		alert("paid amount Cannot be Empty");
+		paid_am.val("");
+
+	}
+	 
+
+	if (1000 <= paid_am && paid_am < 2000) {
+
+     var coinAmt = parseInt(paid_am/0.90);
+  
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else if (2000 <= paid_am && paid_am < 4000) {
+ 
+     var coinAmt = parseInt(paid_am/0.86);
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else if (4000 <= paid_am && paid_am < 6000) {
+ 
+     var coinAmt = parseInt(paid_am/0.84);
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else  if (6000 <= paid_am && paid_am < 8000) {
+ 
+     var coinAmt = parseInt(paid_am/0.82);
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else if (8000 <= paid_am && paid_am < 10000) {
+ 
+     var coinAmt = parseInt(paid_am/0.80);
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else if (10000 <= paid_am && paid_am < 15000) {
+  
+     var coinAmt = parseInt(paid_am/0.78);
+    $('#coins_per_lead').val(coinAmt);	 
+
+	}else if (15000 <= paid_am && paid_am < 20000) {
+ 
+     var coinAmt = parseInt(paid_am/0.75);
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else if (20000 <= paid_am && paid_am < 40000) {
+ 
+     var coinAmt = parseInt(paid_am/0.70);
+    $('#coins_per_lead').val(coinAmt);
+	 
+
+	}else if (40000 <= paid_am && paid_am < 50000) {
+ 
+     var coinAmt = parseInt(paid_am/0.65);
+    $('#coins_per_lead').val(coinAmt); 
+
+	}else if (50000 <= paid_am && paid_am <= 100000) {
+ 
+     var coinAmt = parseInt(paid_am/0.60);
+    $('#coins_per_lead').val(coinAmt);
+	} 
+    else if (100000 <= paid_am && paid_am <= 999999) {
+ 
+     var coinAmt = parseInt(paid_am/0.49);
+    $('#coins_per_lead').val(coinAmt);
+	} 
+}
+
+function paidgst(gst){			
+			 
+			var paid = parseInt($('#paid_amount').val());		
+			//var tot = parseInt(((paid)*(.18)));			 
+			 var tot = Math. round(((paid)*(.18)));			 
+			 var gstamount = $('#gst_tax').val(tot);			 
+			 var tatol= parseInt(paid + tot);			 
+			 var tobe = $('#gst_total_amount').val(tatol);	 
+			 
+		}
+		
+		function nopaidgst(gstno){
+			var paid = parseInt($('#paid_amount').val());		
+			 var tot = parseInt(0);			 
+			 var gstamount = $('#gst_tax').val(tot);			 
+			 var tatol= paid + tot;			 
+			 var tobe = $('#gst_total_amount').val(tatol);				   
+		}
+		
+		function paidtds(tds){			
+			 
+			var tdspaid = parseInt($('#paid_amount').val());			 		 
+			var gst_total_amount = parseInt($('#gst_total_amount').val());			 		 
+			 var tottds = Math. round(((tdspaid)*(2))/100);			 
+			 var gstamount = $('#tds_amount').val(tottds);			 
+			 var tdstatol= parseInt(gst_total_amount - tottds);			 
+			 var tdstobe = $('#total_amount').val(tdstatol);	 
+			 
+		}
+		
+		function nopaidtds(tdsno){
+			var tdspaid = parseInt($('#paid_amount').val());	
+			var gst_total_amount = parseInt($('#gst_total_amount').val());				
+			 var tottds = parseInt(0);			 
+			 var gstamount = $('#tds_amount').val(tottds);			 
+			 var tdstatol= gst_total_amount - tottds;			 
+			 var tdstobe = $('#total_amount').val(tdstatol);				   
+		}
+		
 </script>
 
 
@@ -4603,6 +5571,206 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
  
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-certificate-dropzone]').forEach(function (zone) {
+        const field = zone.dataset.certificateDropzone;
+        const input = document.getElementById(field);
+        const image = zone.querySelector('[data-certificate-image]');        
+        const empty = zone.querySelector('[data-certificate-empty]');
+        const fileName = document.querySelector(
+            `[data-certificate-filename="${field}"]`
+        );
+        const viewLink = document.querySelector(
+            `[data-certificate-view="${field}"]`
+        );
+
+        if (!input || !image || !empty || !fileName) return;
+
+        let objectUrl = null;
+
+        function validFile(file) {
+            if (!file) return false;
+
+            const allowedTypes = [
+                'image/jpeg',
+                'image/png',
+                'image/webp',
+               
+            ];
+
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only JPG, PNG, WEBP files are allowed.');
+                return false;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Document must be 5 MB or smaller.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showPreview(file) {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+            objectUrl = URL.createObjectURL(file);
+
+            empty.classList.add('hidden');
+            fileName.textContent = file.name;
+        
+            image.src = objectUrl;
+            image.classList.remove('hidden');
+                         
+
+            if (viewLink) {
+                viewLink.href = objectUrl;
+                viewLink.classList.remove('hidden');
+            }
+        }
+
+        zone.addEventListener('click', function () {
+            input.click();
+        });
+
+        zone.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                input.click();
+            }
+        });
+
+        zone.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            zone.classList.add('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('dragleave', function () {
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+
+            const file = event.dataTransfer.files[0];
+            if (!validFile(file)) return;
+
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            input.files = transfer.files;
+
+            // Existing data-auto-save form handler receives this.
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        input.addEventListener('change', function () {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!validFile(file)) {
+                input.value = '';
+                return;
+            }
+
+            showPreview(file);
+        });
+    });
+});
+</script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-recent-dropzone]').forEach(function (zone) {
+        const field = zone.dataset.recentDropzone;
+        const input = document.getElementById(field);
+        const preview = zone.querySelector('[data-recent-preview]');
+        const placeholder = zone.querySelector('[data-recent-placeholder]');
+        const fileName = document.querySelector(
+            `[data-recent-file-name="${field}"]`
+        );
+
+        if (!input || !preview || !placeholder || !fileName) return;
+
+        let objectUrl = null;
+
+        function validFile(file) {
+            if (!file) return false;
+
+            if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+                alert('Only JPG, PNG or WEBP images are allowed.');
+                return false;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image must be 5 MB or smaller.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showPreview(file) {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+
+            objectUrl = URL.createObjectURL(file);
+            preview.src = objectUrl;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            fileName.textContent = file.name;
+        }
+
+        zone.addEventListener('click', function () {
+            input.click();
+        });
+
+        zone.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                input.click();
+            }
+        });
+
+        zone.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            zone.classList.add('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('dragleave', function () {
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+
+            const file = event.dataTransfer.files[0];
+            if (!validFile(file)) return;
+
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            input.files = transfer.files;
+
+            // Existing common autosave receives this event.
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        input.addEventListener('change', function () {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!validFile(file)) {
+                input.value = '';
+                return;
+            }
+
+            showPreview(file);
+        });
+    });
+});
+</script>
 
 
 </x-layouts.sales.app>

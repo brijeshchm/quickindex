@@ -60,17 +60,39 @@ Route::post('/save-award-auto', [App\Http\Controllers\Sales\CertificateControlle
 Route::post('/save-certificate-auto', [App\Http\Controllers\Sales\CertificateController::class, 'autoSaveCertificate'])->name('business.certificate');
 
 
+Route::get('/certificate/{slug}/{id}', [App\Http\Controllers\Sales\CertificateController::class, 'certificateDel'])->name('certificate.delete');
+Route::get('/award/{slug}/{id}', [App\Http\Controllers\Sales\CertificateController::class, 'awardDel'])->name('award.delete');
+Route::get('/recent-activity/{slug}/{id}', [App\Http\Controllers\Sales\CertificateController::class, 'recentActivityDel'])->name('recent.delete');
+
 Route::post('/business/save-recent-activity-auto', [App\Http\Controllers\Sales\CertificateController::class, 'saveBusinessRecentActivity'])->name('recent.activity');
 
 
-	Route::post('/business/saveKeywordAssign', [App\Http\Controllers\Sales\BusinessKeywordController::class, 'saveKeywordAssign'])->name('keywords.add');
-	Route::post('/business/assignKeyword/delete/{id}', [App\Http\Controllers\Sales\BusinessKeywordController::class, 'assignKeywordDelete'])->name('keywords.delete');
-	Route::get('/business/get-paginated-assigned-keywords', [App\Http\Controllers\Sales\BusinessKeywordController::class, 'getPaginatedAssignedKeywords']);
+Route::post('/business/saveKeywordAssign', [App\Http\Controllers\Sales\BusinessKeywordController::class, 'saveKeywordAssign'])->name('assignKeywords.add');
+Route::post('/assignKeyword/delete/{id}', [App\Http\Controllers\Sales\BusinessKeywordController::class, 'assignKeywordDelete'])->name('assignKeywords.delete');
+Route::get('/get-paginated-assigned-keywords', [App\Http\Controllers\Sales\BusinessKeywordController::class, 'getPaginatedAssignedKeywords'])->name('assignedKeywords.list');
 
 
-Route::post('/clients/update/{id}',[App\Http\Controllers\BackEndClientsController::class, 'update'])->name('accountSettings');
+
+Route::post(
+    '/vendor/{id}/assigned-keyword/bulk-delete',
+    [App\Http\Controllers\Sales\BusinessKeywordController::class, 'bulkDeleteAssignedKeyword']
+)->name('assignKeywords.bulkDelete');
+
+Route::post('/vendor/update/{id}',[App\Http\Controllers\Sales\VendorController::class, 'updateAccountSettings'])->name('vendor.accountSettings');
 	
-Route::get('/clients/update/{id}/getleads',[App\Http\Controllers\BackEndClientsController::class, 'getPaginatedLeads'])->name('business.getLeads');
+Route::get('/vendor/{id}/getleads',[App\Http\Controllers\Sales\VendorController::class, 'getPaginatedLeads'])->name('vendor.getLeads');
 
 Route::get('/dashboard/get-paid-client', [App\Http\Controllers\DashboardController::class, 'getPaidClients']);	
  
+
+
+Route::post('/vendor/discussion/{id}',[App\Http\Controllers\Sales\VendorController::class, 'remarkDiscussion'])->name('remarkDiscussion.add');
+
+Route::get('/vendor/{id}/getdescussion',[App\Http\Controllers\Sales\VendorController::class, 'getDescussion'])->name('getdescussion.list');
+
+
+
+Route::post('/vendor/payment/{id}',[App\Http\Controllers\Sales\VendorController::class,'paymentAdd'])->name('payment.save');
+
+
+Route::get('/order-history/{id}',[App\Http\Controllers\Sales\VendorController::class,'getOrderHistory'])->name('payment.list');
