@@ -23,6 +23,7 @@ Route::get('/dashboard',[App\Http\Controllers\Sales\DashboardController::class, 
  
 	Route::post('/savePersonalDetails', [App\Http\Controllers\Sales\PersonalDetailsController::class, 'savePersonalDetails'])->name('personal.details');
 Route::post('/saveProfileInfo', [App\Http\Controllers\Sales\ProfileController::class, 'saveProfileInfo'])->name('business.information');
+Route::post('/vendor/register', [App\Http\Controllers\Sales\ProfileController::class, 'vendorRegister'])->name('vendor.register');
 
 Route::post('/saveBusinessOverview', [App\Http\Controllers\Sales\BusinessController::class, 'saveBusinessOverview'])->name('business.overview');
 
