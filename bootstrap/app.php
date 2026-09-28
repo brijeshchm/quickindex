@@ -17,17 +17,16 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         //
 
-        //      $exceptions->render(function (
-        //     NotFoundHttpException $exception,
-        //     Request $request
-        // ) {
-        //     if ($request->expectsJson()) {
-        //         return response()->json([
-        //             'status' => false,
-        //             'message' => 'This page has been permanently removed.',
-        //         ], 410);
-        //     }
-
-        //     return response()->view('errors.410', [], 410);
-        // });
+    $exceptions->render(function (
+            NotFoundHttpException $exception,
+            Request $request
+        ) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'This page has been permanently removed.',
+                ], 410);
+            }
+            return response()->view('errors.410', [], 410);
+        });
     })->create();

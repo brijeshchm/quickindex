@@ -22,6 +22,8 @@
         [x-cloak] { display: none !important; }
         body { font-family: 'Inter', sans-serif; }
         .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+       .help-block {display: block;margin-top: 0px;color: #ff0000;font-size: 12px;}
     </style>
 </head>
 

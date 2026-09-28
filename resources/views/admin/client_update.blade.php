@@ -460,14 +460,14 @@
 					<div class="col-sm-12"> 
 					<label>State:</label>                     
 					<select class="select2-single-state form-control state" name="state" onchange="select_city(this.value);">
-						      @if($statesis)
-                      @foreach($statesis as $state)
-                    <option value="{{$state->id}}"  @if ($state->id== old('state'))
-                        selected="selected"	
-                      @else
-                      {{ (isset($client) && $client->state_id == $state->id ) ? "selected":"" }} @endif>{{$state->name}}</option>
-                        @endforeach
-                        @endif
+            @if($statesis)
+            @foreach($statesis as $state)
+            <option value="{{$state->id}}"  @if ($state->id== old('state'))
+            selected="selected"	
+            @else
+            {{ (isset($client) && $client->state_id == $state->id ) ? "selected":"" }} @endif>{{$state->name}}</option>
+            @endforeach
+            @endif
 					</select>
 					</div>
 				</div>

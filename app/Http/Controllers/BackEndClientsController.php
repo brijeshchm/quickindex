@@ -3133,7 +3133,7 @@ protected function deleteOldImage($jsonString)
 				}
 
 				$action = $separator = '';
-				$action = '<a title="edit" href="/developer/clients/update/' . $lead->username . '"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></a>' . ' | ' . '<a title="view details" href="/developer/clients/list/' . $lead->username . '"><i class="fa fa-eye fa-fw" aria-hidden="true"></i></a>' . ' | ' . '<a title="Follow Up" data-client_id_meeting="' . $lead->username . '" href="javascript:client.getClientMeetingForm(\'' . $lead->username . '\')" ' . $meetingPopover . '><i class="fa fa-comments fa-fw" aria-hidden="true"></i></a>';
+				$action = '<a title="edit" href="/developer/clients/update/' . $lead->username . '"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></a>' . ' | ' . '' . ' | ' . '<a title="Follow Up" data-client_id_meeting="' . $lead->username . '" href="javascript:client.getClientMeetingForm(\'' . $lead->username . '\')" ' . $meetingPopover . '><i class="fa fa-comments fa-fw" aria-hidden="true"></i></a>';
 
 				if ($request->user()->current_user_can('administrator') || $request->user()->current_user_can('delete_client')) {
 					$action .= $separator . ' | <a title="delete" href="javascript:void(0)" onclick="javascript:deleteClient(' . $lead->id . ',this,\'delete\')"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>';

@@ -352,7 +352,7 @@ class EnquiryController extends Controller
 
 	public function favoritleads(Request $request)
 	{
-dd($request->all());
+
 		$assignedLead = AssignedLead::find($request->assingId);
 
 		if (!$assignedLead) {

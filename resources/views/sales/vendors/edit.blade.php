@@ -179,10 +179,19 @@
                 ← Back to vendors
             </a>
 
+
+            <a
+                href="{{ route('business.details',['slug'=>$vendor->business_slug]) }}"
+                class="text-2xl font-bold text-[#315b80] hover:underline right" target="_blank"
+            >
+                 View
+            </a>
+
+
             <h1
                 class="mt-3 font-display text-2xl font-semibold tracking-[-0.04em]"
             >
-                {{ $isCreating ? 'Add vendor' : $vendor->business_name }}
+                {{  $vendor->business_name }}
             </h1>
 
             <p class="mt-1 text-sm text-[#718394]">
@@ -223,11 +232,7 @@
 
     {{-- VENDOR TOP TABS --}}
     @if(!$isCreating)
-
     
-
- 
-
     <div
         data-vendor-tabs
         data-current-id="{{ $vendor->id }}"
@@ -260,7 +265,6 @@
     "
 > 
 
-    
 
 
         {{-- ====================================================== --}}
@@ -383,15 +387,13 @@
                 x-show="activeSection === 'personal-details'"
                 x-cloak
             >
- 
+ <div id="autoSaveStatus"> </div>
 
             <form
-                id="vendorEditorForm"
+                id="personalDetailsForm"
                 method="POST"
-                action="{{ $isCreating
-                    ? route('sales.vendors.store')
-                    : route('sales.vendors.update', $vendor)
-                }}"
+                data-auto-save
+                action="{{ route('sales.personal.details') }}"
                 class="
                     w-full
                     min-w-0
@@ -406,21 +408,21 @@
                 ">
 
             @csrf
-                
+                <input type="hidden" name="client_id" value="{{ $vendor->id }}">
                             
                         
 
 
             @php
-                $person = $vendor ?? null;
-                $vendorRecord = $vendor ?? null;
+               
+              
 
-                $inputClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
+                $inputClass = ' form-input mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
                 $labelClass = 'block text-sm font-semibold text-slate-700';
 
-                $selectedState = old('personal_state', $person?->personal_state_id);
-                $selectedCity = old('personal_city', $person?->personal_city_id);
-                $selectedZone = old('personal_zone', $person?->personal_zone_id);
+                $selectedState = old('personal_state', $vendor?->personal_state_id);
+                $selectedCity = old('personal_city', $vendor?->personal_city_id);
+                $selectedZone = old('personal_zone', $vendor?->personal_zone_id);
             @endphp
 
             <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -433,11 +435,11 @@
                     {{-- Title --}}
                     <div>
                         <label for="sirName" class="{{ $labelClass }}">Title *</label>
-                        <select id="sirName" name="sirName" required class="{{ $inputClass }}">
+                        <select id="sirName" name="sirName" class="{{ $inputClass }} auto-save-field">
                             <option value="">Select title</option>
                             @foreach(['Ms', 'Mr', 'Mrs'] as $title)
                                 <option value="{{ $title }}"
-                                    @selected(old('sirName', $person?->sirName) === $title)>
+                                    @selected(old('sirName', $vendor?->sirName) === $title)>
                                     {{ $title }}
                                 </option>
                             @endforeach
@@ -448,9 +450,8 @@
                     {{-- First name --}}
                     <div>
                         <label for="first_name" class="{{ $labelClass }}">First name *</label>
-                        <input id="first_name" type="text" name="first_name" required
-                            value="{{ old('first_name', $person?->first_name) }}"
-                            placeholder="Enter first name" class="{{ $inputClass }}">
+                        <input id="first_name" type="text" name="first_name" value="{{ old('first_name', $vendor?->first_name) }}"
+                            placeholder="Enter first name" class="{{ $inputClass }} auto-save-field">
                         @error('first_name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
 
@@ -458,7 +459,7 @@
                     <div>
                         <label for="middle_name" class="{{ $labelClass }}">Middle name</label>
                         <input id="middle_name" type="text" name="middle_name"
-                            value="{{ old('middle_name', $person?->middle_name) }}"
+                            value="{{ old('middle_name', $vendor?->middle_name) }}"
                             placeholder="Enter middle name" class="{{ $inputClass }}">
                     </div>
 
@@ -466,15 +467,14 @@
                     <div>
                         <label for="last_name" class="{{ $labelClass }}">Last name</label>
                         <input id="last_name" type="text" name="last_name"
-                            value="{{ old('last_name', $person?->last_name) }}"
-                            placeholder="Enter last name" class="{{ $inputClass }}">
+                            value="{{ old('last_name', $vendor?->last_name) }}"
+                            placeholder="Enter last name" class="{{ $inputClass }} auto-save-field">
                     </div>
 
                     {{-- Date of birth --}}
                     <div>
                         <label for="dob" class="{{ $labelClass }}">Date of birth *</label>
-                        <input id="dob" type="date" name="dob" required
-                            value="{{ old('dob', $person?->dob ? \Illuminate\Support\Carbon::parse($person->dob)->format('Y-m-d') : '') }}"
+                        <input id="dob" type="date" name="dob" value="{{ old('dob', $vendor?->dob ? \Illuminate\Support\Carbon::parse($vendor->dob)->format('Y-m-d') : '') }}"
                             class="{{ $inputClass }}">
                         @error('dob') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -482,20 +482,19 @@
                     {{-- Personal email --}}
                     <div>
                         <label for="personal_email" class="{{ $labelClass }}">Personal email *</label>
-                        <input id="personal_email" type="email" name="personal_email" required
-                            value="{{ old('personal_email', $person?->personal_email) }}"
-                            placeholder="Enter email" class="{{ $inputClass }}">
+                        <input id="personal_email" type="email" name="personal_email" value="{{ old('personal_email', $vendor?->personal_email) }}"
+                            placeholder="Enter email" class="{{ $inputClass }} auto-save-field">
                         @error('personal_email') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Marital status --}}
                     <div>
                         <label for="marital" class="{{ $labelClass }}">Marital status *</label>
-                        <select id="marital" name="marital" required class="{{ $inputClass }}">
+                        <select id="marital" name="marital" class="{{ $inputClass }}">
                             <option value="">Select status</option>
                             @foreach(['Single', 'Married', 'Widowed', 'Divorced'] as $status)
                                 <option value="{{ $status }}"
-                                    @selected(old('marital', $person?->marital) === $status)>
+                                    @selected(old('marital', $vendor?->marital) === $status)>
                                     {{ $status }}
                                 </option>
                             @endforeach
@@ -506,10 +505,9 @@
                     {{-- Personal mobile --}}
                     <div>
                         <label for="personal_phone" class="{{ $labelClass }}">Personal mobile *</label>
-                        <input id="personal_phone" type="tel" name="personal_phone" required
-                            inputmode="numeric" maxlength="10"
-                            value="{{ old('personal_phone', $person?->personal_phone) }}"
-                            placeholder="10-digit mobile number" class="{{ $inputClass }}">
+                        <input id="personal_phone" type="tel" name="personal_phone" maxlength="10"
+                            value="{{ old('personal_phone', $vendor?->personal_phone) }}"
+                            placeholder="10-digit mobile number" class="{{ $inputClass }} auto-save-field">
                         @error('personal_phone') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
 
@@ -517,7 +515,7 @@
                     <div>
                         <label for="country" class="{{ $labelClass }}">Country</label>
                         <select id="country" name="country" class="{{ $inputClass }}">
-                            <option value="101" @selected((string) old('country', $person?->country ?? '101') === '101')>
+                            <option value="101" @selected((string) old('country', $vendor?->country ?? '101') === '101')>
                                 India
                             </option>
                         </select>
@@ -527,7 +525,7 @@
                     <div>
                         <label for="personal_state" class="{{ $labelClass }}">State</label>
                         <select id="personal_state" name="personal_state"
-                                onchange="per_select_city(this.value)"
+                             
                                 class="{{ $inputClass }} select2-single-state">
                             <option value="">Select state</option>
                             @foreach(($statesis ?? []) as $state)
@@ -544,7 +542,7 @@
                         <label for="personal_city" class="{{ $labelClass }}">City</label>
                         <select id="personal_city" name="personal_city"
                                 data-selected="{{ $selectedCity }}"
-                                onchange="per_select_zone(this.value)"
+                                
                                 class="{{ $inputClass }} show_cityList">
                             <option value="">Select city</option>
                         </select>
@@ -564,8 +562,8 @@
                     <div>
                         <label for="personal_area" class="{{ $labelClass }}">Area</label>
                         <input id="personal_area" type="text" name="personal_area"
-                            value="{{ old('personal_area', $person?->personal_area) }}"
-                            placeholder="Enter area" class="{{ $inputClass }}">
+                            value="{{ old('personal_area', $vendor?->personal_area) }}"
+                            placeholder="Enter area" class="{{ $inputClass }} auto-save-field">
                     </div>
 
                     {{-- Pincode --}}
@@ -573,8 +571,8 @@
                         <label for="personal_pincode" class="{{ $labelClass }}">Pincode</label>
                         <input id="personal_pincode" type="text" name="personal_pincode"
                             inputmode="numeric" maxlength="6"
-                            value="{{ old('personal_pincode', $person?->personal_pincode) }}"
-                            placeholder="6-digit pincode" class="{{ $inputClass }}">
+                            value="{{ old('personal_pincode', $vendor?->personal_pincode) }}"
+                            placeholder="6-digit pincode" class="{{ $inputClass }} auto-save-field">
                     </div>
 
                     {{-- Gender --}}
@@ -584,7 +582,7 @@
                             <option value="">Select gender</option>
                             @foreach(['Male', 'Female', 'Other'] as $gender)
                                 <option value="{{ $gender }}"
-                                    @selected(old('gender', $person?->gender) === $gender)>
+                                    @selected(old('gender', $vendor?->gender) === $gender)>
                                     {{ $gender }}
                                 </option>
                             @endforeach
@@ -596,13 +594,10 @@
                         <label for="personal_address" class="{{ $labelClass }}">Address</label>
                         <textarea id="personal_address" name="personal_address" rows="3"
                                 placeholder="Enter personal address"
-                                class="{{ $inputClass }}">{{ old('personal_address', $person?->personal_address) }}</textarea>
+                                class="{{ $inputClass }} auto-save-field">{{ old('personal_address', $vendor?->personal_address) }}</textarea>
                     </div>
 
-                    {{-- Vendor contact fields --}}
-                    <div class="sm:col-span-2 border-t border-slate-200 pt-5">
-                        <h3 class="font-bold text-slate-900">Vendor contact</h3>
-                    </div>
+                     
 
                     
                     </div>
@@ -700,14 +695,15 @@
     );
 @endphp
 
-<form
-    action=""
+<form    
     method="POST"
-    onsubmit="return ClientController.ediSaveBusinessInfo(this, @js($vendor?->id))"
+    data-auto-save
+    id="profileInfoForm"
+    action ="{{ route('sales.business.information') }}"    
     class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
 >
     @csrf
-
+    <input type="hidden" name="client_id" value="{{ $vendor->id }}">
     <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
         <h2 class="text-lg font-bold text-slate-900">Business information</h2>
         <p class="mt-1 text-sm text-slate-500">
@@ -725,7 +721,7 @@
                 type="text"
                 value="{{ old('business_name', $vendor?->business_name) }}"
                 placeholder="Enter business name"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
             @error('business_name')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -741,7 +737,7 @@
                 type="text"
                 value="{{ old('business_slug', $vendor?->business_slug) }}"
                 placeholder="Enter business slug"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
             @error('business_slug')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -757,10 +753,9 @@
                 id="business_email"
                 name="email"
                 type="email"
-                required
                 value="{{ old('email', $vendor?->email) }}"
                 placeholder="Enter email address"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
             @error('email')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -777,10 +772,9 @@
                 name="mobile"
                 type="tel"
                 inputmode="numeric"
-                required
                 value="{{ old('mobile', $vendor?->mobile) }}"
                 placeholder="Enter primary mobile number"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
             @error('mobile')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -797,7 +791,7 @@
                 inputmode="numeric"
                 value="{{ old('whatsapp', $vendor?->whatsapp) }}"
                 placeholder="Enter WhatsApp number"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
         </div>
 
@@ -820,7 +814,7 @@
             <select
                 id="state"
                 name="state"
-                onchange="select_city(this.value)"
+               
                 class="{{ $fieldClass }} select2-single-state state"
             >
                 <option value="">Select state</option>
@@ -843,7 +837,7 @@
                 id="city"
                 name="city"
                 data-selected="{{ $selectedCity }}"
-                onchange="select_zone(this.value)"
+                onchange="selectZone(this.value)"
                 class="{{ $fieldClass }} city-form select_cityList"
             >
                 <option value="">Select city</option>
@@ -878,7 +872,7 @@
                 type="text"
                 value="{{ old('area', $vendor?->area) }}"
                 placeholder="Enter area"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
         </div>
 
@@ -893,7 +887,7 @@
                 maxlength="6"
                 value="{{ old('pincode', $vendor?->pincode) }}"
                 placeholder="Enter pincode"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
         </div>
 
@@ -918,7 +912,7 @@
                 name="address"
                 rows="3"
                 placeholder="Enter business address"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >{{ old('address', $vendor?->address) }}</textarea>
         </div>
 
@@ -968,7 +962,7 @@
                         <select
                             id="{{ $day }}_from"
                             name="time[{{ $day }}][from]"
-                            class="{{ $fieldClass }} time-from"
+                            class="{{ $fieldClass }} time-from auto-save-field"
                         >
                             @foreach($times as $value => $label)
                                 <option
@@ -986,7 +980,7 @@
                         <select
                             id="{{ $day }}_to"
                             name="time[{{ $day }}][to]"
-                            class="{{ $fieldClass }} time-to"
+                            class="{{ $fieldClass }} time-to auto-save-field"
                         >
                             @foreach($times as $value => $label)
                                 <option
@@ -1064,13 +1058,13 @@
 @endphp
 
 <form
-    method="POST"
-    action=""
-    onsubmit="return ClientController.ediSaveBusinessMeta(this, @js($vendor?->id))"
+    method="POST"    
+    data-auto-save
+    action ="{{ route('sales.updateBusiness.meta') }}"     
     class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
 >
     @csrf
-
+ <input type="hidden" name="client_id" value="{{ $vendor->id }}">
     <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
         <h2 class="text-lg font-bold text-slate-900">Business SEO & introduction</h2>
         <p class="mt-1 text-sm text-slate-500">
@@ -1087,7 +1081,7 @@
                 name="meta_title"
                 rows="2"
                 placeholder="Enter meta title"
-                class="{{ $inputClass }}"
+                class="{{ $inputClass }} auto-save-field"
             >{{ old('meta_title', $vendor?->meta_title) }}</textarea>
 
             @error('meta_title')
@@ -1104,7 +1098,7 @@
                 type="text"
                 value="{{ old('h1_heading', $vendor?->h1_heading) }}"
                 placeholder="Enter page heading"
-                class="{{ $inputClass }}"
+                class="{{ $inputClass }} auto-save-field"
             >
 
             @error('h1_heading')
@@ -1120,7 +1114,7 @@
                 name="meta_description"
                 rows="3"
                 placeholder="Enter meta description"
-                class="{{ $inputClass }}"
+                class="{{ $inputClass }} auto-save-field"
             >{{ old('meta_description', $vendor?->meta_description) }}</textarea>
 
             @error('meta_description')
@@ -1135,10 +1129,11 @@
                 id="business_intro"
                 name="business_intro"
                 rows="8"
+                data-quill-editor
                 placeholder="Describe the business, services and experience"
-                class="{{ $inputClass }}"
+                class="{{ $inputClass }} auto-save-field hidden" 
             >{{ old('business_intro', $vendor?->business_intro) }}</textarea>
-
+            <div class="quill-editor min-h-[250px]"></div>
             @error('business_intro')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
             @enderror
@@ -1176,14 +1171,14 @@
     $fieldClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
 @endphp
 
-<form
-    action=""
+<form    
     method="POST"
-    onsubmit="return ClientController.ediSaveBusinessOverView(this, @js($vendor?->id))"
+    data-auto-save
+    action ="{{ route('sales.business.overview') }}"        
     class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
 >
     @csrf
-
+ <input type="hidden" name="client_id" value="{{ $vendor->id }}">
     <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
         <h2 class="text-lg font-bold text-slate-900">Business overview</h2>
         <p class="mt-1 text-sm text-slate-500">
@@ -1211,7 +1206,7 @@
                 maxlength="350"
                 placeholder="Briefly describe your business"
                 oninput="updateDescriptionCount(this)"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >{{ old('business_description', $vendor?->business_description) }}</textarea>
 
             @error('business_description')
@@ -1221,7 +1216,7 @@
 
         {{-- Business overview --}}
         <div>
-            <label for="business_overview"
+            <label for="business_overview_editor"
                    class="block text-sm font-semibold text-slate-700">
                 Business overview
             </label>
@@ -1230,10 +1225,12 @@
                 id="business_overview"
                 name="business_overview"
                 rows="10"
+                data-quill-editor
                 placeholder="Describe your services, experience and what makes your business different"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field hidden"
             >{{ old('business_overview', $vendor?->business_overview) }}</textarea>
 
+             <div class="quill-editor min-h-[250px]"></div>
             @error('business_overview')
                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
             @enderror
@@ -1266,33 +1263,24 @@
     });
 </script>
  
-
             </section>
-
-
-
-            {{-- ================================================== --}}
-            {{-- BUSINESS LOCATION --}}
-            {{-- ================================================== --}}
-
             <section
                 x-show="activeSection === 'business-location'"
                 x-cloak
             >
-@php
-    
+            @php            
 
-    $fieldClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
-    $labelClass = 'block text-sm font-semibold text-slate-700';
-@endphp
+                $fieldClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
+                $labelClass = 'block text-sm font-semibold text-slate-700';
+            @endphp
 
 <div class="space-y-6">
     {{-- Assign zone form --}}
     <form
         id="assignedZone"
         method="POST"
-        action="#"
-        onsubmit="return assignedZoneController.submit(this, @js($vendor?->id))"
+        data-auto-save
+        action ="{{ route('sales.assign.location') }}"           
         class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
     >
         @csrf
@@ -1334,7 +1322,6 @@
                 <select
                     id="assigned-state"
                     name="state_id"
-                    required
                     class="{{ $fieldClass }} select2-single-state"
                 >
                     <option value="">Select state</option>
@@ -1359,13 +1346,13 @@
                 <label for="assigned-city" class="{{ $labelClass }}">City</label>
                 <select
                     id="assigned-city"
-                    name="cityid"
+                    name="city_id"
                     class="{{ $fieldClass }} city-form select2_single"
                 >
                     <option value="">Select city</option>
                 </select>
 
-                @error('cityid')
+                @error('city_id')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -1390,6 +1377,24 @@
             <div class="other-zone sm:col-span-2">
                 <div class="show_otherInput"></div>
             </div>
+
+
+             <div
+                id="otherZoneWrap"
+                class="mt-3 hidden"
+            >
+
+                <input
+                    type="text"
+                    id="otherZone"
+                    name="other"
+                    class="{{ $fieldClass }}"
+                    placeholder="Enter Area / Neighborhood"
+                >
+
+            </div>
+
+
         </div>
 
         <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-6">
@@ -1403,47 +1408,301 @@
     </form>
 
     {{-- Assigned zones table --}}
-    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
-            <h2 class="text-lg font-bold text-slate-900">Assigned zones</h2>
-        </div>
 
-        <div class="w-full overflow-x-auto">
-            <table
-                id="datatable-assigned-zones"
-                class="w-full min-w-[580px] border-collapse text-left text-sm"
-            >
-                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
-                    <tr>
-                        <th class="w-12 px-4 py-3">
-                            <input
-                                id="check-all"
-                                type="checkbox"
-                                aria-label="Select all zones"
-                                class="check-box h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                            >
-                        </th>
-                        <th class="px-4 py-3 font-semibold">City</th>
-                        <th class="px-4 py-3 font-semibold">Zone</th>
-                        <th class="px-4 py-3 font-semibold">Action</th>
-                    </tr>
-                </thead>
 
-                {{-- Existing DataTables/AJAX code can populate the rows --}}
-                <tbody class="divide-y divide-slate-100"></tbody>
-            </table>
-        </div>
 
-        <div class="border-t border-slate-200 px-5 py-4 sm:px-6">
-            <button
-                type="button"
-                onclick="assignedZoneController.selectDeleteParmanent()"
-                class="inline-flex min-h-10 items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
-            >
-                Delete selected
+    <div class="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-4 py-4 sm:px-6">
+        <h2 class="text-base font-bold text-slate-900">Assigned locations</h2>
+           <button id="locations-delete-selected"
+            type="button"
+            disabled
+            class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40">
+        Delete Selected (<span id="locations-selected-count">0</span>)
+    </button>
+    </div>
+
+    <div class="w-full overflow-x-auto">
+        <table class="w-full min-w-[550px] text-left text-sm">
+            <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                    <th class="w-12 px-4 py-3">
+                    <input id="locations-check-all"
+                           type="checkbox"
+                           aria-label="Select all locations on this page"
+                           class="h-4 w-4 rounded border-slate-300">
+                </th>
+                    <th class="px-4 py-3">City</th>
+                    <th class="px-4 py-3">Zone</th>
+                    <th class="px-4 py-3">Action</th>
+                </tr>
+            </thead>
+            <tbody id="locations-body" class="divide-y divide-slate-100">
+                <tr>
+                    <td colspan="3" class="px-4 py-8 text-center text-slate-500">
+                        Loading...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-4">
+        <p id="locations-count" class="text-xs text-slate-500"></p>
+
+        <div class="flex gap-2">
+            <button id="locations-prev" type="button"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40">
+                Previous
+            </button>
+            <button id="locations-next" type="button"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-40">
+                Next
             </button>
         </div>
     </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const body = document.getElementById('locations-body');
+    const count = document.getElementById('locations-count');
+    const prev = document.getElementById('locations-prev');
+    const next = document.getElementById('locations-next');
+    const checkAll = document.getElementById('locations-check-all');
+    const deleteSelected = document.getElementById('locations-delete-selected');
+    const selectedCount = document.getElementById('locations-selected-count');
+
+    if (!body || !count || !prev || !next ||
+        !checkAll || !deleteSelected || !selectedCount) return;
+
+    const listUrl = @json(route('sales.assignLocations.list', ['id' => $vendor->id]));
+    const deleteUrlTemplate = @json(route('sales.assignLocations.delete', ['id' => '__ID__']));
+    const bulkDeleteUrl = @json(route('sales.assignLocations.bulkDelete', ['id' => $vendor->id]));
+    const csrfToken = @json(csrf_token());
+
+    let currentPage = 1;
+    let lastPage = 1;
+
+    
+    const selectedIds = new Set();
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value ?? '';
+        return div.innerHTML;
+    }
+
+    function updateSelectionUI() {
+        selectedCount.textContent = selectedIds.size;
+        deleteSelected.disabled = selectedIds.size === 0;
+
+        const visibleCheckboxes =
+            Array.from(body.querySelectorAll('.location-checkbox'));
+
+        checkAll.checked =
+            visibleCheckboxes.length > 0 &&
+            visibleCheckboxes.every(box => box.checked);
+
+        checkAll.indeterminate =
+            visibleCheckboxes.some(box => box.checked) &&
+            !checkAll.checked;
+    }
+
+    async function loadLocations(page = 1) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-slate-500">
+                    Loading...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const url = new URL(listUrl, window.location.origin);
+            url.searchParams.set('page', page);
+            url.searchParams.set('per_page', 10);
+
+            const response = await fetch(url, {
+                headers: { 'Accept': 'application/json' },
+                credentials: 'same-origin'
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const result = await response.json();
+
+            currentPage = result.current_page;
+            lastPage = result.last_page;
+
+            body.innerHTML = result.data.length
+                ? result.data.map(location => {
+                    const id = Number(location.assign_id);
+
+                    return `
+                        <tr>
+                            <td class="px-4 py-3">
+                                <input type="checkbox"
+                                       class="location-checkbox h-4 w-4 rounded border-slate-300"
+                                       value="${id}"
+                                       aria-label="Select ${escapeHtml(location.city)}"
+                                       ${selectedIds.has(id) ? 'checked' : ''}>
+                            </td>
+
+                            <td class="px-4 py-3 font-semibold text-slate-800">
+                                ${escapeHtml(location.city)}
+                            </td>
+
+                            <td class="px-4 py-3 text-slate-700">
+                                ${escapeHtml(location.zone)}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                <button type="button"
+                                        data-delete-id="${id}"
+                                        class="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('')
+                : `
+                    <tr>
+                        <td colspan="4" class="px-4 py-8 text-center text-slate-500">
+                            No service areas added.
+                        </td>
+                    </tr>
+                `;
+
+            count.textContent =
+                `Page ${currentPage} of ${lastPage} · ${result.total} locations`;
+
+            prev.disabled = currentPage <= 1;
+            next.disabled = currentPage >= lastPage;
+
+            updateSelectionUI();
+        } catch (error) {
+            console.error('Locations load failed:', error);
+
+            body.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-4 py-8 text-center text-red-600">
+                        Could not load locations.
+                    </td>
+                </tr>
+            `;
+
+            updateSelectionUI();
+        }
+    }
+
+    prev.addEventListener('click', function () {
+        if (currentPage > 1) loadLocations(currentPage - 1);
+    });
+
+    next.addEventListener('click', function () {
+        if (currentPage < lastPage) loadLocations(currentPage + 1);
+    });
+
+    body.addEventListener('change', function (event) {
+        if (!event.target.matches('.location-checkbox')) return;
+
+        const id = Number(event.target.value);
+
+        if (event.target.checked) {
+            selectedIds.add(id);
+        } else {
+            selectedIds.delete(id);
+        }
+
+        updateSelectionUI();
+    });
+
+   
+    checkAll.addEventListener('change', function () {
+        body.querySelectorAll('.location-checkbox').forEach(function (box) {
+            box.checked = checkAll.checked;
+
+            const id = Number(box.value);
+
+            if (box.checked) {
+                selectedIds.add(id);
+            } else {
+                selectedIds.delete(id);
+            }
+        });
+
+        updateSelectionUI();
+    });
+
+    deleteSelected.addEventListener('click', async function () {
+        const ids = Array.from(selectedIds);
+        if (!ids.length) return;
+
+        if (!confirm(`Delete ${ids.length} selected locations?`)) return;
+
+        deleteSelected.disabled = true;
+
+        try {
+            const response = await fetch(bulkDeleteUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ ids })
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            selectedIds.clear();
+            await loadLocations(currentPage);
+        } catch (error) {
+            console.error('Bulk delete failed:', error);
+            alert('Could not delete selected locations.');
+        } finally {
+            updateSelectionUI();
+        }
+    });
+
+    // Existing single-row delete.
+    body.addEventListener('click', async function (event) {
+        const button = event.target.closest('[data-delete-id]');
+        if (!button || !confirm('Delete this service area?')) return;
+
+        const id = Number(button.dataset.deleteId);
+        button.disabled = true;
+
+        try {
+            const url = deleteUrlTemplate.replace('__ID__', id);
+
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            selectedIds.delete(id);
+            await loadLocations(currentPage);
+        } catch (error) {
+            console.error('Delete failed:', error);
+            alert('Could not delete this service area.');
+            button.disabled = false;
+        }
+    });
+
+    loadLocations();
+});
+</script>
+
 </div>
              
                 
@@ -1471,13 +1730,13 @@
 @endphp
 
 <form
-    action=""
+    action ="{{ route('sales.business.Faq') }}"      
     method="POST"
-    onsubmit="return ClientController.ediSaveBusinessFAQ(this, @js($vendor?->id))"
+   data-auto-save
     class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
 >
     @csrf
-
+ <input type="hidden" name="client_id" value="{{ $vendor->id }}">
     <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
         <h2 class="text-lg font-bold text-slate-900">Frequently asked questions</h2>
         <p class="mt-1 text-sm text-slate-500">
@@ -1512,7 +1771,7 @@
                             type="text"
                             value="{{ old($questionField, data_get($vendor, $questionField)) }}"
                             placeholder="Enter FAQ question {{ $i }}"
-                            class="{{ $fieldClass }}"
+                            class="{{ $fieldClass }} auto-save-field"
                         >
 
                         @error($questionField)
@@ -1533,7 +1792,7 @@
                             name="{{ $answerField }}"
                             rows="4"
                             placeholder="Enter FAQ answer {{ $i }}"
-                            class="{{ $fieldClass }}"
+                            class="{{ $fieldClass }} auto-save-field"
                         >{{ old($answerField, data_get($vendor, $answerField)) }}</textarea>
 
                         @error($answerField)
@@ -1561,243 +1820,431 @@
          
 
 
+ <section x-show="activeSection === 'company-logo'" x-cloak>
+    @php
+        $fieldClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
 
-           <section
-                x-show="activeSection === 'company-logo'"
-                x-cloak
-            >
+        $logoData = !empty($vendor?->logo)
+            ? @unserialize($vendor->logo, ['allowed_classes' => false])
+            : [];
 
-@php
-    
+        $profileData = !empty($vendor?->profile_pic)
+            ? @unserialize($vendor->profile_pic, ['allowed_classes' => false])
+            : [];
 
-    $fieldClass = 'mt-1 block w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20';
-    $labelClass = 'block text-sm font-semibold text-slate-700';
+        $logoData = is_array($logoData) ? $logoData : [];
+        $profileData = is_array($profileData) ? $profileData : [];
 
-    $logoData = !empty($vendor?->logo)
-        ? @unserialize($vendor->logo, ['allowed_classes' => false])
-        : [];
+        $logoPath = data_get($logoData, 'thumbnail.src')
+            ?: data_get($logoData, 'large.src');
 
-    $profileData = !empty($vendor?->profile_pic)
-        ? @unserialize($vendor->profile_pic, ['allowed_classes' => false])
-        : [];
+        $profilePath = data_get($profileData, 'thumbnail.src')
+            ?: data_get($profileData, 'large.src');
+    @endphp
 
-    $logoData = is_array($logoData) ? $logoData : [];
-    $profileData = is_array($profileData) ? $profileData : [];
+    <form
+        id="profileLogo"
+        action="{{ route('sales.profileLogo.upload') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        data-auto-save
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+    >
+        @csrf
 
-    $logoPath = data_get($logoData, 'thumbnail.src')
-        ?: data_get($logoData, 'large.src');
+        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="business_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="upload_pics" value="upload_pics">
 
-    $profilePath = data_get($profileData, 'thumbnail.src')
-        ?: data_get($profileData, 'large.src');
-@endphp
-
-<form
-    id="profileLogo"
-    class="profile-logo overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    action=""
-    method="POST"
-    enctype="multipart/form-data"
->
-    @csrf
-
-    <input type="hidden" name="business_id" value="{{ $vendor?->id }}">
-    <input type="hidden" name="upload_pics" value="upload_pics">
-
-    <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
-        <h2 class="text-lg font-bold text-slate-900">Business profile & images</h2>
-        <p class="mt-1 text-sm text-slate-500">
-            Update business details, logo and profile photo.
-        </p>
-    </div>
-
-    <div class="grid grid-cols-1 gap-6 p-5 sm:grid-cols-2 sm:p-7">
-        {{-- Establishment year --}}
-        <div>
-            <label for="year_of_estb" class="{{ $labelClass }}">
-                Year of establishment
-            </label>
-
-            <select
-                id="year_of_estb"
-                name="year_of_estb"
-                class="{{ $fieldClass }}"
-            >
-                <option value="">Select year</option>
-
-                @for($year = 1970; $year <= now()->year; $year++)
-                    <option
-                        value="{{ $year }}"
-                        @selected((string) old('year_of_estb', $vendor?->year_of_estb) === (string) $year)
-                    >
-                        {{ $year }}
-                    </option>
-                @endfor
-            </select>
-
-            @error('year_of_estb')
-                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Certifications --}}
-        <div>
-            <label for="certifications" class="{{ $labelClass }}">
-                Certifications
-            </label>
-
-            <input
-                id="certifications"
-                type="text"
-                name="certifications"
-                value="{{ old('certifications', $vendor?->certifications) }}"
-                placeholder="Example: ISO 9001, ISO 14001"
-                class="{{ $fieldClass }}"
-            >
-
-            <p class="mt-1 text-xs text-slate-500">
-                Separate multiple certifications with commas.
+        <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+            <h2 class="text-lg font-bold text-slate-900">
+                Business profile & images
+            </h2>
+            <p class="mt-1 text-sm text-slate-500">
+                Update business details, logo and profile photo.
             </p>
-
-            @error('certifications')
-                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-            @enderror
         </div>
 
-        {{-- Logo --}}
-        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <label for="logo" class="{{ $labelClass }}">Business logo</label>
+        <div class="grid grid-cols-1 gap-6 p-5 sm:grid-cols-2 sm:p-7">
+            {{-- Establishment year --}}
+            <div>
+                <label
+                    for="year_of_estb"
+                    class="block text-sm font-semibold text-slate-700"
+                >
+                    Year of establishment
+                </label>
 
-            @if($logoPath)
-                <div class="mt-3 flex items-center gap-4">
-                    <img
-                        src="{{ asset(ltrim($logoPath, '/')) }}"
-                        alt="Current business logo"
-                        loading="lazy"
-                        class="h-20 w-20 rounded-xl border border-slate-200 bg-white object-contain p-1"
-                    >
+                <select
+                    id="year_of_estb"
+                    name="year_of_estb"
+                    class="{{ $fieldClass }} auto-save-field"
+                >
+                    <option value="">Select year</option>
 
-                    @if($vendor?->username)
-                        <a
-                            href="{{ url('developer/clients/update/profileLogo/logoDel/'.$vendor->username) }}"
-                            class="inline-flex items-center rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
+                    @for($year = 1970; $year <= now()->year; $year++)
+                        <option
+                            value="{{ $year }}"
+                            @selected((string) old('year_of_estb', $vendor?->year_of_estb) === (string) $year)
                         >
-                            Remove logo
-                        </a>
-                    @endif
-                </div>
-            @endif
+                            {{ $year }}
+                        </option>
+                    @endfor
+                </select>
 
-            <input
-                id="logo"
-                type="file"
-                name="logo"
-                accept=".png,.jpeg,.jpg,.webp,.svg"
-                class="mt-4 block w-full rounded-xl border border-slate-300 bg-white text-sm text-slate-700 file:mr-4 file:border-0 file:bg-blue-50 file:px-4 file:py-3 file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-            >
+                @error('year_of_estb')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
 
-            <p class="mt-2 text-xs text-slate-500">
-                {{ $logoPath ? 'Choose a file to replace the current logo.' : 'Choose a logo to upload.' }}
-            </p>
+            {{-- Certifications --}}
+            <div>
+                <label
+                    for="certifications"
+                    class="block text-sm font-semibold text-slate-700"
+                >
+                    Certifications
+                </label>
 
-            @error('logo')
-                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+                <input
+                    id="certifications"
+                    type="text"
+                    name="certifications"
+                    value="{{ old('certifications', $vendor?->certifications) }}"
+                    placeholder="Example: ISO 9001, ISO 14001"
+                    class="{{ $fieldClass }} auto-save-field"
+                >
 
-        {{-- Profile photo --}}
-        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <label for="profile_pic" class="{{ $labelClass }}">
-                Profile photo
-            </label>
+                <p class="mt-1 text-xs text-slate-500">
+                    Separate multiple certifications with commas.
+                </p>
 
-            @if($profilePath)
-                <div class="mt-3 flex items-center gap-4">
+                @error('certifications')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Business logo --}}
+            <div>
+                <p class="mb-2 text-sm font-semibold text-slate-700">
+                    Business logo
+                </p>
+
+                <div
+                    data-image-dropzone="logo"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Choose or drop a business logo"
+                    class="flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-5 text-center transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                     <img
-                        src="{{ asset(ltrim($profilePath, '/')) }}"
-                        alt="Current profile photo"
-                        loading="lazy"
-                        class="h-20 w-20 rounded-xl border border-slate-200 bg-white object-cover"
+                        data-image-preview
+                        src="{{ $logoPath ? asset(ltrim($logoPath, '/')) : '' }}"
+                        alt="Business logo preview"
+                        class="mb-3 block h-44 w-full rounded-xl bg-white object-contain {{ $logoPath ? '' : 'hidden' }}"
                     >
 
-                    @if($vendor?->username)
-                        <a
-                            href="{{ url('developer/clients/update/profileLogo/profilePicDel/'.$vendor->username) }}"
-                            class="inline-flex items-center rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
-                        >
-                            Remove photo
-                        </a>
-                    @endif
+                    <div
+                        data-image-placeholder
+                        class="{{ $logoPath ? 'hidden' : '' }}"
+                    >
+                        <span class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+                            <i data-lucide="image-up" class="h-6 w-6"></i>
+                        </span>
+                    </div>
+
+                    <span class="text-sm font-semibold text-slate-800">
+                        Click to choose or drop a logo
+                    </span>
+
+                    <span data-file-name class="mt-1 text-xs text-slate-500">
+                        PNG, JPG or WEBP · maximum 5 MB
+                    </span>
                 </div>
-            @endif
 
-            <input
-                id="profile_pic"
-                type="file"
-                name="profile_pic"
-                accept=".png,.jpeg,.jpg,.webp,.svg"
-                class="mt-4 block w-full rounded-xl border border-slate-300 bg-white text-sm text-slate-700 file:mr-4 file:border-0 file:bg-blue-50 file:px-4 file:py-3 file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-            >
+                {{-- Input always exists, including when a logo is already saved --}}
+                <input
+                    id="logo"
+                    type="file"
+                    name="logo"
+                    accept=".png,.jpg,.jpeg,.webp"
+                    class="auto-save-field sr-only"
+                >
 
-            <p class="mt-2 text-xs text-slate-500">
-                {{ $profilePath ? 'Choose a file to replace the current photo.' : 'Choose a photo to upload.' }}
+                @error('logo')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
+
+                @if($logoPath)
+                    <a
+                        href="{{ route('sales.profileLogo.logoDel', ['id' => $vendor->id]) }}"
+                        onclick="return confirm('Remove the current logo?')"
+                        class="mt-3 inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
+                    >
+                        <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                        
+                    </a>
+                @endif
+            </div>
+
+            {{-- Profile photo --}}
+            <div>
+                <p class="mb-2 text-sm font-semibold text-slate-700">
+                    Profile photo
+                </p>
+
+                <div
+                    data-image-dropzone="profile_pic"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Choose or drop a profile photo"
+                    class="flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-5 text-center transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    <img
+                        data-image-preview
+                        src="{{ $profilePath ? asset(ltrim($profilePath, '/')) : '' }}"
+                        alt="Profile photo preview"
+                        class="mb-3 block h-44 w-full rounded-xl bg-white object-contain {{ $profilePath ? '' : 'hidden' }}"
+                    >
+
+                    <div
+                        data-image-placeholder
+                        class="{{ $profilePath ? 'hidden' : '' }}"
+                    >
+                        <span class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+                            <i data-lucide="user-round" class="h-6 w-6"></i>
+                        </span>
+                    </div>
+
+                    <span class="text-sm font-semibold text-slate-800">
+                        Click to choose or drop a photo
+                    </span>
+
+                    <span data-file-name class="mt-1 text-xs text-slate-500">
+                        PNG, JPG or WEBP · maximum 5 MB
+                    </span>
+                </div>
+
+                <input
+                    id="profile_pic"
+                    type="file"
+                    name="profile_pic"
+                    accept=".png,.jpg,.jpeg,.webp"
+                    class="auto-save-field sr-only"
+                >
+
+                @error('profile_pic')
+                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                @enderror
+
+                @if($profilePath)
+                    <a
+                        href="{{ route('sales.profileBanner.picDel', ['id' => $vendor->id]) }}"
+                        onclick="return confirm('Remove the current profile photo?')"
+                        class="mt-3 inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50"
+                    >
+                        <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                        
+                    </a>
+                @endif
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
+            <p class="text-xs text-slate-500">
+                Images save automatically after selection.
             </p>
 
-            @error('profile_pic')
-                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-            @enderror
+            <button
+                type="submit"
+                class="inline-flex min-h-11 items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400"
+            >
+                Save changes
+            </button>
         </div>
-    </div>
-
-    <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
-        <button
-            type="submit"
-            class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
-        >
-            Save changes
-        </button>
-    </div>
-</form>
+    </form>
+</section>
 
 
-           </section>
+<section x-show="activeSection === 'gallery'" x-cloak>
+    @php
+        $pictures = [];
 
+        if (!empty($vendor?->pictures)) {
+            $decoded = @unserialize(
+                $vendor->pictures,
+                ['allowed_classes' => false]
+            );
 
-           
+            $pictures = is_array($decoded) ? $decoded : [];
+        }
+    @endphp
+
+    <form
+
+    data-gallery-dropzone
+        id="uploadGalleryform"
+        action="{{ route('sales.gallery.upload') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        data-auto-save
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+    >
+        @csrf
+
+        <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="business_id" value="{{ $vendor->id }}">
+        <input type="hidden" name="upload_pics" value="upload_pics">
+
+        <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+            <h2 class="text-lg font-bold text-slate-900">
+                Business gallery
+            </h2>
+            <p class="mt-1 text-sm text-slate-500">
+                Upload up to 30 business images.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
+            @for($i = 0; $i < 30; $i++)
+                @php
+                    $slot = $i + 1;
+                    $fieldName = 'image' . $slot;
+                    $imageSrc = data_get($pictures, "{$i}.large.src");
+                @endphp
+
+                <div
+                    id="{{ $fieldName }}"
+                    class="rounded-xl border border-slate-200 bg-slate-50 p-4"
+                >
+                    <div class="mb-3 flex items-center justify-between gap-2">
+                        <label
+                            for="gallery-{{ $fieldName }}"
+                            class="text-sm font-semibold text-slate-800"
+                        >
+                            Image {{ $slot }}
+                        </label>
+
+                        <span
+                            data-gallery-status
+                            class="text-xs text-slate-500"
+                        >
+                            {{ $imageSrc ? 'Uploaded' : 'Empty' }}
+                        </span>
+                    </div>
+
+                    <div class="img-help">
+                        <div
+                            data-gallery-dropzone="{{ $fieldName }}"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Choose or drop gallery image {{ $slot }}"
+                            class="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white p-3 text-center transition hover:border-blue-400 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <img
+                                data-gallery-preview
+                                src="{{ $imageSrc ? asset(ltrim($imageSrc, '/')) : '' }}"
+                                alt="Gallery image {{ $slot }}"
+                                loading="lazy"
+                                class="max-h-36 max-w-full rounded-lg object-contain {{ $imageSrc ? '' : 'hidden' }}"
+                            >
+
+                            <div
+                                data-gallery-placeholder
+                                class="{{ $imageSrc ? 'hidden' : '' }}"
+                            >
+                                <span class="text-3xl font-light text-slate-400">+</span>
+                                <p class="mt-1 text-xs font-medium text-slate-600">
+                                    Click or drop an image
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Input हमेशा रखें, ताकि saved image replace भी हो सके --}}
+                        <input
+                            id="gallery-{{ $fieldName }}"
+                            type="file"
+                            name="{{ $fieldName }}"
+                            accept=".png,.jpg,.jpeg,.webp"
+                            class="auto-save-field sr-only"
+                        >
+
+                        <div class="mt-3 flex items-center justify-between gap-2">
+                            <span
+                                data-gallery-file-name
+                                class="min-w-0 truncate text-xs text-slate-500"
+                            >
+                                PNG, JPG or WEBP · max 5 MB
+                            </span>
+
+                            <button
+                                type="button"
+                                data-gallery-delete="{{ $slot }}"
+                                class="remove-thumbnail inline-flex shrink-0 items-center gap-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-100 disabled:opacity-50 {{ $imageSrc ? '' : 'hidden' }}"
+                                aria-label="Remove image {{ $slot }}"
+                            >
+                                <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+
+                    @error($fieldName)
+                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endfor
+        </div>
+
+        <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
+            <button
+                type="submit"
+                class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-2.5 text-sm font-bold text-slate-900 hover:bg-amber-400 sm:w-auto"
+            >
+                Save gallery images
+            </button>
+        </div>
+    </form>
+</section>
+
+<!--            
            <section
                 x-show="activeSection === 'gallery'"
                 x-cloak
             >
 
 
-@php
-    $pictures = [];
+        @php
+            $pictures = [];
 
-    if (!empty($vendor?->pictures)) {
-        $decoded = @unserialize($vendor->pictures, ['allowed_classes' => false]);
-        $pictures = is_array($decoded) ? $decoded : [];
-    }
-@endphp
+            if (!empty($vendor?->pictures)) {
+                $decoded = @unserialize($vendor->pictures, ['allowed_classes' => false]);
+                $pictures = is_array($decoded) ? $decoded : [];
+            }
+        @endphp
 
-<form
-    id="uploadGalleryform"
-    action=""
-    method="POST"
-    enctype="multipart/form-data"
-    class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
->
-    @csrf
+        <form
+        data-image-dropzone
+            id="uploadGalleryform"
+            action="{{ route('sales.gallery.upload') }}"
+            method="POST"
+            data-auto-save
+            enctype="multipart/form-data"
+            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+        >
+            @csrf
+            <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+            <input type="hidden" name="business_id" value="{{ $vendor->id }}">
+            <input type="hidden" name="upload_pics" value="upload_pics">
 
-    <input type="hidden" name="business_id" value="{{ $vendor->id }}">
-    <input type="hidden" name="upload_pics" value="upload_pics">
+            <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
+                <h2 class="text-lg font-bold text-slate-900">Business gallery</h2>
+                <p class="mt-1 text-sm text-slate-500">
+                    Upload up to 30 business images.
+                </p>
+            </div>
 
-    <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
-        <h2 class="text-lg font-bold text-slate-900">Business gallery</h2>
-        <p class="mt-1 text-sm text-slate-500">
-            Upload up to 30 business images.
-        </p>
-    </div>
-
-    <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2 sm:p-7 lg:grid-cols-3">
         @for($i = 0; $i < 30; $i++)
             @php
                 $fieldName = 'image' . ($i + 1);
@@ -1825,6 +2272,7 @@
                 <span class="img-help block">
                     @if($imageSrc)
                         <img
+                            data-image-preview
                             src="{{ asset(ltrim($imageSrc, '/')) }}"
                             alt="Gallery image {{ $i + 1 }}"
                             loading="lazy"
@@ -1837,8 +2285,7 @@
                             data-srno="{{ $fieldName }}"
                             aria-label="Remove image {{ $i + 1 }}"
                         >
-                            <span aria-hidden="true">×</span>
-                            Remove image
+                             <i data-lucide="trash-2" class="h-3.5 w-3.5"></i>
                         </button>
                     @else
                         <label
@@ -1851,12 +2298,12 @@
                             </span>
                         </label>
 
-                        <input
+                        <input 
                             id="gallery-{{ $fieldName }}"
                             type="file"
                             name="{{ $fieldName }}"
                             accept=".png,.jpg,.jpeg,.webp,.svg"
-                            class="fff mt-3 block w-full text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-100 file:px-3 file:py-2 file:font-semibold file:text-blue-700 hover:file:bg-blue-200"
+                            class="fff mt-3 block w-full text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-100 file:px-3 file:py-2 file:font-semibold file:text-blue-700 hover:file:bg-blue-200 auto-save-field"
                         >
                     @endif
                 </span>
@@ -1878,7 +2325,7 @@
     </div>
 </form>
 
-           </section>
+           </section> -->
 
 
            <section
@@ -1906,12 +2353,13 @@
 <form
     id="certificateForm"
     class="certificate_form overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    action=""
+    action="{{ route('sales.business.certificate') }}"
     method="POST"
+    data-auto-save
     enctype="multipart/form-data"
 >
     @csrf
-
+    <input type="hidden" name="client_id" value="{{ $vendor->id }}">
     <input type="hidden" name="business_id" value="{{ $vendor?->id }}">
 
     <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
@@ -2054,12 +2502,13 @@
 <form
     id="awardFrom"
     class="award_form overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    action=""
+    action="{{ route('sales.save-award-auto') }}"
     method="POST"
+    data-auto-save
     enctype="multipart/form-data"
 >
     @csrf
-
+    <input type="hidden" name="client_id" value="{{ $vendor->id }}">
     <input type="hidden" name="business_id" value="{{ $vendor?->id }}">
 
     <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
@@ -2201,7 +2650,8 @@
 <form
     id="recentActivityFrom"
     class="recent_form overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
-    action=""
+    data-auto-save
+     action="{{ route('sales.recent.activity') }}"
     method="POST"
     enctype="multipart/form-data"
 >
@@ -2407,7 +2857,8 @@
     <form
         id="kw_form"
         name="kw_form"
-        action="{{ $updateUrl }}"
+        data-auto-save
+        action="{{ route('sales.keywords.add') }}"
         method="POST"
         enctype="multipart/form-data"
         class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
@@ -2418,7 +2869,7 @@
             type="hidden"
             name="client_id"
             id="clientIDASSKW"
-            value="{{ $vendor->username }}"
+            value="{{ $vendor->id }}"
         >
         <input type="hidden" name="kw-submit" value="kw-submit">
 
@@ -2511,6 +2962,7 @@
                 @if($canExport)
                     <form action="{{ $updateUrl }}" method="POST">
                         @csrf
+                         <input type="hidden" name="client_id" value="{{ $vendor->id }}">
                         <button
                             type="submit"
                             name="kw-export"
@@ -2547,7 +2999,7 @@
 
 
             @php
-                $updateUrl = url('developer/clients/update/'.$vendor->username);
+                $updateUrl = route('sales.accountSettings',$vendor->username);
                 $currentUser = auth()->user();
 
                 $canManagePackage = $currentUser
@@ -2594,6 +3046,7 @@
                                 class="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4"
                             >
                                 @csrf
+                                 <input type="hidden" name="client_id" value="{{ $vendor->id }}">
                                 <input type="hidden" name="{{ $status['flag'] }}" value="1">
                                 {{-- Ensures unchecked status submits 0 --}}
                                 <input type="hidden" name="{{ $status['field'] }}" value="0">
@@ -2704,7 +3157,7 @@
         >
             @csrf
             <input type="hidden" name="submit_client_type" value="1">
-
+            <input type="hidden" name="client_id" value="{{ $vendor->username }}">
             <label for="client_type" class="text-sm font-semibold text-slate-700">
                 Client package
             </label>
@@ -2755,7 +3208,7 @@
                     class="rounded-xl border border-slate-200 bg-slate-50 p-4"
                 >
                     @csrf
-
+                    <input type="hidden" name="client_id" value="{{ $vendor->username }}"> 
                     <p class="text-sm font-bold text-slate-900">Subscription dates</p>
 
                     <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -2801,7 +3254,7 @@
                     class="rounded-xl border border-slate-200 bg-slate-50 p-4"
                 >
                     @csrf
-
+                    <input type="hidden" name="client_id" value="{{ $vendor->username }}">
                     <label for="max_kw" class="text-sm font-semibold text-slate-700">
                         Maximum keywords
                     </label>
@@ -2831,6 +3284,7 @@
                         class="rounded-xl border border-slate-200 bg-slate-50 p-4"
                     >
                         @csrf
+                        <input type="hidden" name="client_id" value="{{ $vendor->username }}">
                         <input type="hidden" name="amt" value="555">
                         <input type="hidden" name="submit_free_amt" value="1">
 
@@ -2852,48 +3306,37 @@
 
            </section>
 
+<section x-show="activeSection === 'leads'" x-cloak>
+    <div class="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="border-b border-slate-200 px-4 py-4 sm:px-6">
+            <h2 class="text-base font-bold text-slate-900">All leads</h2>
+        </div>
 
-           <section
-                x-show="activeSection === 'leads'"
-                x-cloak
+        <div class="w-full overflow-x-auto">
+            <table
+                id="datatable-view-all-leads"
+                class="w-full min-w-[850px] border-collapse text-left text-sm"
             >
-<div class="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-    <div class="border-b border-slate-200 px-4 py-4 sm:px-6">
-        <h2 class="text-base font-bold text-slate-900">All leads</h2>
+                <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+                    <tr>
+                        <th class="whitespace-nowrap px-4 py-3">Name</th>
+                        <th class="whitespace-nowrap px-4 py-3">Mobile</th>
+                        <th class="whitespace-nowrap px-4 py-3">Email</th>
+                        <th class="whitespace-nowrap px-4 py-3">Course</th>
+                        <th class="whitespace-nowrap px-4 py-3">City</th>
+                        <th class="whitespace-nowrap px-4 py-3">Date</th>
+                        <th class="whitespace-nowrap px-4 py-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white"></tbody>
+            </table>
+        </div>
     </div>
+</section>
 
-    <div class="w-full overflow-x-auto">
-        <table
-            id="datatable-view-all-leads"
-            class="w-full min-w-[850px] border-collapse text-left text-sm"
-        >
-            <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
-                <tr>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">Name</th>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">Mobile</th>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">Email</th>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">Course</th>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">City</th>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">Date</th>
-                    <th class="whitespace-nowrap px-4 py-3 font-semibold">Action</th>
-                </tr>
-            </thead>
+ 
 
-            {{-- Existing DataTables/AJAX code populates this --}}
-            <tbody class="divide-y divide-slate-100 bg-white"></tbody>
-        </table>
-    </div>
-</div>
-
-
-
-           </section>
-
-
-           <section
-                x-show="activeSection === 'discussion'"
-                x-cloak
-            >
+    <section x-show="activeSection === 'discussion'" x-cloak >
 
 <div id="client-discussions" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4 sm:px-6">
@@ -2979,7 +3422,6 @@
             <select
                 id="discussion-status"
                 name="status"
-                required
                 class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
                 <option value="">Select status</option>
@@ -3000,7 +3442,6 @@
                 id="discussion-remark"
                 name="remark"
                 rows="4"
-                required
                 placeholder="What was discussed with the client?"
                 class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >{{ old('remark') }}</textarea>
@@ -3016,7 +3457,6 @@
                     id="discussed_at"
                     type="datetime-local"
                     name="discussed_at"
-                    required
                     value="{{ old('discussed_at', now()->format('Y-m-d\TH:i')) }}"
                     class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm"
                 >
@@ -3095,7 +3535,7 @@
     >
         @csrf
 
-        <input type="hidden" name="client-id" value="{{ $vendor->username }}">
+        <input type="hidden" name="client_id" value="{{ $vendor->username }}">
         <input type="hidden" name="pay-submit" value="savepay">
 
         <div class="border-b border-slate-200 px-5 py-5 sm:px-7">
@@ -3108,8 +3548,7 @@
         <div class="grid grid-cols-1 gap-5 p-5 sm:grid-cols-2 sm:p-7">
             <div>
                 <label for="business_name" class="{{ $labelClass }}">Business name *</label>
-                <input id="business_name" name="business_name" type="text" required
-                       value="{{ old('business_name', $vendor->business_name) }}"
+                <input id="business_name" name="business_name" type="text" value="{{ old('business_name', $vendor->business_name) }}"
                        class="{{ $inputClass }}">
             </div>
 
@@ -3123,8 +3562,7 @@
             <div>
                 <label for="paid_amount" class="{{ $labelClass }}">Paid amount *</label>
                 <input id="paid_amount" name="paid_amount" type="number"
-                       min="0" step="0.01" required
-                       value="{{ old('paid_amount') }}"
+                       min="0" step="0.01" value="{{ old('paid_amount') }}"
                        placeholder="Enter paid amount"
                        onblur="handlingPaiAmt()"
                        class="{{ $inputClass }}">
@@ -3203,15 +3641,13 @@
             <div>
                 <label for="total_amount" class="{{ $labelClass }}">Total amount *</label>
                 <input id="total_amount" name="total_amount" type="number"
-                       min="0" step="0.01" required
-                       value="{{ old('total_amount') }}"
+                       min="0" step="0.01" value="{{ old('total_amount') }}"
                        class="{{ $inputClass }}">
             </div>
 
             <div>
                 <label for="stud-payment_mode" class="{{ $labelClass }}">Payment mode *</label>
-                <select id="stud-payment_mode" name="stud-payment_mode" required
-                        onchange="togglePaymentModeFields(this.value)"
+                <select id="stud-payment_mode" name="stud-payment_mode"                  onchange="togglePaymentModeFields(this.value)"
                         class="{{ $inputClass }}">
                     <option value="">Select payment mode</option>
                     @foreach($modes as $key => $value)
@@ -3392,18 +3828,18 @@ function vendorEditor() {
 
                 this.$nextTick(() => {
 
-                    const form = document.getElementById(
-                        'vendorEditorForm'
-                    );
+                    // const form = document.getElementById(
+                    //     'vendorEditorForm'
+                    // );
 
-                    if (form) {
+                    // if (form) {
 
-                        form.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
+                    //     form.scrollIntoView({
+                    //         behavior: 'smooth',
+                    //         block: 'start'
+                    //     });
 
-                    }
+                    // }
 
                 });
 
@@ -3430,5 +3866,743 @@ function vendorEditor() {
     }
 
 </style>
+
+<div
+    id="toast-container"
+    class="pointer-events-none fixed right-4 top-4 z-[9999] flex w-80 flex-col gap-2"
+></div>
+ 
+
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+/* ============================================================
+   0. CONFIG / CSRF — set ONCE, used by every AJAX call below
+   ============================================================ */
+(function () {
+    var token = document.querySelector('meta[name="csrf-token"]')?.content
+        || document.querySelector('input[name="_token"]')?.value;
+
+    if (token) {
+        $.ajaxSetup({
+            headers: { 'X-CSRF-TOKEN': token }
+        });
+    } else {
+        console.warn('CSRF token not found — add <meta name="csrf-token" content="{{ csrf_token() }}"> to your <head>.');
+    }
+})();
+
+
+ 
+
+var clientId = {{ isset($vendor->id) ? $vendor->id : 'null' }};
+
+ 
+function loadCity(stateId, cityId, targetSelector, callback) {
+    $.post("{{ route('sales.salesCities.ajax') }}", { sid: stateId, cid: cityId })
+        .done(function (data) {
+            $(targetSelector).html(data);
+            bindSelectAutoSave($(targetSelector)[0]);
+            if (typeof callback === 'function') callback();
+        })
+        .fail(function (xhr) {
+            console.error('loadCity failed:', targetSelector, xhr.status);
+        });
+}
+
+function loadZone(cityId, zoneId, targetSelector) {
+    $.post("{{ route('sales.salesZone.ajax') }}", { city: cityId, zone: zoneId })
+        .done(function (data) {
+            $(targetSelector).html(data);
+            bindSelectAutoSave($(targetSelector)[0]);
+        })
+        .fail(function (xhr) {
+            console.error('loadZone failed:', targetSelector, xhr.status);
+        });
+}
+
+ 
+const ASSIGNED_CITY_SELECTOR = '#assigned-city';
+const ASSIGNED_STATE_SELECTOR = '#assigned-state';
+const ASSIGNED_ZONE_SELECTOR = '#assigned-zone';
+const MAIN_CITY_SELECTOR = '#city';
+const MAIN_ZONE_SELECTOR = '.select_zoneList';
+const PERSONAL_CITY_SELECTOR = '#personal_city';
+const PERSONAL_ZONE_SELECTOR = '#personal_zone';
+
+document.addEventListener('DOMContentLoaded', function () {
+    var state = '<?php echo $vendor->state_id; ?>';
+    var city  = '<?php echo $vendor->city_id; ?>';
+    var zone  = '<?php echo $vendor->zone_id; ?>';
+
+    loadCity(state, city, MAIN_CITY_SELECTOR, function () {
+        loadZone(city, zone, MAIN_ZONE_SELECTOR);
+    });
+
+    var perState = '<?php echo $vendor->personal_state_id; ?>';
+    var perCity  = '<?php echo $vendor->personal_city_id; ?>';
+    var perZone  = '<?php echo $vendor->personal_zone_id; ?>';
+
+    loadCity(perState, perCity, PERSONAL_CITY_SELECTOR, function () {
+        loadZone(perCity, perZone, PERSONAL_ZONE_SELECTOR);
+    });
+});
+
+// Re-fire chain when State changes manually
+$(document).on('change', '#state', function () {
+    loadCity($(this).val(), '', MAIN_CITY_SELECTOR);
+});
+$(document).on('change', '#assigned-state', function () {
+    loadCity($(this).val(), '', ASSIGNED_CITY_SELECTOR);
+    hideOtherZone();
+});
+
+
+$(document).on('change', '#personal_state', function () {
+    loadCity($(this).val(), '', PERSONAL_CITY_SELECTOR);
+});
+
+// Re-fire Zone chain when City changes manually
+$(document).on('change', MAIN_CITY_SELECTOR, function () {
+    loadZone($(this).val(), '', MAIN_ZONE_SELECTOR);
+});
+
+
+$(document).on('change', '#personal_city', function () {
+    loadZone($(this).val(), '', PERSONAL_ZONE_SELECTOR);
+});
+
+$(document).on('change', '#assigned-city', function () {
+    loadZone($(this).val(), '', ASSIGNED_ZONE_SELECTOR);
+
+
+          hideOtherZone();
+});
+
+
+ $('#assigned-zone').on('change', function () {
+
+        const selectedValue =
+            ($(this).val() || '')
+                .toString()
+                .trim()
+                .toLowerCase();
+
+
+        const selectedText =
+            ($(this).find('option:selected').text() || '')
+                .trim()
+                .toLowerCase();
+
+ 
+
+        if (
+            selectedValue === 'other' ||
+            selectedText === 'other'
+        ) {
+
+            showOtherZone();
+
+        } else {
+
+            hideOtherZone();
+
+        }
+
+    });
+
+    
+    function showOtherZone() {
+
+        $('#otherZoneWrap')
+            .removeClass('hidden');
+
+        $('#otherZone')
+            .prop('required', true)
+            .focus();
+
+    }
+
+
+
+    
+    function hideOtherZone() {
+
+        $('#otherZoneWrap')
+            .addClass('hidden');
+
+        $('#otherZone')
+            .prop('required', false)
+            .val('');
+
+    }
+
+/* ============================================================
+   3. COMMON AJAX FORM SUBMIT — the ONE function that does the
+      actual save. Both auto-save and the manual "Save" button
+      call this. Nothing else in the file talks to the server
+      for form data.
+   ============================================================ */
+function ajaxSubmitForm(form) {
+    return new Promise(function (resolve, reject) {
+        if (!form.action) {
+            console.error('Form action is missing:', form);
+            reject({ type: 'no-action' });
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        $.ajax({
+            url: form.action,
+            type: (form.getAttribute('method') || 'POST').toUpperCase(),
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            headers: { 'Accept': 'application/json' }
+        })
+        .done(resolve)
+        .fail(reject);
+    });
+}
+
+
+const formSavers = new WeakMap();
+
+function triggerAutoSaveFor(form) {
+     
+    const save = formSavers.get(form);
+    if (save) save(false);
+}
+    
+ 
+ 
+      document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
+
+ 
+        let debounceTimer = null;
+        let isSaving = false;
+        let saveAgain = false;
+        let lastSnapshot = getSnapshot();
+
+        function getSnapshot() {
+            const values = $(form).serialize();
+            const files = Array.from(form.querySelectorAll('input[type="file"]'))
+                .map(function (input) {
+                    const selected = Array.from(input.files || [])
+                        .map(function (file) { return file.name + ':' + file.size + ':' + file.lastModified; })
+                        .join(',');
+                    return input.name + '=' + selected;
+                })
+                .join('&');
+            return values + '&' + files;
+        }
+
+        function clearErrors() {
+            form.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
+            form.querySelectorAll('[aria-invalid="true"]').forEach(function (el) {
+                el.removeAttribute('aria-invalid');
+                el.classList.remove('border-red-500', 'ring-2', 'ring-red-100');
+            });
+        }
+
+        function showValidationErrors(errors) {
+            clearErrors();
+            Object.entries(errors).forEach(function ([name, messages]) {
+                const field = Array.from(form.elements).find(function (el) { return el.name === name; });
+                if (!field) return;
+
+                field.classList.add('border-red-500', 'ring-2', 'ring-red-100');
+                field.setAttribute('aria-invalid', 'true');
+
+                const error = document.createElement('p');
+                error.className = 'field-error mt-1 text-xs font-medium text-red-600';
+                error.textContent = messages[0] || 'Invalid value';
+                field.insertAdjacentElement('afterend', error);
+            });
+        }
+
+        function saveForm(isManual) {
+            clearTimeout(debounceTimer);
+
+            if (!form.checkValidity()) {
+                if (isManual) form.reportValidity();
+                return;
+            }
+
+            const snapshot = getSnapshot();
+            if (!isManual && snapshot === lastSnapshot) return;
+
+            if (isSaving) {
+                saveAgain = true;
+                return;
+            }
+
+            isSaving = true;
+            clearErrors();
+
+            ajaxSubmitForm(form)
+                .then(function (response) {
+                    lastSnapshot = snapshot;
+
+
+                    showToast(response.status ? response.msg : response.msg, 'success');
+                })
+                .catch(function (xhr) {
+                    if (xhr.status === 422 && xhr.responseJSON?.errors) {
+                        showValidationErrors(xhr.responseJSON.errors);
+                        showToast('Please correct the highlighted fields', 'error');
+                        return;
+                    }
+                    console.error('Form save failed:', {
+                        form: form.id,
+                        status: xhr.status,
+                        response: xhr.responseJSON || xhr.responseText
+                    });
+                    showToast(
+                        xhr.status === 419
+                            ? 'Session expired. Refresh the page and try again.'
+                            : 'Save failed. Please try again.',
+                        'error'
+                    );
+                })
+                .finally(function () {
+                    isSaving = false;
+                    if (saveAgain || getSnapshot() !== snapshot) {
+                        saveAgain = false;
+                        if (getSnapshot() !== lastSnapshot) {
+                            debounceTimer = setTimeout(function () { saveForm(false); }, 500);
+                        }
+                    }
+                });
+        }
+
+        // Register this form's saver so dropdown/select handlers can reach it
+        formSavers.set(form, saveForm);
+
+        form.addEventListener('input', function (event) {
+            if (!event.target.matches('.auto-save-field')) return;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(function () { saveForm(false); }, 1500);
+        });
+
+        form.addEventListener('change', function (event) {
+            if (!event.target.matches('.auto-save-field')) return;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(function () { saveForm(false); }, 600);
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            saveForm(true); // manual save (Save button)
+        });
+    });
+ 
+ 
+document.addEventListener('DOMContentLoaded', function () {
+    const galleryForm = document.getElementById('uploadGalleryform');
+    if (!galleryForm) return;
+
+    const deleteUrlTemplate = @json(
+        route('sales.gallery.delete', [
+            'id' => $vendor->id,
+            'slot' => '__SLOT__'
+        ])
+    );
+
+    const csrfToken = @json(csrf_token());
+
+    galleryForm.querySelectorAll('[data-gallery-dropzone]').forEach(function (zone) {
+        const fieldName = zone.dataset.galleryDropzone;
+        const card = zone.closest('[id^="image"]');
+        const input = document.getElementById('gallery-' + fieldName);
+
+        if (!card || !input) return;
+
+        const preview = card.querySelector('[data-gallery-preview]');
+        const placeholder = card.querySelector('[data-gallery-placeholder]');
+        const fileName = card.querySelector('[data-gallery-file-name]');
+        const status = card.querySelector('[data-gallery-status]');
+        const deleteButton = card.querySelector('[data-gallery-delete]');
+
+        let objectUrl = null;
+
+        function validFile(file) {
+            if (!file) return false;
+
+            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                alert('Only PNG, JPG and WEBP images are allowed.');
+                return false;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image must be 5 MB or smaller.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showPreview(file) {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+
+            objectUrl = URL.createObjectURL(file);
+            preview.src = objectUrl;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            deleteButton.classList.remove('hidden');
+            fileName.textContent = file.name;
+            status.textContent = 'Selected';
+        }
+
+        zone.addEventListener('click', function () {
+            input.click();
+        });
+
+        zone.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                input.click();
+            }
+        });
+
+        zone.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            zone.classList.add('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('dragleave', function () {
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+
+            const file = event.dataTransfer.files[0];
+            if (!validFile(file)) return;
+
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            input.files = transfer.files;
+
+            // Existing data-auto-save listener uploads the file.
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        input.addEventListener('change', function () {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!validFile(file)) {
+                input.value = '';
+                return;
+            }
+
+            showPreview(file);
+        });
+    });
+
+    galleryForm.addEventListener('click', async function (event) {
+        const button = event.target.closest('[data-gallery-delete]');
+        if (!button) return;
+
+        event.preventDefault();
+
+        const slot = Number(button.dataset.galleryDelete);
+        const card = button.closest('[id^="image"]');
+        const input = card.querySelector('input[type="file"]');
+        const preview = card.querySelector('[data-gallery-preview]');
+        const placeholder = card.querySelector('[data-gallery-placeholder]');
+        const fileName = card.querySelector('[data-gallery-file-name]');
+        const status = card.querySelector('[data-gallery-status]');
+
+        // A newly selected image may still be waiting for autosave.
+        // Avoid deleting the previous saved image during an upload.
+        if (input.files.length) {
+            alert('Please wait for the image upload to finish before removing it.');
+            return;
+        }
+
+        if (!confirm('Remove this gallery image?')) return;
+
+        button.disabled = true;
+
+        try {
+            const url = deleteUrlTemplate.replace('__SLOT__', String(slot));
+
+            const response = await fetch(url, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Delete failed.');
+            }
+
+            preview.removeAttribute('src');
+            preview.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+            button.classList.add('hidden');
+            fileName.textContent = 'PNG, JPG or WEBP · max 5 MB';
+            status.textContent = 'Empty';
+
+            if (typeof showToast === 'function') {
+                showToast(result.message || 'Image removed.', 'success');
+            }
+        } catch (error) {
+            console.error('Gallery delete failed:', error);
+            alert(error.message);
+        } finally {
+            button.disabled = false;
+        }
+    });
+});
+ 
+     
+ 
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-image-dropzone]').forEach(function (zone) {
+        const input = document.getElementById(zone.dataset.imageDropzone);
+        const preview = zone.querySelector('[data-image-preview]');
+        const placeholder = zone.querySelector('[data-image-placeholder]');
+        const fileName = zone.querySelector('[data-file-name]');
+
+        if (!input || !preview || !fileName) return;
+
+        let previewUrl = null;
+
+        function isValid(file) {
+            if (!file) return false;
+
+            if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) {
+                alert('Only PNG, JPG and WEBP images are allowed.');
+                return false;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image must be 5 MB or smaller.');
+                return false;
+            }
+
+            return true;
+        }
+
+        function showPreview(file) {
+            if (previewUrl) URL.revokeObjectURL(previewUrl);
+
+            previewUrl = URL.createObjectURL(file);
+            preview.src = previewUrl;
+            preview.classList.remove('hidden');
+            placeholder?.classList.add('hidden');
+            fileName.textContent = file.name;
+        }
+
+        zone.addEventListener('click', function () {
+            input.click();
+        });
+
+        zone.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                input.click();
+            }
+        });
+
+        zone.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            zone.classList.add('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('dragleave', function () {
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+        });
+
+        zone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            zone.classList.remove('border-blue-500', 'bg-blue-50');
+
+            const file = event.dataTransfer.files[0];
+            if (!isValid(file)) return;
+
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            input.files = transfer.files;
+
+            // Existing common autosave listens to this change event.
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        input.addEventListener('change', function () {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!isValid(file)) {
+                input.value = '';
+                return;
+            }
+
+            showPreview(file);
+        });
+    });
+});
+ 
+
+
+
+/* ============================================================
+   5. Rebind auto-save on dynamically injected <select> elements
+      (city/zone dropdowns loaded via AJAX in section 1/2)
+   ============================================================ */
+function bindSelectAutoSave(selectEl) {
+    if (!selectEl) return;
+    const form = selectEl.closest('form[auto-save-field]');
+    if (!form) return;
+
+    selectEl.addEventListener('change', function () {
+        setTimeout(function () { triggerAutoSaveFor(form); }, 400);
+    });
+}
+
+/* ============================================================
+   6. UTILITIES — toast, status banner, numeric key check
+   ============================================================ */
+function showAutoSaveStatus(text, type) {
+    var statusEl = document.getElementById('autoSaveStatus');
+    if (!statusEl) return;
+
+    var base = 'mb-4 rounded-md px-3 py-2 text-sm font-medium';
+    var typeClasses = {
+        success: 'bg-green-100 text-green-800',
+        danger:  'bg-red-100 text-red-800',
+        info:    'bg-blue-100 text-blue-800'
+    };
+
+    statusEl.className = base + ' ' + (typeClasses[type] || typeClasses.info);
+    statusEl.textContent = text;
+    statusEl.classList.remove('hidden');
+
+    if (type !== 'info') {
+        setTimeout(function () { statusEl.classList.add('hidden'); }, 3000);
+    }
+}
+
+function isNumberKey(e) {
+    var a = e.keyCode || e.charCode;
+    return a >= 48 && a <= 57;
+}
+
+function showToast(message, type = 'success', duration = 3000) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const styles = {
+        success: {
+            bg: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+            icon: '<svg class="h-5 w-5 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>'
+        },
+        error: {
+            bg: 'bg-red-50 border-red-200 text-red-800',
+            icon: '<svg class="h-5 w-5 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'
+        },
+        info: {
+            bg: 'bg-blue-50 border-blue-200 text-blue-800',
+            icon: '<svg class="h-5 w-5 shrink-0 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" stroke-opacity=".25"/><path stroke-linecap="round" d="M21 12a9 9 0 00-9-9"/></svg>'
+        }
+    };
+
+    const style = styles[type] || styles.success;
+    const toast = document.createElement('div');
+
+    toast.className = `pointer-events-auto flex items-center gap-3 rounded-xl border ${style.bg} px-4 py-3 shadow-lg transition-all duration-300 translate-x-4 opacity-0`;
+    toast.innerHTML = `
+        ${style.icon}
+        <p class="flex-1 text-sm font-medium">${escapeToastHtml(message)}</p>
+        <button type="button" class="shrink-0 rounded p-1 opacity-60 hover:opacity-100">×</button>
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(function () {
+        toast.classList.remove('translate-x-4', 'opacity-0');
+    });
+
+    function dismiss() {
+        toast.classList.add('translate-x-4', 'opacity-0');
+        setTimeout(function () { toast.remove(); }, 300);
+    }
+
+    toast.querySelector('button').addEventListener('click', dismiss);
+    setTimeout(dismiss, duration);
+}
+
+function escapeToastHtml(value) {
+    const div = document.createElement('div');
+    div.textContent = value;
+    return div.innerHTML;
+}
+</script>
+
+ <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof Quill === 'undefined') {
+        console.error('Quill library did not load.');
+        return;
+    }
+
+    document.querySelectorAll('textarea[data-quill-editor]').forEach(function (textarea) {
+        const editor = textarea.nextElementSibling;
+
+        if (!editor || !editor.classList.contains('quill-editor')) {
+            console.error('Quill editor container missing after:', textarea);
+            return;
+        }
+
+        const quill = new Quill(editor, {
+            theme: 'snow',
+            placeholder: textarea.dataset.placeholder || 'Write here...',
+            modules: {
+                toolbar: [
+                    [{ header: [2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Existing saved HTML.
+        if (textarea.value.trim()) {
+            quill.clipboard.dangerouslyPasteHTML(textarea.value, 'silent');
+        }
+
+        // Keep the original textarea in sync for Laravel and autosave.
+        quill.on('text-change', function (delta, oldDelta, source) {
+            if (source !== 'user') return;
+
+            textarea.value = quill.getText().trim()
+                ? quill.root.innerHTML
+                : '';
+
+            textarea.dispatchEvent(new Event('input', {
+                bubbles: true
+            }));
+        });
+    });
+});
+</script>
+
+ 
+
 
 </x-layouts.sales.app>

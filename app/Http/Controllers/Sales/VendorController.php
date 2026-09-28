@@ -12,6 +12,7 @@ use App\Models\ClientCategory;
 use App\Models\ParentCategory;
 use App\Models\Occupation;
 use App\Models\Discussions;
+use App\Models\AssignedZone;
 use App\Models\Keyword;
 use App\Models\AssignedClientCategory;
 use Illuminate\Http\RedirectResponse;
@@ -113,6 +114,54 @@ class VendorController extends Controller
 			
 			$moderesults = Modesdetails::get();
 			$banksdetails = Banksdetails::all();
+           
+	
+			 
+	 
+
+    $query = DB::table('assigned_zones')
+        ->join('zones', 'assigned_zones.zone_id', '=', 'zones.id')
+        ->join('citylists', 'assigned_zones.city_id', '=', 'citylists.id')
+        ->where('assigned_zones.client_id', $vendor->id);
+
+ 
+    $recordsTotal = (clone $query)->count();
+
+    $search = trim((string) $request->input('search.value', ''));
+
+    if ($search !== '') {
+        $query->where(function ($q) use ($search) {
+            $q->where('citylists.city', 'LIKE', "%{$search}%")
+              ->orWhere('zones.zone', 'LIKE', "%{$search}%");
+        });
+    }
+
+ 
+    $recordsFiltered = (clone $query)->count();
+
+    $start  = max(0, (int) $request->input('start', 0));
+    $length = (int) $request->input('length', 10);
+    $length = $length === -1
+        ? min($recordsFiltered, 500)
+        : min(max($length, 1), 100);
+
+    $zones = $query
+        ->select(
+            'assigned_zones.id as assign_id',
+            'citylists.city',
+            'zones.zone'
+        )
+        ->orderByDesc('assigned_zones.id')
+       ->paginate(10)->withQueryString();
+
+ 
+			 
+
+		// dd($zones->get());
+
+
+
+
 
 	$occupations = Occupation::where('status', '1')->get();
 	$keywordlists = Keyword::whereNotExists(function ($query) use ($vendor) {
@@ -122,7 +171,8 @@ class VendorController extends Controller
 					->where('assigned_kwds.client_id', $vendor->id);
 			})->get();
 
-        return view('sales.vendors.edit', ['vendor' => $vendor,'discussions'=>$discussions, 'kwds' => $kwds, 'request' => $request, 'distinctCities' => $distinctCities, 'clientCategories' => $clientCategories, 'assignedClientCategories' => $assignedClientCategories, 'citylist' => $citylist, 'parentCategory' => $parentCategory, 'moderesults' => $moderesults, 'statesis' => $statesis, 'occupations' => $occupations, 'keywordlist' => $keywordlists, 'isCreating' => true,]);
+           
+        return view('sales.vendors.edit', ['vendor' => $vendor,'discussions'=>$discussions, 'kwds' => $kwds, 'request' => $request, 'distinctCities' => $distinctCities, 'clientCategories' => $clientCategories, 'assignedClientCategories' => $assignedClientCategories, 'citylist' => $citylist, 'parentCategory' => $parentCategory, 'moderesults' => $moderesults, 'statesis' => $statesis, 'occupations' => $occupations, 'keywordlist' => $keywordlists, 'isCreating' => true,'locations'=>$zones]);
     }
 
     public function update(Request $request, Client $vendor): RedirectResponse
@@ -139,10 +189,59 @@ class VendorController extends Controller
         return redirect()->route('sales.vendors.index')->with('success', 'Vendor deleted.');
     }
 
+
+    public function assignLocationsList(Request $request,$id)
+    {
+  
+ 
+  
+   $perPage = min(max((int) $request->input('per_page', 10), 1), 50);
+
+    $locations = DB::table('assigned_zones')
+        ->join('zones', 'assigned_zones.zone_id', '=', 'zones.id')
+        ->join('citylists', 'assigned_zones.city_id', '=', 'citylists.id')
+        ->where('assigned_zones.client_id', $id)
+        ->select(
+            'assigned_zones.id as assign_id',
+            'citylists.city',
+            'zones.zone'
+        )
+        ->orderByDesc('assigned_zones.id')
+        ->paginate($perPage);
+ 
+    return response()->json($locations);
+
+
+ 
+
+    }
+
+
+        public function bulkDeleteAssignedZones(Request $request, string $id)
+        {
+            $validated = $request->validate([
+                'ids'   => ['required', 'array', 'min:1'],
+                'ids.*' => ['required', 'integer', 'distinct'],
+            ]);
+
+           
+
+            $deleted = DB::table('assigned_zones')
+                ->where('client_id', $id)
+                ->whereIn('id', $validated['ids'])
+                ->delete();
+
+            return response()->json([
+                'success' => true,
+                'deleted' => $deleted,
+            ]);
+        }
+
+
     public function toggleStatus(Client $vendor): RedirectResponse
     {
 
-    dd($vendor);
+    
         $vendor->update([
             'status' => $vendor->status === 'active' ? 'inactive' : 'active',
         ]);
