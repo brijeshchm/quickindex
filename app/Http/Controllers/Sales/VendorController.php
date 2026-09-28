@@ -41,6 +41,7 @@ class VendorController extends Controller
             ->paginate(15)
             ->withQueryString();
 
+// dd($vendors->getCollection());
         return view('sales.vendors.index', [
             'vendors' => $vendors,
             'cities' => '',

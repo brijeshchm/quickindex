@@ -29,31 +29,36 @@
         </form>
         <div class="overflow-hidden rounded-2xl border border-[#dfe7ec] bg-white shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
             <div class="flex items-center justify-between border-b border-[#edf1f3] px-5 py-4"><p class="text-sm font-semibold">All vendors <span class="ml-1 text-xs font-normal text-[#9aa9b5]">({{ $vendors->total() }})</span></p><p class="text-xs text-[#9aa9b5]">15 per page</p></div>
-            <div class="overflow-x-auto"><table class="w-full min-w-[980px] text-left"><thead class="bg-[#fbfcfd] text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9aa9b5]"><tr><th class="px-5 py-3">Vendor</th><th class="px-4 py-3">Owner / contact</th><th class="px-4 py-3">Location</th><th class="px-4 py-3">Executive</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Actions</th></tr></thead><tbody class="divide-y divide-[#edf1f3]">@forelse ($vendors as $vendor)<tr class="group hover:bg-[#fbfcfd]"><td class="px-5 py-4"><div class="flex items-center gap-3"><div class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#e9f2f7] text-xs font-bold text-[#315b80]">{{ $vendor->initials }}</div><div><a data-open-vendor="{{ $vendor->id }}" href="{{ route('sales.vendors.edit', $vendor) }}" class="text-sm font-semibold hover:text-[#315b80]">{{ $vendor->business_name }}</a><p class="mt-0.5 text-[11px] text-[#9aa9b5]">{{ $vendor->category }}</p></div></div></td><td class="px-4 py-4"><p class="text-xs font-medium">{{ $vendor->owner_name }}</p>
+            <div class="overflow-x-auto"><table class="w-full min-w-[980px] text-left"><thead class="bg-[#fbfcfd] text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9aa9b5]"><tr><th class="px-5 py-3">Vendor</th><th class="px-4 py-3">Owner / contact</th><th class="px-4 py-3">Location</th>
+            
+            
+          
+            
+            <th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Actions</th></tr></thead><tbody class="divide-y divide-[#edf1f3]">@forelse ($vendors as $vendor)<tr class="group hover:bg-[#fbfcfd]"><td class="px-5 py-4"><div class="flex items-center gap-3"><div class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#e9f2f7] text-xs font-bold text-[#315b80]">{{ $vendor->initials }}</div><div><a data-open-vendor="{{ $vendor->id }}" href="{{ route('sales.vendors.edit', $vendor) }}" class="text-sm font-semibold hover:text-[#315b80]">{{ $vendor->business_name }}</a><p class="mt-0.5 text-[11px] text-[#9aa9b5]">{{ $vendor->category }}</p></div></div></td><td class="px-4 py-4"><p class="text-xs font-medium">{{ $vendor->owner_name }}</p>
             
             
             <p class="mt-0.5 text-[11px] text-[#9aa9b5]">{{ $vendor->email }}</p></td>
             
             <td class="px-4 py-4 text-xs font-medium">{{ $vendor->city }}</td>
             
-            <td class="px-4 py-4 text-xs font-medium">{{ $vendor->sales_executive ?: 'Unassigned' }}</td>
-            <td class="px-4 py-4"><span class="rounded-full px-2.5 py-1 text-[11px] font-semibold {{ $vendor->status === 'active' ? 'bg-[#e4f4eb] text-[#26734b]' : ($vendor->status === 'pending' ? 'bg-[#fff3df] text-[#9b681f]' : 'bg-[#f4e7e5] text-[#a14f47]') }}">{{ ucfirst($vendor->status) }}</span></td><td class="px-4 py-4">
+            
+            <td class="px-4 py-4"><span class="rounded-full px-2.5 py-1 text-[11px] font-semibold {{ $vendor->active_status == '1' ? 'bg-[#008000] text-[#fff]' : ($vendor->active_status == '0' ? 'bg-[#fff3df] text-[#9b681f]' : 'bg-[#f4e7e5] text-[#a14f47]') }}">{{ $vendor->active_status == '1' ? 'Active' : ($vendor->active_status == 0 ? 'In-Active' : '') }}</span></td><td class="px-4 py-4">
                 
             
             <div class="flex justify-end gap-2">
                 
             <a href="{{ route('sales.vendors.edit', $vendor) }}" class="rounded-lg border border-[#dfe7ec] px-3 py-2 text-xs font-semibold text-[#315b80] hover:bg-[#e9f2f7]">Edit</a>
             
-            <form method="POST" action="{{ route('sales.vendors.status', $vendor) }}">
+            <form method="POST" action="">
                 
             @csrf 
                       
             
-            <button class="rounded-lg border border-[#dfe7ec] px-3 py-2 text-xs font-semibold text-[#435b6d] hover:bg-[#f7f9fb]">{{ $vendor->status === 'active' ? 'Deactivate' : 'Activate' }}</button>
+            <button class="rounded-lg border border-[#dfe7ec] px-3 py-2 text-xs font-semibold text-[#435b6d] hover:bg-[#f7f9fb]">  <i data-lucide="eye" class="h-3.5 w-3.5"></i></button>
         
             </form>
             
-            <form method="POST" action="{{ route('sales.vendors.destroy', $vendor) }}" onsubmit="return confirm('Delete this vendor?')">@csrf @method('DELETE')<button class="rounded-lg border border-[#efc4bf] px-3 py-2 text-xs font-semibold text-[#a14f47] hover:bg-[#fff5f3]">Delete</button></form>
+           
 
             </div></td></tr>
             
