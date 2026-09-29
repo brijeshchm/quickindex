@@ -4,6 +4,12 @@
             <p class="text-xs font-semibold uppercase tracking-wider text-[#a14f47]">
                 Vendor directory
             </p>
+
+             <a href="{{ route('sales.vendors.create') }}"
+       class="inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-[#a14f47] px-3 text-xs font-semibold text-white transition hover:bg-[#8f433d] sm:px-4 sm:text-sm">
+        <span class="text-lg leading-none">+</span>
+        <span>Add vendor</span>
+    </a>
         </div>
 
         {{-- Filters --}}
