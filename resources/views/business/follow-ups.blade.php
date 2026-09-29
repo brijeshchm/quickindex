@@ -217,9 +217,7 @@ window.followupManager = function () {
 
  <div class="space-y-4"> 
 
- @php
-//  dd($leads->getCollection());
- @endphp
+ 
  @forelse($leads as $i => $lead)
   @php
   

@@ -10,14 +10,15 @@ use DB;
 use App\Models\AssignedLead;
 use Auth;
 //models
-use App\Models\Client\Client;
+use App\Models\Client;
 use App\Models\ClientCategory;
 use App\Models\Meeting;
 use App\Models\Status;
 use App\Models\Keyword;
 use App\Models\Citieslists;
 use Carbon\Carbon;
-
+use Illuminate\View\View;
+use Validator;
 class DashboardController extends Controller
 {
 	/**
@@ -32,7 +33,11 @@ class DashboardController extends Controller
 
 		$totalClientsCount = Client::where('created_by',$sales->id)->count();
 
-		$totalPaidClientsCount = Client::where('created_by',$sales->id)->where('paid_status', '1')->count();
+		$activeClient = Client::where('created_by',$sales->id)->where('active_status', '1')->count();
+
+		$inactiveClient = Client::where('created_by',$sales->id)->where('active_status', '0')->count();
+	
+		$paidClient = Client::where('created_by',$sales->id)->where('paid_status', '1')->count();
 		$totalRegClientsThisMonth = Client::where('created_by',$sales->id)->where('paid_status', '1')->whereMonth('created_at', '=', date('m'))->count();
 		$totalPendingRenewals = Client::where('created_by',$sales->id)->where('paid_status', '0')->count();
 
@@ -47,11 +52,12 @@ class DashboardController extends Controller
 
 		$kwds = Keyword::select('id', 'keyword')->orderBy('keyword', 'ASC')->get();
 		$statuses = Status::where('lead_filter', 1)->get();
-		
+		//  dd($activeClient);
 		$summary = [
 			'total' => $totalClientsCount,
-			'active' => $totalPaidClientsCount,
-			'inactive' => $totalPaidClientsCount,
+			'active' => $activeClient,
+			'inactive' => $inactiveClient,
+			'paidClient' => $paidClient,
 			'totalRegClientsThisMonth' => $totalRegClientsThisMonth,
 			'pending' => $totalPendingRenewals,
 			'citieslists' => $citieslists,
@@ -72,6 +78,212 @@ class DashboardController extends Controller
 
 
 	}
+
+ 
+
+	public function vendorsFollowup(Request $request): View
+	{
+		$sales = Auth::guard('sales')->user();
+
+		 
+		$latestMeetings = DB::table('meetings')
+			->select('client_id')
+			->selectRaw('MAX(id) as latest_meeting_id')
+			->where('remark_by', $sales->id)
+			->groupBy('client_id');
+
+		$vendors = Client::query()
+			->joinSub($latestMeetings, 'latest_meeting', function ($join) {
+				$join->on('latest_meeting.client_id', '=', 'clients.id');
+			})
+			->join('meetings as meeting', 'meeting.id', '=', 'latest_meeting.latest_meeting_id')
+			->leftJoin('status as meeting_status', 'meeting_status.id', '=', 'meeting.status')
+			->leftJoin('users as remark_user', 'remark_user.id', '=', 'meeting.remark_by')
+			->when($request->filled('search'), function ($query) use ($request) {
+				$search = $request->string('search')->toString();
+
+				$query->where(function ($q) use ($search) {
+					$q->where('clients.business_name', 'like', "%{$search}%")
+					->orWhere('clients.mobile', 'like', "%{$search}%");
+				});
+			})
+			->when($request->filled('status'), fn ($query) =>
+				$query->where('meeting.status', $request->input('status'))
+			)
+			->when($request->filled('city'), fn ($query) =>
+				$query->where('clients.city', $request->input('city'))
+			)
+			->where(
+                'meeting.date_time',
+                '<=',
+                now()->endOfDay()
+            )
+			->select(
+				'clients.*',
+				'meeting.id as meeting_id',
+				'meeting.status as meeting_status_id',
+				'meeting_status.name as status_name',
+				'remark_user.first_name',
+				'remark_user.last_name'
+			)
+			->orderByDesc('meeting.id')
+			->paginate(15)
+			->withQueryString();
+
+		$statuses = Status::where('lead_follow_up', '1')->get();
+//  dd($vendors->getCollection());
+		return view('sales.vendors.vendor-followup', [
+			'vendors' => $vendors,
+			'cities' => '',
+			'statues' => $statuses,
+			'categories' => '',
+			'executives' => '',
+		]);
+	}
+ 
+  
+
+/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	 
+
+	public function followUpStore(Request $request, int $id)
+	{
+		$client = Client::findOrFail($id);
+
+		$validator = Validator::make($request->all(), [
+			'sales_manager' => ['required', 'integer'],
+			'status' => ['required', 'integer', 'exists:status,id'],
+			'remark' => ['required', 'string'],
+			'expected_date_time' => ['nullable', 'date'],
+		]);
+
+		if ($validator->fails()) {
+			return response()->json([
+				'status' => false,
+				'errors' => $validator->errors(),
+			], 422);
+		}
+
+		$selectedStatus = Status::findOrFail($request->input('status'));
+
+		if ($selectedStatus->show_exp_date && !$request->filled('expected_date_time')) {
+			return response()->json([
+				'status' => false,
+				'errors' => [
+					'expected_date_time' => ['Next follow up date is required.'],
+				],
+			], 422);
+		}
+
+		$meeting = new Meeting();
+		$meeting->client_id = $client->id;
+		$meeting->assign_id = $request->integer('sales_manager');
+		$meeting->date_time = $selectedStatus->show_exp_date
+			? $request->input('expected_date_time')
+			: null;
+		$meeting->status = $selectedStatus->id;
+		$meeting->remark = trim($request->input('remark'));
+		$meeting->remark_by = auth('sales')->id();
+		$meeting->save();
+
+		return response()->json([
+			'status' => true,
+			'message' => 'Follow up saved successfully.',
+		]);
+	}
+
+public function followUpHistory(int $id)
+{
+    Client::findOrFail($id);
+
+   $followUps = Meeting::query()
+    ->leftJoin(
+        'status as followup_status',
+        'followup_status.id',
+        '=',
+        'meetings.status'
+    )
+    ->where('meetings.client_id', $id)
+    ->orderByDesc('meetings.id')
+    ->limit(50)
+    ->get([
+        'meetings.created_at',
+        'meetings.remark',
+        'meetings.date_time',
+        'meetings.status as status_id',
+        'followup_status.name as status_name',
+    ]);
+
+ 
+
+    return response()->json($followUps);
+}
+
+ 
+
+
+	 public function vendorsAssign(Request $request): View
+    {
+
+		$sales = Auth::guard('sales')->user();
+ 		$latestMeetings = DB::table('meetings')
+		->select('client_id')
+		->selectRaw('MAX(id) as latest_meeting_id')
+		 ->where('remark_by', $sales->id)
+		->groupBy('client_id');
+// dd($sales->id);
+		$vendors = Client::query()
+			->joinSub($latestMeetings, 'latest_meeting', function ($join) {
+				$join->on('latest_meeting.client_id', '=', 'clients.id');
+			})
+			->join('meetings as meeting', 'meeting.id', '=', 'latest_meeting.latest_meeting_id')
+			->leftJoin('status as meeting_status', 'meeting_status.id', '=', 'meeting.status')
+			->leftJoin('users as remark_user', 'remark_user.id', '=', 'meeting.remark_by')
+			->when($request->filled('search'), function ($query) use ($request) {
+				$search = $request->string('search')->toString();
+
+				$query->where(function ($q) use ($search) {
+					$q->where('clients.business_name', 'like', "%{$search}%")
+					->orWhere('clients.mobile', 'like', "%{$search}%");
+				});
+			})
+			->when($request->filled('status'), fn ($query) =>
+				$query->where('meeting.status', $request->input('status'))
+			)
+			->when($request->filled('city'), fn ($query) =>
+				$query->where('clients.city', $request->input('city'))
+			)
+			 ->where('clients.assign_to',$sales->id)
+			->select(
+				'clients.*',
+				'meeting.id as meeting_id',
+				'meeting.status as meeting_status_id',
+				'meeting_status.name as status_name',
+				'remark_user.first_name',
+				'remark_user.last_name'
+			)
+			->orderByDesc('meeting.id')
+			->paginate(15)
+			->withQueryString();
+$statuses = Status::where('lead_follow_up', '1')->get();
+
+        return view('sales.vendors.vendor-assign', [
+            'vendors' => $vendors,
+            'cities' => '',
+            'statuses' => $statuses,
+            'categories' => '',
+            'executives' =>'',
+        ]);
+        
+    }
+
+
 
 
 	/**

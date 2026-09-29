@@ -142,12 +142,36 @@
                         </span>
                         <span class="rounded-full bg-[#f0b45a] px-2 py-0.5 text-[10px] font-bold text-[#12263a]">
                              @auth('sales')
-    {{ \App\Models\Client::where('created_by', auth('sales')->id())->count() }}
-@endauth
+                                {{ \App\Models\Client::where('created_by', auth('sales')->id())->count() }}
+                            @endauth
                         </span>
                     </a>
  
- 
+
+                      <a
+                        href="{{ route('sales.vendorsFollowup') }}"
+                        class="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-[#1b3a52] hover:text-white
+                            {{ request()->routeIs('sales.vendorsFollowup') ? 'bg-[#1b3a52] text-white' : 'text-[#aabccc]' }}"
+                    >
+                        <span class="flex items-center gap-3">
+                          <i data-lucide="calendar-clock" class="h-4 w-4 shrink-0"></i>
+                            Followup
+                        </span>
+                        
+                    </a>
+             
+                    <a
+                        href="{{ route('sales.vendorsAssignVendor') }}"
+                        class="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-[#1b3a52] hover:text-white
+                            {{ request()->routeIs('sales.vendorsAssignVendor') ? 'bg-[#1b3a52] text-white' : 'text-[#aabccc]' }}"
+                    >
+                        <span class="flex items-center gap-3">
+                          <i data-lucide="user-plus" class="h-4 w-4 shrink-0"></i>
+                            Assign Vendors
+                        </span>
+                        
+                    </a>
+
                 </nav>
 
              

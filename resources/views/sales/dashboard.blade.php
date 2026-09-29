@@ -11,7 +11,7 @@
             <p class="mt-1 text-sm text-[#718394]">Here’s what’s moving across your vendor network today.</p>
         </div>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            @foreach ([['Total vendors', $summary['total'], 'Across your network', 'bg-[#e9f2f7] text-[#315b80]'], ['Active vendors', $summary['active'], 'Currently visible', 'bg-[#e4f4eb] text-[#26734b]'], ['Pending review', $summary['pending'], 'Need attention today', 'bg-[#fff3df] text-[#9b681f]'], ['Inactive vendors', $summary['inactive'], 'Not currently visible', 'bg-[#f4e7e5] text-[#a14f47]']] as [$label, $value, $note, $tone])
+            @foreach ([['Total vendors', $summary['total'], 'Across your network', 'bg-[#e9f2f7] text-[#315b80]'], ['Active vendors', $summary['active'], 'Currently visible', 'bg-[#e4f4eb] text-[#26734b]'], ['Paid Vendor', $summary['paidClient'], 'Need attention today', 'bg-[#fff3df] text-[#9b681f]'], ['Inactive vendors', $summary['inactive'], 'Not currently visible', 'bg-[#f4e7e5] text-[#a14f47]']] as [$label, $value, $note, $tone])
                 <div class="rounded-2xl border border-[#dfe7ec] bg-white p-5 shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
                     <div class="grid h-10 w-10 place-items-center rounded-xl {{ $tone }}"><span class="text-lg">•</span></div>
                     <p class="mt-5 text-xs font-medium text-[#718394]">{{ $label }}</p>

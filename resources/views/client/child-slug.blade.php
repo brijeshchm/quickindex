@@ -23,8 +23,7 @@
 $bgImage = !empty($bgImage)
     ? $bgImage
     : '/client/images/computer-courses-training.jpg';
-
- @endphp
+@endphp
 @include('client.layouts.common_country_data')
     <div
     x-show="showAd"
@@ -35,7 +34,7 @@ $bgImage = !empty($bgImage)
     <img
         src="{{ $bgImage }}"
         alt="{{ $keyword }}"
-        class="block w-full h-auto object-cover h-[130px] sm:h-[170px]"
+        class="block w-full h-auto object-contain sm:h-[170px] sm:object-cover"
         loading="eager"
     >
  

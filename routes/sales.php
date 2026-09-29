@@ -5,7 +5,13 @@ use App\Http\Controllers\Sales\VendorController;
 
 Route::get('/logout',[App\Http\Controllers\Auth\AuthSalesController::class,'logout']);
 Route::get('/dashboard',[App\Http\Controllers\Sales\DashboardController::class, 'index'])->name('dashboard');
+Route::get('/vendor/followup',[App\Http\Controllers\Sales\DashboardController::class, 'vendorsFollowup'])->name('vendorsFollowup');
+Route::get('/vendor/assign',[App\Http\Controllers\Sales\DashboardController::class, 'vendorsAssign'])->name('vendorsAssignVendor');
 
+Route::post('/vendor/stor-followup/{id}',[App\Http\Controllers\Sales\DashboardController::class, 'followUpStore'])->name('followUp.store');
+Route::get('/vendor/{id}/followups',[App\Http\Controllers\Sales\DashboardController::class, 'followUpHistory'])->name('followUp.history');
+
+ 
 
     Route::get('/vendors/export', [VendorController::class, 'export'])->name('vendors.export');
     Route::patch('/vendors/{vendor}/status', [VendorController::class, 'toggleStatus'])

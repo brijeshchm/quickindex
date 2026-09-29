@@ -3417,13 +3417,13 @@ document.addEventListener('DOMContentLoaded', function () {
             @if($canManagePackage)
                 <select
                     id="created_by"
-                    name="created_by"
+                    name="assign_to"
                     class="select2-single assign_client {{ $fieldClass }} auto-save-field"
                 >
                     @foreach($userList as $user)
                         <option
                             value="{{ $user->id }}"
-                            @selected((string) old('created_by', $vendor->created_by) === (string) $user->id)
+                            @selected((string) old('assign_to', $vendor->assign_to) === (string) $user->id)
                         >
                             {{ trim($user->first_name.' '.$user->last_name) }}
                         </option>
@@ -3433,7 +3433,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <button type="submit" class="{{ $buttonClass }} mt-4">Save assignment</button>
             @else
                 @php
-                    $assignedUser = collect($userList)->firstWhere('id', $vendor->created_by);
+                    $assignedUser = collect($userList)->firstWhere('id', $vendor->assign_to);
                 @endphp
                 <p class="mt-2 text-sm text-slate-700">
                     {{ $assignedUser ? trim($assignedUser->first_name.' '.$assignedUser->last_name) : 'Not assigned' }}

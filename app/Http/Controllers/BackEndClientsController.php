@@ -1707,7 +1707,7 @@ class BackEndClientsController extends Controller
 		if ($request->has('submit_client_assign')) {
 
 			$client = Client::withTrashed()->where('username', $request->input('client_id'))->first();
-			$client->created_by = $request->input('created_by');
+			$client->assign_to = $request->input('created_by');
 			if ($client->save()) {
 				return response()->json(['status' => 1, 'message' => 'Created by client updated successfully !!']);
 			} else {
