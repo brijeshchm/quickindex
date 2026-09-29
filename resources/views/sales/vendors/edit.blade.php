@@ -893,7 +893,7 @@
 
         {{-- Landmark --}}
         <div>
-            <label for="landmark" class="{{ $labelClass }}">Landmark</label>
+            <label for="landmark" class="{{ $labelClass }}">Landmark d</label>
             <input
                 id="landmark"
                 name="landmark"
@@ -902,6 +902,11 @@
                 placeholder="Enter nearby landmark"
                 class="{{ $fieldClass }}"
             >
+
+              @error('landmark')
+                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+            @enderror
+             
         </div>
 
         {{-- Address --}}
@@ -1264,6 +1269,7 @@
 </script>
  
             </section>
+            
             <section
                 x-show="activeSection === 'business-location'"
                 x-cloak
@@ -2757,14 +2763,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 x-cloak
             >
 @php
-    $updateUrl = url('developer/clients/update/'.$vendor->id);
+     
     $currentUser = auth()->user();
 
-    $canExport = $currentUser
-        && (
-            $currentUser->current_user_can('administrator')
-            || $currentUser->current_user_can('export_assign_keyword')
-        );
+   
 
     $canDelete = $currentUser
         && (
@@ -5110,11 +5112,15 @@ function triggerAutoSaveFor(form) {
             clearErrors();
 
             ajaxSubmitForm(form)
-                .then(function (response) {
-                    lastSnapshot = snapshot;
+                .then(async function (response) {
+                    if (!response.status) {
+                        showToast(response.msg || 'Save failed', 'error');
+                        return;
+                    }
 
-
-                    showToast(response.status ? response.msg : response.msg, 'success');
+                    lastSnapshot = getSnapshot();
+                    await loadLocationPage();
+                    showToast(response.msg || 'Saved successfully', 'success');
                 })
                 .catch(function (xhr) {
                     if (xhr.status === 422 && xhr.responseJSON?.errors) {
@@ -5770,6 +5776,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
+
+function loadLocationPage() {
+
+     
+const url = new URL(window.location.href);
+
+const refreshSections = [
+    'business-location',
+    'assigned-keywords'
+];
+
+if (
+    /^\/sales\/vendors\/\d+\/edit\/?$/.test(url.pathname) &&
+    refreshSections.includes(url.searchParams.get('section'))
+) {
+    window.location.reload();    
+}
+}
+ 
+
 </script>
 
 

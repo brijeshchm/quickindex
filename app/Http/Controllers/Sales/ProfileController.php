@@ -105,9 +105,12 @@ class ProfileController extends Controller
 				// 'time.*.from' => 'nullable|date_format:H:i',
 				// 'time.*.to' => 'nullable|date_format:H:i',
 			]);
+			 
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
 			$state = State::find($request->state);
 			$city = Citieslists::find($request->city);
