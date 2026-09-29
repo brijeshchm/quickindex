@@ -1,6 +1,6 @@
 
 
-<x-layouts.sales.app title="Dashboard · Vendorflow" header="Dashboard">
+<x-layouts.sales.app title="Dashboard · QuickDials" header="Dashboard">
 
 
 

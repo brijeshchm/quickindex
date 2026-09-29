@@ -1,4 +1,4 @@
-@props(['title' => 'Vendorflow Admin', 'header' => 'Sales workspace'])
+@props(['title' => 'QuickDials Admin', 'header' => 'Sales workspace'])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -98,10 +98,10 @@
             <div class="flex items-center justify-between">
                 <a href="{{ route('sales.dashboard') }}" class="flex min-w-0 items-center gap-3 px-2">
                     <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#f0b45a] text-xl font-bold text-[#12263a]">
-                        V
+                        QD
                     </span>
                     <span class="font-display truncate text-lg font-semibold tracking-tight text-white">
-                        vendor<span class="text-[#f0b45a]">flow</span>
+                        Quick<span class="text-[#f0b45a]">Dials</span>
                     </span>
                 </a>
 

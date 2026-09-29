@@ -51,8 +51,8 @@ class DashboardController extends Controller
 		}
 
 		$kwds = Keyword::select('id', 'keyword')->orderBy('keyword', 'ASC')->get();
-		$statuses = Status::where('lead_filter', 1)->get();
-		//  dd($activeClient);
+		 
+		 
 		$summary = [
 			'total' => $totalClientsCount,
 			'active' => $activeClient,
@@ -74,15 +74,9 @@ class DashboardController extends Controller
             'recentVendors' => Client::where('created_by',$sales->id)->latest()->limit(5)->get(),
 		]);
 
-
- 
-
-
-
 	}
 
  
-
 	public function vendorsFollowup(Request $request): View
 	{
 		$sales = Auth::guard('sales')->user();
@@ -132,8 +126,8 @@ class DashboardController extends Controller
 			->paginate(15)
 			->withQueryString();
 
-		$statuses = Status::where('lead_follow_up', '1')->get();
-//  dd($vendors->getCollection());
+		$statuses = Status::get();
+
 		return view('sales.vendors.vendor-followup', [
 			'vendors' => $vendors,
 			'cities' => '',
@@ -280,7 +274,7 @@ public function followUpHistory(int $id)
 
 
  
-			$statuses = Status::where('lead_follow_up', '1')->get();
+			$statuses = Status::get();
 
         return view('sales.vendors.vendor-assign', [
             'vendors' => $vendors,

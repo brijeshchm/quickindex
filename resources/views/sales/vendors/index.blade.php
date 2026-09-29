@@ -1,4 +1,4 @@
-<x-layouts.sales.app title="Vendors · Vendorflow" header="Vendors">
+<x-layouts.sales.app title="Vendors · QuickDials" header="Vendors">
     <div class="space-y-5">
         <div class="flex items-center justify-between">
             <p class="text-xs font-semibold uppercase tracking-wider text-[#a14f47]">

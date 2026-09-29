@@ -1,5 +1,5 @@
 <x-layouts.sales.app
-    :title="($isCreating ? 'Add vendor' : 'Edit '.$vendor->business_name).' · Vendorflow'"
+    :title="($isCreating ? 'Add vendor' : 'Edit '.$vendor->business_name).' · QuickDials'"
     header="Vendor editor"
 >
 
@@ -5119,7 +5119,7 @@ function triggerAutoSaveFor(form) {
                     }
 
                     lastSnapshot = getSnapshot();
-                    await loadLocationPage();
+                    // await loadLocationPage();
                     showToast(response.msg || 'Saved successfully', 'success');
                 })
                 .catch(function (xhr) {
@@ -5779,23 +5779,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-function loadLocationPage() {
+// function loadLocationPage() {
 
      
-const url = new URL(window.location.href);
+// const url = new URL(window.location.href);
 
-const refreshSections = [
-    'business-location',
-    'assigned-keywords'
-];
+// const refreshSections = [
+//     'business-location',
+//     'assigned-keywords'
+// ];
 
-if (
-    /^\/sales\/vendors\/\d+\/edit\/?$/.test(url.pathname) &&
-    refreshSections.includes(url.searchParams.get('section'))
-) {
-    window.location.reload();    
-}
-}
+// if (
+//     /^\/sales\/vendors\/\d+\/edit\/?$/.test(url.pathname) &&
+//     refreshSections.includes(url.searchParams.get('section'))
+// ) {
+//     window.location.reload();    
+// }
+// }
  
 
 </script>
