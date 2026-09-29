@@ -4,7 +4,12 @@
 >
 
 @php
-   
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sidebar Sections
+    |--------------------------------------------------------------------------
+    */
 
     $sections = [
         'personal-details'      => 'Personal Details',
@@ -1703,12 +1708,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('vendor-section-opened', function (event) {
         if (event.detail.section === 'business-location') loadLocations(1);
     });
-
-    window.addEventListener('vendor-location-saved', function () {
-        // A new assignment may belong on page 1; reload only this table.
-        selectedIds.clear();
-        loadLocations(1);
-    });
 });
 </script>
 
@@ -3304,11 +3303,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.detail.section === 'assigned-keywords') loadKeywords(1);
     });
 
-    window.addEventListener('vendor-keywords-saved', function () {
-        selectedIds.clear();
-        loadKeywords(1);
-    });
-
     // Call this after the Assign keywords AJAX request succeeds:
     window.refreshAssignedKeywords = function () {
         loadKeywords(currentPage);
@@ -3924,9 +3918,8 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 
     <form
-        id="discussion-form"
         method="POST"
-        data-auto-save
+         data-auto-save
         action="{{ route('sales.remarkDiscussion.add',['id'=>$vendor->id]) }}"
         class="space-y-4 p-5"
     >
@@ -3935,9 +3928,6 @@ document.addEventListener('DOMContentLoaded', function () {
         <input type="hidden" name="client_id" value="{{ $vendor->id }}">
         <input type="hidden" name="amt" value="555">
         <input type="hidden" name="submitClientDiscussion" value="1">
-
-        <p id="discussion-save-message" role="status" aria-live="polite"
-           class="hidden rounded-lg bg-green-50 px-3 py-2 text-sm font-semibold text-green-700"></p>
 
         <div>
             <label for="discussion-status" class="block text-sm font-semibold text-slate-700">
@@ -4205,12 +4195,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
      
     window.refreshVendorDiscussions = function () {
-        return loadDiscussions(1);
-    };
-
-    window.addEventListener('vendor-discussion-saved', function () {
         loadDiscussions(1);
-    });
+    };
 });
 </script>
 
@@ -4643,10 +4629,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener('vendor-section-opened', function (event) {
         if (event.detail.section === 'payment-orders') loadPayments(1);
-    });
-
-    window.addEventListener('vendor-payment-saved', function () {
-        loadPayments(1);
     });
 });
 </script>
@@ -5162,28 +5144,9 @@ function triggerAutoSaveFor(form) {
                         return;
                     }
 
-                    // Keep the submitted snapshot so edits made during the request
-                    // still trigger the existing saveAgain logic below.
-                    lastSnapshot = snapshot;
-
-                    if (form.id === 'assignedZone') {
-                        window.dispatchEvent(new Event('vendor-location-saved'));
-                    } else if (form.id === 'kw_form') {
-                        window.dispatchEvent(new Event('vendor-keywords-saved'));
-                    } else if (form.id === 'discussion-form') {
-                        window.dispatchEvent(new Event('vendor-discussion-saved'));
-                        const message = document.getElementById('discussion-save-message');
-                        if (message) {
-                            message.textContent = response.msg || 'Discussion saved successfully.';
-                            message.classList.remove('hidden');
-                        }
-                    } else if (form.classList.contains('order_validation')) {
-                        window.dispatchEvent(new Event('vendor-payment-saved'));
-                    }
-
-                    if (form.id !== 'discussion-form') {
-                        showToast(response.msg || 'Saved successfully', 'success');
-                    }
+                    lastSnapshot = getSnapshot();
+                    // await loadLocationPage();
+                    showToast(response.msg || 'Saved successfully', 'success');
                 })
                 .catch(function (xhr) {
                     if (xhr.status === 422 && xhr.responseJSON?.errors) {
@@ -5216,15 +5179,6 @@ function triggerAutoSaveFor(form) {
 
         // Register this form's saver so dropdown/select handlers can reach it
         formSavers.set(form, saveForm);
-
-        if (form.id === 'discussion-form') {
-            form.addEventListener('input', function () {
-                document.getElementById('discussion-save-message')?.classList.add('hidden');
-            });
-            form.addEventListener('change', function () {
-                document.getElementById('discussion-save-message')?.classList.add('hidden');
-            });
-        }
 
         form.addEventListener('input', function (event) {
             if (!event.target.matches('.auto-save-field')) return;
@@ -5849,6 +5803,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+
+// function loadLocationPage() {
+
+     
+// const url = new URL(window.location.href);
+
+// const refreshSections = [
+//     'business-location',
+//     'assigned-keywords'
+// ];
+
+// if (
+//     /^\/sales\/vendors\/\d+\/edit\/?$/.test(url.pathname) &&
+//     refreshSections.includes(url.searchParams.get('section'))
+// ) {
+//     window.location.reload();    
+// }
+// }
  
 
 </script>

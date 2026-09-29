@@ -25,10 +25,132 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 use DB;
 use Auth;
+use Illuminate\Validation\Rule;
 use Validator;
 class VendorController extends Controller
 {
-    public function index(Request $request): View
+		
+
+	public function index(Request $request): View
+	{
+		$sales = Auth::guard('sales')->user();
+
+		// URL से आए filters validate करें।
+		$filters = $request->validate([
+			'search' => ['nullable', 'string', 'max:255'],
+			'date_from' => ['nullable', 'date_format:Y-m-d'],
+			'date_to' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:date_from'],
+			'statuses' => ['nullable', 'array'],
+			'statuses.*' => [
+				'integer',
+				Rule::exists('status', 'id')->where('lead_filter', 1),
+			],
+			'city' => ['nullable', 'string', 'max:255'],
+		]);
+
+		$statuses = Status::where('lead_filter', 1)
+			->orderBy('name')
+			->get();
+
+		 
+		$latestMeetings = DB::table('meetings')
+			->select('client_id')
+			->selectRaw('MAX(id) as latest_meeting_id')
+			->groupBy('client_id');
+
+		$vendors = Client::query()
+			->leftJoinSub($latestMeetings, 'latest_meeting', function ($join) {
+				$join->on('latest_meeting.client_id', '=', 'clients.id');
+			})
+			->leftJoin(
+				'meetings as meeting',
+				'meeting.id',
+				'=',
+				'latest_meeting.latest_meeting_id'
+			)
+			->leftJoin(
+				'status as meeting_status',
+				'meeting_status.id',
+				'=',
+				'meeting.status'
+			)
+			->leftJoin(
+				'users as remark_user',
+				'remark_user.id',
+				'=',
+				'meeting.remark_by'
+			)
+			->where('clients.created_by', $sales->id)
+
+			->when(
+				!empty($filters['search']),
+				function ($query) use ($filters) {
+					$search = $filters['search'];
+
+					$query->where(function ($q) use ($search) {
+						$q->where('clients.business_name', 'like', "%{$search}%")
+						->orWhere('clients.mobile', 'like', "%{$search}%")
+						->orWhere('clients.city', 'like', "%{$search}%");
+					});
+				}
+			)
+
+			->when(
+				!empty($filters['date_from']),
+				fn ($query) => $query->whereDate(
+					'clients.created_at',
+					'>=',
+					$filters['date_from']
+				)
+			)
+
+			->when(
+				!empty($filters['date_to']),
+				fn ($query) => $query->whereDate(
+					'clients.created_at',
+					'<=',
+					$filters['date_to']
+				)
+			)
+
+			->when(
+				!empty($filters['statuses']),
+				fn ($query) => $query->whereIn(
+					'meeting.status',
+					$filters['statuses']
+				)
+			)
+
+			->when(
+				!empty($filters['city']),
+				fn ($query) => $query->where(
+					'clients.city',
+					$filters['city']
+				)
+			)
+
+			->select(
+				'clients.*',
+				'meeting.id as meeting_id',
+				'meeting.status as meeting_status_id',
+				'meeting_status.name as status_name',
+				'remark_user.first_name',
+				'remark_user.last_name',
+				'clients.created_at as createdAt',
+			)
+			->orderByDesc('clients.id')
+			->paginate(15)
+			->withQueryString();
+// dd($vendors->getCollection());
+		return view('sales.vendors.index', [
+			'vendors' => $vendors,
+			'cities' => '',
+			'statuses' => $statuses,
+			'categories' => '',
+			'executives' => '',
+		]);
+	}
+    public function index_olddd(Request $request): View
     {
 		$statuses = Status::where('lead_filter', 1)->get();
 		$sales = Auth::guard('sales')->user();
@@ -86,7 +208,7 @@ class VendorController extends Controller
 				->orderByDesc('clients.id')
 				->paginate(15)
 				->withQueryString();
-
+ 
         return view('sales.vendors.index', [
             'vendors' => $vendors,
             'cities' => '',
@@ -201,15 +323,6 @@ class VendorController extends Controller
         )
         ->orderByDesc('assigned_zones.id')
        ->paginate(10)->withQueryString();
-
- 
-			 
-
-		// dd($zones->get());
-
-
-
-
 
 	$occupations = Occupation::where('status', '1')->get();
 	$keywordlists = Keyword::whereNotExists(function ($query) use ($vendor) {

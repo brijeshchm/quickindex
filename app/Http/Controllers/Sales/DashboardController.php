@@ -18,6 +18,7 @@ use App\Models\Keyword;
 use App\Models\Citieslists;
 use Carbon\Carbon;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 use Validator;
 class DashboardController extends Controller
 {
@@ -76,12 +77,25 @@ class DashboardController extends Controller
 
 	}
 
+
  
 	public function vendorsFollowup(Request $request): View
 	{
 		$sales = Auth::guard('sales')->user();
 
-		 
+		$filters = $request->validate([
+			'search' => ['nullable', 'string', 'max:255'],
+			'date_from' => ['nullable', 'date_format:Y-m-d'],
+			'date_to' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:date_from'],
+			'statuses' => ['nullable', 'array'],
+			'statuses.*' => [
+				'integer',
+				Rule::exists('status', 'id')->where('lead_filter', 1),
+			],
+			'city' => ['nullable', 'string', 'max:255'],
+		]);
+
+		// Logged-in sales user की हर client पर latest meeting।
 		$latestMeetings = DB::table('meetings')
 			->select('client_id')
 			->selectRaw('MAX(id) as latest_meeting_id')
@@ -89,54 +103,82 @@ class DashboardController extends Controller
 			->groupBy('client_id');
 
 		$vendors = Client::query()
-			->leftJoinSub($latestMeetings, 'latest_meeting', function ($join) {
+			->joinSub($latestMeetings, 'latest_meeting', function ($join) {
 				$join->on('latest_meeting.client_id', '=', 'clients.id');
 			})
-			->join('meetings as meeting', 'meeting.id', '=', 'latest_meeting.latest_meeting_id')
-			->leftJoin('status as meeting_status', 'meeting_status.id', '=', 'meeting.status')
-			->leftJoin('users as remark_user', 'remark_user.id', '=', 'meeting.remark_by')
-			->when($request->filled('search'), function ($query) use ($request) {
-				$search = $request->string('search')->toString();
+			->join(
+				'meetings as meeting',
+				'meeting.id',
+				'=',
+				'latest_meeting.latest_meeting_id'
+			)
+			->leftJoin(
+				'status as meeting_status',
+				'meeting_status.id',
+				'=',
+				'meeting.status'
+			)
+			->leftJoin(
+				'users as remark_user',
+				'remark_user.id',
+				'=',
+				'meeting.remark_by'
+			)
+			->when(!empty($filters['search']), function ($query) use ($filters) {
+				$search = $filters['search'];
 
 				$query->where(function ($q) use ($search) {
 					$q->where('clients.business_name', 'like', "%{$search}%")
-					->orWhere('clients.mobile', 'like', "%{$search}%");
+					->orWhere('clients.mobile', 'like', "%{$search}%")
+					->orWhere('clients.city', 'like', "%{$search}%");
 				});
 			})
-			->when($request->filled('status'), fn ($query) =>
-				$query->where('meeting.status', $request->input('status'))
+			->when(!empty($filters['date_from']), fn ($query) =>
+				$query->where(
+					'meeting.date_time',
+					'>=',
+					$filters['date_from'] . ' 00:00:00'
+				)
 			)
-			->when($request->filled('city'), fn ($query) =>
-				$query->where('clients.city', $request->input('city'))
+			->when(!empty($filters['date_to']), fn ($query) =>
+				$query->where(
+					'meeting.date_time',
+					'<=',
+					$filters['date_to'] . ' 23:59:59'
+				)
 			)
-			->where(
-                'meeting.date_time',
-                '<=',
-                now()->endOfDay()
-            )
+			->when(!empty($filters['statuses']), fn ($query) =>
+				$query->whereIn('meeting.status', $filters['statuses'])
+			)
+			->when(!empty($filters['city']), fn ($query) =>
+				$query->where('clients.city', $filters['city'])
+			)
+			 
+			->where('meeting.date_time', '<=', now()->endOfDay())
 			->select(
 				'clients.*',
 				'meeting.id as meeting_id',
 				'meeting.status as meeting_status_id',
+				'meeting.date_time as follow_up_at',
 				'meeting_status.name as status_name',
 				'remark_user.first_name',
 				'remark_user.last_name'
 			)
+			->orderBy('meeting.date_time')
 			->orderByDesc('meeting.id')
 			->paginate(15)
 			->withQueryString();
 
-		$statuses = Status::get();
-
 		return view('sales.vendors.vendor-followup', [
 			'vendors' => $vendors,
 			'cities' => '',
-			'statues' => $statuses,
+			'statuses' => Status::where('lead_filter', 1)->orderBy('name')->get(),
 			'categories' => '',
 			'executives' => '',
 		]);
 	}
  
+	 
   
 
 /**
@@ -251,7 +293,8 @@ public function followUpHistory(int $id)
 
 				$query->where(function ($q) use ($search) {
 					$q->where('clients.business_name', 'like', "%{$search}%")
-					->orWhere('clients.mobile', 'like', "%{$search}%");
+					->orWhere('clients.mobile', 'like', "%{$search}%")
+					->orWhere('clients.city', 'like', "%{$search}%");
 				});
 			})
 			->when($request->filled('status'), fn ($query) =>
@@ -266,7 +309,8 @@ public function followUpHistory(int $id)
 				'meeting.status as meeting_status_id',
 				'meeting_status.name as status_name',
 				'remark_user.first_name',
-				'remark_user.last_name'
+				'remark_user.last_name',
+				'clients.created_at as createdAt',
 			)
 			->orderByDesc('clients.id')
 			->paginate(15)
@@ -275,7 +319,7 @@ public function followUpHistory(int $id)
 
  
 			$statuses = Status::get();
-
+ 
         return view('sales.vendors.vendor-assign', [
             'vendors' => $vendors,
             'cities' => '',

@@ -7,11 +7,13 @@
         </div>
 
         {{-- Filters --}}
-        <form method="GET"
-              action="{{ route('sales.vendors.index') }}"
-              class="rounded-2xl border border-[#dfe7ec] bg-white p-4 shadow-sm">
-
-            <div class="grid gap-3 lg:grid-cols-5">
+         <form
+            method="GET"
+            action="{{ route('sales.vendorsFollowup') }}"
+            class="rounded-2xl border border-[#dfe7ec] bg-white p-4 shadow-sm"
+        >
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                {{-- Search --}}
                 <label class="lg:col-span-2">
                     <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
                         Search vendors
@@ -21,37 +23,78 @@
                         type="text"
                         name="search"
                         value="{{ request('search') }}"
-                        placeholder="Name, owner, city or category..."
+                        placeholder="Business name or mobile..."
                         class="h-10 w-full rounded-lg border border-[#dfe7ec] bg-[#fbfcfd] px-3 text-xs outline-none focus:border-[#315b80]"
                     >
                 </label>
 
+                {{-- Date From --}}
                 <label>
                     <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
-                        Status
+                        Date From
+                    </span>
+
+                    <input
+                        type="date"
+                        name="date_from"
+                        value="{{ request('date_from') }}"
+                        max="{{ request('date_to') ?: '' }}"
+                        class="h-10 w-full rounded-lg border border-[#dfe7ec] bg-white px-3 text-xs outline-none focus:border-[#315b80]"
+                    >
+                </label>
+
+                {{-- Date To --}}
+                <label>
+                    <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
+                        Date To
+                    </span>
+
+                    <input
+                        type="date"
+                        name="date_to"
+                        value="{{ request('date_to') }}"
+                        min="{{ request('date_from') ?: '' }}"
+                        class="h-10 w-full rounded-lg border border-[#dfe7ec] bg-white px-3 text-xs outline-none focus:border-[#315b80]"
+                    >
+                </label>
+
+                {{-- Multiple statuses --}}
+                <label class="sm:col-span-2 lg:col-span-1">
+                    <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
+                        Latest Status
                     </span>
 
                     <select
-                        name="status"
-                        class="h-10 w-full rounded-lg border border-[#dfe7ec] bg-white px-3 text-xs"
+                        name="statuses[]"
+                        multiple
+                        size="4"
+                        class="w-full rounded-lg border border-[#dfe7ec] bg-white px-2 py-1 text-xs outline-none focus:border-[#315b80]"
                     >
-                        <option value="">All statuses</option>
-
-                        @foreach ($statues as $status)
+                        @foreach ($statuses as $status)
                             <option
                                 value="{{ $status->id }}"
-                                @selected((string) request('status') === (string) $status->id)
+                                @selected(in_array(
+                                    (string) $status->id,
+                                    array_map('strval', (array) request('statuses', [])),
+                                    true
+                                ))
                             >
                                 {{ $status->name }}
                             </option>
                         @endforeach
                     </select>
+
+                    <span class="mt-1 block text-[11px] text-slate-500">
+                        Ctrl/Cmd दबाकर कई statuses चुनें।
+                    </span>
                 </label>
             </div>
 
             <div class="mt-4 flex justify-end gap-2">
-                <a href="{{ route('sales.vendors.index') }}"
-                   class="rounded-lg px-3 py-2 text-xs font-semibold text-[#a14f47] hover:bg-[#f9ece8]">
+                <a
+                    href="{{ route('sales.vendors.index') }}"
+                    class="rounded-lg px-3 py-2 text-xs font-semibold text-[#a14f47] hover:bg-[#f9ece8]"
+                >
                     Reset filters
                 </a>
 
@@ -63,6 +106,7 @@
                 </button>
             </div>
         </form>
+
 
         {{-- Vendor table --}}
         <div class="overflow-hidden rounded-2xl border border-[#dfe7ec] bg-white shadow-sm">
@@ -82,7 +126,8 @@
                     <thead class="bg-[#fbfcfd] text-[10px] font-semibold uppercase tracking-wide text-[#9aa9b5]">
                         <tr>
                             <th class="px-5 py-3">Vendor</th>
-                            <th class="px-4 py-3">Owner / contact</th>
+                            <th class="px-5 py-3">Date</th>
+                            <th class="px-4 py-3">Owner</th>
                             <th class="px-4 py-3">Location</th>
                             <th class="px-4 py-3">Latest Status</th>
                             <th class="px-4 py-3 text-right">Actions</th>
@@ -113,6 +158,13 @@
                                     </div>
                                 </td>
 
+                                <td class="px-4 py-4">
+                                    <p class="text-xs font-medium">
+                                        {{ date('d-M-Y',strtotime($vendor->follow_up_at)) }}
+                                    </p>
+
+                                    
+                                </td>
                                 <td class="px-4 py-4">
                                     <p class="text-xs font-medium">
                                         {{ $vendor->owner_name }}
@@ -253,7 +305,7 @@
                             >
                                 <option value="">Select status</option>
 
-                                @foreach ($statues as $status)
+                                @foreach ($statuses as $status)
                                     <option
                                         value="{{ $status->id }}"
                                         data-show-date="{{ $status->show_exp_date ? '1' : '0' }}"
