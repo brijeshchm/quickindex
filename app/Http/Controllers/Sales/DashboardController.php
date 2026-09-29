@@ -95,7 +95,7 @@ class DashboardController extends Controller
 			->groupBy('client_id');
 
 		$vendors = Client::query()
-			->joinSub($latestMeetings, 'latest_meeting', function ($join) {
+			->leftJoinSub($latestMeetings, 'latest_meeting', function ($join) {
 				$join->on('latest_meeting.client_id', '=', 'clients.id');
 			})
 			->join('meetings as meeting', 'meeting.id', '=', 'latest_meeting.latest_meeting_id')
@@ -242,7 +242,7 @@ public function followUpHistory(int $id)
 				->groupBy('client_id');
 
 			$vendors = Client::query()
-				->joinSub($latestMeetings, 'latest_meeting', function ($join) {
+				->leftJoinSub($latestMeetings, 'latest_meeting', function ($join) {
 					$join->on('latest_meeting.client_id', '=', 'clients.id');
 				})
 				->join('meetings as meeting', 'meeting.id', '=', 'latest_meeting.latest_meeting_id')
