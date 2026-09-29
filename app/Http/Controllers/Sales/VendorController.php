@@ -33,10 +33,7 @@ class VendorController extends Controller
 		$statuses = Status::where('lead_filter', 1)->get();
 		$sales = Auth::guard('sales')->user();
  
- 
-
-
-				$latestMeetings = DB::table('meetings')
+ 				$latestMeetings = DB::table('meetings')
 				->select('client_id')
 				->selectRaw('MAX(id) as latest_meeting_id')
 				->groupBy('client_id');
@@ -85,8 +82,7 @@ class VendorController extends Controller
 					'meeting_status.name as status_name',
 					'remark_user.first_name',
 					'remark_user.last_name'
-				)
-				->orderByDesc('meeting.id')
+				)			 
 				->orderByDesc('clients.id')
 				->paginate(15)
 				->withQueryString();
