@@ -1705,9 +1705,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    window.addEventListener('vendor-section-opened', function (event) {
-        if (event.detail.section === 'business-location') loadLocations(1);
-    });
+    loadLocations();
 });
 </script>
 
@@ -3299,9 +3297,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (currentPage < lastPage) loadKeywords(currentPage + 1);
     });
 
-    window.addEventListener('vendor-section-opened', function (event) {
-        if (event.detail.section === 'assigned-keywords') loadKeywords(1);
-    });
+    loadKeywords();
 
     // Call this after the Assign keywords AJAX request succeeds:
     window.refreshAssignedKeywords = function () {
@@ -3835,9 +3831,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    window.addEventListener('vendor-section-opened', function (event) {
-        if (event.detail.section === 'leads') loadLeads(1);
-    });
+    loadLeads();
 });
 </script>
 </section>
@@ -4189,9 +4183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    window.addEventListener('vendor-section-opened', function (event) {
-        if (event.detail.section === 'discussion') loadDiscussions(1);
-    });
+    loadDiscussions();
 
      
     window.refreshVendorDiscussions = function () {
@@ -4627,9 +4619,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (currentPage < lastPage) loadPayments(currentPage + 1);
     });
 
-    window.addEventListener('vendor-section-opened', function (event) {
-        if (event.detail.section === 'payment-orders') loadPayments(1);
-    });
+    loadPayments();
 });
 </script>
 
@@ -4793,12 +4783,6 @@ function vendorEditor() {
 
             this.activeSection = section;
 
-            this.$nextTick(() => {
-                window.dispatchEvent(new CustomEvent('vendor-section-opened', {
-                    detail: { section }
-                }));
-            });
-
             const url = new URL(window.location.href);
 
             url.searchParams.set('section', section);
@@ -4916,30 +4900,20 @@ const PERSONAL_CITY_SELECTOR = '#personal_city';
 const PERSONAL_ZONE_SELECTOR = '#personal_zone';
 
 document.addEventListener('DOMContentLoaded', function () {
-    const initialized = new Set();
-    window.addEventListener('vendor-section-opened', function (event) {
-        const section = event.detail.section;
-        if (initialized.has(section)) return;
+    var state = '<?php echo $vendor->state_id; ?>';
+    var city  = '<?php echo $vendor->city_id; ?>';
+    var zone  = '<?php echo $vendor->zone_id; ?>';
 
-        if (section === 'business-information' || section === 'business-location') {
-            initialized.add(section);
-            const state = @json($vendor->state_id);
-            const city = @json($vendor->city_id);
-            const zone = @json($vendor->zone_id);
-            loadCity(state, city, MAIN_CITY_SELECTOR, function () {
-                loadZone(city, zone, MAIN_ZONE_SELECTOR);
-            });
-        }
+    loadCity(state, city, MAIN_CITY_SELECTOR, function () {
+        loadZone(city, zone, MAIN_ZONE_SELECTOR);
+    });
 
-        if (section === 'personal-details') {
-            initialized.add(section);
-            const state = @json($vendor->personal_state_id);
-            const city = @json($vendor->personal_city_id);
-            const zone = @json($vendor->personal_zone_id);
-            loadCity(state, city, PERSONAL_CITY_SELECTOR, function () {
-                loadZone(city, zone, PERSONAL_ZONE_SELECTOR);
-            });
-        }
+    var perState = '<?php echo $vendor->personal_state_id; ?>';
+    var perCity  = '<?php echo $vendor->personal_city_id; ?>';
+    var perZone  = '<?php echo $vendor->personal_zone_id; ?>';
+
+    loadCity(perState, perCity, PERSONAL_CITY_SELECTOR, function () {
+        loadZone(perCity, perZone, PERSONAL_ZONE_SELECTOR);
     });
 });
 
@@ -5826,17 +5800,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const sections = @json(array_keys($sections));
-    const requested = new URLSearchParams(window.location.search).get('section');
-    const section = sections.includes(requested) ? requested : 'personal-details';
-    window.dispatchEvent(new CustomEvent('vendor-section-opened', {
-        detail: { section }
-    }));
-});
-</script>
 
 </x-layouts.sales.app>
