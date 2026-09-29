@@ -2426,7 +2426,7 @@ textarea.form-control-modern {
 									<?php
 										foreach($userList as $user){
 											$selected = "";
-											if($user->id == $client->created_by):
+											if($user->id == $client->assign_to):
 												$selected = "selected";
 											endif;
 											?>
@@ -2438,7 +2438,7 @@ textarea.form-control-modern {
 								@else
 									<?php
 										foreach($userList as $user){
-											if($user->id == $client->created_by):
+											if($user->id == $client->assign_to):
 												echo "<p>".$user->first_name.' '.$user->last_name."</p>";
 											endif;
 										}
