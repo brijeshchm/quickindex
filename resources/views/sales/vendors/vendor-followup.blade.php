@@ -151,8 +151,8 @@
                                             data-store-url="{{ route('sales.followUp.store', $vendor->id) }}"
                                             data-history-url="{{ route('sales.followUp.history', $vendor->id) }}"
                                         >
-                                            <i data-lucide="calendar-clock" class="h-4 w-4"></i>
-                                            Follow Up
+                                            <i data-lucide="eye" class="h-4 w-4"></i>
+                                           
                                         </button>
                                     </div>
                                 </td>
@@ -510,7 +510,7 @@
                         return;
                     }
 
-                    // History latest meeting से oldest meeting क्रम में होनी चाहिए।
+                 
                     if (rows[0].status_id != null) {
                         setSelectedStatus(rows[0].status_id);
                     }

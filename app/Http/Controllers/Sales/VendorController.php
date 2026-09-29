@@ -17,6 +17,7 @@ use App\Models\Client\AssignedKWDS;
 use App\Models\Discussions;
 use App\Models\AssignedZone;
 use App\Models\Keyword;
+use App\Models\Status;
 use App\Models\AssignedClientCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,28 +30,74 @@ class VendorController extends Controller
 {
     public function index(Request $request): View
     {
-
+		$statuses = Status::where('lead_filter', 1)->get();
 		$sales = Auth::guard('sales')->user();
  
-    $vendors = Client::query()
-            ->search($request->string('search')->toString())
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')->toString()))
-            ->when($request->filled('city'), fn ($query) => $query->where('city', $request->string('city')->toString()))    
-            ->where('created_by',$sales->id)        
-            ->latest()
-            ->paginate(15)
-            ->withQueryString();
+ 
 
-// dd($vendors->getCollection());
+
+				$latestMeetings = DB::table('meetings')
+				->select('client_id')
+				->selectRaw('MAX(id) as latest_meeting_id')
+				->groupBy('client_id');
+
+			$vendors = Client::query()
+				->leftJoinSub($latestMeetings, 'latest_meeting', function ($join) {
+					$join->on('latest_meeting.client_id', '=', 'clients.id');
+				})
+				->leftJoin(
+					'meetings as meeting',
+					'meeting.id',
+					'=',
+					'latest_meeting.latest_meeting_id'
+				)
+				->leftJoin(
+					'status as meeting_status',
+					'meeting_status.id',
+					'=',
+					'meeting.status'
+				)
+				->leftJoin(
+					'users as remark_user',
+					'remark_user.id',
+					'=',
+					'meeting.remark_by'
+				)
+				->where('clients.created_by', $sales->id)
+				->when($request->filled('search'), function ($query) use ($request) {
+					$search = $request->string('search')->toString();
+
+					$query->where(function ($q) use ($search) {
+						$q->where('clients.business_name', 'like', "%{$search}%")
+						->orWhere('clients.mobile', 'like', "%{$search}%");
+					});
+				})
+				->when($request->filled('status'), fn ($query) =>
+					$query->where('meeting.status', $request->input('status'))
+				)
+				->when($request->filled('city'), fn ($query) =>
+					$query->where('clients.city', $request->input('city'))
+				)
+				->select(
+					'clients.*',
+					'meeting.id as meeting_id',
+					'meeting.status as meeting_status_id',
+					'meeting_status.name as status_name',
+					'remark_user.first_name',
+					'remark_user.last_name'
+				)
+				->orderByDesc('meeting.id')
+				->orderByDesc('clients.id')
+				->paginate(15)
+				->withQueryString();
+
         return view('sales.vendors.index', [
             'vendors' => $vendors,
             'cities' => '',
+			'statuses' => $statuses,
             'categories' => '',
             'executives' =>'',
-        ]);
-
-
-        
+        ]);        
     }
 
     public function create(): View
