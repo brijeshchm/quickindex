@@ -480,8 +480,10 @@ class BusinessController extends Controller
 
 
 					if ($validator->fails()) {
-						$errorsBag = $validator->getMessageBag()->toArray();
-						return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+					return response()->json([
+						'status' => 0,
+						'errors' => $validator->errors()
+					], 422);
 					}
 
 
@@ -528,8 +530,10 @@ class BusinessController extends Controller
 
 
 					if ($validator->fails()) {
-						$errorsBag = $validator->getMessageBag()->toArray();
-						return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+					return response()->json([
+						'status' => 0,
+						'errors' => $validator->errors()
+					], 422);
 					}
 
 
@@ -600,15 +604,17 @@ class BusinessController extends Controller
 					$validator = Validator::make($request->all(), [
 
 						'meta_title' => 'nullable|string|max:75',
-						'h1_heading' => 'nullable|string|max:275',					 
+						'h1_heading' => 'nullable|string|max:100',					 
 						'meta_description' => 'nullable|string|max:170',
 
 					]);
 
 
 					if ($validator->fails()) {
-						$errorsBag = $validator->getMessageBag()->toArray();
-						return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+					return response()->json([
+						'status' => 0,
+						'errors' => $validator->errors()
+					], 422);
 					}
 
 

@@ -435,8 +435,10 @@ public function saveBusinessSocial(Request $request)
 				'youtube_url' => 'nullable|url|max:255',
 			]);
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
  
 			$client = Client::find($request->business_id);
@@ -480,8 +482,10 @@ public function saveBusinessSocial(Request $request)
 			}
 
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
 
 			$id = $request->input('client_id');

@@ -63,8 +63,10 @@ class BusinessLocationController extends Controller
 
 			]);
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
 
 			$string = $request->input('business_name');
@@ -129,8 +131,10 @@ class BusinessLocationController extends Controller
 			}
 
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
 
 			$id = $request->input('client_id');

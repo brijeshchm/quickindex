@@ -48,9 +48,13 @@ class BusinessLogoController extends Controller
 				'logo.dimensions' => 'Please upload profile logo of given size -> .[Maximum Height:150px] &amp; [Maximum Width:300px]'
 			]);
 
+		 
+
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => false, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
 		$client = Client::findOrFail($request->business_id);
  

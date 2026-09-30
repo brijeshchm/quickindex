@@ -83,9 +83,11 @@ class CertificateController extends Controller
 
 		]);
 		if ($validator->fails()) {
-			$errorsBag = $validator->getMessageBag()->toArray();
-			return response()->json(['status' => false, 'errors' => $errorsBag], 400);
-		}
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
+			}
 
 
 		$client = Client::find($request->business_id);
@@ -350,9 +352,11 @@ class CertificateController extends Controller
 			'award_img9' => 'nullable|file|mimes:jpg,jpeg,png,webp,svg,pdf|max:10240',
 		]);
 		if ($validator->fails()) {
-			$errorsBag = $validator->getMessageBag()->toArray();
-			return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
-		}
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
+			}
 
 
 		$client = Client::find($request->business_id);

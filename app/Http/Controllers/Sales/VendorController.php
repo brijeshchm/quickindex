@@ -940,12 +940,11 @@ class VendorController extends Controller
 
 			]);
 			if ($validator->fails()) {
-				$errorsBag = $validator->getMessageBag()->toArray();
-				return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
+			return response()->json([
+				'status' => 0,
+				'errors' => $validator->errors()
+			], 422);
 			}
-
-
-
 
 			if ($request->input('pay-submit') == 'savepay' && !empty($request->input('paid_amount'))) {
 
