@@ -600,7 +600,7 @@ class BusinessController extends Controller
 					$validator = Validator::make($request->all(), [
 
 						'meta_title' => 'nullable|string|max:75',
-						// 'h1_heading' => 'nullable|string|max:275',					 
+						'h1_heading' => 'nullable|string|max:275',					 
 						'meta_description' => 'nullable|string|max:170',
 
 					]);
@@ -617,6 +617,7 @@ class BusinessController extends Controller
 
 					$client->meta_description = $request->meta_description;
 					$client->business_intro = $request->business_intro;
+					$client->h1_heading = $request->h1_heading;
 
 
 					if ($client->save()) {
