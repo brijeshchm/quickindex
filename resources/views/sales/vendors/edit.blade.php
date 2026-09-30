@@ -4215,7 +4215,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
            </section>
 
-           <section
+
+
+
+<section
                 x-show="activeSection === 'payment-orders'"
                 x-cloak
             >
@@ -4236,6 +4239,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <div class="space-y-6">
     <form
+        id="paymentOrderForm"
         class="order_validation overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
         action="{{ route('sales.payment.save',['id'=>$vendor->id]) }}"
         method="POST"
@@ -4443,12 +4447,20 @@ document.addEventListener('DOMContentLoaded', function () {
             </button>
         </div>
     </form>
-
-    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-    <div class="border-b border-slate-200 px-5 py-4 sm:px-7">
+ 
+ <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-4 sm:px-6">
         <h2 class="text-lg font-bold text-slate-900">
             Payment history
         </h2>
+
+        <button
+            id="payment-history-refresh"
+            type="button"
+            class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+        >
+            Refresh
+        </button>
     </div>
 
     <div class="w-full overflow-x-auto">
@@ -4459,9 +4471,15 @@ document.addEventListener('DOMContentLoaded', function () {
             <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
                 <tr>
                     @foreach([
-                        'Date', 'Paid Amount', 'GST', 'Total Amount',
-                        'Pay Mode', 'Order PDF', 'Proforma Invoice',
-                        'Invoice PDF', 'Action'
+                        'Date',
+                        'Paid Amount',
+                        'GST',
+                        'Total Amount',
+                        'Pay Mode',
+                        'Order PDF',
+                        'Proforma Invoice',
+                        'Invoice PDF',
+                        'Status',
                     ] as $heading)
                         <th class="whitespace-nowrap px-4 py-3 font-semibold">
                             {{ $heading }}
@@ -4470,7 +4488,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 </tr>
             </thead>
 
-            <tbody id="payment-history-body" class="divide-y divide-slate-100 bg-white">
+            <tbody
+                id="payment-history-body"
+                class="divide-y divide-slate-100 bg-white"
+            >
                 <tr>
                     <td colspan="9" class="px-4 py-8 text-center text-slate-500">
                         Loading payments...
@@ -4480,17 +4501,29 @@ document.addEventListener('DOMContentLoaded', function () {
         </table>
     </div>
 
-    <div class="flex items-center justify-between gap-3 border-t border-slate-200 px-5 py-4 sm:px-7">
-        <p id="payment-history-page-info" class="text-xs text-slate-500"></p>
+    <div class="flex flex-col gap-3 border-t border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <p
+            id="payment-history-page-info"
+            class="text-xs text-slate-500"
+            aria-live="polite"
+        ></p>
 
         <div class="flex gap-2">
-            <button id="payment-history-prev" type="button"
-                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-40">
+            <button
+                id="payment-history-prev"
+                type="button"
+                disabled
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
                 Previous
             </button>
 
-            <button id="payment-history-next" type="button"
-                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-40">
+            <button
+                id="payment-history-next"
+                type="button"
+                disabled
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
                 Next
             </button>
         </div>
@@ -4498,158 +4531,307 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const body = document.getElementById('payment-history-body');
-    const info = document.getElementById('payment-history-page-info');
-    const prev = document.getElementById('payment-history-prev');
-    const next = document.getElementById('payment-history-next');
+(function () {
+    function initializePaymentHistory() {
+        const table = document.getElementById('datatable-payment-history');
+        const body = document.getElementById('payment-history-body');
+        const info = document.getElementById('payment-history-page-info');
+        const prev = document.getElementById('payment-history-prev');
+        const next = document.getElementById('payment-history-next');
+        const refresh = document.getElementById('payment-history-refresh');
 
-    if (!body || !info || !prev || !next) return;
+        if (!table || !body || !info || !prev || !next || !refresh) return;
 
-    const listUrl = @json(
-        route('sales.payment.list', ['id' => $vendor->username])
-    );
+        if (table.dataset.initialized === 'true') return;
+        table.dataset.initialized = 'true';
 
-    let currentPage = 1;
-    let lastPage = 1;
+        const listUrl = @json(
+            route('sales.payment.list', ['id' => $vendor->username])
+        );
 
-    function escapeHtml(value) {
-        const div = document.createElement('div');
-        div.textContent = value ?? '';
-        return div.innerHTML;
-    }
+        const downloadUrls = {
+            order: @json(route('sales.invoice.orderPrint')),
+            proforma: @json(route('sales.proforma.PrintPdf')),
+            invoice: @json(route('sales.invoice.PrintPdf'))
+        };
 
-    function amount(value) {
-        const number = Number(value);
-        return Number.isFinite(number)
-            ? '₹' + number.toLocaleString('en-IN', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            })
-            : '—';
-    }
+        let currentPage = 1;
+        let lastPage = 1;
+        let loading = false;
+        let activeRequest = null;
 
-    async function loadPayments(page = 1) {
-        body.innerHTML = `
-            <tr>
-                <td colspan="9" class="px-4 py-8 text-center text-slate-500">
-                    Loading payments...
-                </td>
-            </tr>
-        `;
+        function escapeHtml(value) {
+            const element = document.createElement('div');
+            element.textContent = value ?? '';
+            return element.innerHTML;
+        }
 
-        try {
-            const url = new URL(listUrl, window.location.origin);
-            url.searchParams.set('page', page);
-            url.searchParams.set('per_page', 10);
+        function amount(value) {
+            if (value === null || value === undefined || value === '') {
+                return '—';
+            }
 
-            const response = await fetch(url, {
-                credentials: 'same-origin',
-                headers: { 'Accept': 'application/json' }
-            });
+            const number = Number(value);
 
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return Number.isFinite(number)
+                ? '₹' + number.toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
+                : '—';
+        }
 
-            const result = await response.json();
-
-            currentPage = result.current_page;
-            lastPage = result.last_page;
-
-            body.innerHTML = result.data.length
-                ? result.data.map(function (payment) {
-                    const id = Number(payment.id);
-                    if (!Number.isSafeInteger(id) || id <= 0) return '';
-
-                    return `
-                        <tr class="hover:bg-slate-50">
-                            <td class="whitespace-nowrap px-4 py-3">
-                                ${escapeHtml(payment.date)}
-                            </td>
-                            <td class="whitespace-nowrap px-4 py-3">
-                                ${amount(payment.paid_amount)}
-                            </td>
-                            <td class="whitespace-nowrap px-4 py-3">
-                                ${amount(payment.gst_tax)}
-                            </td>
-                            <td class="whitespace-nowrap px-4 py-3 font-semibold">
-                                ${amount(payment.total_amount)}
-                            </td>
-                            <td class="px-4 py-3">
-                                ${escapeHtml(payment.payment_mode)}
-                            </td>
-                            <td class="px-4 py-3">
-                                <button type="button"
-                                        data-payment-action="order"
-                                        data-sid="${id}"
-                                        class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">
-                                    Order PDF
-                                </button>
-                            </td>
-                            <td class="px-4 py-3">
-                                <button type="button"
-                                        data-payment-action="proforma"
-                                        data-sid="${id}"
-                                        class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">
-                                    Proforma PDF
-                                </button>
-                            </td>
-                            <td class="px-4 py-3">
-                                ${Number(payment.invoice_status) === 1
-                                    ? `<button type="button"
-                                               data-payment-action="invoice"
-                                               data-sid="${id}"
-                                               class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">
-                                           Invoice PDF
-                                       </button>`
-                                    : '<span class="text-xs text-amber-700">Pending</span>'}
-                            </td>
-                            <td class="px-4 py-3 text-slate-400">—</td>
-                        </tr>
-                    `;
-                }).join('')
-                : `
-                    <tr>
-                        <td colspan="9" class="px-4 py-8 text-center text-slate-500">
-                            No payment history found.
-                        </td>
-                    </tr>
-                `;
-
-            info.textContent =
-                `Page ${currentPage} of ${lastPage} · ${result.total} payments`;
-
-            prev.disabled = currentPage <= 1;
-            next.disabled = currentPage >= lastPage;
-        } catch (error) {
-            console.error('Payment history failed:', error);
-            body.innerHTML = `
+        function messageRow(text, isError = false) {
+            return `
                 <tr>
-                    <td colspan="9" class="px-4 py-8 text-center text-red-600">
-                        Could not load payment history.
+                    <td
+                        colspan="9"
+                        class="px-4 py-8 text-center ${
+                            isError ? 'text-red-600' : 'text-slate-500'
+                        }"
+                    >
+                        ${escapeHtml(text)}
                     </td>
                 </tr>
             `;
         }
+
+        function updatePagination() {
+            prev.disabled = loading || currentPage <= 1;
+            next.disabled = loading || currentPage >= lastPage;
+            refresh.disabled = loading;
+        }
+
+        function pdfLink(action, id, label, colorClasses) {
+            const url = new URL(
+                downloadUrls[action],
+                window.location.origin
+            );
+
+            // Controller receives this through $request->input('pid').
+            url.searchParams.set('pid', String(id));
+
+            return `
+                <a
+                    href="${escapeHtml(url.href)}"
+                    class="inline-flex items-center whitespace-nowrap rounded-lg px-3 py-2 text-xs font-semibold transition ${colorClasses}"
+                >
+                    ${escapeHtml(label)}
+                </a>
+            `;
+        }
+
+        function paymentRow(payment) {
+            const id = Number(payment.id);
+
+            if (!Number.isSafeInteger(id) || id <= 0) return '';
+
+            const approved = Number(payment.invoice_status) === 1;
+
+            return `
+                <tr class="hover:bg-slate-50">
+                    <td class="whitespace-nowrap px-4 py-3">
+                        ${escapeHtml(payment.date)}
+                    </td>
+
+                    <td class="whitespace-nowrap px-4 py-3">
+                        ${amount(payment.paid_amount)}
+                    </td>
+
+                    <td class="whitespace-nowrap px-4 py-3">
+                        ${amount(payment.gst_tax)}
+                    </td>
+
+                    <td class="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">
+                        ${amount(payment.total_amount)}
+                    </td>
+
+                    <td class="whitespace-nowrap px-4 py-3">
+                        ${escapeHtml(payment.payment_mode)}
+                    </td>
+
+                    <td class="px-4 py-3">
+                        ${pdfLink(
+                            'order',
+                            id,
+                            'Order PDF',
+                            'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                        )}
+                    </td>
+
+                    <td class="px-4 py-3">
+                            <a
+                                href="{{ route('sales.proforma.PrintPdf') }}?pid=${encodeURIComponent(payment.id)}"
+                                class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold text-black transition hover:bg-blue-700 hover:text-white"
+                            >
+                                <svg
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 3v12m0 0 4-4m-4 4-4-4M5 16v4h14v-4"
+                                    />
+                                </svg>
+
+                            PDF
+                            </a>
+                        </td>
+
+                    <td class="px-4 py-3">
+                        ${approved
+                            ? pdfLink(
+                                'invoice',
+                                id,
+                                'Invoice PDF',
+                                'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
+                            )
+                            : `
+                                <span class="whitespace-nowrap text-xs font-medium text-amber-700">
+                                    Approval pending
+                                </span>
+                            `
+                        }
+                    </td>
+
+                    <td class="px-4 py-3">
+                        <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                            approved
+                                ? 'bg-emerald-50 text-emerald-700'
+                                : 'bg-amber-50 text-amber-700'
+                        }">
+                            ${approved ? 'Approved' : 'Pending'}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        }
+
+        async function loadPayments(page = 1) {
+            if (activeRequest) {
+                activeRequest.abort();
+            }
+
+            const controller = new AbortController();
+            activeRequest = controller;
+
+            loading = true;
+            updatePagination();
+            body.innerHTML = messageRow('Loading payments...');
+
+            try {
+                const url = new URL(listUrl, window.location.origin);
+
+                url.searchParams.set('page', String(page));
+                url.searchParams.set('per_page', '10');
+
+                const response = await fetch(url, {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    signal: controller.signal,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!response.ok || response.redirected) {
+                    throw new Error('Could not load payment history.');
+                }
+
+                const result = await response.json();
+
+                if (!Array.isArray(result.data)) {
+                    throw new Error('Invalid payment history response.');
+                }
+
+                currentPage = Math.max(
+                    1,
+                    Number(result.current_page) || 1
+                );
+
+                lastPage = Math.max(
+                    1,
+                    Number(result.last_page) || 1
+                );
+
+                const rows = result.data.map(paymentRow).join('');
+
+                body.innerHTML = rows || messageRow(
+                    'No payment history found.'
+                );
+
+                info.textContent =
+                    `Page ${currentPage} of ${lastPage} · ${Number(result.total) || 0} payments`;
+            } catch (error) {
+                if (error.name === 'AbortError') return;
+
+                console.error('Payment history failed:', error);
+
+                body.innerHTML = messageRow(
+                    error.message || 'Could not load payment history.',
+                    true
+                );
+
+                info.textContent = '';
+            } finally {
+                if (activeRequest === controller) {
+                    activeRequest = null;
+                    loading = false;
+                    updatePagination();
+                }
+            }
+        }
+
+        prev.addEventListener('click', function () {
+            if (!loading && currentPage > 1) {
+                loadPayments(currentPage - 1);
+            }
+        });
+
+        next.addEventListener('click', function () {
+            if (!loading && currentPage < lastPage) {
+                loadPayments(currentPage + 1);
+            }
+        });
+
+        refresh.addEventListener('click', function () {
+            loadPayments(currentPage);
+        });
+
+        window.addEventListener('vendor-payment-saved', function () {
+            loadPayments(1);
+        });
+
+        window.addEventListener('vendor-invoice-approved', function () {
+            loadPayments(currentPage);
+        });
+
+        window.addEventListener('vendor-section-opened', function (event) {
+            if (event.detail?.section === 'payment-orders' && !loading) {
+                loadPayments(1);
+            }
+        });
+
+        loadPayments(1);
     }
 
-    prev.addEventListener('click', function () {
-        if (currentPage > 1) loadPayments(currentPage - 1);
-    });
-
-    next.addEventListener('click', function () {
-        if (currentPage < lastPage) loadPayments(currentPage + 1);
-    });
-
-    window.addEventListener('vendor-section-opened', function (event) {
-        if (event.detail.section === 'payment-orders') loadPayments(1);
-    });
-
-    window.addEventListener('vendor-payment-saved', function () {
-        loadPayments(1);
-    });
-});
+    if (document.readyState === 'loading') {
+        document.addEventListener(
+            'DOMContentLoaded',
+            initializePaymentHistory
+        );
+    } else {
+        initializePaymentHistory();
+    }
+})();
 </script>
-
+ 
 
 
 </div>
@@ -4663,13 +4845,14 @@ function handlingPaiAmt() {
 	var paid_am= parseInt(paid_amount.val());
 
 	var coins = jQuery('#coins_per_lead');
-    
-	if( paid_am <= 0 ){
-		alert("paid amount Cannot be Empty");
-		paid_am.val("");
+     
 
-	}
-	 
+    if (!Number.isFinite(paid_am) || paid_am <= 0) {
+        alert('Please enter a valid paid amount.');
+        paid_amount.val('');
+        coins.val('');
+        return;
+    }
 
 	if (1000 <= paid_am && paid_am < 2000) {
 
@@ -5080,168 +5263,468 @@ function ajaxSubmitForm(form) {
 }
 
 
-const formSavers = new WeakMap();
+ 
+    
+ const formSavers = new WeakMap();
 
 function triggerAutoSaveFor(form) {
-     
     const save = formSavers.get(form);
-    if (save) save(false);
+
+    if (save) {
+        save(false);
+    }
 }
-    
- 
- 
-      document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
 
- 
-        let debounceTimer = null;
-        let isSaving = false;
-        let saveAgain = false;
-        let lastSnapshot = getSnapshot();
+document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
+    const isPaymentForm = form.id === 'paymentOrderForm';
 
-        function getSnapshot() {
-            const values = $(form).serialize();
-            const files = Array.from(form.querySelectorAll('input[type="file"]'))
-                .map(function (input) {
-                    const selected = Array.from(input.files || [])
-                        .map(function (file) { return file.name + ':' + file.size + ':' + file.lastModified; })
-                        .join(',');
-                    return input.name + '=' + selected;
+    let debounceTimer = null;
+    let isSaving = false;
+    let saveAgain = false;
+    let lastSnapshot = getSnapshot();
+
+    function getSnapshot() {
+        const values = $(form).serialize();
+
+        const files = Array.from(
+            form.querySelectorAll('input[type="file"]')
+        ).map(function (input) {
+            const selected = Array.from(input.files || [])
+                .map(function (file) {
+                    return [
+                        file.name,
+                        file.size,
+                        file.lastModified
+                    ].join(':');
                 })
-                .join('&');
-            return values + '&' + files;
-        }
+                .join(',');
 
-        function clearErrors() {
-            form.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
-            form.querySelectorAll('[aria-invalid="true"]').forEach(function (el) {
-                el.removeAttribute('aria-invalid');
-                el.classList.remove('border-red-500', 'ring-2', 'ring-red-100');
+            return input.name + '=' + selected;
+        }).join('&');
+
+        return values + '&' + files;
+    }
+
+    function clearErrors() {
+        form.querySelectorAll('.field-error').forEach(function (element) {
+            element.remove();
+        });
+
+        form.querySelectorAll('[aria-invalid="true"]').forEach(function (element) {
+            element.removeAttribute('aria-invalid');
+            element.classList.remove(
+                'border-red-500',
+                'ring-2',
+                'ring-red-100'
+            );
+        });
+    }
+
+    function showValidationErrors(errors) {
+        clearErrors();
+
+        Object.entries(errors).forEach(function ([name, messages]) {
+            const field = Array.from(form.elements).find(function (element) {
+                return element.name === name;
             });
+
+            if (!field) return;
+
+            field.classList.add(
+                'border-red-500',
+                'ring-2',
+                'ring-red-100'
+            );
+
+            field.setAttribute('aria-invalid', 'true');
+
+            const error = document.createElement('p');
+
+            error.className =
+                'field-error mt-1 text-xs font-medium text-red-600';
+
+            error.textContent = Array.isArray(messages)
+                ? messages[0]
+                : messages;
+
+            field.insertAdjacentElement('afterend', error);
+        });
+    }
+
+    function resetPaymentForm() {
+        // Restore initial values, including hidden fields and vendor details.
+        form.reset();
+        clearErrors();
+
+        const paymentMode = form.querySelector(
+            '[name="stud-payment_mode"]'
+        );
+
+        if (
+            paymentMode &&
+            typeof togglePaymentModeFields === 'function'
+        ) {
+            togglePaymentModeFields(paymentMode.value);
         }
 
-        function showValidationErrors(errors) {
-            clearErrors();
-            Object.entries(errors).forEach(function ([name, messages]) {
-                const field = Array.from(form.elements).find(function (el) { return el.name === name; });
-                if (!field) return;
-
-                field.classList.add('border-red-500', 'ring-2', 'ring-red-100');
-                field.setAttribute('aria-invalid', 'true');
-
-                const error = document.createElement('p');
-                error.className = 'field-error mt-1 text-xs font-medium text-red-600';
-                error.textContent = messages[0] || 'Invalid value';
-                field.insertAdjacentElement('afterend', error);
-            });
+        // Refresh Select2 displays without firing ordinary change handlers.
+        if ($.fn.select2) {
+            $(form)
+                .find('select.select2-hidden-accessible')
+                .trigger('change.select2');
         }
 
-        function saveForm(isManual) {
-            clearTimeout(debounceTimer);
+        clearTimeout(debounceTimer);
+        saveAgain = false;
+        lastSnapshot = getSnapshot();
+    }
 
-            if (!form.checkValidity()) {
-                if (isManual) form.reportValidity();
-                return;
-            }
+    function saveForm(isManual = false) {
+        clearTimeout(debounceTimer);
 
-            const snapshot = getSnapshot();
-            if (!isManual && snapshot === lastSnapshot) return;
+        // Payment form submits only through its Save button / submit event.
+        if (isPaymentForm && !isManual) return;
 
-            if (isSaving) {
+        // Ignore repeated payment submissions while a request is running.
+        if (isSaving) {
+            if (!isPaymentForm) {
                 saveAgain = true;
-                return;
             }
 
-            isSaving = true;
-            clearErrors();
+            return;
+        }
 
-            ajaxSubmitForm(form)
-                .then(async function (response) {
-                    if (!response.status) {
-                        showToast(response.msg || 'Save failed', 'error');
-                        return;
+        if (!form.checkValidity()) {
+            if (isManual) {
+                form.reportValidity();
+            }
+
+            return;
+        }
+
+        const snapshot = getSnapshot();
+
+        if (!isManual && snapshot === lastSnapshot) return;
+
+        isSaving = true;
+        clearErrors();
+
+        const submitButtons = Array.from(
+            form.querySelectorAll(
+                'button[type="submit"], input[type="submit"]'
+            )
+        );
+
+        const previousDisabledStates = submitButtons.map(function (button) {
+            return button.disabled;
+        });
+
+        if (isPaymentForm) {
+            submitButtons.forEach(function (button) {
+                button.disabled = true;
+            });
+        }
+
+        ajaxSubmitForm(form)
+            .then(function (response) {
+                if (!response.status) {
+                    if (response.errors) {
+                        showValidationErrors(response.errors);
                     }
 
-                    // Keep the submitted snapshot so edits made during the request
-                    // still trigger the existing saveAgain logic below.
-                    lastSnapshot = snapshot;
-
-                    if (form.id === 'assignedZone') {
-                        window.dispatchEvent(new Event('vendor-location-saved'));
-                    } else if (form.id === 'kw_form') {
-                        window.dispatchEvent(new Event('vendor-keywords-saved'));
-                    } else if (form.id === 'discussion-form') {
-                        window.dispatchEvent(new Event('vendor-discussion-saved'));
-                        const message = document.getElementById('discussion-save-message');
-                        if (message) {
-                            message.textContent = response.msg || 'Discussion saved successfully.';
-                            message.classList.remove('hidden');
-                        }
-                    } else if (form.classList.contains('order_validation')) {
-                        window.dispatchEvent(new Event('vendor-payment-saved'));
-                    }
-
-                    if (form.id !== 'discussion-form') {
-                        showToast(response.msg || 'Saved successfully', 'success');
-                    }
-                })
-                .catch(function (xhr) {
-                    if (xhr.status === 422 && xhr.responseJSON?.errors) {
-                        showValidationErrors(xhr.responseJSON.errors);
-                        showToast('Please correct the highlighted fields', 'error');
-                        return;
-                    }
-                    console.error('Form save failed:', {
-                        form: form.id,
-                        status: xhr.status,
-                        response: xhr.responseJSON || xhr.responseText
-                    });
                     showToast(
-                        xhr.status === 419
-                            ? 'Session expired. Refresh the page and try again.'
-                            : 'Save failed. Please try again.',
+                        response.msg || response.message || 'Save failed',
                         'error'
                     );
-                })
-                .finally(function () {
-                    isSaving = false;
-                    if (saveAgain || getSnapshot() !== snapshot) {
-                        saveAgain = false;
-                        if (getSnapshot() !== lastSnapshot) {
-                            debounceTimer = setTimeout(function () { saveForm(false); }, 500);
-                        }
+
+                    return;
+                }
+
+                lastSnapshot = snapshot;
+
+                if (isPaymentForm) {
+                    // Reset only after successful payment submission.
+                    resetPaymentForm();
+
+                    window.dispatchEvent(
+                        new Event('vendor-payment-saved')
+                    );
+                } else if (form.id === 'assignedZone') {
+                    window.dispatchEvent(
+                        new Event('vendor-location-saved')
+                    );
+                } else if (form.id === 'kw_form') {
+                    window.dispatchEvent(
+                        new Event('vendor-keywords-saved')
+                    );
+                } else if (form.id === 'discussion-form') {
+                    window.dispatchEvent(
+                        new Event('vendor-discussion-saved')
+                    );
+
+                    const message = document.getElementById(
+                        'discussion-save-message'
+                    );
+
+                    if (message) {
+                        message.textContent =
+                            response.msg || 'Discussion saved successfully.';
+
+                        message.classList.remove('hidden');
                     }
+                }
+
+                if (form.id !== 'discussion-form') {
+                    showToast(
+                        response.msg || 'Saved successfully',
+                        'success'
+                    );
+                }
+            })
+            .catch(function (xhr) {
+                if (xhr.status === 422 && xhr.responseJSON?.errors) {
+                    showValidationErrors(xhr.responseJSON.errors);
+
+                    showToast(
+                        'Please correct the highlighted fields',
+                        'error'
+                    );
+
+                    return;
+                }
+
+                console.error('Form save failed:', {
+                    form: form.id,
+                    status: xhr.status,
+                    response: xhr.responseJSON || xhr.responseText
                 });
+
+                showToast(
+                    xhr.status === 419
+                        ? 'Session expired. Refresh the page and try again.'
+                        : 'Save failed. Please try again.',
+                    'error'
+                );
+            })
+            .finally(function () {
+                isSaving = false;
+
+                if (isPaymentForm) {
+                    submitButtons.forEach(function (button, index) {
+                        button.disabled = previousDisabledStates[index];
+                    });
+
+                    // Never automatically resubmit a payment after reset.
+                    saveAgain = false;
+                    return;
+                }
+
+                if (saveAgain || getSnapshot() !== snapshot) {
+                    saveAgain = false;
+
+                    if (getSnapshot() !== lastSnapshot) {
+                        debounceTimer = setTimeout(function () {
+                            saveForm(false);
+                        }, 500);
+                    }
+                }
+            });
+    }
+
+    formSavers.set(form, saveForm);
+
+    if (form.id === 'discussion-form') {
+        function hideDiscussionMessage() {
+            document.getElementById(
+                'discussion-save-message'
+            )?.classList.add('hidden');
         }
 
-        // Register this form's saver so dropdown/select handlers can reach it
-        formSavers.set(form, saveForm);
+        form.addEventListener('input', hideDiscussionMessage);
+        form.addEventListener('change', hideDiscussionMessage);
+    }
 
-        if (form.id === 'discussion-form') {
-            form.addEventListener('input', function () {
-                document.getElementById('discussion-save-message')?.classList.add('hidden');
-            });
-            form.addEventListener('change', function () {
-                document.getElementById('discussion-save-message')?.classList.add('hidden');
-            });
-        }
-
+    // Keep autosave for other forms.
+    if (!isPaymentForm) {
         form.addEventListener('input', function (event) {
             if (!event.target.matches('.auto-save-field')) return;
+
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(function () { saveForm(false); }, 1500);
+
+            debounceTimer = setTimeout(function () {
+                saveForm(false);
+            }, 1500);
         });
 
         form.addEventListener('change', function (event) {
             if (!event.target.matches('.auto-save-field')) return;
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(function () { saveForm(false); }, 600);
-        });
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            saveForm(true); // manual save (Save button)
+            clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(function () {
+                saveForm(false);
+            }, 600);
         });
+    }
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        saveForm(true);
     });
+});
+ 
+    //   document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
+
+ 
+    //     let debounceTimer = null;
+    //     let isSaving = false;
+    //     let saveAgain = false;
+    //     let lastSnapshot = getSnapshot();
+
+    //     function getSnapshot() {
+    //         const values = $(form).serialize();
+    //         const files = Array.from(form.querySelectorAll('input[type="file"]'))
+    //             .map(function (input) {
+    //                 const selected = Array.from(input.files || [])
+    //                     .map(function (file) { return file.name + ':' + file.size + ':' + file.lastModified; })
+    //                     .join(',');
+    //                 return input.name + '=' + selected;
+    //             })
+    //             .join('&');
+    //         return values + '&' + files;
+    //     }
+
+    //     function clearErrors() {
+    //         form.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
+    //         form.querySelectorAll('[aria-invalid="true"]').forEach(function (el) {
+    //             el.removeAttribute('aria-invalid');
+    //             el.classList.remove('border-red-500', 'ring-2', 'ring-red-100');
+    //         });
+    //     }
+
+    //     function showValidationErrors(errors) {
+    //         clearErrors();
+    //         Object.entries(errors).forEach(function ([name, messages]) {
+    //             const field = Array.from(form.elements).find(function (el) { return el.name === name; });
+    //             if (!field) return;
+
+    //             field.classList.add('border-red-500', 'ring-2', 'ring-red-100');
+    //             field.setAttribute('aria-invalid', 'true');
+
+    //             const error = document.createElement('p');
+    //             error.className = 'field-error mt-1 text-xs font-medium text-red-600';
+    //             error.textContent = messages[0] || 'Invalid value';
+    //             field.insertAdjacentElement('afterend', error);
+    //         });
+    //     }
+
+    //     function saveForm(isManual) {
+    //         clearTimeout(debounceTimer);
+
+    //         if (!form.checkValidity()) {
+    //             if (isManual) form.reportValidity();
+    //             return;
+    //         }
+
+    //         const snapshot = getSnapshot();
+    //         if (!isManual && snapshot === lastSnapshot) return;
+
+    //         if (isSaving) {
+    //             saveAgain = true;
+    //             return;
+    //         }
+
+    //         isSaving = true;
+    //         clearErrors();
+
+    //         ajaxSubmitForm(form)
+    //             .then(async function (response) {
+    //                 if (!response.status) {
+    //                     showToast(response.msg || 'Save failed', 'error');
+    //                     return;
+    //                 }
+
+    //                 // Keep the submitted snapshot so edits made during the request
+    //                 // still trigger the existing saveAgain logic below.
+    //                 lastSnapshot = snapshot;
+
+    //                 if (form.id === 'assignedZone') {
+    //                     window.dispatchEvent(new Event('vendor-location-saved'));
+    //                 } else if (form.id === 'kw_form') {
+    //                     window.dispatchEvent(new Event('vendor-keywords-saved'));
+    //                 } else if (form.id === 'discussion-form') {
+    //                     window.dispatchEvent(new Event('vendor-discussion-saved'));
+    //                     const message = document.getElementById('discussion-save-message');
+    //                     if (message) {
+    //                         message.textContent = response.msg || 'Discussion saved successfully.';
+    //                         message.classList.remove('hidden');
+    //                     }
+    //                 } else if (form.classList.contains('order_validation')) {
+    //                     window.dispatchEvent(new Event('vendor-payment-saved'));
+    //                 }
+
+    //                 if (form.id !== 'discussion-form') {
+    //                     showToast(response.msg || 'Saved successfully', 'success');
+    //                 }
+    //             })
+    //             .catch(function (xhr) {
+    //                 if (xhr.status === 422 && xhr.responseJSON?.errors) {
+    //                     showValidationErrors(xhr.responseJSON.errors);
+    //                     showToast('Please correct the highlighted fields', 'error');
+    //                     return;
+    //                 }
+    //                 console.error('Form save failed:', {
+    //                     form: form.id,
+    //                     status: xhr.status,
+    //                     response: xhr.responseJSON || xhr.responseText
+    //                 });
+    //                 showToast(
+    //                     xhr.status === 419
+    //                         ? 'Session expired. Refresh the page and try again.'
+    //                         : 'Save failed. Please try again.',
+    //                     'error'
+    //                 );
+    //             })
+    //             .finally(function () {
+    //                 isSaving = false;
+    //                 if (saveAgain || getSnapshot() !== snapshot) {
+    //                     saveAgain = false;
+    //                     if (getSnapshot() !== lastSnapshot) {
+    //                         debounceTimer = setTimeout(function () { saveForm(false); }, 500);
+    //                     }
+    //                 }
+    //             });
+    //     }
+
+    //     // Register this form's saver so dropdown/select handlers can reach it
+    //     formSavers.set(form, saveForm);
+
+    //     if (form.id === 'discussion-form') {
+    //         form.addEventListener('input', function () {
+    //             document.getElementById('discussion-save-message')?.classList.add('hidden');
+    //         });
+    //         form.addEventListener('change', function () {
+    //             document.getElementById('discussion-save-message')?.classList.add('hidden');
+    //         });
+    //     }
+
+    //     form.addEventListener('input', function (event) {
+    //         if (!event.target.matches('.auto-save-field')) return;
+    //         clearTimeout(debounceTimer);
+    //         debounceTimer = setTimeout(function () { saveForm(false); }, 1500);
+    //     });
+
+    //     form.addEventListener('change', function (event) {
+    //         if (!event.target.matches('.auto-save-field')) return;
+    //         clearTimeout(debounceTimer);
+    //         debounceTimer = setTimeout(function () { saveForm(false); }, 600);
+    //     });
+
+    //     form.addEventListener('submit', function (event) {
+    //         event.preventDefault();
+    //         saveForm(true); // manual save (Save button)
+    //     });
+    // });
  
  
 document.addEventListener('DOMContentLoaded', function () {

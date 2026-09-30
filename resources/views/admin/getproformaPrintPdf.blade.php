@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+ 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
 <title>QuickDials — Proforma Invoice <?php echo date('d-m-Y H:i:s'); ?></title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');

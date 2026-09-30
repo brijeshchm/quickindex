@@ -33,7 +33,7 @@ Route::post('/saveBusinessOverview', [App\Http\Controllers\Sales\BusinessControl
 
 Route::post('/saveLocationInformation', [App\Http\Controllers\Sales\BusinessLocationController::class, 'saveLocationInformation'])->name('business.location');
 Route::post('/saveAssignLocation', [App\Http\Controllers\Sales\BusinessLocationController::class, 'saveAssignLocation'])->name('assign.location');
-Route::get('/assignLocations/{id}', [App\Http\Controllers\Sales\VendorController::class, 'assignLocationsList'])->name('assignLocations.list');
+Route::get('/assignLocations/{id}', [VendorController::class, 'assignLocationsList'])->name('assignLocations.list');
 
 Route::post(
     '/clients/{id}/assigned-zones/bulk-delete',
@@ -101,3 +101,24 @@ Route::post('/vendor/payment/{id}',[App\Http\Controllers\Sales\VendorController:
 
 
 Route::get('/order-history/{id}',[App\Http\Controllers\Sales\VendorController::class,'getOrderHistory'])->name('payment.list');
+
+
+ 
+
+Route::get('/clientOrderHistoryStatus/status',[App\Http\Controllers\Sales\VendorController::class,'approveInvoice'])->name('approve.PrintPdf');
+
+ 
+
+
+
+Route::get('/vendor/getOrderPrint', [
+    VendorController::class, 'getOrderPrint',
+])->name('invoice.orderPrint');
+
+Route::get('/vendor/getproformaPrintPdf', [
+    VendorController::class, 'getproformaPrintPdf',
+])->name('proforma.PrintPdf');
+
+Route::get('/vendor/getinvoicePrintPdf', [
+    VendorController::class, 'getinvoicePrintPdf',
+])->name('invoice.PrintPdf');

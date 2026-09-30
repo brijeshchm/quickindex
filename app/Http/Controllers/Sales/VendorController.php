@@ -27,6 +27,8 @@ use DB;
 use Auth;
 use Illuminate\Validation\Rule;
 use Validator;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 class VendorController extends Controller
 {
 		
@@ -1085,7 +1087,7 @@ class VendorController extends Controller
     {
         $vendor = Client::where('username', $id)->firstOrFail();
 
-        // यहाँ अपनी existing sales authorization check लगाएँ।
+        
         $perPage = min(max((int) $request->input('per_page', 10), 1), 50);
 
         $payments = DB::table('payment_histories')
@@ -1114,6 +1116,184 @@ class VendorController extends Controller
         return response()->json($payments);
     }
 
+	
 
+	public function getOrderPrint(Request $request)
+	{
+
+
+		$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+		$imageData = base64_encode(file_get_contents($imagePath));
+		$imageSrc  = 'data:image/png;base64,' . $imageData;
+
+
+	// dd($request->all());
+		$validated = $request->validate([
+			'pid' => ['required', 'integer'],
+		]);
+
+		$paymentuprint = PaymentHistory::findOrFail($validated['pid']);
+ 
+		$client = Client::withTrashed()
+			->findOrFail($paymentuprint->client_id);
+
+		$assignKeyword = DB::table('assigned_kwds')
+			->join(
+				'citylists',
+				'assigned_kwds.city_id',
+				'=',
+				'citylists.id'
+			)
+			->join(
+				'parent_category',
+				'assigned_kwds.parent_cat_id',
+				'=',
+				'parent_category.id'
+			)
+			->join(
+				'child_category',
+				'assigned_kwds.child_cat_id',
+				'=',
+				'child_category.id'
+			)
+			->join(
+				'keyword',
+				'assigned_kwds.kw_id',
+				'=',
+				'keyword.id'
+			)
+			->select(
+				'assigned_kwds.*',
+				'citylists.city',
+				'parent_category.parent_category',
+				'child_category.child_category',
+				'keyword.keyword',
+				'keyword.slug'
+			)
+			->where('assigned_kwds.client_id', $client->id)
+			->get();
+
+		return Pdf::loadView('sales.getOrderPrintSlip', [
+			'paymentuprint' => $paymentuprint,
+			'client' => $client,
+			'imageSrc' => $imageSrc,
+			'assignKeyword' => $assignKeyword,
+		])			 
+			->download('order-'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
+	}
+
+	public function getproformaPrintPdf(Request $request)
+	{
+		$validated = $request->validate([
+			'pid' => ['required', 'integer'],
+		]);
+ 
+		$paymentprint = PaymentHistory::findOrFail($validated['pid']);
+
+		$client = Client::withTrashed()
+			->findOrFail($paymentprint->client_id);
+
+		$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+		$imageData = base64_encode(file_get_contents($imagePath));
+		$imageSrc  = 'data:image/png;base64,' . $imageData;
+
+		$pdf = Pdf::loadView(
+    'sales.getproformaPrintPdf',
+    compact('paymentprint', 'client','imageSrc'));
+// )->setPaper('a4', 'portrait');
+
+return $pdf->download(
+    'proforma_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf'
+);
+
+	}
+
+	public function getinvoicePrintPdf(Request $request)
+	{
+		$validated = $request->validate([
+			'pid' => ['required', 'integer'],
+		]);
+
+		
+		$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+		$imageData = base64_encode(file_get_contents($imagePath));
+		$imageSrc  = 'data:image/png;base64,' . $imageData;
+
+
+		$paymentprint = PaymentHistory::findOrFail($validated['pid']);
+
+		abort_unless(
+			(int) $paymentprint->invoice_status === 1,
+			403,
+			'Invoice approval is pending.'
+		);
+
+		$client = Client::withTrashed()
+			->findOrFail($paymentprint->client_id);
+
+		return Pdf::loadView('sales.getInvoicePrintPdfSlip', [
+			'paymentprint' => $paymentprint,
+			'client' => $client,
+			'imageSrc' => $imageSrc,
+		])
+		 
+			->download('invoice_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
+	}
+
+
+	public function approveInvoice(Request $request)
+	{ 
+
+	 
+		try {
+			$id ="";
+			$paymentHistory = PaymentHistory::findorFail($id);
+			$client = Client::findorFail($paymentHistory->client_id);
+			$leads_count_diff = $paymentHistory->leads_count + $client->leads_count;
+			$client->leads_count = $paymentHistory->leads_count;
+			$client->leads_remaining = $client->leads_remaining + $paymentHistory->leads_count;
+			;
+			$client->cost_per_lead = $paymentHistory->cost_per_lead;
+			$client->client_type = $paymentHistory->package_name;
+			$client->expired_from = $paymentHistory->expired_from;
+			$client->expired_on = $paymentHistory->expired_on;
+			$client->balance_amt = $paymentHistory->total_amount;
+			$client->coins_amt = $client->coins_amt + $paymentHistory->coins_amt;
+			$client->paid_status = 1;
+			$client->certified_status = 1;
+			$client->active_status = 1;
+
+			if ($client->save()) {
+				$paymentHistory->invoice_status = '1';
+				$paymentHistory->save();
+				return response()->json([
+					"statusCode" => 1,
+					"data" => [
+						"responseCode" => 200,
+						"payload" => "",
+						"message" => "Invoice Status Approved successfully !!"
+					]
+				], 200);
+			} else {
+				return response()->json([
+					"statusCode" => 0,
+					"data" => [
+						"responseCode" => 400,
+						"payload" => "",
+						"message" => "Invoice Status  not successfully !!"
+					]
+				], 200);
+			}
+		} catch (\Exception $e) {
+			return response()->json([
+				"statusCode" => 0,
+				"data" => [
+					"responseCode" => 404,
+					"payload" => "",
+					"message" => "Invoice Status not found !!"
+				]
+			], 200);
+		}
+	}
 
 }
