@@ -11,22 +11,20 @@ Route::get('/vendor/assign',[App\Http\Controllers\Sales\DashboardController::cla
 Route::post('/vendor/stor-followup/{id}',[App\Http\Controllers\Sales\DashboardController::class, 'followUpStore'])->name('followUp.store');
 Route::get('/vendor/{id}/followups',[App\Http\Controllers\Sales\DashboardController::class, 'followUpHistory'])->name('followUp.history');
 
- 
-
-    Route::get('/vendors/export', [VendorController::class, 'export'])->name('vendors.export');
-    Route::patch('/vendors/{vendor}/status', [VendorController::class, 'toggleStatus'])
-    ->name('vendors.status');
-    Route::resource('vendors', VendorController::class)->except(['show']);
+Route::get('/vendors/export', [VendorController::class, 'export'])->name('vendors.export');
+Route::patch('/vendors/{vendor}/status', [VendorController::class, 'toggleStatus'])
+->name('vendors.status');
+Route::resource('vendors', VendorController::class)->except(['show']);
 
 
-    
-	Route::post('/cities/getajaxcities', [App\Http\Controllers\Sales\BusinessController::class, 'getAjaxCities'])->name('salesCities.ajax');
-	Route::post('/state/getAjaxSate', [App\Http\Controllers\Sales\BusinessController::class, 'getAjaxSate']);
-	Route::post('/zone/getAjaxZone', [App\Http\Controllers\Sales\BusinessController::class, 'getAjaxZone'])->name('salesZone.ajax');
-	Route::get('/get-assigned-zones', [App\Http\Controllers\Sales\BusinessController::class, 'getAssignedZonesPagination']);
-	Route::post('/saveBusinessMeta', [App\Http\Controllers\Sales\BusinessController::class, 'saveBusinessMeta'])->name('updateBusiness.meta');
 
- 
+Route::post('/cities/getajaxcities', [App\Http\Controllers\Sales\BusinessController::class, 'getAjaxCities'])->name('salesCities.ajax');
+Route::post('/state/getAjaxSate', [App\Http\Controllers\Sales\BusinessController::class, 'getAjaxSate']);
+Route::post('/zone/getAjaxZone', [App\Http\Controllers\Sales\BusinessController::class, 'getAjaxZone'])->name('salesZone.ajax');
+Route::get('/get-assigned-zones', [App\Http\Controllers\Sales\BusinessController::class, 'getAssignedZonesPagination']);
+Route::post('/saveBusinessMeta', [App\Http\Controllers\Sales\BusinessController::class, 'saveBusinessMeta'])->name('updateBusiness.meta');
+
+
 	Route::post('/savePersonalDetails', [App\Http\Controllers\Sales\PersonalDetailsController::class, 'savePersonalDetails'])->name('personal.details');
 Route::post('/saveProfileInfo', [App\Http\Controllers\Sales\ProfileController::class, 'saveProfileInfo'])->name('business.information');
 Route::post('/vendor/register', [App\Http\Controllers\Sales\ProfileController::class, 'vendorRegister'])->name('vendor.register');

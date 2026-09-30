@@ -831,8 +831,7 @@
             <select
                 id="city"
                 name="city"
-                data-selected="{{ $selectedCity }}"
-                onchange="selectZone(this.value)"
+                data-selected="{{ $selectedCity }}"               
                 class="{{ $fieldClass }} city-form select_cityList"
             >
                 <option value="">Select city</option>

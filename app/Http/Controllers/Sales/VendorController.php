@@ -237,8 +237,10 @@ class VendorController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $vendor = Client::create($this->validatedData($request));
 
+	dd('save');
+        $vendor = Client::create($this->validatedData($request));
+ 
         return redirect()
             ->route('sales.vendors.edit', $vendor)
             ->with('success', 'Vendor created and added to pending review.');

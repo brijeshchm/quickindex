@@ -98,8 +98,7 @@ class ProfileController extends Controller
 				'state' => 'required',
 				'zone' => 'required',
 				// 'country' => 'required',
-				'pincode' => 'required',
-		 
+				'pincode' => 'required',		 
 				'website' => 'nullable|string|max:150',
 				'time' => 'nullable|array',
 				// 'time.*.from' => 'nullable|date_format:H:i',
@@ -121,6 +120,7 @@ class ProfileController extends Controller
 			$string = preg_replace('/[^A-Za-z0-9]/', ' ', $string);
 			$string = preg_replace('/\s+/', ' ', str_replace('&', '', trim($string)));
 			$client->business_name = $string;
+			$client->business_slug = $request->input('business_slug');
 			$client->email = $request->input('email');
 			$client->mobile = $request->input('mobile');
 			$client->whatsapp = $request->input('whatsapp');
@@ -183,7 +183,9 @@ class ProfileController extends Controller
 
 public function vendorRegister(Request $request)
 {
+
     $salesUser = auth('sales')->user();
+	 
     abort_unless($salesUser, 403);
  
     // Attached form submits citylists.id, not the city name.
@@ -191,12 +193,17 @@ public function vendorRegister(Request $request)
         'business_name' => ['required', 'string', 'max:255'],
         'first_name'    => ['nullable', 'string', 'max:100'],
         'last_name'     => ['nullable', 'string', 'max:100'],
-        'email'         => ['required', 'email', 'max:255'],
+      
         'mobile'        => [
             'required',
             'regex:/^[1-9][0-9]{9}$/',
             Rule::unique('clients', 'mobile'),
         ],
+       'email' => [
+			'required',
+			'email',
+			Rule::unique('clients', 'email'),
+		],
         'city'          => [
             'required',
             'integer',
@@ -281,10 +288,10 @@ public function vendorRegister(Request $request)
 
         return $client;
     });
-
-    return redirect()
-        ->route('sales.vendors.index')
-        ->with('success_msg', 'Business registered successfully.');
+return redirect('sales/vendors/'.$client->id.'/edit?section=business-information');
+    // return redirect()
+    //     ->route('sales.vendors.index')
+    //     ->with('success_msg', 'Business registered successfully.');
 }
 
 public function saveBusinessSocial(Request $request)

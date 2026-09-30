@@ -34,7 +34,7 @@ class ClientDetailController extends Controller
 			return redirect()->route('business.details', $slugUrl, 301);
 		}
         $finalSlug = $slugUrl ?: $slug;
-  
+ 
         // ── Validate city ────────────────────────────────────────────────────
 		if (!$this->clientsExists($finalSlug)) {			 
             abort(410);
@@ -196,7 +196,7 @@ class ClientDetailController extends Controller
  
         $gradients = ['from-rose-500 to-orange-400','from-indigo-500 to-purple-600','from-teal-400 to-cyan-500','from-blue-600 to-violet-600','from-emerald-400 to-teal-600','from-amber-500 to-red-500'];
 
-		  $linearGradients = ['linear-gradient(135deg,#1e3a8a,#2563eb)','linear-gradient(135deg,#78350f,#b45309)','linear-gradient(135deg,#7f1d1d,#dc2626)','linear-gradient(135deg,#7c1580,#16a34a)','linear-gradient(135deg,#14532d,#151c80)','linear-gradient(135deg,#14532d,#802e15)'];
+		$linearGradients = ['linear-gradient(135deg,#1e3a8a,#2563eb)','linear-gradient(135deg,#78350f,#b45309)','linear-gradient(135deg,#7f1d1d,#dc2626)','linear-gradient(135deg,#7c1580,#16a34a)','linear-gradient(135deg,#14532d,#151c80)','linear-gradient(135deg,#14532d,#802e15)'];
  
         $bgColors = ['rgba(99,102,241,0.18)','rgba(244,63,94,0.18)','rgba(234,88,12,0.18)','rgba(20,184,166,0.18)','rgba(168,85,247,0.18)','rgba(37,99,235,0.18)','rgba(234,179,8,0.18)','rgba(34,197,94,0.18)'];
         $iconColors = ['#6366f1','#f43f5e','#ea580c','#14b8a6','#a855f7','#2563eb','#ca8a04','#16a34a'];
@@ -293,7 +293,7 @@ class ClientDetailController extends Controller
         $search_kw = strtolower(str_replace(' ', '-', trim($slug)));
         $exists = DB::table('clients')
             ->where('business_slug', $search_kw)
-            ->exists();
+            ->exists();      
         return $exists;
     }
 
