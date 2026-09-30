@@ -1138,24 +1138,14 @@ class VendorController extends Controller
 			->findOrFail($paymentuprint->client_id);
 
 		$assignKeyword = DB::table('assigned_kwds')
-			->join(
-				'citylists',
-				'assigned_kwds.city_id',
-				'=',
-				'citylists.id'
-			)
+			 
 			->join(
 				'parent_category',
 				'assigned_kwds.parent_cat_id',
 				'=',
 				'parent_category.id'
 			)
-			->join(
-				'child_category',
-				'assigned_kwds.child_cat_id',
-				'=',
-				'child_category.id'
-			)
+				 
 			->join(
 				'keyword',
 				'assigned_kwds.kw_id',
@@ -1163,16 +1153,14 @@ class VendorController extends Controller
 				'keyword.id'
 			)
 			->select(
-				'assigned_kwds.*',
-				'citylists.city',
-				'parent_category.parent_category',
-				'child_category.child_category',
+				'assigned_kwds.*',				 
+				'parent_category.parent_category',				 
 				'keyword.keyword',
 				'keyword.slug'
 			)
 			->where('assigned_kwds.client_id', $client->id)
 			->get();
-
+ 
 		return Pdf::loadView('sales.getOrderPrintSlip', [
 			'paymentuprint' => $paymentuprint,
 			'client' => $client,

@@ -469,10 +469,7 @@
             </tr>
         </table>
 
-        <div class="words">
-            <strong>Amount in Words:</strong>
-            {{ $paymentuprint->paid_amt_in_words ?: '—' }}
-        </div>
+        
     </div>
 
     @if ($keywords->isNotEmpty())
