@@ -65,7 +65,7 @@ $profileTabs=['general'=>'Basic Info','personal'=>'Personal Details','seo'=>'SEO
 $leadsTabs=['leads'=>'Lead','new-lead'=>'New Leads','favorites'=>'Favorites','archived'=>'Archived','manage-enquiry'=>'Manage Enquiry'];
 
 
-$accountTabs=['settings'=>'Account Settings','package'=>'Plans & Package','invoices'=>'Billing History','coins_history'=>'Deduct Coins','transactions'=>'Bonuses History'];
+$accountTabs=['settings'=>'Account Settings','package'=>'Plans & Package','invoices'=>'Billing History','coins_history'=>'Coin Usage History','transactions'=>'Bonuses History'];
 
 $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Account':collect(array_merge($nav,[['route'=>'contact','label'=>'Contact'],['route'=>'team','label'=>'Team']]))->first(fn($n)=>request()->routeIs($n['route']??''))['label']??'Dashboard');
 
