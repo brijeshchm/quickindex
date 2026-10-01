@@ -36,7 +36,28 @@ $avg=count($reviews)?collect($reviews->getCollection())->avg('rating'):0;
     
  <div class="card animate-slide-up stagger-{{ ($i%5)+1 }} p-5 md:p-6">
     
- <div class="flex items-start gap-4"><span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display font-bold text-primary">{{ strtoupper(substr($review->comment_author,0,1)) }}</span><div class="min-w-0 flex-1"><div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-start"><div><h2 class="font-semibold">{{ $review->comment_author }}</h2><div class="mt-1 flex gap-0.5">@for($s=1;$s<=5;$s++)<i data-lucide="star" class="h-4 w-4 {{ $s<=$review->rating?'fill-amber-500 text-amber-500':'text-slate-300' }}"></i>@endfor</div></div><p class="text-xs text-slate-500">{{ \Carbon\Carbon::parse($review->created_at)->format('M j, Y') }}</p></div><div class="relative mt-4 rounded-xl bg-secondary/50 p-4"><i data-lucide="quote" class="absolute right-3 top-3 h-6 w-6 text-primary/10"></i><p class="pr-6 text-sm leading-relaxed">{{ $review->comment_content }}</p></div>
+ <div class="flex items-start gap-4">
+    
+ <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display font-bold text-primary">{{ strtoupper(substr($review->comment_author,0,1)) }}</span>
+ 
+ <div class="min-w-0 flex-1">
+    
+ <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-start">
+    
+ <div><h2 class="font-semibold">{{ $review->comment_author }} ,{{ $review->comment_author_phone }} </h2>
+ 
+ <div class="mt-1 flex gap-0.5">@for($s=1;$s<=5;$s++)<i data-lucide="star" class="h-4 w-4 {{ $s<=$review->rating?'fill-amber-500 text-amber-500':'text-slate-300' }}"></i>@endfor</div>
+
+</div>
+
+<p class="text-xs text-slate-500">{{ \Carbon\Carbon::parse($review->created_at)->format('M j, Y') }}</p>
+
+</div>
+
+<div class="relative mt-4 rounded-xl bg-secondary/50 p-4"><i data-lucide="quote" class="absolute right-3 top-3 h-6 w-6 text-primary/10"></i><p class="pr-6 text-sm leading-relaxed">{{ $review->comment_content }}</p>
+
+
+</div>
 
  
 

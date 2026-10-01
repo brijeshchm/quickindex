@@ -65,7 +65,7 @@ $profileTabs=['general'=>'Basic Info','personal'=>'Personal Details','seo'=>'SEO
 $leadsTabs=['leads'=>'Lead','new-lead'=>'New Leads','favorites'=>'Favorites','archived'=>'Archived','manage-enquiry'=>'Manage Enquiry'];
 
 
-$accountTabs=['settings'=>'Account Settings','package'=>'Package','invoices'=>'Invoice History','coins_history'=>'Coins History','transactions'=>'Transactions'];
+$accountTabs=['settings'=>'Account Settings','package'=>'Plans & Package','invoices'=>'Billing History','coins_history'=>'Deduct Coins','transactions'=>'Bonuses History'];
 
 $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Account':collect(array_merge($nav,[['route'=>'contact','label'=>'Contact'],['route'=>'team','label'=>'Team']]))->first(fn($n)=>request()->routeIs($n['route']??''))['label']??'Dashboard');
 
@@ -454,7 +454,7 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
       
 
 
-        <a href="{{ route('account', ['tab' => 'package']) }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">Remaining Coin:{{ number_format($account['coins']) }}</span></a> 
+        <a href="{{ route('account', ['tab' => 'package']) }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">AVL Bal:{{ number_format($account['coins']) }}</span></a> 
         
         
         </div>
@@ -518,20 +518,20 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
 </a>
 <a href="{{ route('profile', ['tab' => 'general']) }}"
    class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
-    <i data-lucide="bell" class="h-4 w-4 shrink-0"></i>
+    <i data-lucide="user" class="h-4 w-4 shrink-0"></i>
     <span>Profile </span>
     
 </a>
  <a href="{{ route('account', ['tab' => 'package']) }}"
    class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
     <i data-lucide="package" class="h-4 w-4 shrink-0"></i>
-    <span>Package</span>
+    <span>Plans & Package</span>
 </a>
 
 <a href="{{ route('account', ['tab' => 'invoices']) }}"
    class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50">
     <i data-lucide="receipt-text" class="h-4 w-4 shrink-0"></i>
-    <span>Invoices</span>
+    <span>Billing History</span>
 </a>
 
 <a href="{{ route('account', ['tab' => 'settings']) }}"

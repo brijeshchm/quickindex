@@ -3,7 +3,7 @@
 @section('content')
 
 
-@php $tabs=['settings'=>'Account Settings','package'=>'Package','invoices'=>'Invoice History','coins_history'=>'Coins History','transactions'=>'Transactions']; 
+@php $tabs=['settings'=>'Account Settings','package'=>'Plans & Billing History','invoices'=>'Billing History','coins_history'=>'Coins History','transactions'=>'Bonuses History']; 
 
 @endphp
 
@@ -130,7 +130,7 @@
 
  <div class="card overflow-hidden">
     
- <div class="flex items-center gap-2 border-b px-6 py-4"><i data-lucide="receipt" class="h-5 w-5 text-primary"></i><h2 class="font-display text-lg font-semibold">Invoice History</h2></div>
+ <div class="flex items-center gap-2 border-b px-6 py-4"><i data-lucide="receipt" class="h-5 w-5 text-primary"></i><h2 class="font-display text-lg font-semibold">Billing History</h2></div>
  
  <div class="hidden overflow-x-auto md:block">
     
@@ -159,7 +159,6 @@
     
  
  @foreach($invoices as $inv)
- 
  
  
  <div class="space-y-3 p-4"><div class="flex items-start justify-between">
