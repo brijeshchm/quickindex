@@ -733,7 +733,7 @@ function toggleFollowUpDate(select) {
     const statusName = selectedOption.dataset.name || '';
 
     const dateInput = document.getElementById('expected_date_time');
-    // const applyBtn = document.getElementById('applyFollowUpDateBtn');
+    
 
     if (statusName === 'not interested') {
 
@@ -742,9 +742,7 @@ function toggleFollowUpDate(select) {
 
         // Disable date
         dateInput.disabled = true;
-
-        // Disable Apply button
-        // applyBtn.disabled = true;
+ 
 
         // Tailwind disabled appearance
         dateInput.classList.add(
@@ -753,26 +751,16 @@ function toggleFollowUpDate(select) {
             'opacity-60'
         );
 
-        // applyBtn.classList.add(
-        //     'cursor-not-allowed',
-        //     'opacity-50'
-        // );
-
+        
     } else {
 
-        dateInput.disabled = false;
-        // applyBtn.disabled = false;
-
+        dateInput.disabled = false;        
         dateInput.classList.remove(
             'cursor-not-allowed',
             'bg-gray-100',
             'opacity-60'
         );
-
-        // applyBtn.classList.remove(
-        //     'cursor-not-allowed',
-        //     'opacity-50'
-        // );
+        
     }
 }
 </script>

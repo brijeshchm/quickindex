@@ -2781,7 +2781,7 @@ textarea.form-control-modern {
 					
 					<div class="col-md-6"> 
 						
-					<input type="number" name="gst_tax" id="gst_tax" class="form-control" placeholder="GST Amount"> 
+					<input type="number" name="gst_tax" id="gst_tax" class="form-control" placeholder="GST Amount" readonly> 
 					</div>
 					</div> 
 					
@@ -2790,7 +2790,7 @@ textarea.form-control-modern {
 					
 					<div class="col-md-6"> 
 						
-					<input type="number" name="gst_total_amount" id="gst_total_amount" class="form-control" placeholder="GST Total Amount" > 
+					<input type="number" name="gst_total_amount" id="gst_total_amount" class="form-control" placeholder="GST Total Amount" readonly> 
 					</div>
 					</div> 
 
@@ -2812,14 +2812,14 @@ textarea.form-control-modern {
 					
 					<div class="col-md-6"> 
 						
-					<input type="number" name="tds_amount" id="tds_amount" class="form-control" placeholder="TDS Amount" > 
+					<input type="number" name="tds_amount" id="tds_amount" class="form-control" placeholder="TDS Amount" readonly> 
 					</div>
 					</div> 
 					
 					<div class="form-group">
 					<label class="col-sm-2">Total Amount<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>						 
 					<div class="col-md-6"> 								 
-					<input type="number" name="total_amount" id="total_amount" class="form-control" placeholder="Total Amount" > 
+					<input type="number" name="total_amount" id="total_amount" class="form-control" placeholder="Total Amount" readonly> 
 					</div>
 					</div> 
 					 
