@@ -914,9 +914,7 @@ class VendorController extends Controller
 	 */
 	public function paymentAdd(Request $request,$id)
 	{
-
-
-		if ($request->ajax()) {
+ 		if ($request->ajax()) {
 
 			$id = $request->input('client_id');
 			if (null == $id) {
@@ -989,57 +987,14 @@ class VendorController extends Controller
 				$paymenthistory->paymentcollect = $request->user()->id;
 
 				// payment mode
+				 
+
+
 				if (!empty($request->input('stud-payment_mode'))) {
-					$stud_payment_mode = $request->input('stud-payment_mode');
-					if ("cash" == $request->input('stud-payment_mode')) {
-						$stud_payment_bank = "cash";
-					} else if ("bank" == $stud_payment_mode) {
-						if (!empty($request->input('stud-bank'))) {
-							$stud_payment_bank = $request->input('stud-bank');
-							$stud_card_no = $request->input('stud-card_no');
-							$paymenthistory->bank_card_no = $stud_card_no;
-
-						}
-
-
-					} else if ("cheque" == $stud_payment_mode) {
-						if (!empty($request->input('stud-chq_no'))) {
-							$stud_card_chq_no = $request->input('stud-chq_no');
-							$paymenthistory->chq_card_no = $stud_card_chq_no;
-
-						}
-						$stud_payment_bank = "cheque";
-					} else if ("paytm" == $stud_payment_mode) {
-						if (!empty($request->input('stud-paytm'))) {
-							$stud_paytm = $request->input('stud-paytm');
-							$paymenthistory->pay_paytm = $stud_paytm;
-							$stud_payment_bank = "paytm";
-						}
-
-					} else if ("neft" == $stud_payment_mode) {
-						if (!empty($request->input('stud-neft'))) {
-							$stud_neft = $request->input('stud-neft');
-							$paymenthistory->pay_neft = $stud_neft;
-							$stud_payment_bank = "neft";
-						}
-
-					} else if ("googlepay" == $stud_payment_mode) {
-						if (!empty($request->input('stud-googlepay'))) {
-							$pay_googlepay = $request->input('stud-googlepay');
-							$paymenthistory->pay_googlePay = $pay_googlepay;
-							$stud_payment_bank = "googlepay";
-						}
-
-					} else {
-						if (!empty($request->input('stud-' . $stud_payment_mode))) {
-							$stud_payment_bank = $request->input('stud-' . $stud_payment_mode);
-						}
-
-					}
-
+					$paymenthistory->payment_mode = $request->input('stud-payment_mode');
 				}
-				$paymenthistory->payment_mode = $stud_payment_mode;
-				$paymenthistory->payment_bank = $stud_payment_bank;
+
+				// $paymenthistory->payment_bank = $stud_payment_bank;
 
 				if ($paymenthistory->save()) {
 					$paymentupdate = PaymentHistory::find($paymenthistory->id);

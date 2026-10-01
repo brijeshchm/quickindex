@@ -4295,7 +4295,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <input type="radio" name="gst_status" value="Yes"
                                @checked(old('gst_status') === 'Yes')
                                onchange="paidgst(this.value)"
-                               class="h-4 w-4 text-blue-600">
+                               class="h-4 w-4 text-blue-600" readonly>
                         Yes
                     </label>
                     <label class="flex items-center gap-2 text-sm text-slate-700">
@@ -4312,7 +4312,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <label for="gst_tax" class="{{ $labelClass }}">GST amount</label>
                 <input id="gst_tax" name="gst_tax" type="number" min="0" step="0.01"
                        value="{{ old('gst_tax') }}"
-                       class="{{ $inputClass }}">
+                       class="{{ $inputClass }}" readonly>
             </div>
 
             <div>
@@ -4320,7 +4320,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <input id="gst_total_amount" name="gst_total_amount"
                        type="number" min="0" step="0.01"
                        value="{{ old('gst_total_amount') }}"
-                       class="{{ $inputClass }}">
+                       class="{{ $inputClass }}" readonly>
             </div>
 
             <fieldset>
@@ -4347,14 +4347,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 <label for="tds_amount" class="{{ $labelClass }}">TDS amount</label>
                 <input id="tds_amount" name="tds_amount" type="number"
                        min="0" step="0.01" value="{{ old('tds_amount') }}"
-                       class="{{ $inputClass }}">
+                       class="{{ $inputClass }}" readonly>
             </div>
 
             <div>
                 <label for="total_amount" class="{{ $labelClass }}">Total amount *</label>
                 <input id="total_amount" name="total_amount" type="number"
                        min="0" step="0.01" value="{{ old('total_amount') }}"
-                       class="{{ $inputClass }}">
+                       class="{{ $inputClass }}" readonly>
             </div>
 
             <div>
@@ -4854,6 +4854,13 @@ function handlingPaiAmt() {
         return;
     }
 
+
+    if (!Number.isFinite(paid_am) || paid_am < 1000) {
+        alert('The minimum amount will be ₹1,000.');
+        paid_amount.val('');
+        coins.val('');
+        return;
+    }
 	if (1000 <= paid_am && paid_am < 2000) {
 
      var coinAmt = parseInt(paid_am/0.90);
