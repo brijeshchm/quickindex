@@ -16,7 +16,7 @@ Find Only Certified Training Institutes, Coaching Centers near you on quickdials
 	    <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Package</h1>
+      <h1>Packages</h1>
       
     </div><!-- End Page Title -->
 
@@ -281,7 +281,7 @@ document.getElementById("merchant_order_id").value = o;
 				<div class="trans-button">
 				 
 					
-				<a href="{{route('business.package')}}" class="payment-cancel-button mb-md-2">Cancel</a>
+				<a href="{{ route('account', ['tab' => 'package']) }}" class="payment-cancel-button mb-md-2">Cancel</a>
 				
 					<button type="submit"  class="payment-proceed-button mb-md-2" id="razor-pay-now" >Pay</button>
 					

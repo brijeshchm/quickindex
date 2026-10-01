@@ -146,7 +146,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
 
             {{-- Primary: Retry --}}
-            <a href="{{ url('business/package') }}"
+            <a href="{{ route('account', ['tab' => 'package']) }}"
                class="group inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold
                       bg-gradient-to-r from-indigo-600 to-blue-600 text-white
                       shadow-lg shadow-indigo-300/40

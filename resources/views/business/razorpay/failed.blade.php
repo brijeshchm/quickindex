@@ -71,7 +71,7 @@
         <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
 
             <a
-                href="{{ url('business/package') }}"
+                href="{{ route('account', ['tab' => 'package']) }}"
                 class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
                 <svg
@@ -93,7 +93,7 @@
 
 
             <a
-                href="{{ route('business.package') }}"
+                href="{{ route('account', ['tab' => 'package']) }}"
                 class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
                 Back to package

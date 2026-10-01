@@ -272,7 +272,7 @@ Route::post('/business/sign-out','signOut')->name('signout');
 	/* Change Password - CLIENT */
 	Route::get('/business/pay-deposit', [App\Http\Controllers\Business\RazorpayController::class, 'payDeposit'])->name('business.pay-deposit');
 	Route::get('/business/subscribe-free', [App\Http\Controllers\Business\RazorpayController::class, 'subscribeFree']);
-	Route::post('/business/saveSubscribeFree/{id}', [App\Http\Controllers\Business\RazorpayController::class, 'saveSubscribeFree']);
+	Route::post('/business/saveSubscribeFree/{id}', [App\Http\Controllers\Business\RazorpayController::class, 'saveSubscribeFree'])->name('pay.saveSubscribeFree');
 	Route::post('/business/razorPayCheckout', [App\Http\Controllers\Business\RazorpayController::class, 'razorPayCheckout'])->name('business.razorpay.checkout');
 	Route::post('/business/save-processing', [App\Http\Controllers\Business\RazorpayController::class, 'saveProcessing']);
 	Route::get('/business/success', [DashboardController::class, 'success'])->name('pay.success');
@@ -382,10 +382,14 @@ Route::get('/sitemap.xml', function () {
 });
  
  
-Route::post('/apiddd/lead/add', [App\Http\Controllers\Client\HomePageController::class, 'addLadsss']);
+Route::post('/api/lead/add', [App\Http\Controllers\Client\HomePageController::class, 'addLadsss']);
+Route::get('/api-documentation', [App\Http\Controllers\Client\HomePageController::class, 'apidocumentation'])->name('api.documentation');
+ 
+
+
 
 Route::get('/about-us', [App\Http\Controllers\Official\OfficialController::class, 'about'])->name('aboutUs');
- 
+
 Route::get('/rss', [App\Http\Controllers\Official\OfficialController::class, 'rss']);
 Route::get('/features', [App\Http\Controllers\Official\OfficialController::class, 'features']);
 Route::get('/faq', [App\Http\Controllers\Official\OfficialController::class, 'faq']);

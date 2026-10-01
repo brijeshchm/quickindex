@@ -94,26 +94,30 @@
     
  @foreach($data as $pkg)
 
-
-
- 
-
-
-
+ @if($pkg['amt'] =='0')
  <div class="group relative flex flex-col items-center overflow-hidden rounded-xl border bg-white p-5 text-center shadow-sm transition hover:border-primary/50"><span class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/40 to-accent/50"></span><span class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary"><i data-lucide="coins" class="h-6 w-6"></i></span><h4 class="font-display text-2xl font-bold">₹{{ number_format($pkg['amt']) }}</h4><p class="mb-5 mt-1 text-sm text-slate-500">Get <span class="font-semibold text-foreground">{{ number_format($pkg['coins']) }}</span> Coins</p>
+ <div class="mt-auto w-full" onsubmit="return confirm('Buy this coin package? 18% GST will be added.')">
  
- 
+   <a href="{{url('business/subscribe-free/?status=correction&o='.$pkg['encrypt'])}}" class="btn btn-primary w-full">
+  {{ $pkg['package_bottom'] }}
+  </a>
+ </div>
+</div>
+@else
+
+
+<div class="group relative flex flex-col items-center overflow-hidden rounded-xl border bg-white p-5 text-center shadow-sm transition hover:border-primary/50"><span class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary/40 to-accent/50"></span><span class="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary"><i data-lucide="coins" class="h-6 w-6"></i></span><h4 class="font-display text-2xl font-bold">₹{{ number_format($pkg['amt']) }}</h4><p class="mb-5 mt-1 text-sm text-slate-500">Get <span class="font-semibold text-foreground">{{ number_format($pkg['coins']) }}</span> Coins</p>
  <div class="mt-auto w-full" onsubmit="return confirm('Buy this coin package? 18% GST will be added.')">
  
    <a href="{{url('business/pay-deposit/?status=correction&o='.$pkg['encrypt'])}}" class="btn btn-primary w-full">
   {{ $pkg['package_bottom'] }}
   </a>
- 
-
-
+ </div>
 </div>
 
-</div>
+
+
+@endif
  @endforeach
 
 

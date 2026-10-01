@@ -101,7 +101,7 @@
             <p class="text-center text-sm text-gray-500">
                 Didn't receive it?
                 <span id="resend-countdown" class="text-gray-400">
-                    Resend in <span id="countdown-num" class="font-semibold text-sky-500">30</span>s
+                    Resend in <span id="countdown-num" class="font-semibold text-sky-500">10 Minuts</span>s
                 </span>
                 <button id="resend-btn" onclick="handleResend()"
                         class="hidden text-sky-500 hover:text-sky-700 font-semibold transition-colors">
@@ -322,7 +322,7 @@ async function handleVerifyOtp() {
 }
 
 // ── Resend countdown ──────────────────────────────────────────────────────────
-function startCountdown(sec = 30) {
+function startCountdown(sec = 300) {
     const countdownEl = document.getElementById('resend-countdown');
     const numEl       = document.getElementById('countdown-num');
     const resendBtn   = document.getElementById('resend-btn');

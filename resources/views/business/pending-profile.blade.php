@@ -10,12 +10,12 @@
  @php
     
     $percent = $completion['total'];
-    $color = $percent >= 80 ? 'emerald' : ($percent >= 50 ? 'amber' : 'destructive');
+       $color = $percent >= 95 ? 'emerald' : ($percent >= 50 ? 'amber' :  ($percent <= 50 ? 'red' : 'destructive'));
 @endphp
 
 <div class="card p-4">
     <div class="mb-2 flex items-center justify-between">
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <p class="text-xs font-semibold uppercase tracking-wider text-{{ $color }}-600">
             Profile Completion
         </p>
         <span class="font-display text-lg font-bold text-{{ $color }}-600">

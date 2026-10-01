@@ -2714,7 +2714,8 @@ $reviewList = DB::table('clients')
 
         $response = $this->fetchData($cityName, $slugUrl);
         if (!$response) {
-            abort(410);
+            // abort(410);
+			 abort(503, 'Service temporarily unavailable.');
 			//return redirect()->route('home');
         }
 

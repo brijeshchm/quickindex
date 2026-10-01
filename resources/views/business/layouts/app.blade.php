@@ -327,18 +327,18 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
            
 
 @php
-     
+  
     $percent = $profile['profileCompletion'];
-    $color = $percent >= 80 ? 'emerald' : ($percent >= 50 ? 'amber' : 'destructive');
+    $color = $percent >= 95 ? 'emerald' : ($percent >= 50 ? 'amber' :  ($percent <= 50 ? 'red' : 'destructive'));
 @endphp
 
 <div class="p-4">
     <div class="mb-2 flex items-center justify-between">
-        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+        <p class="text-xs font-semibold uppercase tracking-wider text-{{ $color }}-600">
             Profile Completion
         </p>
         <span class="font-display text-lg font-bold text-{{ $color }}-600">
-            {{ round($percent) }}%
+             {{ round($percent) }}%
         </span>
     </div>
 
@@ -372,8 +372,12 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
     }
 </style>
         <div class="flex items-center gap-6">
-            
+
         
+        @if(!$profile['coins_free'] && $percent > 50)
+        <a href="{{ route('account', ['tab' => 'package']) }}" class="flex items-center gap-1 hover:bg-blue-600 px-4 py-2 hover:text-white text-emerald-600" ><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">Free Package</span></a>
+        @endif
+
         <div class="flex items-center gap-3 rounded-xl border bg-secondary/50 px-3 py-1.5">
                   
 
@@ -447,7 +451,12 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
     @endif
         
         
-        <a href="{{ route('account') }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">Remaining Cons:{{ number_format($account['coins']) }}</span></a>    
+      
+
+
+        <a href="{{ route('account', ['tab' => 'package']) }}" class="flex items-center gap-2"><i data-lucide="coins" class="h-5 w-5 text-accent"></i><span class="font-display font-bold">Remaining Coin:{{ number_format($account['coins']) }}</span></a> 
+        
+        
         </div>
         
  

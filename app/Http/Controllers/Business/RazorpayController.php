@@ -55,6 +55,7 @@ class RazorpayController extends Controller
         'category'=>'',
         'verified'=>$client->verified,
         'profileCompletion'=>$percent,
+		'coins_free' => $client->coins_free,
         'yearEstablished'=>$client->year_of_estb,
         'description'=>$client->business_description,        
         'overview'=>$client->business_overview,
@@ -813,12 +814,12 @@ class RazorpayController extends Controller
 		}
 
 
-		return view('business.razorpay.subscribe-free', ['data' => $data, 'oo' => $_GET['o']]);
+		return view('business.razorpay.subscribe-free',array_merge($this->common(),  ['data' => $data, 'oo' => $_GET['o']]));
 
 	}
 	public function saveSubscribeFree(Request $request, $id)
 	{
-		if ($request->ajax()) {
+		// dd($request->all());
 			$oo = base64_decode($_POST['oo'], $strict = false);
 			$data = json_decode($oo);
 
@@ -881,7 +882,8 @@ class RazorpayController extends Controller
 				$msg = "Already subscribed!";
 			}
 
-			return response()->json(['status' => $status, 'msg' => $msg], 200);
-		}
+return redirect('/business/account/invoices');
+			
+		
 	}
 }

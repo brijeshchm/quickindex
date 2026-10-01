@@ -44,6 +44,7 @@ class DashboardController extends Controller
             'name' => $client->business_name,
             'category' => '',
             'verified' => $client->verified,
+            'coins_free' => $client->coins_free,
             'profileCompletion' => $percent,
             'yearEstablished' => $client->year_of_estb,
             'description' => $client->business_description,
@@ -96,8 +97,8 @@ class DashboardController extends Controller
             'postingAndReceivingStatus' => true,
             'membershipType' => $client->client_type,
             'packageName' => ucfirst($client->client_type),
-            'memberSince' => date('d-m-Y', strtotime($client->expired_from)),
-            'membershipEndsOn' => date('d-m-Y', strtotime($client->expired_on)),
+            'memberSince' => ($client->expired_from? date('d-m-Y', strtotime($client->expired_from)):""),
+            'membershipEndsOn' => ($client->expired_on ? date('d-m-Y', strtotime($client->expired_on)):""),
             'dailyLeadLimit' => 25,
             'leadsUsedToday' => 8
         ];

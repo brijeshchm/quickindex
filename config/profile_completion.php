@@ -16,22 +16,22 @@ return [
 
         'account' => [
             'weight' => 10,
-            'fields' => ['username', 'email', 'mobile', 'password'],
+            'fields' => ['username', 'email', 'mobile','paid_status'],
         ],
 
         'personal_info' => [
             'weight' => 15,
             'fields' => [
                 'first_name', 'last_name', 'personal_email',
-                'personal_phone', 'dob', 'gender', 'profile_pic',
+                'personal_phone', 'personal_address','personal_city', 'whatsapp', 'profile_pic',
             ],
         ],
 
         'business_info' => [
-            'weight' => 20,
+            'weight' => 15,
             'fields' => [
-                'business_name', 'mobile',
-                'business_description', 'email', 'address',
+                'business_name', 'business_slug','mobile','pauseLead',
+                'business_description', 'state','city','pincode','landmark', 'address',
                 'year_of_estb',
             ],
         ],
@@ -40,24 +40,23 @@ return [
 
         'contact_details' => [
             'weight' => 10,
-            'fields' => ['mobile', 'whatsapp', 'email'],
+            'fields' => ['mobile', 'whatsapp', 'email','coins_free','coins_amt'],
         ],
 
         'address' => [
-            'weight' => 15,
+            'weight' => 10,
             'fields' => [
                 'address', 'area', 'city', 'state', 'pincode', 'zone',
             ],
         ],
 
         'seo' => [
-            'weight' => 5,
-            'fields' => ['meta_title', 'meta_description', 'meta_keywords', 'business_intro'],
+            'weight' => 10,
+            'fields' => ['meta_title', 'meta_description', 'business_description', 'business_intro','business_overview'],
         ],
 
         'social_media' => [
-            'weight' => 5,
-            // Only needs "reasonable coverage" not all of them — see min_required
+            'weight' => 5,           
             'fields' => [
                 'facebook_url', 'instagram_url', 'twitter_url',
                 'linkedin_url', 'youtube_url', 'pinterest_url',
@@ -67,7 +66,7 @@ return [
 
         'legal_documents' => [
             'weight' => 5,
-            'fields' => ['gst_no', 'pan_no', 'cin_no', 'msme_no'],
+            'fields' => ['gst_no', 'pan_no', 'cin_no', 'msme_no','certified_status'],
             'min_required' => 1,
         ],
 
@@ -82,7 +81,7 @@ return [
         ],
 
         'faqs' => [
-            'weight' => 5,
+            'weight' => 10,
             'pairs' => [
                 ['faqq1', 'faqa1'], ['faqq2', 'faqa2'], ['faqq3', 'faqa3'],
                 ['faqq4', 'faqa4'], ['faqq5', 'faqa5'],

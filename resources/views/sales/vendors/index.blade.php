@@ -19,9 +19,9 @@
             action="{{ route('sales.vendors.index') }}"
             class="rounded-2xl border border-[#dfe7ec] bg-white p-4 shadow-sm"
         >
-            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
                 {{-- Search --}}
-                <label class="lg:col-span-2">
+                <label >
                     <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
                         Search vendors
                     </span>
@@ -66,38 +66,60 @@
                 </label>
 
                 {{-- Multiple statuses --}}
-                <label class="sm:col-span-2 lg:col-span-1">
-                    <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
-                        Latest Status
-                    </span>
+               
 
-                    <select
-                        name="statuses[]"
-                        multiple
-                        size="4"
-                        class="w-full rounded-lg border border-[#dfe7ec] bg-white px-2 py-1 text-xs outline-none focus:border-[#315b80]"
-                    >
-                        @foreach ($statuses as $status)
-                            <option
-                                value="{{ $status->id }}"
-                                @selected(in_array(
-                                    (string) $status->id,
-                                    array_map('strval', (array) request('statuses', [])),
-                                    true
-                                ))
-                            >
-                                {{ $status->name }}
-                            </option>
-                        @endforeach
-                    </select>
 
-                    <span class="mt-1 block text-[11px] text-slate-500">
-                       Select Ctrl Click statuses
-                    </span>
-                </label>
-            </div>
 
-            <div class="mt-4 flex justify-end gap-2">
+@php
+    $selectedStatuses = array_map(
+        'strval',
+        (array) request('statuses', [])
+    );
+@endphp
+
+<div class="sm:col-span-2 lg:col-span-1">
+    <span class="mb-1.5 block text-[10px] font-semibold uppercase text-[#9aa9b5]">
+        Latest Status
+    </span>
+
+    <div class="flex max-h-40 flex-wrap gap-2 overflow-y-auto rounded-lg border border-[#dfe7ec] bg-white p-2">
+        @foreach ($statuses as $status)
+            <label class="relative cursor-pointer">
+                <input
+                    type="checkbox"
+                    name="statuses[]"
+                    value="{{ $status->id }}"
+                    @checked(in_array(
+                        (string) $status->id,
+                        $selectedStatuses,
+                        true
+                    ))
+                    class="peer sr-only"
+                >
+
+                <span
+                    class="inline-flex items-center rounded-lg border border-slate-200
+                           bg-slate-50 px-3 py-1 text-xs font-medium text-slate-600
+                           transition hover:border-[#315b80]
+                           peer-checked:border-[#315b80]
+                           peer-checked:bg-[#315b80]
+                           peer-checked:text-white
+                           peer-focus-visible:ring-2
+                           peer-focus-visible:ring-[#315b80]
+                           peer-focus-visible:ring-offset-2"
+                >
+                    {{ $status->name }}
+                </span>
+            </label>
+        @endforeach
+    </div>
+
+    <span class="mt-1 block text-[11px] text-slate-500">
+        Click to select multiple statuses. Click again to deselect.
+    </span>
+</div>
+
+                 <label>
                 <a
                     href="{{ route('sales.vendors.index') }}"
                     class="rounded-lg px-3 py-2 text-xs font-semibold text-[#a14f47] hover:bg-[#f9ece8]"
@@ -111,7 +133,10 @@
                 >
                     Apply filters
                 </button>
+            </label>
             </div>
+
+           
         </form>
 
         {{-- Vendor table --}}
@@ -699,7 +724,7 @@
 
                     await loadFollowUpHistory();
 
-                    // Table में दिखाई दे रहा latest status भी बदलें।
+                   
                     const currentButton = vendorButtons[currentIndex];
                     currentButton.dataset.statusId = statusSelect.value;
 

@@ -1654,6 +1654,14 @@ class HomePageController extends Controller
 		header('Access-Control-Allow-Credentials: true');
 		header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 	}
+	public function apidocumentation(Request $request)
+	{
+		$metaTitle = "";
+		$metaDescription = "";
+		$city = "";
+		$keyword = "";
+		return view('client.api-documentation',['metaDescription'=>$metaDescription,'metaTitle'=>$metaTitle,'city'=>$city,'keyword'=>$keyword]);
+	}
 
 	public function businessServices(Request $request)
 	{	

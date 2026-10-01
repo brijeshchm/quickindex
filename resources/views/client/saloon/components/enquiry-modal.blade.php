@@ -320,7 +320,7 @@
                                 @click="requestOtp()"
                                 :disabled="sendingOtp"
                                 class="cursor-pointer border-none bg-transparent text-[11px] font-bold text-orange-500 disabled:opacity-50"
-                            >Resend OTP</button>
+                            >Resend OTP ll</button>
                         </template>
                     </div>
                 </div>

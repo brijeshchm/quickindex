@@ -62,6 +62,7 @@ class ClientCommonService
             'verified' => $client->verified,
 
             'profileCompletion' => $percent,
+            'coins_free' => $client->coins_free,
 
             'yearEstablished' => $client->year_of_estb,
 

@@ -212,19 +212,12 @@ document.getElementById("merchant_order_id").value = o;
 			<tr class="pay-order">
 			<td>Coins</td>
 			<td><?php if($data->coins){ echo $data->coins; } ?> Rs</td>
-			</tr>
-		
-		 
+			</tr>	 
 
 			</table>
 			</div>
 			<div class="payment-trans-button">
-			
-		
-	
-		 	
-
-				<form method="post" onsubmit="return businessController.freeSubscribe(this,<?php if($data->client_id){ echo $data->client_id; } ?>)" >
+				<form method="post" action ="{{ route('pay.saveSubscribeFree',['id'=>$data->client_id]) }}"  >
 				<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 				<input type="hidden" name="tid" id="tid" readonly />
 				<input type="hidden" name="oo" value="<?php echo $oo; ?>" />
@@ -235,9 +228,8 @@ document.getElementById("merchant_order_id").value = o;
 					 
 
 				<div class="trans-button">
-					<!-- <a class="payment-edit-button mb-md-2" href="{{url('business/package')}}">Edit Now</a> -->
-					
-				<a href="{{url('/business/package')}}" class="payment-cancel-button mb-md-2">Cancel</a>
+					 	
+				<a href="{{ route('account', ['tab' => 'package']) }}" class="payment-cancel-button mb-md-2">Cancel</a>
 				
 					<button type="submit"  class="payment-proceed-button mb-md-2" >Free Pay</button>
 					

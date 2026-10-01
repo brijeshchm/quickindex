@@ -120,7 +120,7 @@ class PersonalDetailsController extends Controller
 		$client->save();
 
 		return response()->json([
-			'status' => 1,
+			'status' => true,
 			'msg' => 'Personal Details updated successfully!'
 		], 200);
 	}
