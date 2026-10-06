@@ -242,7 +242,9 @@ class ClientDetailController extends Controller
         ' - ' . $serviceText .
         '. View address, photos, reviews and contact details on QuickDials.';
 
-        $city = "delhi";      
+
+        
+        $city = $clientsList['city']??'';      
    
         $keyword = $clientsList['business_name']??'Business Name';
 

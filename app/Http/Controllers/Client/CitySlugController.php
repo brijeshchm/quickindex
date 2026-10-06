@@ -2459,6 +2459,7 @@ $reviewList = DB::table('clients')
 
 			if ($clientCity !== $currentCity) {
 			if ($clientCity === '') {
+
 			return redirect()->route('business.details', $slug, 301);
 			}
 
@@ -2468,7 +2469,7 @@ $reviewList = DB::table('clients')
 			], 301);
 			}
  
-		
+		 
 
         return view('client.client-detail', compact(
         

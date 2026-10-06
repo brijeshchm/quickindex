@@ -373,17 +373,25 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         <h2 class="heading-ul text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-8 reveal">Our Services</h2>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-            @foreach($assignKeyword as $keySlug => $keyword)
+
+        
+    @foreach($assignKeyword as $keySlug => $keyword)
     @php
      $i=0;
         $bg = $bgColors[$i % count($bgColors)];
         $color = $iconColors[$i % count($iconColors)];
-        $city = (!empty($clientsList['city']) && !is_numeric($clientsList['city']))
-        ? Str::slug($clientsList['city'])
-        : 'faridabad';
+        $route = (
+                !empty($clientsList['city']) &&
+                !is_numeric($clientsList['city'])
+            )
+                ? route('city.slug', [
+                    'city_slug'    => Str::slug($clientsList['city']),
+                    'service_slug' => $keySlug,
+                ])
+                : route('showCity', $keySlug);
     @endphp
 
-    <a href="{{ route('showCity',$keySlug) }}"
+    <a href="{{ $route }}"
        class="text-decoration-none">
 
         <div class="service-card reveal d-{{ min($i%6,5) }} rounded-xl p-3 flex flex-col gap-2 cursor-pointer border bg-white"
