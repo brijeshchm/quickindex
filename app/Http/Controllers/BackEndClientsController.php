@@ -36,6 +36,7 @@ use App\Models\PaymentHistory; //Model
 use App\Models\Modesdetails; //Model
 use App\Models\Banksdetails; //Model
 use App\Models\State;
+use Illuminate\Support\Str;
 use App\Models\Zone; //Model
 use Exception;
 use Illuminate\Validation\Rule;
@@ -150,30 +151,113 @@ class BackEndClientsController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
+
+ 
+
+
+
 	public function store(Request $request)
 	{
 		if ($request->has('initial_form_submit')) {
 
 			$client = new Client;
-			$messages = ['mobile.regex' => 'Mobile number cannot start with 0.'];
-			$validator = Validator::make($request->all(), [
-			 	'business_name' => [
-					'required',
-					'regex:/^[A-Za-z0-9 ]+$/',
-					Rule::unique('clients', 'business_name')         
-						->where('city', $request->city),
-				],
+			$businessName = preg_replace(
+			'/\s+/u',
+			' ',
+			trim((string) $request->input('business_name', ''))
+		);
 
-				// 'business_name' => 'required|regex:/[A-Za-z0-9 ]+/',
-				'mobile' => 'required|unique:clients,mobile,NULL,id',
-				'city' => 'required|max:50',
-				'email' => 'required|email'
-			], $messages);
-			if ($validator->fails()) {
-				return redirect("/developer/clients/register")
-					->withErrors($validator)
-					->withInput();
-			} else {
+		$request->merge([
+			'business_name' => $businessName,
+			'mobile' => trim((string) $request->input('mobile', '')),
+			'email' => trim((string) $request->input('email', '')),
+			'city' => trim((string) $request->input('city', '')),
+			'first_name' => trim((string) $request->input('first_name', '')),
+			'last_name' => trim((string) $request->input('last_name', '')),
+		]);
+
+		$messages = [
+			'business_name.required' => 'Please enter your business name.',
+			'business_name.regex' => 'Business name contains unsupported characters.',
+			'business_name.unique' => 'This business name already exists.',
+			'mobile.required' => 'Please enter your mobile number.',
+			'mobile.regex' => 'Enter a valid 10-digit mobile number starting with 6–9.',
+			'mobile.unique' => 'This mobile number already exists.',
+			'city.required' => 'Please select your city.',
+			'email.required' => 'Please enter your email address.',
+			'email.email' => 'Please enter a valid email address.',
+		];
+
+		$validator = Validator::make($request->all(), [
+			'business_name' => [
+				'required',
+				'string',
+				'max:255',
+				"regex:/^[\p{L}\p{N} &'().,\-]+$/u",
+				Rule::unique('clients', 'business_name'),
+			],
+			'mobile' => [
+				'required',
+				'string',
+				'regex:/^[6-9][0-9]{9}$/',
+				Rule::unique('clients', 'mobile'),
+			],
+			'city' => [
+				'required',
+				'string',
+				'max:50',
+			],
+			'email' => [
+				'required',
+				'email',
+				'max:255',
+			],
+			'first_name' => [
+				'nullable',
+				'string',
+				'max:100',
+			],
+			'last_name' => [
+				'nullable',
+				'string',
+				'max:100',
+			],
+		], $messages);
+
+		if ($validator->fails()) {
+			return redirect('/developer/clients/register')
+				->withErrors($validator)
+				->withInput();
+		}
+
+	 
+
+
+
+
+			// $messages = ['mobile.regex' => 'Mobile number cannot start with 0.'];
+			// $validator = Validator::make($request->all(), [
+			//  	'business_name' => [
+			// 		'required',
+			// 		'regex:/^[A-Za-z0-9 ]+$/',
+			// 		Rule::unique('clients', 'business_name')         
+			// 			->where('city', $request->city),
+			// 	],
+
+			// 	// 'business_name' => 'required|regex:/[A-Za-z0-9 ]+/',
+			// 	'mobile' => 'required|unique:clients,mobile,NULL,id',
+			// 	'city' => 'required|max:50',
+			// 	'email' => 'required|email'
+			// ], $messages);
+			// if ($validator->fails()) {
+			// 	return redirect("/developer/clients/register")
+			// 		->withErrors($validator)
+			// 		->withInput();
+			// }
+			
+			
+			
+			else {
 				// GENERATING SLUG
 				// ***************
 				$business_slug = NULL;
@@ -188,24 +272,8 @@ class BackEndClientsController extends Controller
 						->withErrors($validator)
 						->withInput();
 				}
-				$slugExists = DB::table('clients')
-					->select(DB::raw('business_slug'))
-					->where('business_slug', 'like', '%' . $business_slug . '%')
-					->orderBy('id', 'desc')
-					->first();
-				// if (!empty($slugExists)) {
-				// 	$business_slug = $slugExists->business_slug;
-				// 	$business_slug = explode("-", $business_slug);
-				// 	$end = end($business_slug);
-				// 	reset($business_slug);
-				// 	if (!is_numeric($end)) {
-				// 		$business_slug[] = 1;
-				// 	} else {
-				// 		++$end;
-				// 		$business_slug[count($business_slug) - 1] = $end;
-				// 	}
-				// 	$business_slug = implode("-", $business_slug);
-				// }
+			 
+				 
 			}
 
 			$string = filter_var($request->input('business_name'), FILTER_SANITIZE_STRING);

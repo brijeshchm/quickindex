@@ -190,7 +190,15 @@ public function vendorRegister(Request $request)
  
     // Attached form submits citylists.id, not the city name.
     $validated = $request->validate([
-        'business_name' => ['required', 'string', 'max:255'],
+        
+		'business_name' => [
+					'required',
+					'string',
+					'max:255',
+					"regex:/^[\p{L}\p{N} &'().,\-]+$/u",
+					Rule::unique('clients', 'business_name'),
+				],
+
         'first_name'    => ['nullable', 'string', 'max:100'],
         'last_name'     => ['nullable', 'string', 'max:100'],
       
@@ -221,16 +229,7 @@ public function vendorRegister(Request $request)
         preg_replace('/\s+/', ' ', $validated['business_name'])
     );
 
-    // Match the actual value stored in clients.city.
-    $duplicateBusiness = Client::where('business_name', $businessName)
-        ->where('city', $city->city)
-        ->exists();
-
-    if ($duplicateBusiness) {
-        throw ValidationException::withMessages([
-            'business_name' => 'This business name is already registered in the selected city.',
-        ]);
-    }
+    
 
     $baseSlug = Str::slug($businessName);
 
@@ -240,13 +239,7 @@ public function vendorRegister(Request $request)
         ]);
     }
 
-    $slug = $baseSlug;
-    $suffix = 2;
-
-    while (Client::where('business_slug', $slug)->exists()) {
-        $slug = $baseSlug . '-' . $suffix++;
-    }
-
+   
     // Generate the password only if your vendor login needs it.
     // Deliver it through your existing secure invitation/reset flow.
     $temporaryPassword = Str::random(16);
@@ -256,13 +249,13 @@ public function vendorRegister(Request $request)
         $salesUser,
         $businessName,
         $city,
-        $slug,
+        $baseSlug,
         $temporaryPassword
     ) {
         $client = new Client;
 
         $client->business_name = $businessName;
-        $client->business_slug = $slug;
+        $client->business_slug = $baseSlug;
         $client->first_name = trim($validated['first_name'] ?? '');
         $client->last_name = trim($validated['last_name'] ?? '');
         $client->email = $validated['email'];
@@ -289,9 +282,7 @@ public function vendorRegister(Request $request)
         return $client;
     });
 return redirect('sales/vendors/'.$client->id.'/edit?section=business-information');
-    // return redirect()
-    //     ->route('sales.vendors.index')
-    //     ->with('success_msg', 'Business registered successfully.');
+ 
 }
 
 public function saveBusinessSocial(Request $request)

@@ -15,6 +15,7 @@ use Exception;
 use App\Models\AssigneddArea;
 use App\Models\AssignedZone; 
 use App\Models\Comments; 
+use Illuminate\Validation\Rule;
 class BusinessController extends Controller
 {
 	protected $danger_msg = '';
@@ -52,13 +53,64 @@ class BusinessController extends Controller
     {         
 		if($request->has('initial_form_submit')){
 			$client = new Client;
-			$messages = ['mobile.regex' => 'Mobile number cannot start with 0.'];
+		 
+			
+			$messages = [
+			'business_name.required' => 'Please enter your business name.',
+			'business_name.regex' => 'Business name contains unsupported characters.',
+			'business_name.unique' => 'This business name already exists.',
+			'mobile.required' => 'Please enter your mobile number.',
+			'mobile.regex' => 'Enter a valid 10-digit mobile number starting with 6–9.',
+			'mobile.unique' => 'This mobile number already exists.',
+			'city.required' => 'Please select your city.',
+			'email.required' => 'Please enter your email address.',
+			'email.email' => 'Please enter a valid email address.',
+		];
+			// $validator = Validator::make($request->all(), [
+			// 	'business_name' => 'required|regex:/[A-Za-z0-9 ]+/',
+			// 	'mobile' => 'required|unique:clients,mobile,NULL,id',
+			// 	'city' => 'required|max:50',
+			// 	'email' => 'required|email'
+			// ],$messages);
+
+
+
 			$validator = Validator::make($request->all(), [
-				'business_name' => 'required|regex:/[A-Za-z0-9 ]+/',
-				'mobile' => 'required|unique:clients,mobile,NULL,id',
-				'city' => 'required|max:50',
-				'email' => 'required|email'
-			],$messages);
+				'business_name' => [
+					'required',
+					'string',
+					'max:255',
+					"regex:/^[\p{L}\p{N} &'().,\-]+$/u",
+					Rule::unique('clients', 'business_name'),
+				],
+				'mobile' => [
+					'required',
+					'string',
+					'regex:/^[6-9][0-9]{9}$/',
+					Rule::unique('clients', 'mobile'),
+				],
+				'city' => [
+					'required',
+					'string',
+					'max:50',
+				],
+				'email' => [
+					'required',
+					'email',
+					'max:255',
+				],
+				'first_name' => [
+					'nullable',
+					'string',
+					'max:100',
+				],
+				'last_name' => [
+					'nullable',
+					'string',
+					'max:100',
+				],
+			], $messages);
+
 			if ($validator->fails()) {
 				return redirect("/business-owners")
 							->withErrors($validator)

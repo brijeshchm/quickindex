@@ -157,7 +157,18 @@ class BusinessOwnerController extends Controller
 		// dd($request->all());
 		if ($request->has('initial_form_submit')) {
 			$client = new Client;
-			$messages = ['mobile.regex' => 'Mobile number cannot start with 0.', 'mobile.digits' => 'Please enter a valid mobile number'];
+		 
+			$messages = [
+			'business_name.required' => 'Please enter your business name.',
+			'business_name.regex' => 'Business name contains unsupported characters.',
+			'business_name.unique' => 'This business name already exists.',
+			'mobile.required' => 'Please enter your mobile number.',
+			'mobile.regex' => 'Enter a valid 10-digit mobile number starting with 6–9.',
+			'mobile.unique' => 'This mobile number already exists.',		 
+			'email.required' => 'Please enter your email address.',
+			'email.email' => 'Please enter a valid email address.',
+		];
+			
 			$validator = Validator::make($request->all(), [
 				'business_name' => [
 					'required',
@@ -172,28 +183,18 @@ class BusinessOwnerController extends Controller
 				'email' => 'required|email|unique:clients,email,NULL,id'
 			], $messages);
 
-
-				if ($validator->fails()) {
+			if ($validator->fails()) {
 				$errorsBag = $validator->getMessageBag()->toArray();
 
 				return response()->json(['status' => true, 'errors' => $errorsBag], 422);
 			}
 
-
-
-			 
-
-
-				$business_slug = NULL;
-				$string = $request->input('business_name');
-				$string = filter_var($string, FILTER_SANITIZE_STRING);
-				$string = preg_replace('/[^A-Za-z0-9]/', ' ', $string);
-				$businessName = preg_replace('/\s+/', ' ', str_replace('&', '', trim($string)));
-				$business_slug = trim(generate_slug(trim($businessName)));
-
-			 
-				 
-			 
+			$business_slug = NULL;
+			$string = $request->input('business_name');
+			$string = filter_var($string, FILTER_SANITIZE_STRING);
+			$string = preg_replace('/[^A-Za-z0-9]/', ' ', $string);
+			$businessName = preg_replace('/\s+/', ' ', str_replace('&', '', trim($string)));
+			$business_slug = trim(generate_slug(trim($businessName)));
 
 			$client->business_name = $businessName;
 			$client->business_slug = $business_slug;
