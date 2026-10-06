@@ -3109,30 +3109,11 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 		$clientMap = $this->getClientSlugMap();  
 		$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
 
-		if ($slugUrl && $slugUrl !== $slug) {
-			return redirect()->route('city.slug', [
-			'city_slug'    => $cityName,
-			'service_slug' => $slugUrl,
-			], 301);
+		if ($slugUrl && $slugUrl !== $slug) {			 
+			return redirect()->route('business.details', $slugUrl, 301);
 		}
 
-		if ($slugUrl) {
-		if (!$this->clientsExists($slugUrl)) {
-		abort(410);
-		//return redirect()->route('home');
-		}
-		$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
-
-		if (!$businessResponse) {
-		abort(410);
-		// return redirect()->route('home');
-		}
-
-		return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
-		}
-
-
-
+		 
 		// ── Validate city ────────────────────────────────────────────────────
 		if (!$this->serviceExists($finalSlug)) {
 			abort(410);
