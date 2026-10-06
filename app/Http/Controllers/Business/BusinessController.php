@@ -93,22 +93,12 @@ class BusinessController extends Controller
 	{
 		if ($request->has('initial_form_submit')) {
 			$client = new Client;
-			// $messages = ['mobile.regex' => 'Mobile number cannot start with 0.'];
-			// $validator = Validator::make($request->all(), [
-			// 	'business_name' => 'required|regex:/[A-Za-z0-9 ]+/',
-			// 	'mobile' => 'required|unique:clients,mobile,NULL,id',
-			// 	'city' => 'required|max:50',
-			// 	'email' => 'required|email'
-			// ], $messages);
-
-
-
-		$messages = [
+			$messages = [
 					'business_name.required' => 'Please enter your business name.',
 					'business_name.regex' => 'Business name contains unsupported characters.',
 					'business_name.unique' => 'This business name already exists.',
 					'mobile.required' => 'Please enter your mobile number.',
-					'mobile.regex' => 'Enter a valid 10-digit mobile number starting with 6–9.',
+					'mobile.regex' => 'Enter a valid 10-digit mobile number.',
 					'mobile.unique' => 'This mobile number already exists.',
 					'city.required' => 'Please select your city.',
 					'email.required' => 'Please enter your email address.',

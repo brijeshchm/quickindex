@@ -2268,7 +2268,7 @@ $reviewList = DB::table('clients')
     /**
      * Convert tags/category that may be array or key-value object.
      */
-    private function getClientDetail($businessResponse,$slug,$city): \Illuminate\Contracts\View\View
+    private function getClientDetail($businessResponse,$slug,$city)
     {
     
         $clientsList = $businessResponse['clientsList']       ?? [];
@@ -2400,7 +2400,7 @@ $reviewList = DB::table('clients')
  
         $gradients = ['from-rose-500 to-orange-400','from-indigo-500 to-purple-600','from-teal-400 to-cyan-500','from-blue-600 to-violet-600','from-emerald-400 to-teal-600','from-amber-500 to-red-500'];
 
-		  $linearGradients = ['linear-gradient(135deg,#1e3a8a,#2563eb)','linear-gradient(135deg,#78350f,#b45309)','linear-gradient(135deg,#7f1d1d,#dc2626)','linear-gradient(135deg,#7c1580,#16a34a)','linear-gradient(135deg,#14532d,#151c80)','linear-gradient(135deg,#14532d,#802e15)'];
+		$linearGradients = ['linear-gradient(135deg,#1e3a8a,#2563eb)','linear-gradient(135deg,#78350f,#b45309)','linear-gradient(135deg,#7f1d1d,#dc2626)','linear-gradient(135deg,#7c1580,#16a34a)','linear-gradient(135deg,#14532d,#151c80)','linear-gradient(135deg,#14532d,#802e15)'];
  
         $bgColors = ['rgba(99,102,241,0.18)','rgba(244,63,94,0.18)','rgba(234,88,12,0.18)','rgba(20,184,166,0.18)','rgba(168,85,247,0.18)','rgba(37,99,235,0.18)','rgba(234,179,8,0.18)','rgba(34,197,94,0.18)'];
         $iconColors = ['#6366f1','#f43f5e','#ea580c','#14b8a6','#a855f7','#2563eb','#ca8a04','#16a34a'];
@@ -2446,6 +2446,29 @@ $reviewList = DB::table('clients')
        $keyword = !empty($clientsList['business_name'])
         ? $clientsList['business_name']
         : ($clientsList['meta_title'] ?? '') . ' | ' . ($clientsList['city'] ?? '') . ' | QuickDials';
+
+
+
+			$clientCity = \Illuminate\Support\Str::slug(
+			trim((string) ($clientsList['city'] ?? ''))
+			);
+
+			$currentCity = \Illuminate\Support\Str::slug(
+			trim((string) ($city ?? ''))
+			);
+
+			if ($clientCity !== $currentCity) {
+			if ($clientCity === '') {
+			return redirect()->route('business.details', $slug, 301);
+			}
+
+			return redirect()->route('city.slug', [
+			'city_slug'    => $clientCity,
+			'service_slug' => $slug,
+			], 301);
+			}
+ 
+		
 
         return view('client.client-detail', compact(
         
@@ -2534,6 +2557,9 @@ $reviewList = DB::table('clients')
         $zones     = $responseZones['data'] ?? [];
         $cityDetails     = $responseCityDetails['data'] ?? [];
  	
+		
+
+
 		 
         return view('client.searchlist', compact(
             'city', 'slug', 'keyword', 'area','zones',
@@ -3077,6 +3103,35 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 		// Final slug to use downstream: prefer resolved match, fallback to input
 		$finalSlug = $slugUrl ?: $slug;
 
+
+		//client details
+		$clientMap = $this->getClientSlugMap();  
+		$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
+
+		if ($slugUrl && $slugUrl !== $slug) {
+			return redirect()->route('city.slug', [
+			'city_slug'    => $cityName,
+			'service_slug' => $slugUrl,
+			], 301);
+		}
+
+		if ($slugUrl) {
+		if (!$this->clientsExists($slugUrl)) {
+		abort(410);
+		//return redirect()->route('home');
+		}
+		$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
+
+		if (!$businessResponse) {
+		abort(410);
+		// return redirect()->route('home');
+		}
+
+		return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
+		}
+
+
+
 		// ── Validate city ────────────────────────────────────────────────────
 		if (!$this->serviceExists($finalSlug)) {
 			abort(410);
@@ -3165,6 +3220,10 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 		];
 
  
+
+
+
+
 
         return view('client.searchkeyword', compact(
             'city', 'slug', 'keyword', 'area','zones',

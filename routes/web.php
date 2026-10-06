@@ -300,7 +300,7 @@ Route::post('/developer/login', [App\Http\Controllers\Auth\AuthController::class
 Route::get('/developer/login', [App\Http\Controllers\Auth\AuthController::class, 'showLoginForm'])->name('developer.login');
 Route::get('/developer/check/login',[App\Http\Controllers\Auth\AuthController::class, 'checklogin']);
 Route::post('/developer/check/login',[App\Http\Controllers\Auth\AuthController::class, 'authenticate']);
-//Route::get('/login/otp',function(){return view('auth.otp');});
+
 Route::get('/developer/login/otp',[App\Http\Controllers\Auth\AuthController::class,'getOTP']);
 Route::post('/developer/login/otp',[App\Http\Controllers\Auth\AuthController::class,'authenticate']);
 
@@ -311,7 +311,7 @@ Route::post('/sales/login', [App\Http\Controllers\Auth\AuthSalesController::clas
 Route::get('/sales/login', [App\Http\Controllers\Auth\AuthSalesController::class, 'showLoginForm'])->name('developer.login');
 Route::get('/sales/check/login',[App\Http\Controllers\Auth\AuthSalesController::class, 'checklogin']);
 Route::post('/sales/check/login',[App\Http\Controllers\Auth\AuthSalesController::class, 'authenticate']);
-//Route::get('/login/otp',function(){return view('auth.otp');});
+
 Route::get('/sales/login/otp',[App\Http\Controllers\Auth\AuthSalesController::class,'getOTP']);
 Route::post('/sales/login/otp',[App\Http\Controllers\Auth\AuthSalesController::class,'authenticate']);
 

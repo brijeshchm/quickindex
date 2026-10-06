@@ -60,7 +60,7 @@ class BusinessController extends Controller
 			'business_name.regex' => 'Business name contains unsupported characters.',
 			'business_name.unique' => 'This business name already exists.',
 			'mobile.required' => 'Please enter your mobile number.',
-			'mobile.regex' => 'Enter a valid 10-digit mobile number starting with 6–9.',
+			'mobile.regex' => 'Enter a valid 10-digit mobile number.',
 			'mobile.unique' => 'This mobile number already exists.',
 			'city.required' => 'Please select your city.',
 			'email.required' => 'Please enter your email address.',
