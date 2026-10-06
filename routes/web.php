@@ -462,10 +462,6 @@ Route::get('/sales/logout', [App\Http\Controllers\LogoutController::class, 'sale
 
 
 
-//Route::get('/categories', [HomePageController::class, 'category'])->name('category.list');
-//Route::get('/child', [HomePageController::class, 'child'])->name('child.list');
-//Route::get('/categories/{slug}', [HomePageController::class, 'categories'])->name('categories.show');
-//Route::get('/child/{slug}', [HomePageController::class, 'childSlus'])->name('child.show');
 Route::get('location/getAjaxCity', [HomePageController::class, 'getAjaxLocation'])->name('get.location');
 Route::get('service/getAjaxKeyword', [HomePageController::class, 'getAjaxKeyword'])->name('search.keyword');
 
@@ -474,16 +470,14 @@ Route::get('payment/checkout', [App\Http\Controllers\Client\WebsiteRazorpayContr
 //?status=correction&encrypt=
 
 Route::get('package', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'getPackage'])->name('package.list');;
-//	
+
 
 
 Route::post('razorPayCheckout', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'razorPayCheckout']);
 Route::get('/payment-done', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'success']);
 Route::get('/failed', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'failed']);
  
-// Route::match(['GET', 'HEAD'], '/business-details/{slug}', function () {
-//     abort(410, 'This business listing has been permanently removed.');
-// })->where('slug', '.*');
+
 
 Route::match(['GET', 'HEAD'], '/business-details/{slug}', function ($slug) {
     return redirect('/businessdetails/' . $slug, 301);
@@ -507,20 +501,9 @@ Route::POST('/client/lead/saveEnquiryContact', [App\Http\Controllers\Client\Home
 
 
 Route::POST('/lead/auto-form-save', [App\Http\Controllers\Client\HomePageController::class, 'autoFormSave']);
-//Route::POST('/{city}/lead/auto-form-save', [App\Http\Controllers\Client\HomePageController::class, 'autoFormSave']);
-
  
-
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+ 
+ 
 
 require __DIR__.'/auth.php';
 

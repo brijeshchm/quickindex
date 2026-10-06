@@ -161,7 +161,7 @@ class InvoiceController extends Controller
 	/**
 	 * Get paginated leads.
 	 *
-	 * @param  int  $id
+	 * @param  int 
 	 * @return \Illuminate\Http\Response
 	 */
 	public function getPaginatedPaymentHistory(Request $request)

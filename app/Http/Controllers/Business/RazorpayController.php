@@ -882,7 +882,7 @@ class RazorpayController extends Controller
 				$msg = "Already subscribed!";
 			}
 
-return redirect('/business/account/invoices');
+			return redirect('/business/account/invoices');
 			
 		
 	}

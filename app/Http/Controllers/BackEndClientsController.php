@@ -40,6 +40,8 @@ use App\Models\Zone; //Model
 use Exception;
 use Illuminate\Validation\Rule;
 use App\Models\Occupation;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class BackEndClientsController extends Controller
 {
 	protected $danger_msg = '';
@@ -3620,10 +3622,23 @@ protected function deleteOldImage($jsonString)
 			$action = '';
 			$separator = '';
 			$proforma = '';
-			$orderpdf .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Oder PDF" id="paymentPrint" data-trigger="hover" data-placement="left" data-sid="' . $payment->id . '"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a> ';
-			$proforma .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Proforma Invoice PDF" id="proformaPrintPdf" data-trigger="hover" data-placement="left" data-sid="' . $payment->id . '"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a>';
+			$orderpdf .= $separator . '<a href="' . route('developer.order.paymentPrint', ['pid' => $payment->id]) . '" data-toggle="popover" title="Order PDF">
+			<i aria-hidden="true" class="fa fa-file-pdf-o"></i>
+			</a>';
+			
+			$proforma .= $separator . '<a href="' . route('developer.order.proformaPrintPdf', ['pid' => $payment->id]) . '" data-toggle="popover" title="Order PDF">
+			<i aria-hidden="true" class="fa fa-file-pdf-o"></i>
+			</a>';
+
+
+		 
 			if ($payment->invoice_status == 1) {
-				$invoicepdf .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Invoice PDF" id="invoicePrintPdf" data-trigger="hover" data-placement="left" data-sid="' . $payment->id . '"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a>';
+			 
+				$invoicepdf .= $separator . '<a href="' . route('developer.order.invoicePrintPdf', ['pid' => $payment->id]) . '" data-toggle="popover" title="Order PDF">
+				<i aria-hidden="true" class="fa fa-file-pdf-o"></i>
+				</a>';
+
+
 			} else {
 				if (Auth::user()->current_user_can('administrator') || Auth::user()->current_user_can('client_invoice_approved')) {
 					$invoicepdf .= $separator . '<a href="javascript:client.clientOrderHistoryStatus(' . $payment->id . ')" data-toggle="popover" title="Invoice Status Pending" ><i aria-hidden="true" class="fa fa-thumbs-up"></i></a>';
@@ -3666,66 +3681,111 @@ protected function deleteOldImage($jsonString)
 
 
 
+ 
 
-	public function getpaymentPrint(Request $request)
+	public function getpaymentPrint(Request $request,$pid)
 	{
-		if (isset($_POST['pid'])) {
+		 
+ 
+		$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+		$imageData = base64_encode(file_get_contents($imagePath));
+		$imageSrc  = 'data:image/png;base64,' . $imageData;  
+		$paymentuprint = PaymentHistory::findOrFail($pid);
+ 
+		$client = Client::withTrashed()
+			->findOrFail($paymentuprint->client_id);
 
-			if ($request->input('action') == 'getPaymentPrint') {
-				$paymnetid = $_POST['pid'];
-
-				$paymentuprint = PaymentHistory::find($paymnetid);
-				$client = Client::withTrashed()->where('id', $paymentuprint->client_id)->first();
-				$assignKeyword = DB::table('assigned_kwds')
-					->join('citylists', 'assigned_kwds.city_id', '=', 'citylists.id')
-					->join('parent_category', 'assigned_kwds.parent_cat_id', '=', 'parent_category.id')
-					->join('child_category', 'assigned_kwds.child_cat_id', '=', 'child_category.id')
-					->join('keyword', 'assigned_kwds.kw_id', '=', 'keyword.id')
-					->select('assigned_kwds.*', 'citylists.city', 'parent_category.parent_category', 'child_category.child_category', 'keyword.keyword','keyword.slug')
-					->where('assigned_kwds.client_id', $client->id)
-					->get();
-
-				return response()->view("admin.getPaymentPrintSlip", ['paymentuprint' => $paymentuprint, 'client' => $client, 'assignKeyword' => $assignKeyword]);
-				die;
-			}
-		}
-
-
+		$assignKeyword = DB::table('assigned_kwds')
+			 
+			->join(
+				'parent_category',
+				'assigned_kwds.parent_cat_id',
+				'=',
+				'parent_category.id'
+			)
+				 
+			->join(
+				'keyword',
+				'assigned_kwds.kw_id',
+				'=',
+				'keyword.id'
+			)
+			->select(
+				'assigned_kwds.*',				 
+				'parent_category.parent_category',				 
+				'keyword.keyword',
+				'keyword.slug'
+			)
+			->where('assigned_kwds.client_id', $client->id)
+			->get();
+ 
+		return Pdf::loadView('sales.getOrderPrintSlip', [
+			'paymentuprint' => $paymentuprint,
+			'client' => $client,
+			'imageSrc' => $imageSrc,
+			'assignKeyword' => $assignKeyword,
+		])			 
+			->download('order-'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
 	}
 
+	 
 
-	public function getinvoicePrintPdf(Request $request)
-	{
-		if (isset($_POST['pid'])) {
+ 
 
-			if ($request->input('action') == 'getinvoicePrintPdf') {
-				$paymnetid = $_POST['pid'];
-				$paymentprint = PaymentHistory::find($paymnetid);
-				$client = Client::withTrashed()->where('id', $paymentprint->client_id)->first();
-				return response()->view("admin.getInvoicePrintPdfSlip", ['paymentprint' => $paymentprint, 'client' => $client]);
 
-				die;
-			}
+
+		public function getproformaPrintPdf(Request $request,$pid)
+		{
+			 
+			$paymentprint = PaymentHistory::findOrFail($pid);
+
+			$client = Client::withTrashed()
+				->findOrFail($paymentprint->client_id);
+
+			$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+			$imageData = base64_encode(file_get_contents($imagePath));
+			$imageSrc  = 'data:image/png;base64,' . $imageData;
+
+			$pdf = Pdf::loadView(
+		'sales.getproformaPrintPdf',
+		compact('paymentprint', 'client','imageSrc'));
+	// )->setPaper('a4', 'portrait');
+
+	return $pdf->download(
+		'proforma_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf'
+	);
+
 		}
 
-
-	}
-
-	public function getproformaPrintPdf(Request $request)
+	public function getinvoicePrintPdf(Request $request,$pid)
 	{
-		if (isset($_POST['pid'])) {
-			if ($request->input('action') == 'getproformaPrintPdf') {
-				$paymnetid = $_POST['pid'];
-				$paymentprint = PaymentHistory::find($paymnetid);
-				$client = Client::withTrashed()->where('id', $paymentprint->client_id)->first();
-				return response()->view("admin.getproformaPrintPdf", ['paymentprint' => $paymentprint, 'client' => $client]);
-
-				die;
-			}
-		}
+		 
+		
+		$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+		$imageData = base64_encode(file_get_contents($imagePath));
+		$imageSrc  = 'data:image/png;base64,' . $imageData;
 
 
+		$paymentprint = PaymentHistory::findOrFail($pid);
+
+		abort_unless(
+			(int) $paymentprint->invoice_status === 1,
+			403,
+			'Invoice approval is pending.'
+		);
+
+		$client = Client::withTrashed()
+			->findOrFail($paymentprint->client_id);
+
+		return Pdf::loadView('sales.getInvoicePrintPdfSlip', [
+			'paymentprint' => $paymentprint,
+			'client' => $client,
+			'imageSrc' => $imageSrc,
+		])
+		 
+			->download('invoice_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
 	}
+
 
 
 	/**
@@ -4747,19 +4807,18 @@ protected function deleteOldImage($jsonString)
 									
 										<div class="alert alert-danger hide"></div>
 										<div class="alert alert-success hide"></div>
-										<div class="container col-md-12">
-											 
-											
-												<div class="row">
-											<div class="col-md-4 text-right">	
-									<div class="form-group">
+										<div class="container col-md-12">									 
+
 										<div class="row">
-										
+										<div class="col-md-4 text-right">	
+										<div class="form-group">
+										<div class="row">
+
 										<label for="">City:</label>
 										<select class="form-control location city select2-single" name="city_id">
-															<option value="">-- SELECT CITY --</option>
-																' . $cityHtml . '
-														</select>
+										<option value="">-- SELECT CITY --</option>
+										' . $cityHtml . '
+										</select>
 										</div>
 									</div>
 									</div>

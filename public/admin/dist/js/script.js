@@ -8468,7 +8468,13 @@ function handlingPaiAmt() {
 	if( paid_am <= 0 ){
 		alert("paid amount Cannot be Empty");
 		paid_am.val("");
-
+		return;
+	}
+	if( paid_am <= 1000 ){		 
+		alert('The minimum amount will be ₹1,000.');
+		paid_am.val('');
+        coins.val('');
+        return;
 	}
 	 
 

@@ -335,7 +335,6 @@ Route::get('contacts/delete/{id}', [App\Http\Controllers\ContactsController::cla
 	Route::get('/clientOrderHistoryDelete/delete/{id}',[App\Http\Controllers\OrderHistoryController::class,'clientOrderHistoryDelete'])->middleware('auth');
 	Route::get('/clientOrderHistoryStatus/status/{id}',[App\Http\Controllers\OrderHistoryController::class,'status'])->middleware('auth');
 	Route::post('/orderhistory/getorderhistoryexcel',[App\Http\Controllers\OrderHistoryController::class,'getorderhistoryexcel'])->middleware('auth');
-	
 	 
 /* Transaction */
 
@@ -426,11 +425,19 @@ Route::get('/business_keyword/getKeywords/{id}',[App\Http\Controllers\BusinessKe
 	Route::post('/clients/remark/{id}',[App\Http\Controllers\BackEndClientsController::class, 'remark'])->middleware('auth');
 	Route::post('/clients/discussion/{id}',[App\Http\Controllers\BackEndClientsController::class, 'remarkDiscussion'])->middleware('auth');
 	Route::post('/clients/payment',action: [App\Http\Controllers\BackEndClientsController::class, 'paymentClient'])->middleware('auth');
+
+
 	Route::get('/clients/getpaymentPrintfile',[App\Http\Controllers\BackEndClientsController::class, 'getpaymentPrintfile'])->middleware('auth');
-	Route::post('/clients/getpaymentPrint',[App\Http\Controllers\BackEndClientsController::class, 'getpaymentPrint'])->middleware('auth');
+	
+	Route::get('/clients/getpaymentPrint/{pid}',[App\Http\Controllers\BackEndClientsController::class, 'getpaymentPrint'])->name('order.paymentPrint');
+	Route::get('/clients/getproformaPrintPdf/{pid}',[App\Http\Controllers\BackEndClientsController::class, 'getproformaPrintPdf'])->name('order.proformaPrintPdf');
+	Route::get('/clients/getinvoicePrintPdf/{pid}',[App\Http\Controllers\BackEndClientsController::class, 'getinvoicePrintPdf'])->name('order.invoicePrintPdf');
+	
+
+
 	Route::get('/clients/geteditpayment/{id}', [App\Http\Controllers\BackEndClientsController::class, 'geteditpayment'])->middleware('auth');  
-	Route::post('/clients/getinvoicePrintPdf',[App\Http\Controllers\BackEndClientsController::class, 'getinvoicePrintPdf'])->middleware('auth');
-	Route::post('/clients/getproformaPrintPdf',[App\Http\Controllers\BackEndClientsController::class, 'getproformaPrintPdf'])->middleware('auth');
+
+
 	Route::get('/clients/restore/{id?}',[App\Http\Controllers\BackEndClientsController::class, 'restore'])->middleware('auth');
 	Route::get('/clients/list/deleted-clients/{id?}',[App\Http\Controllers\BackEndClientsController::class, 'deletedClients'])->middleware('auth');
 	Route::get('/clients/list/getclients',[App\Http\Controllers\BackEndClientsController::class, 'getPaginatedClients']);
@@ -444,6 +451,7 @@ Route::get('/business_keyword/getKeywords/{id}',[App\Http\Controllers\BusinessKe
 	Route::post('/clients/update/{id}/delete-selected-assigned-kwds',[App\Http\Controllers\BackEndClientsController::class, 'deleteSelectedAssignedKwds'])->middleware('auth');
 	Route::get('/clients/update/{id}/update-price-assigned-kwds',[App\Http\Controllers\BackEndClientsController::class, 'updatePriceAssignedKwds'])->middleware('auth');
 	Route::get('/clients/update/{id}/get-paginated-transactions',[App\Http\Controllers\BackEndClientsController::class, 'getPaginatedTransactions'])->middleware('auth');
+	
 	Route::get('/clients/update/{id}/get-paginated-payment-history',[App\Http\Controllers\BackEndClientsController::class, 'getPaginatedPaymentHistory'])->middleware('auth');
 	Route::get('/clients/update/{id}/edit-assigned-keyword/{record_id}',[App\Http\Controllers\BackEndClientsController::class, 'editAssignedKeyword'])->middleware('auth');
 	Route::post('/clients/update/{id}/update-assigned-keyword/{record_id}',[App\Http\Controllers\BackEndClientsController::class, 'updateAssignedKeyword'])->middleware('auth');
@@ -515,16 +523,15 @@ Route::get('/business_keyword/getKeywords/{id}',[App\Http\Controllers\BusinessKe
 	Route::get('/bulkupload/lead',[App\Http\Controllers\BulkUploadController::class, 'createBulkUploadLead'])->middleware('auth');
 	Route::post('/bulkupload/lead',[App\Http\Controllers\BulkUploadController::class, 'storeBulkUploadLead'])->middleware('auth');
 
-Route::get('/bulkupload/zone',[App\Http\Controllers\ZoneController::class, 'createBulkUploadZone'])->middleware('auth');
+	Route::get('/bulkupload/zone',[App\Http\Controllers\ZoneController::class, 'createBulkUploadZone'])->middleware('auth');
 	Route::post('/bulkupload/zone',[App\Http\Controllers\ZoneController::class, 'importExcelZone'])->middleware('auth');
 
 	/* Bulk Upload */
 
+
+
 /* developer Mode routing */
 Route::get('mode/modedetails',[App\Http\Controllers\ModeController::class, 'index'])->middleware('auth');
-
-
-
 Route::match(['get','post'],'mode/add', [App\Http\Controllers\ModeController::class, 'add'])->middleware('auth');
 Route::match(['get','post'],'mode/edit/{id}', [App\Http\Controllers\ModeController::class, 'edit'])->middleware('auth');
 Route::get('mode/getmode', [App\Http\Controllers\ModeController::class, 'getPaginationMode'])->middleware('auth');
