@@ -307,6 +307,7 @@ class CitySlugController extends Controller
 		$data['keyword'] = array(
 			'keyword' => $keywordDetails->keyword,
 			'keyword_slug' => $keywordDetails->slug,
+			'seo_index' => $keywordDetails->seo_index,
 			'category_banner' => $category_banner,
 			'child_banner' => $child_banner,
 			'child_icon' => $child_icon,
@@ -1066,6 +1067,7 @@ $reviewList = DB::table('clients')
 		$data['keyword'] = array(
 			'keyword' => $keywordDetails->keyword,
 			'keyword_slug' => $keywordDetails->slug,
+			'seo_index' => $keywordDetails->seo_index,
 			'category_banner' => $category_banner,
 			'child_banner' => $child_banner,
 			'alt' => $alt,

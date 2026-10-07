@@ -3,7 +3,7 @@
 @section('description', $metaDescription ?? 'Book verified specialists across India. Compare clinics by rating, location & specialty. Trusted by 10k+ patients.')
 @section('keywords', $metaKeywords ?? 'Find Best It Training Centre near You, Find Best It Training Institute near You, Find Top 10 IT Training Institute near You, Find Best Entrance Exam Preparation Centre Near you, Top 10 Entrance Exam Centre Near you, Find Best Distance Education Centre Near You, Find Top 10 Distance Education Centre Near You, Find Best School And Colleges Near You, Find Top 10 school And College Near You, Get Education Loan, GET Free career Counselling, Find Best overseas education consultants Near you, Find Top 10 overseas education consultants Near you')
 @section('meta_robots')
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="noindex, follow">
 @endsection
 @section('content')	  
 @include('client.components.banner-section')

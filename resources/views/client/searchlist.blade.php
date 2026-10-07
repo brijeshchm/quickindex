@@ -3,8 +3,7 @@
 @section('description', $metaDescription ?? 'Find the best ' . $keyword . ' in ' . ucwords(strtolower(str_replace('-', ' ', $city))) . ' with QuickDials. Discover verified businesses, addresses, phone numbers, reviews, ratings, photos, maps, and top local services near you.')
 
 @php
- 
-    // Single source of truth: city => allowed keyword slugs
+     // Single source of truth: city => allowed keyword slugs
     $cityKeywordMap = [
         'faridabad' => [
             'artificial-intelligence-training','python-training','workday-training',
@@ -48,7 +47,7 @@
 @endphp
 
 @section('meta_robots')
-<meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, nofollow' }}">
+<meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, follow' }}">
 @endsection
 @section('og_image', !empty($kwData['key_icon'])
     ? asset($kwData['key_icon'])

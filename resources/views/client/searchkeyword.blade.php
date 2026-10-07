@@ -6,23 +6,11 @@
     ? asset($kwData['key_icon'])
     : asset('client/images/quickdials-og.png'))
 @php   
-$keywordArray = [
-   'artificial-intelligence-training','python-training','workday-training',
-    'sap-training','banquet-hall','cricket-academy','data-science-training',
-    'judo-karate','distance-education','data-analytics-training',
-    'salesforce-training','wedding-organisers','aws-training','cloud-computing-training','devops-training',
-    'digital-marketing-training','full-stack-developer-training',
-    'azure-training','pmp-certification-training','mba-distance',
-    'car-service','computer-repair','shooting-academy',
-    'swimming-academy','boxing','sap-mm-training','sap-fico-training','sap-hana-training','power-bi-training','machine-learning-training','react-native-training','cyber-security-training','certified-ethical-hacking-training','nodejs-training','taekwondo','football-academy','photo-and-videography',	'sap-sd-training','sap-hcm-training','sap-success-factors-training','workday-hcm-functional','tableau-training','deep-learning-training','php-training','mern-stack-training','catering-services','event-organizers','tent-house','table-tennis','archery'
-];
-$currentKeyword = strtolower(trim($kwData['keyword_slug'] ?? ''));
-$shouldIndex = in_array($currentKeyword, $keywordArray);     
+$shouldIndex = $kwData['seo_index']?$kwData['seo_index']:'' ;     
 @endphp
 @section('meta_robots')
-<meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, nofollow' }}">
+<meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, follow' }}">
 @endsection
-
 @section('content') 
 <style>
 #enquiry-modal { display: none; }
