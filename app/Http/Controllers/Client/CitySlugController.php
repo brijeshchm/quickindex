@@ -154,19 +154,7 @@ class CitySlugController extends Controller
 			}
 		}
 
-		if (!empty($keywordDetails->meta_title)) {
-			$meta_title = preg_replace('/{{city}}/i', ucfirst($city), $keywordDetails->meta_title);
-		} else {
-			$meta_title =  $keywordDetails->keyword . ' in ' . ucfirst($city) . ' | Quickdials';
-
-		}
-		if (!empty($keywordDetails->h1_heading)) {
-			$h1_heading = preg_replace('/{{city}}/i', ucfirst($city), $keywordDetails->h1_heading);
-		}  
-
-		if (!empty($keywordDetails->short_definition)) {
-			$short_definition = preg_replace('/{{city}}/i', ucfirst($city), $keywordDetails->short_definition);
-		} 
+		
 
 		if (!empty($keywordDetails->top_wcity_description)) {
 			$top_wcity_description = preg_replace('/{{city}}/i', ucfirst($city), $keywordDetails->top_wcity_description);
@@ -184,16 +172,7 @@ class CitySlugController extends Controller
 			$bottom_wcity_description = preg_replace('/{{city}}/i', ucfirst($city), $keywordDetails->bottom_wcity_description);
 		}  
 
-		if (!empty($keywordDetails->meta_description)) {
-			$meta_description = preg_replace('/{{city}}/i', ucfirst($city), $keywordDetails->meta_description);
-
-
-		} else {
-			$meta_description =  'Find the best ' . strtolower($keywordDetails->keyword) .
-               ' in ' . ucfirst($city) .
-               '. Compare ratings, reviews, contact details and book services on Quickdials.';
-
-		}
+	
 		
 		if (!empty($keywordDetails->courseabout)) {
 			$courseabout = preg_replace('/{{city}}/i', ucfirst($area), $keywordDetails->courseabout);
@@ -258,7 +237,73 @@ class CitySlugController extends Controller
 		if (!empty($keywordDetails->extra_heading)) {
 			$extra_heading = preg_replace('/{{city}}/i', ucfirst($area), $keywordDetails->extra_heading);
 		}
+
  
+
+		// $city contains the city name, for example: "noida".
+		$cityKey = strtolower(trim((string) ($city ?? '')));
+		$cityName = ucwords(str_replace(['-', '_'], ' ', $cityKey));
+
+		$supportedCities = [
+		'noida',
+		'faridabad',
+		'delhi',
+		'bangalore',
+		];
+
+		$matchedCity = in_array($cityKey, $supportedCities, true);
+
+		// Select city-specific field, then default field, then fallback.
+		$getContent = function (
+		string $defaultField,
+		string $cityFieldPrefix,
+		string $fallback = ''
+		) use ($keywordDetails, $matchedCity, $cityKey, $cityName) {
+		$content = '';
+
+		if ($matchedCity) {
+		$cityField = $cityFieldPrefix . '_' . $cityKey;
+		$content = (string) ($keywordDetails->{$cityField} ?? '');
+		}
+
+		if (trim($content) === '') {
+		$content = (string) ($keywordDetails->{$defaultField} ?? '');
+		}
+
+		if (trim($content) === '') {
+		$content = $fallback;
+		}
+
+		return str_ireplace('{{city}}', $cityName, $content);
+		};
+
+		$keyword = (string) ($keywordDetails->keyword ?? '');
+
+		$meta_title = $getContent(
+		'meta_title',
+		'meta_title',
+		$keyword . ' in ' . $cityName . ' | Quickdials'
+		);
+
+		$meta_description = $getContent(
+		'meta_description',
+		'meta_desc',
+		'Find the best ' . strtolower($keyword)
+		. ' in ' . $cityName
+		. '. Compare ratings, reviews, contact details and book services on Quickdials.'
+		);
+
+		$h1_heading = $getContent(
+		'h1_heading',
+		'h1_heading',
+		$keyword . ' in ' . $cityName
+		);
+
+		$short_definition = $getContent(
+		'short_definition',
+		'short_desc'
+		);
+		  
 		$data['keyword'] = array(
 			'keyword' => $keywordDetails->keyword,
 			'keyword_slug' => $keywordDetails->slug,
@@ -283,6 +328,7 @@ class CitySlugController extends Controller
 			'delhi_bottom_heading' => $delhi_bottom_heading,
 			'noida_top_description' => $noida_top_description,
 			'delhi_bottom_description' => $delhi_bottom_description,
+			 
 			'courseabout' => $courseabout,
 			'heading' => $heading,
 			'paragraph1' => $paragraph1,
@@ -934,19 +980,7 @@ $reviewList = DB::table('clients')
 			}
 		}
 
-		if (!empty($keywordDetails->meta_title)) {
-			$meta_title = replaceCity($keywordDetails->meta_title,'');
-		} else {
-			$meta_title = 'Best ' . $keywordDetails->keyword . ' - Reviews, Ratings & Contact Details | Quickdials';
-
-		}
-		if (!empty($keywordDetails->h1_heading)) {
-			$h1_heading = replaceCity($keywordDetails->h1_heading,'');
-		}  
-
-		if (!empty($keywordDetails->short_definition)) {
-			$short_definition = replaceCity($keywordDetails->short_definition,'');
-		}  
+		
 
 		if (!empty($keywordDetails->top_wcity_description)) {
 			$top_wcity_description = $keywordDetails->top_wcity_description;
@@ -964,11 +998,7 @@ $reviewList = DB::table('clients')
 			$bottom_wcity_description = $keywordDetails->bottom_wcity_description;
 		}  
 
-		if (!empty($keywordDetails->meta_description)) {
-			$meta_description = replaceCity($keywordDetails->meta_description,'');
-		} else {
-			$meta_description = 'Find the best ' . strtolower($keywordDetails->keyword) . '. Compare ratings, reviews, contact details and service information on Quickdials.';
-		}
+		
 	
 		$top_description = "";
 		if (!empty($keywordDetails->top_description)) {
@@ -1011,6 +1041,28 @@ $reviewList = DB::table('clients')
 			$paragraph8 = replaceCity($keywordDetails->paragraph8,'');
 		}
 
+
+
+		if (!empty($keywordDetails->meta_title)) {
+			$meta_title = replaceCity($keywordDetails->meta_title,'');
+		} else {
+			$meta_title = 'Best ' . $keywordDetails->keyword . ' - Reviews, Ratings & Contact Details | Quickdials';
+
+		}
+		if (!empty($keywordDetails->h1_heading)) {
+			$h1_heading = replaceCity($keywordDetails->h1_heading,'');
+		}  
+
+		if (!empty($keywordDetails->short_definition)) {
+			$short_definition = replaceCity($keywordDetails->short_definition,'');
+		}  
+
+		if (!empty($keywordDetails->meta_description)) {
+			$meta_description = replaceCity($keywordDetails->meta_description,'');
+		} else {
+			$meta_description = 'Find the best ' . strtolower($keywordDetails->keyword) . '. Compare ratings, reviews, contact details and service information on Quickdials.';
+		}
+
 		$data['keyword'] = array(
 			'keyword' => $keywordDetails->keyword,
 			'keyword_slug' => $keywordDetails->slug,
@@ -1021,14 +1073,18 @@ $reviewList = DB::table('clients')
 			'child_alt' => $child_alt,
 			'key_icon' => $key_icon,
 			'key_alt' => $child_alt,
+
 			'meta_title' => $meta_title,
 			'h1_heading' => $h1_heading,
 			'short_definition' => $short_definition,
+			'meta_description' => $meta_description,
+
+
 			'top_wcity_description' => $top_wcity_description,
 			'top_wcity_heading' => $top_wcity_heading,
 			'bottom_wcity_heading' => $bottom_wcity_heading,
 			'bottom_wcity_description' => $bottom_wcity_description,
-			'meta_description' => $meta_description,
+			
 			'top_description' => $top_description,
 			'bottom_description' => $bottom_description,	
 			'bottom_heading'    => replaceCity($keywordDetails->bottom_heading, $city),
@@ -1036,8 +1092,7 @@ $reviewList = DB::table('clients')
 			'extra_heading'     => replaceCity($keywordDetails->extra_heading, $city),
 			'extra_description' => replaceCity($keywordDetails->extra_description, $city),
 
-			'courseabout' => replaceCity($courseabout, $city),
-
+			'courseabout' => replaceCity($courseabout, $city),			 
 			'heading' => $heading,
 			'paragraph1' => $paragraph1,
 			'paragraph2' => $paragraph2,
@@ -2494,11 +2549,9 @@ $reviewList = DB::table('clients')
     {
          
         $businessOwners = $this->businessOwnersData(); 
-        $growthBusiness = $businessOwners['data']['businessOwners'] ?? [];
-  
-        $kwData   = $response['keyword'] ?? [];
-        $keywordBanners   = $kwData['keywordBanners'] ?? [];
- 
+        $growthBusiness = $businessOwners['data']['businessOwners'] ?? [];  
+        $kwData   = $response['keyword'] ?? [];		
+        $keywordBanners   = $kwData['keywordBanners'] ?? []; 
         // ── Keyword / meta ─────────────────────────────────────────────────
         $keyword    = replaceCity($kwData['keyword'] ?? $slug, $city);
         $area       = $kwData['area'] ?? $city;
@@ -2744,9 +2797,8 @@ $reviewList = DB::table('clients')
 
         $response = $this->fetchData($cityName, $slugUrl);
         if (!$response) {
-            // abort(410);
-			 abort(503, 'Service temporarily unavailable.');
-			//return redirect()->route('home');
+             abort(410);
+			 
         }
 
         return $this->getsearchlist($response, $slugUrl, $cityName);
@@ -3148,7 +3200,7 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 			//return redirect()->route('home');
 		}		
 
-        $kwData   = $response['keyword'] ?? [];
+        $kwData   = $response['keyword'] ?? [];		 
         $businessOwners = $this->businessOwnersData();
 
         $growthBusiness = $businessOwners['data']['businessOwners'] ?? [];

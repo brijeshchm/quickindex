@@ -70,28 +70,28 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Meta Title</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" name="meta_title" placeholder="Enter Meta Title">{{ $keyword->meta_title }}</textarea>
+                        <textarea class="form-control" name="meta_title" placeholder="Enter Meta Title">{{ old('meta_title',(isset($keyword)) ? $keyword->meta_title:"")}}</textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Meta Description</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" name="meta_description" placeholder="Enter Meta Description">{{ $keyword->meta_description }}</textarea>
+                        <textarea class="form-control" name="meta_description" placeholder="Enter Meta Description">{{ old('meta_description',(isset($keyword)) ? $keyword->meta_description:"")}}</textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">H1 Heading</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" name="h1_heading" placeholder="Enter H1 Heading">{{ $keyword->h1_heading }}</textarea>
+                        <textarea class="form-control" name="h1_heading" placeholder="Enter H1 Heading">{{ old('h1_heading',(isset($keyword)) ? $keyword->h1_heading:"")}}</textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Short Definition</label>
                     <div class="col-md-8">
-                        <textarea class="form-control" name="short_definition" placeholder="Enter short definition">{{ $keyword->short_definition }}</textarea>
+                        <textarea class="form-control" name="short_definition" placeholder="Enter short definition">{{ old('short_definition',(isset($keyword)) ? $keyword->short_definition:"")}}</textarea>
                     </div>
                 </div>
                
@@ -117,7 +117,7 @@ padding:0px;
                 <div class="form-group">
                     <label for="ratingcount" class="col-md-2 control-label">Rating Count</label>
                     <div class="col-md-8">								 
-                        <input type="number" class="form-control" name="ratingcount" value="{{ $keyword->ratingcount }}">
+                        <input type="number" class="form-control" name="ratingcount" value="{{ old('ratingcount',(isset($keyword)) ? $keyword->ratingcount:"")}}">
                     </div>
                 </div>
                 <div class="form-group text-center">
@@ -139,66 +139,66 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="heading" value="{{ $keyword->heading }}" placeholder="Enter heading">
+                        <input class="form-control" name="heading" value="{{ old('heading',(isset($keyword)) ? $keyword->heading:"")}}" placeholder="Enter heading">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">About What is {{$keyword->keyword}}</label>
                     <div class="col-md-8">
-                        <textarea class="form-control summernote" name="courseabout" rows="5" placeholder="Enter About Section">{{ $keyword->courseabout }}</textarea>
+                        <textarea class="form-control summernote" name="courseabout" rows="5" placeholder="Enter About Section">{{ old('courseabout',(isset($keyword)) ? $keyword->courseabout:"")}}</textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Paragraph 1</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph1" value="{{ $keyword->paragraph1 }}" placeholder="Enter paragraph 1">
+                        <input class="form-control" name="paragraph1" value="{{ old('paragraph1',(isset($keyword)) ? $keyword->paragraph1:"")}}" placeholder="Enter paragraph 1">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Paragraph 2</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph2" value="{{ $keyword->paragraph2 }}" placeholder="Enter paragraph 2">
+                        <input class="form-control" name="paragraph2" value="{{ old('paragraph2',(isset($keyword)) ? $keyword->paragraph2:"")}}" placeholder="Enter paragraph 2">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="col-md-2 control-label">Paragraph 3</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph3" value="{{ $keyword->paragraph3 }}" placeholder="Enter paragraph 3">
+                        <input class="form-control" name="paragraph3" value="{{ old('paragraph3',(isset($keyword)) ? $keyword->paragraph3:"")}}" placeholder="Enter paragraph 3">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="h1_heading" class="col-md-2 control-label">Paragraph 4 </label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph4" placeholder="Enter paragraph4" value="{{ $keyword->paragraph4 }}"> 
+                        <input class="form-control" name="paragraph4" placeholder="Enter paragraph4" value="{{ old('paragraph4',(isset($keyword)) ? $keyword->paragraph4:"")}}"> 
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="h1_heading" class="col-md-2 control-label">Paragraph 5</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph5" placeholder="Enter paragraph5" value="{{ $keyword->paragraph5 }}"> 
+                        <input class="form-control" name="paragraph5" placeholder="Enter paragraph5" value="{{ old('paragraph5',(isset($keyword)) ? $keyword->paragraph5:"")}}"> 
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="h1_heading" class="col-md-2 control-label">Paragraph 6 </label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph6" placeholder="Enter paragraph 6" value="{{ $keyword->paragraph6 }}"> 
+                        <input class="form-control" name="paragraph6" placeholder="Enter paragraph 6" value="{{ old('paragraph6',(isset($keyword)) ? $keyword->paragraph6:"")}}"> 
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="h1_heading" class="col-md-2 control-label">Paragraph 7 </label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph7" placeholder="Enter paragraph 7" value="{{ $keyword->paragraph7 }}"> 
+                        <input class="form-control" name="paragraph7" placeholder="Enter paragraph 7" value="{{ old('paragraph7',(isset($keyword)) ? $keyword->paragraph7:"")}}"> 
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="h1_heading" class="col-md-2 control-label">Paragraph 8 </label>
                     <div class="col-md-8">
-                        <input class="form-control" name="paragraph8" placeholder="Enter paragraph 8" value="{{ $keyword->paragraph8 }}"> 
+                        <input class="form-control" name="paragraph8" placeholder="Enter paragraph 8" value="{{ old('paragraph8',(isset($keyword)) ? $keyword->paragraph8:"")}}"> 
                     </div>
                 </div>
 
@@ -219,7 +219,7 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Top Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="top_heading" value="{{ $keyword->top_heading }}" placeholder="Enter top heading">
+                        <input class="form-control" name="top_heading" value="{{ old('top_heading',(isset($keyword)) ? $keyword->top_heading:"")}}" placeholder="Enter top heading">
                     </div>
                 </div>
 
@@ -227,19 +227,19 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Page Top Description (max 500 chars)</label>
                     <div class="col-md-8">
-                        <textarea class="form-control summernote" name="top_description" rows="9" placeholder="Enter Page Top Description">{{ $keyword->top_description }}</textarea>
+                        <textarea class="form-control summernote" name="top_description" rows="9" placeholder="Enter Page Top Description">{{ old('top_description',(isset($keyword)) ? $keyword->top_description:"")}}</textarea>
                     </div>
                 </div>
                   <div class="form-group">
                     <label class="col-md-2 control-label">Bottom Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="bottom_heading" value="{{ $keyword->bottom_heading }}" placeholder="Enter bottom heading">
+                        <input class="form-control" name="bottom_heading" value="{{ old('bottom_heading',(isset($keyword)) ? $keyword->bottom_heading:"")}}" placeholder="Enter bottom heading">
                     </div>
                 </div>
             <div class="form-group ">
                 <label for="bottom_description" class="col-md-2 control-label">Page Bottom Description</label>
                 <div class="col-md-8">
-                <textarea class="form-control summernote" name="bottom_description" placeholder="Enter Page Bottom Description" rows="15">{{ $keyword->bottom_description }}</textarea>
+                <textarea class="form-control summernote" name="bottom_description" placeholder="Enter Page Bottom Description" rows="15">{{ old('bottom_description',(isset($keyword)) ? $keyword->bottom_description:"")}}</textarea>
                 </div>
             </div>	
             <div class="form-group text-center">
@@ -258,7 +258,7 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Extra Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="extra_heading" value="{{ $keyword->extra_heading }}" placeholder="Enter Extra heading">
+                        <input class="form-control" name="extra_heading" value="{{ old('extra_heading',(isset($keyword)) ? $keyword->extra_heading:"")}}" placeholder="Enter Extra heading">
                     </div>
                 </div>
 
@@ -266,7 +266,7 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Page Extra Description (max 500 chars)</label>
                     <div class="col-md-8">
-                        <textarea class="form-control summernote" name="extra_description" rows="9" placeholder="Enter Page Extra Description">{{ $keyword->extra_description }}</textarea>
+                        <textarea class="form-control summernote" name="extra_description" rows="9" placeholder="Enter Page Extra Description">{{ old('extra_description',(isset($keyword)) ? $keyword->extra_description:"")}}</textarea>
                     </div>
                 </div>
                   
@@ -283,10 +283,40 @@ padding:0px;
             <h4>Noida City Page Content</h4>
             <form class="form-horizontal" method="POST" onsubmit="return keywordController.updateNoidaPageContent(this,<?php echo (isset($keyword->id)? $keyword->id:""); ?>)" >
                 {{ csrf_field() }}
+                
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Title Noida</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_title_noida" placeholder="Enter Meta Title Noida">{{ old('meta_title_noida',(isset($keyword)) ? $keyword->meta_title_noida:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Description Noida</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_desc_noida" placeholder="Enter Meta Description Noida">{{ old('meta_desc_noida',(isset($keyword)) ? $keyword->meta_desc_noida:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">H1 Heading Noida</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="h1_heading_noida" placeholder="Enter H1 Heading Noida">{{ old('h1_heading_noida',(isset($keyword)) ? $keyword->h1_heading_noida:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Short Definition Noida</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="short_desc_noida" placeholder="Enter short definition Noida">{{ old('short_desc_noida',(isset($keyword)) ? $keyword->short_desc_noida:"")}}</textarea>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <label class="col-md-2 control-label">Noida Top Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="noida_top_heading" value="{{ $keyword->noida_top_heading }}" placeholder="Enter noida top heading">
+                        <input class="form-control" name="noida_top_heading" value="{{ old('noida_top_heading',(isset($keyword)) ? $keyword->noida_top_heading:"")}}" placeholder="Enter noida top heading">
                     </div>
                 </div>
 
@@ -294,7 +324,7 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Page Top Description (max 500 chars)</label>
                     <div class="col-md-8">
-                        <textarea class="form-control summernote" name="noida_top_description" rows="9" placeholder="Enter Page Top Description">{{ $keyword->noida_top_description }}</textarea>
+                        <textarea class="form-control summernote" name="noida_top_description" rows="9" placeholder="Enter Page Top Description">{{ old('noida_top_description',(isset($keyword)) ? $keyword->noida_top_description:"")}}</textarea>
                     </div>
                 </div>
             <div class="form-group text-center">
@@ -314,16 +344,45 @@ padding:0px;
                 {{ csrf_field() }}
        
 
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Title Delhi</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_title_delhi" placeholder="Enter Meta Title Delhi">{{ old('meta_title_delhi',(isset($keyword)) ? $keyword->meta_title_delhi:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Description Delhi</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_desc_delhi" placeholder="Enter Meta Description Delhi">{{ old('meta_desc_delhi',(isset($keyword)) ? $keyword->meta_desc_delhi:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">H1 Heading Delhi</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="h1_heading_delhi" placeholder="Enter H1 Heading Delhi">{{ old('h1_heading_delhi',(isset($keyword)) ? $keyword->h1_heading_delhi:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Short Definition Delhi</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="short_desc_delhi" placeholder="Enter short definition Delhi">{{ old('short_desc_delhi',(isset($keyword)) ? $keyword->short_desc_delhi:"")}}</textarea>
+                    </div>
+                </div>
+                
+
                   <div class="form-group">
                     <label class="col-md-2 control-label">Delhi Bottom Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="delhi_bottom_heading" value="{{ $keyword->delhi_bottom_heading }}" placeholder="Enter bottom delhi heading">
+                        <input class="form-control" name="delhi_bottom_heading" value="{{ old('delhi_bottom_heading',(isset($keyword)) ? $keyword->delhi_bottom_heading:"")}}" placeholder="Enter bottom delhi heading">
                     </div>
                 </div>
             <div class="form-group ">
                 <label for="bottom_description" class="col-md-2 control-label">Delhi Page Bottom Description</label>
                 <div class="col-md-8">
-                <textarea class="form-control summernote" name="delhi_bottom_description" placeholder="Enter Page Bottom Description" rows="15">{{ $keyword->delhi_bottom_description }}</textarea>
+                <textarea class="form-control summernote" name="delhi_bottom_description" placeholder="Enter Page Bottom Description" rows="15">{{ old('delhi_bottom_description',(isset($keyword)) ? $keyword->delhi_bottom_description:"")}}</textarea>
                 </div>
             </div>	
 
@@ -343,10 +402,41 @@ padding:0px;
             <h4>Faridabad only City Page Content</h4>
             <form class="form-horizontal" method="POST" onsubmit="return keywordController.updatePageWithoutCityContent(this,<?php echo (isset($keyword->id)? $keyword->id:""); ?>)" >
                 {{ csrf_field() }}
+
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Title Faridabad</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_title_faridabad" placeholder="Enter Meta Title faridabad">{{ old('meta_title_faridabad',(isset($keyword)) ? $keyword->meta_title_faridabad:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Description Faridabad</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_desc_faridabad" placeholder="Enter Meta Description faridabad">{{ old('meta_desc_faridabad',(isset($keyword)) ? $keyword->meta_desc_faridabad:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">H1 Heading faridabad</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="h1_heading_faridabad" placeholder="Enter H1 Heading faridabad">{{ old('h1_heading_faridabad',(isset($keyword)) ? $keyword->h1_heading_faridabad:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Short Definition faridabad</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="short_desc_faridabad" placeholder="Enter short definition faridabad">{{ old('short_desc_faridabad',(isset($keyword)) ? $keyword->short_desc_faridabad:"")}}</textarea>
+                    </div>
+                </div>
+
+
                 <div class="form-group">
                     <label class="col-md-2 control-label">Without City Top Heading</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="top_wcity_heading" value="{{ $keyword->top_wcity_heading }}" placeholder="Enter top without city heading">
+                        <input class="form-control" name="top_wcity_heading" value="{{ old('top_wcity_heading',(isset($keyword)) ? $keyword->top_wcity_heading:"")}}" placeholder="Enter top without city heading">
                     </div>
                 </div>
 
@@ -354,7 +444,7 @@ padding:0px;
                 <div class="form-group">
                     <label class="col-md-2 control-label">Page Top Description Without City</label>
                     <div class="col-md-8">
-                        <textarea class="form-control summernote" name="top_wcity_description" rows="9" placeholder="Enter Page Top Description">{{ $keyword->top_wcity_description }}</textarea>
+                        <textarea class="form-control summernote" name="top_wcity_description" rows="9" placeholder="Enter Page Top Description">{{ old('top_wcity_description',(isset($keyword)) ? $keyword->top_wcity_description:"")}}</textarea>
                     </div>
                 </div>
        
@@ -373,16 +463,45 @@ padding:0px;
             <form class="form-horizontal" method="POST" onsubmit="return keywordController.updateBangaloreCityContent(this,<?php echo (isset($keyword->id)? $keyword->id:""); ?>)" >
                 {{ csrf_field() }}
          
+
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Title Bangalore</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_title_bangalore" placeholder="Enter Meta Title Bangalore">{{ old('meta_title_bangalore',(isset($keyword)) ? $keyword->meta_title_bangalore:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Meta Description bangalore</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="meta_desc_bangalore" placeholder="Enter Meta Description bangalore">{{ old('meta_desc_bangalore',(isset($keyword)) ? $keyword->meta_desc_bangalore:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">H1 Heading bangalore</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="h1_heading_bangalore" placeholder="Enter H1 Heading bangalore">{{ old('h1_heading_bangalore',(isset($keyword)) ? $keyword->h1_heading_bangalore:"")}}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Short Definition bangalore</label>
+                    <div class="col-md-8">
+                        <textarea class="form-control" name="short_desc_bangalore" placeholder="Enter short definition bangalore">{{ old('short_desc_bangalore',(isset($keyword)) ? $keyword->short_desc_bangalore:"")}}</textarea>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-md-2 control-label">Bottom Heading without city</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="bottom_wcity_heading" value="{{ $keyword->bottom_wcity_heading }}" placeholder="Enter bottom heading without city">
+                        <input class="form-control" name="bottom_wcity_heading" value="{{ old('bottom_wcity_heading',(isset($keyword)) ? $keyword->bottom_wcity_heading:"")}}" placeholder="Enter bottom heading without city">
                     </div>
                 </div>
             <div class="form-group ">
                 <label for="bottom_description" class="col-md-2 control-label">Page Bottom Description without city</label>
                 <div class="col-md-8">
-                <textarea class="form-control summernote" name="bottom_wcity_description" placeholder="Enter Page Bottom Description" rows="15">{{ $keyword->bottom_wcity_description }}</textarea>
+                <textarea class="form-control summernote" name="bottom_wcity_description" placeholder="Enter Page Bottom Description" rows="15">{{ old('bottom_wcity_description',(isset($keyword)) ? $keyword->bottom_wcity_description:"")}}</textarea>
                 </div>
             </div>	
             <div class="form-group text-center">
@@ -405,68 +524,68 @@ padding:0px;
         <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 1</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq1" placeholder="Enter FAQ Question 1" value="{{ $keyword->faqq1 }}">
+        <input class="form-control" name="faqq1" placeholder="Enter FAQ Question 1" value="{{ old('faqq1',(isset($keyword)) ? $keyword->faqq1:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 1</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa1" placeholder="Enter FAQ Answer 1">{{ $keyword->faqa1 }}</textarea>
+                    <textarea class="form-control" name="faqa1" placeholder="Enter FAQ Answer 1">{{ old('faqa1',(isset($keyword)) ? $keyword->faqa1:"")}}</textarea>
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 2</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq2" placeholder="Enter FAQ Question 2" value="{{ $keyword->faqq2 }}">
+                    <input class="form-control" name="faqq2" placeholder="Enter FAQ Question 2" value="{{ old('faqq2',(isset($keyword)) ? $keyword->faqq2:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 2</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa2" placeholder="Enter FAQ Answer 2">{{ $keyword->faqa2 }}</textarea>
+                    <textarea class="form-control" name="faqa2" placeholder="Enter FAQ Answer 2">{{ old('faqa2',(isset($keyword)) ? $keyword->faqa2:"")}}</textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 3</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq3" placeholder="Enter FAQ Question 3" value="{{ $keyword->faqq3 }}">
+                    <input class="form-control" name="faqq3" placeholder="Enter FAQ Question 3" value="{{ old('faqq3',(isset($keyword)) ? $keyword->faqq3:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 3</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa3" placeholder="Enter FAQ Answer 3">{{ $keyword->faqa3 }}</textarea>
+                    <textarea class="form-control" name="faqa3" placeholder="Enter FAQ Answer 3">{{ old('faqa3',(isset($keyword)) ? $keyword->faqa3:"")}}</textarea>
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 4</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq4" placeholder="Enter FAQ Question 4" value="{{ $keyword->faqq4 }}">
+                    <input class="form-control" name="faqq4" placeholder="Enter FAQ Question 4" value="{{ old('faqq4',(isset($keyword)) ? $keyword->faqq4:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 4</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa4" placeholder="Enter FAQ Answer 4">{{ $keyword->faqa4 }}</textarea>
+                    <textarea class="form-control" name="faqa4" placeholder="Enter FAQ Answer 4">{{ old('faqa4',(isset($keyword)) ? $keyword->faqa4:"")}}</textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 5</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq5" placeholder="Enter FAQ Question 5" value="{{ $keyword->faqq5 }}">
+                    <input class="form-control" name="faqq5" placeholder="Enter FAQ Question 5" value="{{ old('faqq5',(isset($keyword)) ? $keyword->faqq5:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 5</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa5" placeholder="Enter FAQ Answer 5">{{ $keyword->faqa5 }}</textarea>
+                    <textarea class="form-control" name="faqa5" placeholder="Enter FAQ Answer 5">{{ old('faqa5',(isset($keyword)) ? $keyword->faqa5:"")}}</textarea>
                 </div>
             </div>
 
@@ -474,14 +593,14 @@ padding:0px;
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 6</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq6" placeholder="Enter FAQ Question 6" value="{{ $keyword->faqq6 }}">
+                    <input class="form-control" name="faqq6" placeholder="Enter FAQ Question 6" value="{{ old('faqq6',(isset($keyword)) ? $keyword->faqq6:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 6</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa6" placeholder="Enter FAQ Answer 6">{{ $keyword->faqa6 }}</textarea>
+                    <textarea class="form-control" name="faqa6" placeholder="Enter FAQ Answer 6">{{ old('faqa6',(isset($keyword)) ? $keyword->faqa6:"")}}</textarea>
                 </div>
             </div>
             
@@ -489,14 +608,14 @@ padding:0px;
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 7</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq7" placeholder="Enter FAQ Question 7" value="{{ $keyword->faqq7 }}">
+                    <input class="form-control" name="faqq7" placeholder="Enter FAQ Question 7" value="{{ old('faqq7',(isset($keyword)) ? $keyword->faqq7:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 7</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa7" placeholder="Enter FAQ Answer 7">{{ $keyword->faqa7 }}</textarea>
+                    <textarea class="form-control" name="faqa7" placeholder="Enter FAQ Answer 7">{{ old('faqa7',(isset($keyword)) ? $keyword->faqa7:"")}}</textarea>
                 </div>
             </div>
             
@@ -504,14 +623,14 @@ padding:0px;
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 8</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq8" placeholder="Enter FAQ Question 8" value="{{ $keyword->faqq8 }}">
+                    <input class="form-control" name="faqq8" placeholder="Enter FAQ Question 8" value="{{ old('faqq8',(isset($keyword)) ? $keyword->faqq8:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 8</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa8" placeholder="Enter FAQ Answer 8">{{ $keyword->faqa8 }}</textarea>
+                    <textarea class="form-control" name="faqa8" placeholder="Enter FAQ Answer 8">{{ old('faqa8',(isset($keyword)) ? $keyword->faqa8:"")}}</textarea>
                 </div>
             </div>
             
@@ -519,14 +638,14 @@ padding:0px;
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 9</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq9" placeholder="Enter FAQ Question 9" value="{{ $keyword->faqq9 }}">
+                    <input class="form-control" name="faqq9" placeholder="Enter FAQ Question 9" value="{{ old('faqq9',(isset($keyword)) ? $keyword->faqq9:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 9</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa9" placeholder="Enter FAQ Answer 9">{{ $keyword->faqa9 }}</textarea>
+                    <textarea class="form-control" name="faqa9" placeholder="Enter FAQ Answer 9">{{ old('faqa9',(isset($keyword)) ? $keyword->faqa9:"")}}</textarea>
                 </div>
             </div>
             
@@ -534,14 +653,14 @@ padding:0px;
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Question 10</label>
                 <div class="col-md-8">
-                    <input class="form-control" name="faqq10" placeholder="Enter FAQ Question 10" value="{{ $keyword->faqq10 }}">
+                    <input class="form-control" name="faqq10" placeholder="Enter FAQ Question 10" value="{{ old('faqq10',(isset($keyword)) ? $keyword->faqq10:"")}}">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="top_description" class="col-md-2 control-label">FAQ Answer 10</label>
                 <div class="col-md-8">
-                    <textarea class="form-control" name="faqa10" placeholder="Enter FAQ Answer 10">{{ $keyword->faqa10 }}</textarea>
+                    <textarea class="form-control" name="faqa10" placeholder="Enter FAQ Answer 10">{{ old('faqa10',(isset($keyword)) ? $keyword->faqa10:"")}}</textarea>
                 </div>
             </div>
             

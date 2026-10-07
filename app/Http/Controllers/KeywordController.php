@@ -2142,8 +2142,12 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		$validator = Validator::make($request->all(), [
 			'noida_top_description' => 'nullable',
 			'noida_top_heading' => 'nullable',
+			'meta_title_noida' => 'nullable|string|min:30|max:61',
+			'meta_desc_noida' => 'nullable|string|min:70|max:161',
+			'h1_heading_noida' => 'nullable|min:10|max:260',
+			'short_desc_noida' => 'nullable|min:45|max:360',
 		]);
-
+	
 		if ($validator->fails()) {
 			$errorsBag = $validator->getMessageBag()->toArray();
 			return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
@@ -2153,6 +2157,10 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		if ($kwObj) {
 			$kwObj->noida_top_description = $request->input('noida_top_description');
 			$kwObj->noida_top_heading = $request->input('noida_top_heading');
+			$kwObj->meta_title_noida = $request->input('meta_title_noida');
+			$kwObj->meta_desc_noida = $request->input('meta_desc_noida');
+			$kwObj->h1_heading_noida = $request->input('h1_heading_noida');
+			$kwObj->short_desc_noida = $request->input('short_desc_noida');
 
 
 			if ($kwObj->isDirty()) {
@@ -2207,9 +2215,14 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		$validator = Validator::make($request->all(), [
 			'delhi_bottom_heading' => 'nullable',
 			'delhi_bottom_description' => 'nullable',
+			'meta_title_delhi' => 'nullable|string|min:30|max:61',
+			'meta_desc_delhi' => 'nullable|string|min:70|max:161',
+			'h1_heading_delhi' => 'nullable|min:10|max:100',
+			'short_desc_delhi' => 'nullable|min:45|max:360',
 
 
 		]);
+		 
 
 		if ($validator->fails()) {
 			$errorsBag = $validator->getMessageBag()->toArray();
@@ -2221,6 +2234,10 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		
 			$kwObj->delhi_bottom_description = $request->input('delhi_bottom_description');
 			$kwObj->delhi_bottom_heading = $request->input('delhi_bottom_heading');
+			$kwObj->meta_title_delhi = $request->input('meta_title_delhi');
+			$kwObj->meta_desc_delhi = $request->input('meta_desc_delhi');
+			$kwObj->h1_heading_delhi = $request->input('h1_heading_delhi');
+			$kwObj->short_desc_delhi = $request->input('short_desc_delhi');
 		
 
 
@@ -2275,9 +2292,16 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		$validator = Validator::make($request->all(), [
 			'top_wcity_description' => 'nullable',
 			'top_wcity_heading' => 'nullable',
+			'meta_title_faridabad' => 'nullable|string|min:30|max:61',
+			'meta_desc_faridabad' => 'nullable|string|min:70|max:161',
+			'h1_heading_faridabad' => 'nullable|min:10|max:100',
+			'short_desc_faridabad' => 'nullable|min:45|max:360',
 
 
 		]);
+
+
+ 
 
 		if ($validator->fails()) {
 			$errorsBag = $validator->getMessageBag()->toArray();
@@ -2288,6 +2312,10 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		if ($kwObj) {
 			$kwObj->top_wcity_description = $request->input('top_wcity_description');		
 			$kwObj->top_wcity_heading = $request->input('top_wcity_heading');
+			$kwObj->meta_title_faridabad = $request->input('meta_title_faridabad');
+			$kwObj->meta_desc_faridabad = $request->input('meta_desc_faridabad');
+			$kwObj->h1_heading_faridabad = $request->input('h1_heading_faridabad');
+			$kwObj->short_desc_faridabad = $request->input('short_desc_faridabad');
 
 
 			if ($kwObj->isDirty()) {
@@ -2341,9 +2369,13 @@ $leads->whereDate('created_at', '<=', $dateTo);
 		$validator = Validator::make($request->all(), [
 			'bottom_wcity_heading' => 'nullable',
 			'bottom_wcity_description' => 'nullable',
-
-
+			'meta_title_bangalore' => 'nullable|string|min:30|max:61',
+			'meta_desc_bangalore' => 'nullable|string|min:70|max:161',
+			'h1_heading_bangalore' => 'nullable|min:10|max:100',
+			'short_desc_bangalore' => 'nullable|min:45|max:360',
 		]);
+
+
 
 		if ($validator->fails()) {
 			$errorsBag = $validator->getMessageBag()->toArray();
@@ -2355,6 +2387,10 @@ $leads->whereDate('created_at', '<=', $dateTo);
 			
 			$kwObj->bottom_wcity_description = $request->input('bottom_wcity_description');
 			$kwObj->bottom_wcity_heading = $request->input('bottom_wcity_heading');
+			$kwObj->meta_title_bangalore = $request->input('meta_title_bangalore');
+			$kwObj->meta_desc_bangalore = $request->input('meta_desc_bangalore');
+			$kwObj->h1_heading_bangalore = $request->input('h1_heading_bangalore');
+			$kwObj->short_desc_bangalore = $request->input('short_desc_bangalore');
 			if ($kwObj->isDirty()) {
 				$originalValues = $kwObj->getOriginal();
 				$changes = [];
