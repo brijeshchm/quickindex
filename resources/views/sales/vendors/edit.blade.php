@@ -175,11 +175,16 @@
             </a>
 
 
-            <a
-                href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($vendor->city)),'service_slug' => $vendor->business_slug])) }}"
-                class="text-2xl font-bold text-[#315b80] hover:underline right" target="_blank"
+           <a
+                href="{{ route('city.slug', [
+                    'city_slug' => \Illuminate\Support\Str::slug($vendor->city),
+                    'service_slug' => $vendor->business_slug,
+                ]) }}"
+                class="text-2xl font-bold text-[#315b80] hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
             >
-                 View
+                View
             </a>
 
 

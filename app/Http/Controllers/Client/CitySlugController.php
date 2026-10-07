@@ -19,7 +19,7 @@ use App\Models\Lead;
 use Session;
 use App\Models\ParentCategory;
 use App\Models\Client\Comment;
-use str;
+use Str;
 use App\Models\HomeSlider;
 use Illuminate\Support\Facades\Cache;
 class CitySlugController extends Controller
@@ -1720,7 +1720,7 @@ $reviewList = DB::table('clients')
 		 
 			$addressText = !empty($clientscheck->address) ? $clientscheck->address : '';
 			$mapText = !empty($clientscheck->business_map) ? '\n Directions: ' . $clientscheck->business_map : '';
-			$profile_url = 'https://www.quickdials.com/'. str::slug(strtolower($clientscheck->city)).'/' . $clientscheck->business_slug;
+			$profile_url = 'https://www.quickdials.com/'. Str::slug(strtolower($clientscheck->city)).'/' . $clientscheck->business_slug;
 			$keyword = "";
 			$address_data = "Greetings from {$businessName},\n"
 				. "We’re following up on your enquiry made on Quickdials for {$keyword}.\n"
