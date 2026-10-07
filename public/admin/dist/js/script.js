@@ -3220,14 +3220,14 @@ var dataTableAssignedKeywords = $('#datatable-assigned-keywords').dataTable({
 					success:function(response){	
 					 ;			
 					if(response.status){
-						$('#messagemodel .modal-title').text("status successfully update");	
+						$('#messagemodel .modal-title').text("Seo Index successfully update");	
 						$('#messagemodel .modal-body').html("<div class='alert alert-success'>"+response.msg+"</div>");			
 						$('#messagemodel').modal({keyboard:false,backdrop:'static'});
 						$('#messagemodel').css({'width':'100%'});
 					 
 							dataTableSEO.ajax.reload(null,false);	
 					}else{
-							$('#messagemodel .modal-title').text("Status successfully update");	
+							$('#messagemodel .modal-title').text("Seo Index successfully update");	
 							$('#messagemodel .modal-body').html("<div class='alert alert-danger'>"+response.msg+"</div>");		
 							$('#messagemodel').modal({keyboard:false,backdrop:'static'});
 							$('#messagemodel').css({'width':'100%'});
@@ -3241,7 +3241,7 @@ var dataTableAssignedKeywords = $('#datatable-assigned-keywords').dataTable({
 				}
 				
 				}else{
-					if(confirm("Are you sure you want to change the status to No?")){		
+					if(confirm("Are you sure you want to change the Seo Index to No?")){		
 				 
 				$.ajax({
 					url:"/developer/seo/seoIndexStatus/"+id+"/"+val,
@@ -3249,13 +3249,13 @@ var dataTableAssignedKeywords = $('#datatable-assigned-keywords').dataTable({
 					success:function(response){	
 					 ;			
 					if(response.status){
-						$('#messagemodel .modal-title').text("status successfully update");	
+						$('#messagemodel .modal-title').text("Seo Index successfully update");	
 						$('#messagemodel .modal-body').html("<div class='alert alert-success'>"+response.msg+"</div>");			
 						$('#messagemodel').modal({keyboard:false,backdrop:'static'});
 						$('#messagemodel').css({'width':'100%'});
 						dataTableSEO.ajax.reload( null, false );   
 					}else{
-							$('#messagemodel .modal-title').text("Status successfully update");	
+							$('#messagemodel .modal-title').text("Seo Index successfully update");	
 							$('#messagemodel .modal-body').html("<div class='alert alert-danger'>"+response.msg+"</div>");		
 							$('#messagemodel').modal({keyboard:false,backdrop:'static'});
 							$('#messagemodel').css({'width':'100%'});
