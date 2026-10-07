@@ -1170,6 +1170,8 @@ $reviewList = DB::table('clients')
 
 			->where('keyword.keyword', 'LIKE', "%{$keywordName}%")
 			->where('clients.active_status', '1')
+			->whereNotNull('clients.city')
+			->whereRaw("TRIM(clients.city) <> ''")
 			->groupBy('clients.id')
 
 			->orderByRaw("
@@ -1344,6 +1346,8 @@ $reviewList = DB::table('clients')
     
     ->where('clients.active_status', '1')
     ->where('keyword.slug', $search_kw)
+	->whereNotNull('clients.city')
+	->whereRaw("TRIM(clients.city) <> ''")
 	->groupBy('clients.id')
     ->orderByRaw("
         CASE clients.client_type
@@ -1543,6 +1547,8 @@ $reviewList = DB::table('clients')
 		 ->whereIn('clients.id', $businessIds)
 		->where('clients.active_status', '1')
 		->whereNotNull('c.comment_content')
+		->whereNotNull('clients.city')
+		->whereRaw("TRIM(clients.city) <> ''")
 		->groupBy(
 		'clients.id'       
 		)

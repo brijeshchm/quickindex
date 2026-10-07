@@ -184,13 +184,32 @@ $keywordImg= !empty($kwData['key_icon'])
                     $address['streetAddress'] = $clientBus['landmark'] ?? $clientBus['city'];
                 }
 
+               
+
+                $citySlug = \Illuminate\Support\Str::slug(
+                (string) ($clientBus['city'] ?? '')
+                );
+
+                $businessSlug = trim(
+                (string) ($clientBus['business_slug'] ?? '')
+                );
+
+                $businessUrl = $citySlug !== ''
+                ? route('city.slug', [
+                'city_slug'    => $citySlug,
+                'service_slug' => $businessSlug,
+                ])
+                : url('/' . $businessSlug);
+
                 $schema = [
-                    '@context' => 'https://schema.org',
-                    '@type'    => 'LocalBusiness',
-                    'name'     => $clientBus['name'],
-                    'url' =>   route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($clientBus['city']),'service_slug' => $clientBus['business_slug']]),     
-                    'address'  => $address,
+                '@context' => 'https://schema.org',
+                '@type'    => 'LocalBusiness',
+                'name'     => $clientBus['name'] ?? '',
+                'url'      => $businessUrl,
+                'address'  => $address,
                 ];
+
+
 
                 // Only add image if present
                 if (!empty($clientBus['logo'])) {
