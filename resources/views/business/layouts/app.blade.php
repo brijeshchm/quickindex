@@ -154,7 +154,8 @@ $pageName=request()->is('profile*')?'Profile':(request()->is('account*')?'Accoun
 @php
      
     $percent = $profile['profileCompletion'];
-    $color = $percent >= 80 ? 'emerald' : ($percent >= 50 ? 'amber' : 'destructive');
+    
+    $color = $percent >= 95 ? 'emerald' : ($percent >= 50 ? 'amber' :  ($percent <= 50 ? 'red' : 'destructive'));
 @endphp
 
 <div class="p-4">

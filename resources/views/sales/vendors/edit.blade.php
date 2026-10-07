@@ -20,6 +20,7 @@
         'recent-activity'       => 'Recent Activity',
         'assigned-keywords'     => 'Assigned Keywords',
         'account-settings'      => 'Account Settings',
+        'pending-profile'      => 'Pending Profile',
         'leads'                 => 'Leads',
         'discussion'            => 'Discussion',
         'payment-orders'        => 'Payment Orders',
@@ -165,7 +166,162 @@
     {{-- PAGE HEADER --}}
     <div class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-        <div class="min-w-0">
+@php
+    $completion = $vendor->getProfileCompletionBreakdown();
+
+    $percent = (int) round(
+        max(0, min(100, (float) ($completion['total'] ?? 0)))
+    );
+
+    if ($percent >= 95) {
+        $textClass = 'text-emerald-600';
+        $barClass = 'bg-emerald-500';
+    } elseif ($percent >= 50) {
+        $textClass = 'text-amber-600';
+        $barClass = 'bg-amber-500';
+    } else {
+        $textClass = 'text-red-600';
+        $barClass = 'bg-red-500';
+    }
+
+    $citySlug = \Illuminate\Support\Str::slug(
+        (string) ($vendor->city ?? '')
+    );
+
+    $businessSlug = trim((string) ($vendor->business_slug ?? ''));
+
+    $profileUrl = null;
+
+    if ($businessSlug !== '') {
+        $profileUrl = $citySlug 
+            ? route('city.slug', [
+                'city_slug' => $citySlug,
+                'service_slug' => $businessSlug,
+            ])
+            : '';
+    }
+@endphp
+
+<div class="w-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+    <div class="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-[220px_190px_minmax(0,1fr)] lg:items-center lg:gap-6">
+
+
+     <div class="flex flex-wrap items-center gap-3 lg:flex-col lg:items-stretch">
+            <a
+                href="{{ route('sales.vendors.index') }}"
+                class="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            >
+                ← Back to vendors
+            </a>
+
+            @if($profileUrl)
+                <a
+                    href="{{ $profileUrl }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center rounded-lg bg-[#008000] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#006400] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                    View profile ↗
+                </a>
+            @endif
+        </div>
+        {{-- First: Profile completion --}}
+        <div class="rounded-xl bg-slate-50 p-4">
+            <div class="mb-3 flex items-center justify-between gap-3">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Completion
+                </p>
+
+                <span class="text-xl font-bold {{ $textClass }}">
+                    {{ $percent }}%
+                </span>
+            </div>
+
+            <div
+                class="h-2 overflow-hidden rounded-full bg-slate-200"
+                role="progressbar"
+                aria-label="Profile completion"
+                aria-valuenow="{{ $percent }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+            >
+                <div
+                    class="h-full rounded-full transition-all duration-500 {{ $barClass }}"
+                    style="width: {{ $percent }}%;"
+                ></div>
+            </div>
+
+            <p class="mt-2 text-xs text-slate-500">
+                {{ $percent === 100
+                    ? 'Profile complete'
+                    : (100 - $percent) . '% remaining'
+                }}
+            </p>
+        </div>
+
+        {{-- Second: Navigation --}}
+       
+
+        {{-- Third: Vendor details --}}
+        <div class="min-w-0 border-t border-slate-100 pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+            
+
+            <h1 class="mt-2 break-words text-xl font-bold tracking-tight text-slate-900 xl:text-2xl">
+                {{ $vendor->business_name ?: 'Create vendor profile' }}
+            </h1>
+
+            
+
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+                {{ $isCreating
+                    ? 'Create a vendor profile for review.'
+                    : 'Manage business details, activity, and account health.'
+                }}
+            </p>
+
+
+            
+                <a
+                    href="{{ url('cache-clear') }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center rounded-lg bg-[#dc3545] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#8B0000] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                >
+                    Cache Clear ↗
+                </a>
+            
+        </div>
+
+    </div>
+</div>
+    
+        <!-- <div class="min-w-0 flex">
+
+            @php
+                $completion = $vendor->getProfileCompletionBreakdown();
+                    $percent = $completion['total'];
+            
+                $color = $percent >= 95 ? 'emerald' : ($percent >= 50 ? 'amber' :  ($percent <= 50 ? 'red' : 'destructive'));
+            @endphp
+
+            <div class="p-4">
+                <div class="mb-2 flex items-center justify-between">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                        Completion
+                    </p>
+                    <span class="font-display text-lg font-bold text-{{ $color }}-600">
+                        {{ round($percent) }}%
+                    </span>
+                </div>
+
+                <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+                    <div class="h-full rounded-full bg-{{ $color }}-500 transition-all duration-500"
+                        style="width: {{ round($percent) }}%"></div>
+                </div>
+
+                
+            </div>
+
 
             <a
                 href="{{ route('sales.vendors.index') }}"
@@ -203,7 +359,7 @@
 
             </p>
 
-        </div>
+        </div> -->
 
 
        @if (!$isCreating)
@@ -3328,7 +3484,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
            </section>
           
-           <section
+
+
+        <section
                 x-show="activeSection === 'account-settings'"
                 x-cloak
             >
@@ -3411,6 +3569,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     </section>
 
+    
     {{-- Assignment and package --}}
     <section class="grid gap-5 lg:grid-cols-3">
         <form
@@ -3647,7 +3806,77 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-           </section>
+</section>
+
+
+
+  <section x-show="activeSection === 'pending-profile'" x-cloak>
+
+  @php
+    $completion = $vendor->getProfileCompletionBreakdown();
+    $percent = $completion['total'];
+  
+  @endphp
+
+             
+<div class="animate-fade-in space-y-5 md:space-y-6"><div>
+    
+<h1 class="font-display text-xl font-bold md:text-3xl">Customer Pending Profile</h1>
+
+<p class="mt-1 text-sm text-slate-500 md:text-base">Read customer feedback and respond from one place.</p></div>
+ @php
+    
+    $percent = $completion['total'];
+       $color = $percent >= 95 ? 'emerald' : ($percent >= 50 ? 'amber' :  ($percent <= 50 ? 'red' : 'destructive'));
+@endphp
+
+<div class="card p-4">
+    <div class="mb-2 flex items-center justify-between">
+        <p class="text-xs font-semibold uppercase tracking-wider text-{{ $color }}-600">
+            Profile Completion
+        </p>
+        <span class="font-display text-lg font-bold text-{{ $color }}-600">
+            {{ round($percent) }}%
+        </span>
+    </div>
+
+    <div class="h-2 w-full overflow-hidden rounded-full bg-secondary">
+        <div class="h-full rounded-full bg-{{ $color }}-500 transition-all duration-500"
+             style="width: {{ round($percent) }}%"></div>
+    </div>
+
+    @if($percent < 100 && !empty($completion['missing_fields']))
+        <details class="mt-3 text-xs text-slate-500">
+            <summary class="cursor-pointer font-medium">
+                Complete these to boost your profile
+            </summary>
+            <ul class="mt-2 list-disc space-y-1 pl-4">
+                @foreach(array_slice($completion['missing_fields'], 0, 6) as $field)
+                @php          
+                if($field =='profile_pic'){
+                    $field = "Business Banner";
+                }
+                @endphp
+
+                   
+                    <li>{{ ucwords(str_replace('_', ' ', $field)) }}</li>
+                @endforeach
+            </ul>
+        </details>
+    @endif
+</div>
+  
+</div>
+               
+
+     
+ 
+
+
+
+</section>
+
+
 
  <section x-show="activeSection === 'leads'" x-cloak>
     <div class="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">

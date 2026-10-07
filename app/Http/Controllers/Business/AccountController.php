@@ -111,7 +111,7 @@ class AccountController extends Controller
 			$data[$key] = $item;
 		}
  
-// dd($data);
+ 
 		return view('business.package', ['search' => $search, 'client' => $client,'data'=>$data]);
 	}
 

@@ -1,10 +1,10 @@
 @extends('business.layouts.app')
-@section('title','Reviews')
+@section('title','Pending Profile')
 @section('content')
-@php $avg=count($reviews)?collect($reviews)->avg('rating'):0; @endphp
+ 
 <div class="animate-fade-in space-y-5 md:space-y-6"><div>
     
-<h1 class="font-display text-xl font-bold md:text-3xl">Customer Reviews</h1>
+<h1 class="font-display text-xl font-bold md:text-3xl">Customer Pending Profile</h1>
 
 <p class="mt-1 text-sm text-slate-500 md:text-base">Read customer feedback and respond from one place.</p></div>
  @php
