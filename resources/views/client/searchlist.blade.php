@@ -143,7 +143,7 @@ $starPercentages = collect([5,4,3,2,1])->map(fn($s) => [
     
     $cityName =$city ?: 'faridabad';
     if (!empty($childCat) && !empty($childSlug)) {
-        $items[] = ['name' => ucfirst($childCat), 'url' => route('city.slug', ['city_slug'=> $cityName,'service_slug' => $childSlug]) ];
+        $items[] = ['name' => ucfirst($childCat), 'url' => route('showCity', $childSlug) ];
     }
 
  
@@ -236,7 +236,7 @@ $businessCollections = collect($businesses)->take(20);
                     '@context' => 'https://schema.org',
                     '@type'    => 'LocalBusiness',
                     'name'     => $clientBus['name'],
-                    'url' =>    route('business.details',$clientBus['business_slug']),     
+                    'url' =>   route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($clientBus['city']),'service_slug' => $clientBus['business_slug']]),     
                     'address'  => $address,
                 ];
 
@@ -288,7 +288,7 @@ $schema = [
                     'name' => $businessName,
 
                     'url' => route(
-                        'business.details',
+                        'showCity',
                         $businessSlug
                     )
                 ];
@@ -767,7 +767,9 @@ function bannerSlider(banners, interval = 4000) {
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
+                    @php
+                    $actionClass = 'flex items-center justify-center gap-1 rounded-xl py-2 text-[10px] font-semibold text-white transition sm:text-xs';
+                    @endphp
                     
                         @if($quickBusinesses)
                         @foreach($quickBusinesses ?? [] as $qb)
@@ -790,9 +792,11 @@ function bannerSlider(banners, interval = 4000) {
                                 <h2 class="font-semibold text-lg leading-tight mb-1 line-clamp-2">{{ $qb['name'] ?? '' }}</h2>
                                 <p class="text-gray-600 text-sm mb-4">{{ $qb['location'] ?? '' }}</p>
                                 <div class="flex gap-3">
-                                    <a href="{{ route('business.details', $qb['slug']) }}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
-                                        💬 Send Enquiry
-                                    </a>
+                                     <button type="button"
+                                            onclick="document.getElementById('enquiry-modal').classList.add('open')"
+                                            class="{{ $actionClass }} bg-violet-600 hover:bg-violet-700">
+                                        ✉ <span>Enquiry</span>
+                                    </button>
                                     <a href="https://wa.me/{{ preg_replace('/\D/', '', $qb['phone'] ?? '') }}" rel="nofollow noopener noreferrer" target="_blank"
                                        class="flex items-center justify-center w-12 h-12 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all">
                                         <img src="{{ asset('WhatsApp.svg') }}" alt="WhatsApp" class="w-6 h-6" loading="lazy"

@@ -453,8 +453,8 @@ Route::get('/sanctum/csrf-cookie', function (Request $request) {
 
 
 
-Route::get('/businessdetails/{slug}', [App\Http\Controllers\Client\ClientDetailController::class, 'index'])->name('business.details');
-Route::get('/businessdetails', [App\Http\Controllers\Client\ClientDetailController::class, 'businessDetails'])->name('lists.business');
+// Route::get('/businessdetails/{slug}', [App\Http\Controllers\Client\ClientDetailController::class, 'index'])->name('business.details');
+// Route::get('/businessdetails', [App\Http\Controllers\Client\ClientDetailController::class, 'businessDetails'])->name('lists.business');
 
 Route::post('/review', [App\Http\Controllers\Client\ReviewController::class, 'store']);
 Route::get('/client/logout', [App\Http\Controllers\LogoutController::class, 'clientLogout'])->name('clientLogout');
@@ -480,9 +480,14 @@ Route::get('/failed', [App\Http\Controllers\Client\WebsiteRazorpayController::cl
 
 
 Route::match(['GET', 'HEAD'], '/business-details/{slug}', function ($slug) {
-    return redirect('/businessdetails/' . $slug, 301);
+    return redirect('/' . $slug, 301);
 });
- 
+
+Route::match(['GET', 'HEAD'], '/businessdetails/{slug}', function ($slug) {
+    return redirect('/' . $slug, 301);
+});
+
+
 // Route::get('search', [App\Http\Controllers\Client\CitySlugController::class, 'searchKW'])->name('kw.search');
 Route::get('/{city}', [CitySlugController::class, 'showCityOrService'])
     ->name('showCity');

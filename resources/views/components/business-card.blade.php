@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <h2 class="font-bold text-gray-900 text-[13px] sm:text-[15px] leading-tight group-hover:text-indigo-600 transition-colors">
-                            <a href="{{ route('business.details', $business['business_slug']) }}"  rel="noopener noreferrer nofollow">{{ $name }}</a>
+                            <a href="{{ route('city.slug', ['city_slug'=>\Illuminate\Support\Str::slug(strtolower($business['city'])),'service_slug' => $business['business_slug']])  }}"  rel="noopener noreferrer nofollow">{{ $name }}</a>
                         </h2>
                         @if($verified)
                         <span class="flex items-center gap-0.5 text-[9px] sm:text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-100" aria-label="Verified Business">
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ✉ <span>Enquiry</span>
             </button>
 
-            <a href="{{ route('business.details', $business['business_slug']) }}"  rel="noopener noreferrer nofollow"
+            <a href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($business['city'])),'service_slug' => $business['business_slug']]) }}"  rel="noopener noreferrer nofollow"
             class="{{ $actionClass }} bg-sky-500 hover:bg-sky-600">
                 🗺 <span>View</span>
             </a>
@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <h3 class="font-bold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors mb-0.5">
-            <a href="{{ route('business.details', $business['business_slug']) }}" rel="noopener noreferrer nofollow">{{ $name }}</a>
+            <a href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($biz['city'])),'service_slug' => $biz['business_slug']]) }}" rel="noopener noreferrer nofollow">{{ $name }}</a>
         </h3>
         <p class="text-[11px] text-gray-400 mb-3">{{ implode(', ', array_slice($category, 0, 2)) }}</p>
 

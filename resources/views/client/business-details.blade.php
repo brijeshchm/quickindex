@@ -258,7 +258,7 @@ $bgImage = $bgImage ?? '/computer-courses-training.jpg';
                                 <h3 class="font-semibold text-lg leading-tight mb-1 line-clamp-2">{{ $qb['name'] ?? '' }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{{ $qb['location'] ?? '' }}</p>
                                 <div class="flex gap-3">
-                                    <a href="{{ route('business.details', $qb['slug']) }}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                                    <a href="{{ route('showCity', $qb['slug']) }}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2">
                                         💬 Send Enquiry
                                     </a>
                                     <a href="https://wa.me/{{ preg_replace('/\D/', '', $qb['phone'] ?? '') }}" rel="nofollow noopener noreferrer" target="_blank"

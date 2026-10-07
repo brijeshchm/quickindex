@@ -68,7 +68,7 @@
                                         <td>{{ $client->username }}</td>
                                         <td>{{ $client->business_name }}</td>
                                         <td>{{ $client->first_name." ".$client->last_name }}</td>
-                                        <!--td>{{ $client->city }}</td-->
+                                      
                                         <td>{{ $client->email }}</td>
                                         <td>{{ $client->mobile }}</td>
                                         <td class="text-center"><a href="/developer/clients/update/{{$client->username}}"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i></a></td>

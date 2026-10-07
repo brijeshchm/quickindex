@@ -19,6 +19,7 @@ use App\Models\Lead;
 use Session;
 use App\Models\ParentCategory;
 use App\Models\Client\Comment;
+use str;
 use App\Models\HomeSlider;
 use Illuminate\Support\Facades\Cache;
 class CitySlugController extends Controller
@@ -88,7 +89,7 @@ class CitySlugController extends Controller
 			->map(function ($b) {
 				$b->image_url = $b->image_path ? asset($b->image_path) :'client/images/computer-courses-training.jpg';
 				$b->alt_text  = $b->alt_text ?: 'Banner';
-				$b->click_url = $b->client_slug ? '/businessdetails/' . $b->client_slug : null;
+				$b->click_url = url($b->client_slug);
 				return $b;
 			})
 			->values();
@@ -358,6 +359,7 @@ class CitySlugController extends Controller
 				'clients.trusted_status',
 				'clients.featured',
 				'clients.openUntil',
+				'clients.mapUrl',
 				'clients.address',
 				'clients.year_of_estb',
 				'clients.certified_status',
@@ -378,9 +380,9 @@ class CitySlugController extends Controller
 				DB::raw('COALESCE(c.comment_count,0) as comment_count')
 			)
 			->where('clients.city', $city)
-			 ->where('clients.active_status', '1')
+			->where('clients.active_status', '1')
 			->where('keyword.slug', $search_kw)
-			 ->groupBy('clients.id')			 
+			->groupBy('clients.id')			 
 			->orderByRaw("
         CASE clients.client_type
             WHEN 'platinum' THEN 1
@@ -471,16 +473,16 @@ class CitySlugController extends Controller
 				'certified_img' => $certified_img,
 				'trusted_img' => $trusted_img,
 				'gst_img' => $gst_img,			 
-				'city' => $client->city ??'faridabad',	 		 
-				'state' => $client->state ?? 'Karnataka',	 		 
-				'pincode' => !empty($client->pincode) ? $client->pincode : '560008',		 
+				'city' => $client->city ??'',	 		 
+				'state' => $client->state ?? '',	 		 
+				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
 				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 		 
 				'verified' => $client->verified ,
 				'active_status' => $client->active_status,
 				'trending' => $client->trending,			 
 				'topSearch' => $client->topSearch,
 				'featured' => $client->featured,				 
-				'mapUrl' => "https://maps.google.com/?q=" . generate_slug($client->address),				 
+				'mapUrl' => $client->mapUrl ? $client->mapUrl:"https://maps.google.com/?q=" . generate_slug($client->address),				 
 				'address' => $client->address,			 
 				'established' => $client->year_of_estb,			 
 				'rating' => $client->rating,
@@ -518,6 +520,7 @@ class CitySlugController extends Controller
 		'clients.active_status',
 		'clients.trusted_status',
 		'clients.certified_status',
+		'clients.mapUrl',
 		'clients.trending',
 		'clients.topSearch',
 		'clients.openUntil',
@@ -632,7 +635,7 @@ class CitySlugController extends Controller
 				'trending' => $client->trending,
 				'topSearch' => $client->topSearch,
 				'featured' => $client->featured,			 
-				'mapUrl' => "https://maps.google.com/?q=" . generate_slug($client->address),				 
+				'mapUrl' => $client->mapUrl ? $client->mapUrl:"https://maps.google.com/?q=" . generate_slug($client->address),				 
 				'address' => $client->address,			 
 				'year_of_estb' => $client->year_of_estb,			
 				'rating' => $client->rating,
@@ -899,7 +902,7 @@ $reviewList = DB::table('clients')
 		->map(function ($b) {
 			$b->image_url = $b->image_path ? asset($b->image_path) :'';
 			$b->alt_text  = $b->alt_text ?: 'Banner';
-			$b->click_url = $b->client_slug ? '/businessdetails/' . $b->client_slug : null;
+			$b->click_url = url($b->client_slug);
 			return $b;
 		})
 		->values();
@@ -1089,6 +1092,7 @@ $reviewList = DB::table('clients')
 				'clients.featured',
 				'clients.openUntil',
 				'clients.address',
+				'clients.mapUrl',
 				'clients.year_of_estb',
 				'clients.certified_status',
 				'clients.certifications',
@@ -1211,14 +1215,13 @@ $reviewList = DB::table('clients')
 				'trending' => $client->trending,
 				'topSearch' => $client->topSearch,
 				'featured' => $client->featured,			 
-				'city' => $client->city ??'faridabad',	 		 
-				'state' => $client->state ?? 'Karnataka',	 		 
-				'pincode' => !empty($client->pincode) ? $client->pincode : '560008',		 
+				'city' => $client->city ??'',	 		 
+				'state' => $client->state ?? '',	 		 
+				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
 				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 				 
 				'address' => $client->address,			 
-				'year_of_estb' => $client->year_of_estb,
-	 
-				'mapUrl' => "https://maps.google.com/?q=" . generate_slug($client->address),
+				'year_of_estb' => $client->year_of_estb,	 
+				'mapUrl' => $client->mapUrl ? $client->mapUrl:"https://maps.google.com/?q=" . generate_slug($client->address),
 				'whatsapp' => '7559435943',
 				'call' => '917559435943',
 				'rating' => $client->rating,
@@ -1258,6 +1261,7 @@ $reviewList = DB::table('clients')
 				'clients.featured',
 				'clients.openUntil',
 				'clients.address',
+				'clients.mapUrl',
 				'clients.year_of_estb',
 				'clients.certified_status',
 				'clients.certifications',
@@ -1383,13 +1387,12 @@ $reviewList = DB::table('clients')
 				'zone' => $client->zone,
 				'address' => $client->address,		 
 				'country' => $client->country,
-				'year_of_estb' => $client->year_of_estb,
-				 
-				'city' => $client->city ??'faridabad',	 		 
-				'state' => $client->state ?? 'Karnataka',	 		 
-				'pincode' => !empty($client->pincode) ? $client->pincode : '560008',		 
+				'year_of_estb' => $client->year_of_estb,				 
+				'city' => $client->city ??'',	 		 
+				'state' => $client->state ?? '',	 		 
+				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
 				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 
-				'mapUrl' => "https://maps.google.com/?q=" . generate_slug($client->address),
+				'mapUrl' =>$client->mapUrl ? $client->mapUrl:  "https://maps.google.com/?q=" . generate_slug($client->address),
 				'whatsapp' => '7559435943',
 				'call' => '917559435943',
 				'rating' => $client->rating,
@@ -1717,7 +1720,7 @@ $reviewList = DB::table('clients')
 		 
 			$addressText = !empty($clientscheck->address) ? $clientscheck->address : '';
 			$mapText = !empty($clientscheck->business_map) ? '\n Directions: ' . $clientscheck->business_map : '';
-			$profile_url = 'https://www.quickdials.com/businessdetails/' . $clientscheck->business_slug;
+			$profile_url = 'https://www.quickdials.com/'. str::slug(strtolower($clientscheck->city)).'/' . $clientscheck->business_slug;
 			$keyword = "";
 			$address_data = "Greetings from {$businessName},\n"
 				. "We’re following up on your enquiry made on Quickdials for {$keyword}.\n"
@@ -1778,13 +1781,14 @@ $reviewList = DB::table('clients')
 				'h1_heading' => $clientscheck->h1_heading,
 				'business_name' => $clientscheck->business_name,
 				'business_slug' => $clientscheck->business_slug,
-				'business_url' => config('app.website') . 'businessdetails/' . $clientscheck->business_slug,
+				'business_url' => config('app.website') .$clientscheck->city. '/' . $clientscheck->business_slug,
 				'logo' => $logoImage ?? '',
 				'altLogo' => $altLogo . ' Logo' ?? '',
 				'profile_banner' => $profile_pic ?? '',
 				'altbanner' => $altbanner ?? '',
 				'gallery' => $galleryArray ?? '',
 				'business_intro' => $clientscheck->business_intro,
+				'mapUrl' => $clientscheck->mapUrl,
 				'assign_keyword' => $assignedKeywords,
 				'service_city' => $assignedCity,
 				'certifications' => $clientscheck->certifications,
@@ -2407,7 +2411,7 @@ $reviewList = DB::table('clients')
  
         $planOptions = ['Immediate', 'Within Week', 'Within Months', 'Not Planned Yet'];
  
-        $googleMapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($clientsList['address'] ?? 'faridabad');
+        $googleMapUrl =$clientsList['mapUrl'] ? $clientsList['mapUrl'] : 'https://www.google.com/maps/search/?api=1&query=' . urlencode($clientsList['address'] ?? 'faridabad');
         $mapSrc = 'https://www.google.com/maps/embed/v1/search?key=AIzaSyAPFOcLOlCcBCtp764h9HflPfA56VlCFo0&q=' . urlencode($clientsList['address'] ?? 'faridabad');
  
         $yearEst  = $clientsList['year_of_estb'] ?? 2012;
@@ -2460,7 +2464,7 @@ $reviewList = DB::table('clients')
 			if ($clientCity !== $currentCity) {
 			if ($clientCity === '') {
 
-			return redirect()->route('business.details', $slug, 301);
+			return redirect()->route('showCity', $slug, 301);
 			}
 
 			return redirect()->route('city.slug', [
@@ -2503,7 +2507,7 @@ $reviewList = DB::table('clients')
         $ratingCount = (int) ($kwData['ratingcount'] ?? 0);
         $ratingValue = (float) ($kwData['ratingvalue'] ?? 0);
        	$bgImage = !empty($kwData['child_banner']) ? $kwData['child_banner'] : ($kwData['category_banner'] ?? '');
-//  dd($bgImage);
+
 		$topDescription = !empty($kwData['top_description']) ? replaceCity($kwData['top_description'], $area) : '';
 		$bottomDescription = !empty($kwData['bottom_description']) ? replaceCity($kwData['bottom_description'], $area) : '';
 
@@ -2559,7 +2563,6 @@ $reviewList = DB::table('clients')
         $cityDetails     = $responseCityDetails['data'] ?? [];
  	
 		
-
 
 		 
         return view('client.searchlist', compact(
@@ -3110,8 +3113,24 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 		$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
 
 		if ($slugUrl && $slugUrl !== $slug) {			 
-			return redirect()->route('business.details', $slugUrl, 301);
+			 return redirect()->route('city.slug', [
+            'city_slug'    => 'noida',
+            'service_slug' => $slugUrl,
+        ], 301);
 		}
+
+		if ($slugUrl) {
+        if (!$this->clientsExists($slugUrl)) {
+            abort(410);			 
+        }
+        $businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
+	 
+        if (!$businessResponse) {
+				abort(410);           
+        }
+
+        return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
+    }
 
 		 
 		// ── Validate city ────────────────────────────────────────────────────

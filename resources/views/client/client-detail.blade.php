@@ -1084,12 +1084,12 @@ function selectCert(i) {
                     @php
                     $city = (!empty($clientsList['city']) && !is_numeric($clientsList['city']))
                         ? Str::slug($clientsList['city'])
-                        : '';
+                        : '';                        
                     @endphp
                     @if($relatedList)
                     @foreach($relatedList as $i => $item)                    
                     <li>
-                        <a href="{{ route('showCity',$item['slug'])}}" class="text-blue-600 hover:underline text-sm">
+                        <a href="{{  route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($city),'service_slug' => $item['slug']]) }}" class="text-blue-600 hover:underline text-sm">
                             {{ $item['title'] }}{{ $i < count($relatedList)-1 ? ' |' : '' }}
                         </a>
                     </li>

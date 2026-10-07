@@ -31,7 +31,8 @@ class ClientDetailController extends Controller
         $slugUrl    = $this->resolveBestCandidate($newSlug, $keywordMap);
 
         if ($slugUrl && $slugUrl !== $slug) {
-			return redirect()->route('business.details', $slugUrl, 301);
+			return redirect()->route('showCity', $slugUrl, 301);
+
 		}
         $finalSlug = $slugUrl ?: $slug;
  

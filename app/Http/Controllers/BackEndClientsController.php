@@ -298,7 +298,7 @@ class BackEndClientsController extends Controller
 			$client->mobile = $request->input('mobile');
 			$client->email = $request->input('email');
 			$client->max_kw = 999;
-			$client->client_type = 'gold';
+			$client->client_type = 'silver';
 			$client->active_status = '1';
 
 

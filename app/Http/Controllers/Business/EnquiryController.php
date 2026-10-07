@@ -487,7 +487,7 @@ class EnquiryController extends Controller
 		$businessName = $clientDetails->business_name ?? 'Our Company';
 		$address = $clientDetails->address ?? '';
 		$map = $clientDetails->business_map ?? '';
-		$profileUrl = url('businessdetails/' . ($clientDetails->business_slug ?? ''));
+		$profileUrl = url($clientDetails->city.'/' . ($clientDetails->business_slug ?? ''));
 
 		// Transform Data (Fast Way)
 		$leads->getCollection()->transform(function ($lead) use ($businessName, $address, $map, $profileUrl, $avgRating, $ratingCount) {
@@ -633,12 +633,13 @@ class EnquiryController extends Controller
 		if (!empty($leads)) {
 
 			$leads_list = [];
-
+			$profile_url ="";
 			$businessName = $client->business_name ?? 'our company';
 			$addressText = $client->address ?? '';
 			$mapText = !empty($client->business_map) ? '\n Directions: ' . $client->business_map : '';
-			$profile_url = 'https://www.quickdials.com/businessdetails/' . $client->business_slug;
-
+			if($client->city){
+			$profile_url = 'https://www.quickdials.com/'.strtolower($client->city).'/' . $client->business_slug;
+			}
 			foreach ($leads as $val) {
 
 				$keyword = $val->kw_text ?? 'your enquiry';
@@ -784,7 +785,7 @@ class EnquiryController extends Controller
 		$businessName = $clientDetails->business_name ?? 'Our Company';
 		$address = $clientDetails->address ?? '';
 		$map = $clientDetails->business_map ?? '';
-		$profileUrl = url('businessdetails/' . ($clientDetails->business_slug ?? ''));
+		$profileUrl = url($clientDetails->city.'/' . ($clientDetails->business_slug ?? ''));
 
 		// Transform Data (Fast Way)
 		$leads->getCollection()->transform(function ($lead) use ($businessName, $address, $map, $profileUrl, $avgRating, $ratingCount) {
@@ -923,7 +924,7 @@ class EnquiryController extends Controller
 		$businessName = $clientDetails->business_name ?? 'Our Company';
 		$address = $clientDetails->address ?? '';
 		$map = $clientDetails->business_map ?? '';
-		$profileUrl = url('businessdetails/' . ($clientDetails->business_slug ?? ''));
+		$profileUrl = url($clientDetails->city.'/' . ($clientDetails->business_slug ?? ''));
 
 		// Transform Data (Fast Way)
 		$leads->getCollection()->transform(function ($lead) use ($businessName, $address, $map, $profileUrl, $avgRating, $ratingCount) {
