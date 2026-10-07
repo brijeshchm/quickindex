@@ -29,6 +29,7 @@
                                 <table id="datatable-seo" class="table table-bordered table-hover">
 									<thead>
 										<tr>
+											<th>Index</th>
 											<th>Keyword</th>
 											<th>Meta Title</th>
 											<th>H1 Heading</th>
@@ -39,7 +40,7 @@
 									</thead>
 									<tfoot>
 										<tr>
-											<th>Keyword</th>
+											<th>Index</th>
 											<th>Meta Title</th>
 											<th>H1 Heading</th>
 											<th>Meta Description</th>

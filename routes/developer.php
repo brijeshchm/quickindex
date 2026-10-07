@@ -150,7 +150,8 @@ Route::post('keyword/{id}/banners',         [KeywordBannerController::class, 'up
 	Route::post('/seo/updateBangaloreCityContent/{id}',[App\Http\Controllers\KeywordController::class, 'updateBangaloreCityContent'])->middleware('auth');
 	Route::post('/seo/extraPageContent/{id}',[App\Http\Controllers\KeywordController::class, 'extraPageContent'])->middleware('auth');
 	Route::post('/seo/updateFaqKeyword/{id}',[App\Http\Controllers\KeywordController::class, 'updateFaqKeyword'])->middleware('auth');
-
+	Route::get('/seo/seoIndexStatus/{id}/{val}', [App\Http\Controllers\KeywordController::class, 'seoIndexStatus'])->middleware('auth:developer');
+	
 	/* SEO */
  	Route::get('/seo-work', [App\Http\Controllers\SeoWorkController::class, 'index']);
 

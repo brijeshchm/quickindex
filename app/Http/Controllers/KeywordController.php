@@ -1397,7 +1397,7 @@ class KeywordController extends Controller
 					->orWhere('k.bottom_description', 'LIKE', '%' . $request->input('search.value') . '%');
 				});
 			}
-			$leads = $leads->select('k.keyword', 'k.id', 'k.meta_title', 'k.h1_heading', 'k.meta_description', 'k.top_description', 'k.bottom_description');
+			$leads = $leads->select('k.keyword', 'k.id', 'k.meta_title', 'k.h1_heading', 'k.meta_description', 'k.top_description', 'k.bottom_description','k.seo_index');
 			$leads = $leads->distinct();
 			//$leads = $leads->orderBy('k.short_definition', 'desc');
 			$leads = $leads->orderByRaw("
@@ -1420,9 +1420,14 @@ class KeywordController extends Controller
 					//whereNotNull('top_description')->whereNotNull('bottom_description')->count();
 					$redCount = $totalCount - $greenCount;
 
+					if ($lead->seo_index == '1') {
+					$seoIndex = '<a href="javascript:keywordController.seoIndexStatus(' . $lead->id . ',0)" title="SEO status" class="btn btn-success">Yes</a>';
+				} else {
+					$seoIndex = '<a href="javascript:keywordController.seoIndexStatus(' . $lead->id . ',1)" title="SEO status" class="btn btn-danger">No</a>';
+				}
 
 					$data[] = [
-
+						$seoIndex,
 						$lead->keyword,
 						$lead->meta_title,
 						$lead->h1_heading,
@@ -2932,6 +2937,29 @@ $leads->whereDate('created_at', '<=', $dateTo);
 			} else {
 				$status = 0;
 				$msg = "SEO status could not be successfully, Please try again !";
+			}
+			return response()->json(['status' => $status, 'msg' => $msg], 200);
+		}
+	}
+	/**
+	 * Remove the specified resource from storage status.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function seoIndexStatus(request $request, $id, $val)
+	{
+		if ($request->ajax()) {
+
+			$keyword = Keyword::findOrFail($id);
+			$keyword->seo_index = $val;
+ 
+			if ($keyword->save()) {
+				$status = 1;
+				$msg = "SEO Index updated successfully !";
+			} else {
+				$status = 0;
+				$msg = "SEO Index could not be successfully, Please try again !";
 			}
 			return response()->json(['status' => $status, 'msg' => $msg], 200);
 		}

@@ -83,6 +83,7 @@ class Keyword extends Model
     'meta_desc_bangalore',
     'h1_heading_bangalore',
     'short_desc_bangalore',
+    'seo_index',
     'ratingvalue',
     'ratingcount',
     'created_at',
