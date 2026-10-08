@@ -12,7 +12,7 @@
 <title>No results found @if(request('q')) for "{{ request('q') }}" @endif — QuickDials</title>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-white text-gray-900 antialiased" x-data="appData()">
+<body class="min-h-screen bg-white text-gray-900 antialiased" >
 
 @include('client.layouts.navbar')
 

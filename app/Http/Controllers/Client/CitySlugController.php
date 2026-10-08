@@ -428,6 +428,8 @@ class CitySlugController extends Controller
 			)
 			->where('clients.city', $city)
 			->where('clients.active_status', '1')
+			->whereNotNull('clients.city')
+			->whereRaw("TRIM(clients.city) <> ''")
 			->where('keyword.slug', $search_kw)
 			->groupBy('clients.id')			 
 			->orderByRaw("
@@ -586,6 +588,8 @@ class CitySlugController extends Controller
     )
 	 ->where('clients.city', $city)
     ->where('clients.active_status', '1')
+	->whereNotNull('clients.city')
+	->whereRaw("TRIM(clients.city) <> ''")
     ->where('keyword.slug', $search_kw)
     ->groupBy('clients.id')
     ->orderByRaw("
@@ -779,6 +783,8 @@ $reviewList = DB::table('clients')
     )
     ->whereIn('clients.id', $businessIds)
     ->where('clients.active_status', '1')
+	->whereNotNull('clients.city')
+	->whereRaw("TRIM(clients.city) <> ''")
     ->whereNotNull('c.comment_content')
     ->orderByRaw("
         CASE clients.client_type
@@ -1160,8 +1166,7 @@ $reviewList = DB::table('clients')
 				'clients.pincode',		
 				'clients.logo',		
 				'clients.business_description',		
-				'clients.pictures',		
-				
+				'clients.pictures',						
 				'keyword.keyword as keywords',
 				'keyword.slug as slugs',
 				DB::raw('MAX(c.rating) as rating'),
@@ -1173,7 +1178,6 @@ $reviewList = DB::table('clients')
 			->whereNotNull('clients.city')
 			->whereRaw("TRIM(clients.city) <> ''")
 			->groupBy('clients.id')
-
 			->orderByRaw("
         CASE MAX(clients.client_type)
             WHEN 'platinum' THEN 1
@@ -1309,32 +1313,29 @@ $reviewList = DB::table('clients')
     ) c'), 'c.comment_client_ID', '=', 'clients.id')
     ->select(
         'clients.id as business_id',
-				'clients.business_name',
-				'clients.category_service',
-				'clients.verified',			 
-				'clients.gst_status',
-				'clients.active_status',
-				'clients.trending',			 
-				'clients.topSearch',			 
-				'clients.trusted_status',
-				'clients.featured',
-				'clients.openUntil',
-				'clients.address',
-				'clients.mapUrl',
-				'clients.year_of_estb',
-				'clients.certified_status',
-				'clients.certifications',
-				'clients.business_slug',
-				'clients.client_type',			 
-				'clients.state',			 
-				'clients.area',			 
-				'clients.zone',			 
-				'clients.pincode',			 
-				'clients.country',			 
-				'clients.landmark',			 
-				 
-        
-     
+		'clients.business_name',
+		'clients.category_service',
+		'clients.verified',			 
+		'clients.gst_status',
+		'clients.active_status',
+		'clients.trending',			 
+		'clients.topSearch',			 
+		'clients.trusted_status',
+		'clients.featured',
+		'clients.openUntil',
+		'clients.address',
+		'clients.mapUrl',
+		'clients.year_of_estb',
+		'clients.certified_status',
+		'clients.certifications',
+		'clients.business_slug',
+		'clients.client_type',			 
+		'clients.state',			 
+		'clients.area',			 
+		'clients.zone',			 
+		'clients.pincode',			 
+		'clients.country',			 
+		'clients.landmark',		     
         'citylists.city',
         'keyword.keyword as keywords',
         'keyword.slug as slugs',
@@ -1545,7 +1546,7 @@ $reviewList = DB::table('clients')
 		'c.comment_content'
 		)
 		 ->whereIn('clients.id', $businessIds)
-		->where('clients.active_status', '1')
+		->where('clients.active_status', '1')		
 		->whereNotNull('c.comment_content')
 		->whereNotNull('clients.city')
 		->whereRaw("TRIM(clients.city) <> ''")
@@ -1667,6 +1668,8 @@ $reviewList = DB::table('clients')
 			)
 			->where('clients.business_slug', $business_slug)
 			 ->where('clients.active_status', '1')
+			 ->whereNotNull('clients.city')
+			->whereRaw("TRIM(clients.city) <> ''")
 			->orderByRaw("
         CASE clients.client_type
             WHEN 'platinum' THEN 1
@@ -2398,6 +2401,8 @@ $reviewList = DB::table('clients')
             $clientData = DB::table('clients')
             ->where('business_name', 'LIKE', "%{$keyword}%")
             ->where('active_status', '1')
+			->whereNotNull('city')
+			->whereRaw("TRIM(city) <> ''")
             ->select(
             DB::raw("'company' as type"),
             DB::raw("business_name as keyword"),
@@ -2682,10 +2687,11 @@ $reviewList = DB::table('clients')
     /**
      * Handle  GET /{city}/{slug}
      */
-	public function showCityWithService(Request $request, string $city, string $slug)
-	{
+
  
-		
+
+	public function showCityWithService(Request $request, string $city, string $slug)
+	{		
 			$citySlug   = strtolower(trim($city));
 			$keySlugRaw = strtolower(trim($slug));
 			$newSlug    = strtolower(str_replace(' ', '-', trim($slug)));
@@ -2765,42 +2771,39 @@ $reviewList = DB::table('clients')
 				return $this->childListPage($newchild, $newSlug, $cityName ?? $city);
 			}
 
+			$keyword = $this->keywordExists($newSlug);
 
-			
+			 
 			// ---- Resolve city (no DB call) ----
 			$cityName = $this->resolveBestCandidate($citySlug, $cityMap);
 			$slugUrl = $this->resolveBestCandidate($newSlug, $keywordMap);
-		 
-			if (!$cityName && !empty($slugUrl)) {
+
+		
+		 	if (!$cityName && !empty($slugUrl)) {
 		 
 				$cityData = $cityMap[$cityName] ?? null;
 				 
-				if (!isset($cityData) && !$slugUrl) {		
-					dd('asds');	 
+				if (!isset($cityData) && !$slugUrl) {					 
 					abort(410);
 				// return redirect()->route('home');
 				}
-				// return redirect()->route('city.slug', [
-				//     'city_slug'    => $defaultCity,
-				//     'service_slug' => $slug,
-				// ], 301);
-
-			 
+				 			 
 				if($slugUrl){
 					return redirect()->route('showCity', $slugUrl, 301);	
 				}	
 			}
 
-			if (!empty($citySlug) && !empty($cityName) && ($citySlug !== $cityName)) {
+			if ($citySlug !== $cityName && !empty($cityName)) {
 				return redirect()->route('city.slug', [
 					'city_slug'    => $cityName,
 					'service_slug' => $slug,
 				], 301);
 			}
 
+
+
 			// ---- Resolve keyword/service (no DB call) ----
 		
-
 			if ($slugUrl) {
 				if ($keySlugRaw !== $slugUrl) {
 					return redirect()->route('city.slug', [
@@ -2818,30 +2821,34 @@ $reviewList = DB::table('clients')
 				return $this->getsearchlist($response, $slugUrl, $cityName);
 			}
 
-			$clientMap = $this->getClientSlugMap();  
 
-		
-			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
+			$slugKey = $this->resolveBestCandidate($citySlug, $keywordMap);
+			if ($slugKey) {
+				if ($keySlugRaw !== $slugKey) {
+					return redirect()->route('showCity', $slugKey, 301);
+				}			 
+			}
 
-			if ($slugUrl && $slugUrl !== $slug) {
+			$clientMap = $this->getClientSlugMap();  		 
+			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);	
+			if (!empty($slugUrl) && $slugUrl !== $slug && !empty($cityName)) {
+				 
 				return redirect()->route('city.slug', [
 					'city_slug'    => $cityName,
 					'service_slug' => $slugUrl,
 				], 301);
+				
 			}
 		
 			if ($slugUrl) {
 				if (!$this->clientsExists($slugUrl)) {
-					abort(410);
-					//return redirect()->route('home');
+					abort(410);					 
 				}
 				$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
 			
 				if (!$businessResponse) {
-						abort(410);
-				// return redirect()->route('home');
+					abort(410);				
 				}
-
 				return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
 			}
 
@@ -3081,6 +3088,19 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
         $search_kw = strtolower(str_replace(' ', '-', trim($slug)));
         $exists = DB::table('clients')
             ->where('business_slug', $search_kw)
+			->where('active_status', '1')->whereNotNull('city')
+			->whereRaw("TRIM(city) <> ''")
+            ->exists();
+        return $exists;
+    }
+	/**
+     * Check if a city is valid via the QuickDials city-check API.
+     */
+    private function keywordExists(string $slug): bool
+    {
+        $search_kw = strtolower(str_replace(' ', '-', trim($slug)));
+        $exists = DB::table('keyword')
+            ->where('slug', $search_kw)
             ->exists();
         return $exists;
     }
@@ -3126,6 +3146,11 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
      /**
      * Handle  GET /{city}/{slug}
      */
+
+
+	 
+
+
     public function showCityOrService(Request $request, string $slug)
     {
 		// ── Normalize once ───────────────────────────────────────────────────
@@ -3160,7 +3185,7 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 			$cityKeyword = $this->cityKeyword();
 			return $this->cityKeywordPage($cityKeyword,$cityName);			
 		}
-
+ 
 		// If a canonical/better match exists and differs from input → 301 redirect
 		if ($slugUrl && $slugUrl !== $slug) {
 			return redirect()->route('showCity', $slugUrl, 301);
@@ -3169,31 +3194,48 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 		// Final slug to use downstream: prefer resolved match, fallback to input
 		$finalSlug = $slugUrl ?: $slug;
 
-
+ 
 		//client details
 		$clientMap = $this->getClientSlugMap();  
 		$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
 
-		if ($slugUrl && $slugUrl !== $slug) {			 
-			 return redirect()->route('city.slug', [
-            'city_slug'    => 'noida',
-            'service_slug' => $slugUrl,
-        ], 301);
+		if ($slugUrl !== $slug && !empty($slugUrl)) {	
+			 
+		$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);			
+		if (!$businessResponse) {
+			abort(410);           
+		}
+		$cityName = $businessResponse['clientsList'];
+			
+			if($cityName['city']){
+				return redirect()->route('city.slug', [
+				'city_slug'    => Str::slug(strtolower($cityName['city'])),
+				'service_slug' => $slugUrl,
+				], 301);
+				
+			}
 		}
 
+
 		if ($slugUrl) {
-        if (!$this->clientsExists($slugUrl)) {
-            abort(410);			 
-        }
-        $businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
-	 
-        if (!$businessResponse) {
-				abort(410);           
-        }
 
-        return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
-    }
-
+				if (!$this->clientsExists($slugUrl)) {				 
+					abort(410);			 
+				}
+				$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);			
+				if (!$businessResponse) {
+					abort(410);           
+				}
+				$cityName = $businessResponse['clientsList'];
+				if($cityName['city']){
+				return redirect()->route('city.slug', [
+						'city_slug'    => Str::slug(strtolower($cityName['city'])),
+						'service_slug' => $slugUrl,
+					], 301);
+				}
+				return redirect()->route('home');
+		}
+		
 		 
 		// ── Validate city ────────────────────────────────────────────────────
 		if (!$this->serviceExists($finalSlug)) {
@@ -3281,13 +3323,6 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 				"city_slug" => "faridabad",
 				"state" => "Karnataka",
 		];
-
- 
-
-
-
-
-
         return view('client.searchkeyword', compact(
             'city', 'slug', 'keyword', 'area','zones',
             'childSlug', 'childCat','cityDetails',
