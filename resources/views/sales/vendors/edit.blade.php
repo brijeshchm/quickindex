@@ -20,6 +20,7 @@
         'recent-activity'       => 'Recent Activity',
         'assigned-keywords'     => 'Assigned Keywords',
         'account-settings'      => 'Account Settings',
+        'socials-link'           => 'Social Link',
         'pending-profile'      => 'Pending Profile',
         'leads'                 => 'Leads',
         'discussion'            => 'Discussion',
@@ -1901,7 +1902,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <form
     action ="{{ route('sales.business.Faq') }}"      
     method="POST"
-   data-auto-save
+    data-auto-save
     class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
 >
     @csrf
@@ -3877,6 +3878,210 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 
 
+  <section x-show="activeSection === 'socials-link'" x-cloak>
+
+@php
+
+  
+
+    /*
+    |--------------------------------------------------------------------------
+    | Social fields
+    |--------------------------------------------------------------------------
+    */
+
+    $socials = [
+
+        [
+            'key'   => 'facebook_url',
+            'label' => 'Facebook',
+            'icon'  => 'facebook',
+            'color' => 'text-blue-600',
+        ],
+
+        [
+            'key'   => 'instagram_url',
+            'label' => 'Instagram',
+            'icon'  => 'instagram',
+            'color' => 'text-pink-600',
+        ],
+
+        [
+            'key'   => 'twitter_url',
+            'label' => 'Twitter / X',
+            'icon'  => 'twitter',
+            'color' => 'text-sky-500',
+        ],
+
+        [
+            'key'   => 'linkedin_url',
+            'label' => 'LinkedIn',
+            'icon'  => 'linkedin',
+            'color' => 'text-blue-700',
+        ],
+
+        [
+            'key'   => 'youtube_url',
+            'label' => 'YouTube',
+            'icon'  => 'youtube',
+            'color' => 'text-red-600',
+        ],
+
+        [
+            'key'   => 'pinterest_url',
+            'label' => 'Pinterest',
+            'icon'  => 'link',
+            'color' => 'text-red-500',
+        ],
+
+    ];
+
+@endphp
+
+        <form
+            
+            action ="{{ route('sales.socials.link') }}"    
+            method="POST"
+            data-auto-save
+            class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+        >
+            @csrf      
+
+           <input type="hidden" name="client_id" value="{{ $vendor->id }}">
+            <input type="hidden" name="business_id" value="{{ $vendor->id }}">
+
+
+            {{-- Header --}}
+            <div class="border-b border-slate-200 px-5 py-5 md:px-6">
+
+                <div class="flex items-start gap-3">
+
+                    <div
+                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+                    >
+
+                        <i
+                            data-lucide="share-2"
+                            class="h-5 w-5"
+                        ></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3 class="font-display text-lg font-semibold text-slate-900">
+                            Social Media Links
+                        </h3>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            Connect customers with your official social profiles.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            {{-- Fields --}}
+            <div class="grid gap-5 p-5 md:grid-cols-2 md:p-6">
+
+                @foreach($socials as $social)
+
+                    @php
+
+                        $key =
+                            $social['key'];
+
+                    @endphp
+
+
+                    <div>
+
+                        <label
+                            for="{{ $key }}"
+                            class="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700"
+                        >
+
+                            <i
+                                data-lucide="{{ $social['icon'] }}"
+                                class="h-4 w-4 {{ $social['color'] }}"
+                            ></i>
+
+                            {{ $social['label'] }}
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="{{ $key }}"
+                            name="{{ $key }}"
+                            value="{{ old($key, $vendor->{$key} ?? '') }}"
+                            class="auto-save-field w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                            placeholder="https://..."
+                            autocomplete="off"
+                        >
+
+
+                        {{-- Validation Error --}}
+                        <div
+                            class="field-error mt-1 text-sm font-medium text-red-600"
+                            data-error="{{ $key }}"
+                        ></div>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+
+
+            {{-- Footer --}}
+            <div
+                class="flex flex-col gap-3 border-t border-slate-200 bg-slate-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between md:px-6"
+            >
+
+                <div class="text-xs text-slate-500">
+
+                    <span id="lastSavedText">
+                        Changes are saved automatically.
+                    </span>
+
+                </div>
+
+
+ <div class="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-4 sm:px-7">
+        <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >  <i
+                        data-lucide="save"
+                        class="h-4 w-4"
+                    ></i>
+            Save Social Links
+        </button>
+    </div>
+
+
+                
+               
+
+            </div>
+
+        </form>
+   
+ 
+
+
+
+</section>
+
+
 
  <section x-show="activeSection === 'leads'" x-cloak>
     <div class="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -5518,7 +5723,7 @@ function triggerAutoSaveFor(form) {
 
 document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
     const isPaymentForm = form.id === 'paymentOrderForm';
-
+console.log('social');
     let debounceTimer = null;
     let isSaving = false;
     let saveAgain = false;

@@ -25,8 +25,9 @@ Route::get('/get-assigned-zones', [App\Http\Controllers\Sales\BusinessController
 Route::post('/saveBusinessMeta', [App\Http\Controllers\Sales\BusinessController::class, 'saveBusinessMeta'])->name('updateBusiness.meta');
 
 
-	Route::post('/savePersonalDetails', [App\Http\Controllers\Sales\PersonalDetailsController::class, 'savePersonalDetails'])->name('personal.details');
+Route::post('/savePersonalDetails', [App\Http\Controllers\Sales\PersonalDetailsController::class, 'savePersonalDetails'])->name('personal.details');
 Route::post('/saveProfileInfo', [App\Http\Controllers\Sales\ProfileController::class, 'saveProfileInfo'])->name('business.information');
+Route::post('/save-socials-link', [App\Http\Controllers\Sales\ProfileController::class, 'saveBusinessSocial'])->name('socials.link');
 Route::post('/vendor/register', [App\Http\Controllers\Sales\ProfileController::class, 'vendorRegister'])->name('vendor.register');
 
 Route::post('/saveBusinessOverview', [App\Http\Controllers\Sales\BusinessController::class, 'saveBusinessOverview'])->name('business.overview');

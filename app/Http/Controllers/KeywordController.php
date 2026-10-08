@@ -1845,6 +1845,7 @@ $leads->whereDate('created_at', '<=', $dateTo);
 				$kwObj->meta_description = $meta_description;
 				$kwObj->h1_heading = $h1_heading;
 				$kwObj->short_defination = $short_defination;
+				
 				$kwObj->top_description = $top_description;
 
 				$kwObj->faqq1 = $request->input('faqq1');

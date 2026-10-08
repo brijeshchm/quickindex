@@ -2685,167 +2685,169 @@ $reviewList = DB::table('clients')
 	public function showCityWithService(Request $request, string $city, string $slug)
 	{
  
- 
-    $citySlug   = strtolower(trim($city));
-    $keySlugRaw = strtolower(trim($slug));
-    $newSlug    = strtolower(str_replace(' ', '-', trim($slug)));
+		
+			$citySlug   = strtolower(trim($city));
+			$keySlugRaw = strtolower(trim($slug));
+			$newSlug    = strtolower(str_replace(' ', '-', trim($slug)));
 
-    $cityMap    = $this->getCitySlugMap();     // cached, in-memory
-    $keywordMap = $this->getKeywordSlugMap();  // cached, in-memory
+			$cityMap    = $this->getCitySlugMap();     // cached, in-memory
+			$keywordMap = $this->getKeywordSlugMap();  // cached, in-memory
 
-    $defaultCity = config('app.default_city_slug', 'faridabad');
+			$defaultCity = config('app.default_city_slug', 'faridabad');
 
-    // ---- CATEGORY CHECK ----
-    $category = $this->categoriesCheck($newSlug);
+			// ---- CATEGORY CHECK ----
+			$category = $this->categoriesCheck($newSlug);
 
-    if (!empty($category)) {
-        // No real city in URL (e.g. /categories/{slug}) — redirect with default city
-        if ($citySlug === 'categories' || !isset($cityMap[$citySlug])) {
-            // return redirect()->route('city.slug', [
-            //     'city_slug'     => $defaultCity,
-            //     'service_slug' => $newSlug,
-            // ], 301);
+			if (!empty($category)) {
+				// No real city in URL (e.g. /categories/{slug}) — redirect with default city
+				if ($citySlug === 'categories' || !isset($cityMap[$citySlug])) {
+					// return redirect()->route('city.slug', [
+					//     'city_slug'     => $defaultCity,
+					//     'service_slug' => $newSlug,
+					// ], 301);
 
-			return redirect()->route('showCity', $newSlug, 301);
-        }
+					return redirect()->route('showCity', $newSlug, 301);
+				}
 
-		if(isset($cityMap[$citySlug])){
-			return redirect()->route('showCity', $newSlug, 301);
+				if(isset($cityMap[$citySlug])){
+					return redirect()->route('showCity', $newSlug, 301);
 
-		}
-        // Real city present but not canonical (wrong case/format) — normalize it
-        $cityName = $this->resolveBestCandidate($citySlug, $cityMap);
+				}
+				// Real city present but not canonical (wrong case/format) — normalize it
+				$cityName = $this->resolveBestCandidate($citySlug, $cityMap);
 
-	 
-        if ($cityName && $citySlug !== $cityName) {
 			
-			return redirect()->route('showCity', $newSlug, 301);
+				if ($cityName && $citySlug !== $cityName) {
+					
+					return redirect()->route('showCity', $newSlug, 301);
 
-            // return redirect()->route('city.slug', [
-            //     'city_slug'     => $cityName,
-            //     'service_slug' => $newSlug,
-            // ], 301);
-        }
-		$newCat = $this->categoriesCheckDetails($newSlug);
-	 
-
-        return $this->categoriesListPage($newCat, $newSlug, $cityName ?? $city);
-    }
-
-    // ---- CHILD CHECK ----
-    $child = $this->childCheck($newSlug);
-
-    if (!empty($child)) {
-	
-        if ($citySlug === 'child' || !isset($cityMap[$citySlug])) {
-            // return redirect()->route('city.slug', [
-            //     'city_slug'  => $defaultCity,
-            //     'service_slug' => $newSlug,
-            // ], 301);
-			return redirect()->route('showCity', $newSlug, 301);
+					// return redirect()->route('city.slug', [
+					//     'city_slug'     => $cityName,
+					//     'service_slug' => $newSlug,
+					// ], 301);
+				}
+				$newCat = $this->categoriesCheckDetails($newSlug);
 			
-        }
 
-		if(isset($cityMap[$citySlug])){
-			return redirect()->route('showCity', $newSlug, 301);
-		}
+				return $this->categoriesListPage($newCat, $newSlug, $cityName ?? $city);
+			}
 
-        $cityName = $this->resolveBestCandidate($citySlug, $cityMap);
-	 
-        if ($cityName && $citySlug !== $cityName) {
-            // return redirect()->route('city.slug', [
-            //     'city_slug'  => $cityName,
-            //     'service_slug' => $newSlug,
-            // ], 301);
+			// ---- CHILD CHECK ----
+			$child = $this->childCheck($newSlug);
 
-			return redirect()->route('showCity', $newSlug, 301);
-        }
-		 $newchild = $this->childCheckdetails($newSlug);
+			if (!empty($child)) {
+			
+				if ($citySlug === 'child' || !isset($cityMap[$citySlug])) {
+					// return redirect()->route('city.slug', [
+					//     'city_slug'  => $defaultCity,
+					//     'service_slug' => $newSlug,
+					// ], 301);
+					return redirect()->route('showCity', $newSlug, 301);
+					
+				}
 
-        return $this->childListPage($newchild, $newSlug, $cityName ?? $city);
-    }
+				if(isset($cityMap[$citySlug])){
+					return redirect()->route('showCity', $newSlug, 301);
+				}
 
-    // ---- Resolve city (no DB call) ----
-    $cityName = $this->resolveBestCandidate($citySlug, $cityMap);
-   	$slugUrl = $this->resolveBestCandidate($newSlug, $keywordMap);
- 
-    if (!$cityName) {
-  
- 		$cityData = $cityMap[$cityName] ?? null;
-        if (!isset($cityData) && !$slugUrl) {			 
-			abort(410);
-           // return redirect()->route('home');
-        }
-        // return redirect()->route('city.slug', [
-        //     'city_slug'    => $defaultCity,
-        //     'service_slug' => $slug,
-        // ], 301);
-		if($slugUrl){
-			return redirect()->route('showCity', $slugUrl, 301);	
-		}	
-    }
+				$cityName = $this->resolveBestCandidate($citySlug, $cityMap);
+			
+				if ($cityName && $citySlug !== $cityName) {
+					// return redirect()->route('city.slug', [
+					//     'city_slug'  => $cityName,
+					//     'service_slug' => $newSlug,
+					// ], 301);
 
-    if ($citySlug !== $cityName) {
-        return redirect()->route('city.slug', [
-            'city_slug'    => $cityName,
-            'service_slug' => $slug,
-        ], 301);
-    }
+					return redirect()->route('showCity', $newSlug, 301);
+				}
+				$newchild = $this->childCheckdetails($newSlug);
 
-    // ---- Resolve keyword/service (no DB call) ----
-  
+				return $this->childListPage($newchild, $newSlug, $cityName ?? $city);
+			}
 
-    if ($slugUrl) {
-        if ($keySlugRaw !== $slugUrl) {
-            return redirect()->route('city.slug', [
-                'city_slug'    => $cityName,
-                'service_slug' => $slugUrl,
-            ], 301);
-        }
 
-        $response = $this->fetchData($cityName, $slugUrl);
-        if (!$response) {
-             abort(410);
+			
+			// ---- Resolve city (no DB call) ----
+			$cityName = $this->resolveBestCandidate($citySlug, $cityMap);
+			$slugUrl = $this->resolveBestCandidate($newSlug, $keywordMap);
+		 
+			if (!$cityName && !empty($slugUrl)) {
+		 
+				$cityData = $cityMap[$cityName] ?? null;
+				 
+				if (!isset($cityData) && !$slugUrl) {		
+					dd('asds');	 
+					abort(410);
+				// return redirect()->route('home');
+				}
+				// return redirect()->route('city.slug', [
+				//     'city_slug'    => $defaultCity,
+				//     'service_slug' => $slug,
+				// ], 301);
+
 			 
-        }
+				if($slugUrl){
+					return redirect()->route('showCity', $slugUrl, 301);	
+				}	
+			}
 
-        return $this->getsearchlist($response, $slugUrl, $cityName);
-    }
+			if (!empty($citySlug) && !empty($cityName) && ($citySlug !== $cityName)) {
+				return redirect()->route('city.slug', [
+					'city_slug'    => $cityName,
+					'service_slug' => $slug,
+				], 301);
+			}
 
-    $clientMap = $this->getClientSlugMap();  
+			// ---- Resolve keyword/service (no DB call) ----
+		
 
- 
-    $slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
+			if ($slugUrl) {
+				if ($keySlugRaw !== $slugUrl) {
+					return redirect()->route('city.slug', [
+						'city_slug'    => $cityName,
+						'service_slug' => $slugUrl,
+					], 301);
+				}
 
-    if ($slugUrl && $slugUrl !== $slug) {
-        return redirect()->route('city.slug', [
-            'city_slug'    => $cityName,
-            'service_slug' => $slugUrl,
-        ], 301);
-    }
- 
-    if ($slugUrl) {
-        if (!$this->clientsExists($slugUrl)) {
-            abort(410);
-			//return redirect()->route('home');
-        }
-        $businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
-	 
-        if (!$businessResponse) {
-				abort(410);
-           // return redirect()->route('home');
-        }
+				$response = $this->fetchData($cityName, $slugUrl);
+				if (!$response) {
+					abort(410);
+					
+				}
 
-        return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
-    }
+				return $this->getsearchlist($response, $slugUrl, $cityName);
+			}
 
-    abort(410);
-}
- 
-
-	 
+			$clientMap = $this->getClientSlugMap();  
 
 		
+			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
+
+			if ($slugUrl && $slugUrl !== $slug) {
+				return redirect()->route('city.slug', [
+					'city_slug'    => $cityName,
+					'service_slug' => $slugUrl,
+				], 301);
+			}
+		
+			if ($slugUrl) {
+				if (!$this->clientsExists($slugUrl)) {
+					abort(410);
+					//return redirect()->route('home');
+				}
+				$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
+			
+				if (!$businessResponse) {
+						abort(410);
+				// return redirect()->route('home');
+				}
+
+				return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
+			}
+
+			abort(410);
+		}
+ 
 	public function categoriesCheck($slug)
 	{
 		$categoryDetails = DB::table('parent_category')

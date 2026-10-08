@@ -286,9 +286,7 @@ return redirect('sales/vendors/'.$client->id.'/edit?section=business-information
 }
 
 public function saveBusinessSocial(Request $request)
-{
-    
-
+{    
     $validator = Validator::make($request->all(), [
 
         'business_id'   => 'required|integer',
