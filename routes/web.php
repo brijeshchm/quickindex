@@ -376,8 +376,12 @@ Route::get('/llms.txt', function () {
  
 Route::get('/sitemap.xml', function () {
 	 
+$keywords = DB::table('keyword')
+		->where('seo_index', '1')
+		->select('slug', 'updated_at')
+		->get();
 	return response()
-        ->view('client.sitemap')
+        ->view('client.sitemap',compact('keywords'))
         ->header('Content-Type', 'application/xml; charset=UTF-8');
 });
  

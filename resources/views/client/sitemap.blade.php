@@ -170,6 +170,15 @@
         </url>
     @endforeach
 @endforeach
-
+@if($keywords)
+ @foreach ($keywords as $keyword)         
+    <url>
+        <loc>{{ route('showCity', $keyword->slug) }}</loc>
+        <lastmod>{{ \Carbon\Carbon::parse($keyword->updated_at)->toAtomString() }}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.80</priority>
+    </url>
+@endforeach
+@endif
 
 </urlset>
