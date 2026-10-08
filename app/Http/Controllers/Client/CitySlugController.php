@@ -2874,7 +2874,7 @@ $reviewList = DB::table('clients')
 						'service_slug' => $slugUrl,
 					], 301);
 				}
-				return redirect()->route('home');				 
+				// return redirect()->route('home');				 
 			}
 
 
