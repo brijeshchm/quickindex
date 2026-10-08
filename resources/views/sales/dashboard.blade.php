@@ -45,7 +45,7 @@
                 
             @forelse ($recentVendors as $vendor)
             
-            <a data-open-vendor="{{ $vendor->id }}" href="" class="flex items-center gap-3 py-3 first:pt-0 last:pb-0 hover:bg-[#fbfcfd]">
+            <a data-open-vendor="{{ $vendor->id }}" href="{{ route('sales.vendors.edit', $vendor) }}" class="flex items-center gap-3 py-3 first:pt-0 last:pb-0 hover:bg-[#fbfcfd]">
                 
             <div class="grid h-9 w-9 place-items-center rounded-xl bg-[#e9f2f7] text-xs font-bold text-[#315b80]"></div>
             

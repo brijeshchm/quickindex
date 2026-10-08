@@ -681,9 +681,7 @@
                     {{-- State --}}
                     <div>
                         <label for="personal_state" class="{{ $labelClass }}">State</label>
-                        <select id="personal_state" name="personal_state"
-                             
-                                class="{{ $inputClass }} select2-single-state">
+                        <select id="personal_state" name="personal_state" class="{{ $inputClass }} select2-single-state">
                             <option value="">Select state</option>
                             @foreach(($statesis ?? []) as $state)
                                 <option value="{{ $state->id }}"
@@ -700,7 +698,7 @@
                         <select id="personal_city" name="personal_city"
                                 data-selected="{{ $selectedCity }}"
                                 
-                                class="{{ $inputClass }} show_cityList">
+                                class="{{ $inputClass }} show_cityList select2-single-city">
                             <option value="">Select city</option>
                         </select>
                     </div>
@@ -710,7 +708,7 @@
                         <label for="personal_zone" class="{{ $labelClass }}">Zone</label>
                         <select id="personal_zone" name="personal_zone"
                                 data-selected="{{ $selectedZone }}"
-                                class="{{ $inputClass }} show_zoneList">
+                                class="{{ $inputClass }} show_zoneList select2-single-zone">
                             <option value="">Select zone</option>
                         </select>
                     </div>
@@ -994,7 +992,7 @@
                 id="city"
                 name="city"
                 data-selected="{{ $selectedCity }}"               
-                class="{{ $fieldClass }} city-form select_cityList"
+                class="{{ $fieldClass }} city-form select_cityList select2-single-city"
             >
                 <option value="">Select city</option>
 
@@ -1013,7 +1011,7 @@
                 id="zone"
                 name="zone"
                 data-selected="{{ $selectedZone }}"
-                class="{{ $fieldClass }} select_zoneList search_zone"
+                class="{{ $fieldClass }} select_zoneList search_zone select2-single-zone"
             >
                 <option value="">Select zone</option>
             </select>
@@ -1086,7 +1084,7 @@
                 type="url"
                 value="{{ old('business_map', $vendor?->business_map) }}"
                 placeholder="https://maps.google.com/..."
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
         </div>
 
@@ -1099,7 +1097,7 @@
                 type="url"
                 value="{{ old('website', $vendor?->website) }}"
                 placeholder="https://example.com"
-                class="{{ $fieldClass }}"
+                class="{{ $fieldClass }} auto-save-field"
             >
         </div>
     </div>
@@ -1168,7 +1166,7 @@
                         name="display_hofo"
                         value="1"
                         @checked($displayHours === '1')
-                        class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500"
+                        class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500 auto-save-field"
                     >
                     Display hours
                 </label>
@@ -1179,7 +1177,7 @@
                         name="display_hofo"
                         value="0"
                         @checked($displayHours === '0')
-                        class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500"
+                        class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500 auto-save-field"
                     >
                     Do not display hours
                 </label>
@@ -1497,6 +1495,8 @@
                         </option>
                     @endforeach
                 </select>
+ 
+                
 
                 @error('state_id')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -1509,7 +1509,7 @@
                 <select
                     id="assigned-city"
                     name="city_id"
-                    class="{{ $fieldClass }} city-form select2_single"
+                    class="{{ $fieldClass }} city-form select2-single-city"
                 >
                     <option value="">Select city</option>
                 </select>
@@ -1525,7 +1525,7 @@
                 <select
                     id="assigned-zone"
                     name="zone_id"
-                    class="{{ $fieldClass }}"
+                    class="{{ $fieldClass }} select2-single-zone"
                 >
                     <option value="">Select zone</option>
                 </select>
@@ -5723,7 +5723,7 @@ function triggerAutoSaveFor(form) {
 
 document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
     const isPaymentForm = form.id === 'paymentOrderForm';
-console.log('social');
+
     let debounceTimer = null;
     let isSaving = false;
     let saveAgain = false;
@@ -6019,159 +6019,6 @@ console.log('social');
     });
 });
  
-    //   document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
-
- 
-    //     let debounceTimer = null;
-    //     let isSaving = false;
-    //     let saveAgain = false;
-    //     let lastSnapshot = getSnapshot();
-
-    //     function getSnapshot() {
-    //         const values = $(form).serialize();
-    //         const files = Array.from(form.querySelectorAll('input[type="file"]'))
-    //             .map(function (input) {
-    //                 const selected = Array.from(input.files || [])
-    //                     .map(function (file) { return file.name + ':' + file.size + ':' + file.lastModified; })
-    //                     .join(',');
-    //                 return input.name + '=' + selected;
-    //             })
-    //             .join('&');
-    //         return values + '&' + files;
-    //     }
-
-    //     function clearErrors() {
-    //         form.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
-    //         form.querySelectorAll('[aria-invalid="true"]').forEach(function (el) {
-    //             el.removeAttribute('aria-invalid');
-    //             el.classList.remove('border-red-500', 'ring-2', 'ring-red-100');
-    //         });
-    //     }
-
-    //     function showValidationErrors(errors) {
-    //         clearErrors();
-    //         Object.entries(errors).forEach(function ([name, messages]) {
-    //             const field = Array.from(form.elements).find(function (el) { return el.name === name; });
-    //             if (!field) return;
-
-    //             field.classList.add('border-red-500', 'ring-2', 'ring-red-100');
-    //             field.setAttribute('aria-invalid', 'true');
-
-    //             const error = document.createElement('p');
-    //             error.className = 'field-error mt-1 text-xs font-medium text-red-600';
-    //             error.textContent = messages[0] || 'Invalid value';
-    //             field.insertAdjacentElement('afterend', error);
-    //         });
-    //     }
-
-    //     function saveForm(isManual) {
-    //         clearTimeout(debounceTimer);
-
-    //         if (!form.checkValidity()) {
-    //             if (isManual) form.reportValidity();
-    //             return;
-    //         }
-
-    //         const snapshot = getSnapshot();
-    //         if (!isManual && snapshot === lastSnapshot) return;
-
-    //         if (isSaving) {
-    //             saveAgain = true;
-    //             return;
-    //         }
-
-    //         isSaving = true;
-    //         clearErrors();
-
-    //         ajaxSubmitForm(form)
-    //             .then(async function (response) {
-    //                 if (!response.status) {
-    //                     showToast(response.msg || 'Save failed', 'error');
-    //                     return;
-    //                 }
-
-    //                 // Keep the submitted snapshot so edits made during the request
-    //                 // still trigger the existing saveAgain logic below.
-    //                 lastSnapshot = snapshot;
-
-    //                 if (form.id === 'assignedZone') {
-    //                     window.dispatchEvent(new Event('vendor-location-saved'));
-    //                 } else if (form.id === 'kw_form') {
-    //                     window.dispatchEvent(new Event('vendor-keywords-saved'));
-    //                 } else if (form.id === 'discussion-form') {
-    //                     window.dispatchEvent(new Event('vendor-discussion-saved'));
-    //                     const message = document.getElementById('discussion-save-message');
-    //                     if (message) {
-    //                         message.textContent = response.msg || 'Discussion saved successfully.';
-    //                         message.classList.remove('hidden');
-    //                     }
-    //                 } else if (form.classList.contains('order_validation')) {
-    //                     window.dispatchEvent(new Event('vendor-payment-saved'));
-    //                 }
-
-    //                 if (form.id !== 'discussion-form') {
-    //                     showToast(response.msg || 'Saved successfully', 'success');
-    //                 }
-    //             })
-    //             .catch(function (xhr) {
-    //                 if (xhr.status === 422 && xhr.responseJSON?.errors) {
-    //                     showValidationErrors(xhr.responseJSON.errors);
-    //                     showToast('Please correct the highlighted fields', 'error');
-    //                     return;
-    //                 }
-    //                 console.error('Form save failed:', {
-    //                     form: form.id,
-    //                     status: xhr.status,
-    //                     response: xhr.responseJSON || xhr.responseText
-    //                 });
-    //                 showToast(
-    //                     xhr.status === 419
-    //                         ? 'Session expired. Refresh the page and try again.'
-    //                         : 'Save failed. Please try again.',
-    //                     'error'
-    //                 );
-    //             })
-    //             .finally(function () {
-    //                 isSaving = false;
-    //                 if (saveAgain || getSnapshot() !== snapshot) {
-    //                     saveAgain = false;
-    //                     if (getSnapshot() !== lastSnapshot) {
-    //                         debounceTimer = setTimeout(function () { saveForm(false); }, 500);
-    //                     }
-    //                 }
-    //             });
-    //     }
-
-    //     // Register this form's saver so dropdown/select handlers can reach it
-    //     formSavers.set(form, saveForm);
-
-    //     if (form.id === 'discussion-form') {
-    //         form.addEventListener('input', function () {
-    //             document.getElementById('discussion-save-message')?.classList.add('hidden');
-    //         });
-    //         form.addEventListener('change', function () {
-    //             document.getElementById('discussion-save-message')?.classList.add('hidden');
-    //         });
-    //     }
-
-    //     form.addEventListener('input', function (event) {
-    //         if (!event.target.matches('.auto-save-field')) return;
-    //         clearTimeout(debounceTimer);
-    //         debounceTimer = setTimeout(function () { saveForm(false); }, 1500);
-    //     });
-
-    //     form.addEventListener('change', function (event) {
-    //         if (!event.target.matches('.auto-save-field')) return;
-    //         clearTimeout(debounceTimer);
-    //         debounceTimer = setTimeout(function () { saveForm(false); }, 600);
-    //     });
-
-    //     form.addEventListener('submit', function (event) {
-    //         event.preventDefault();
-    //         saveForm(true); // manual save (Save button)
-    //     });
-    // });
- 
  
 document.addEventListener('DOMContentLoaded', function () {
     const galleryForm = document.getElementById('uploadGalleryform');
@@ -6429,11 +6276,6 @@ document.addEventListener('DOMContentLoaded', function () {
  
 
 
-
-/* ============================================================
-   5. Rebind auto-save on dynamically injected <select> elements
-      (city/zone dropdowns loaded via AJAX in section 1/2)
-   ============================================================ */
 function bindSelectAutoSave(selectEl) {
     if (!selectEl) return;
     const form = selectEl.closest('form[auto-save-field]');
@@ -6793,5 +6635,151 @@ document.addEventListener('DOMContentLoaded', function () {
     }));
 });
 </script>
+         <link
+    href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+    rel="stylesheet"
+>     
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
+<!-- Initialize searchable state dropdown -->
+<script>
+$(function () {
+$('.select2-single-state').select2({
+placeholder: 'Search and select state',
+allowClear: true,
+minimumResultsForSearch: 0,
+width: '100%'
+});
+
+
+$('.select2-single-city').select2({
+placeholder: 'Search and select city',
+allowClear: true,
+minimumResultsForSearch: 0,
+width: '100%'
+});
+
+$('.select2-single-zone').select2({
+placeholder: 'Search and select zone',
+allowClear: true,
+minimumResultsForSearch: 0,
+width: '100%'
+});
+
+});
+</script>
+
+ 
+
+<style>
+    .select2-single-state + .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-single-state + .select2-container .select2-selection--single {
+        height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .select2-single-state + .select2-container .select2-selection__rendered {
+        line-height: 42px;
+        padding-left: 12px;
+        padding-right: 30px;
+        color: #334155;
+        font-size: 14px;
+    }
+
+    .select2-single-state + .select2-container .select2-selection__arrow {
+        height: 42px;
+    }
+
+    .select2-single-state + .select2-container--focus .select2-selection--single,
+    .select2-single-state + .select2-container--open .select2-selection--single {
+        border-color: #315b80;
+    }
+
+    .state-search-dropdown .select2-search__field {
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    .state-search-dropdown .select2-results__option {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .state-search-dropdown .select2-results__option--highlighted[aria-selected] {
+        background: #315b80;
+        color: #fff;
+    }
+
+
+
+     .select2-single-city + .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-single-city + .select2-container .select2-selection--single {
+        height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .select2-single-city + .select2-container .select2-selection__rendered {
+        line-height: 42px;
+        padding-left: 12px;
+        padding-right: 30px;
+        color: #334155;
+        font-size: 14px;
+    }
+
+    .select2-single-city + .select2-container .select2-selection__arrow {
+        height: 42px;
+    }
+
+    .select2-single-city + .select2-container--focus .select2-selection--single,
+    .select2-single-city + .select2-container--open .select2-selection--single {
+        border-color: #315b80;
+    }
+
+
+
+
+
+     .select2-single-zone + .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-single-zone + .select2-container .select2-selection--single {
+        height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .select2-single-zone + .select2-container .select2-selection__rendered {
+        line-height: 42px;
+        padding-left: 12px;
+        padding-right: 30px;
+        color: #334155;
+        font-size: 14px;
+    }
+
+    .select2-single-zone + .select2-container .select2-selection__arrow {
+        height: 42px;
+    }
+
+    .select2-single-zone + .select2-container--focus .select2-selection--single,
+    .select2-single-zone + .select2-container--open .select2-selection--single {
+        border-color: #315b80;
+    }
+
+
+</style>
 </x-layouts.sales.app>

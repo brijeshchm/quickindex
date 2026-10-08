@@ -11,11 +11,9 @@
         <span>Add vendor</span>
     </a>
         </div>
-
-        
+       
        {{-- Filters --}}
-        <form
-            method="GET"
+        <form method="GET" 
             action="{{ route('sales.vendors.index') }}"
             class="rounded-2xl border border-[#dfe7ec] bg-white p-4 shadow-sm"
         >

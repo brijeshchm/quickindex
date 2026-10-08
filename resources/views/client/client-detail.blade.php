@@ -1047,6 +1047,73 @@ function selectCert(i) {
                     <div>
                         <p class="text-[10px] font-black tracking-widest uppercase mb-3" style="color:#7c3aed;">Follow Us</p>
                         <div class="flex flex-wrap gap-2">
+    @foreach([
+        [
+            'instagram',
+            $clientsList['social']['instagram_url'] ?? '',
+            'Instagram',
+            'bg-gradient-to-tr from-amber-400 via-pink-500 to-purple-600',
+        ],
+        [
+            'facebook',
+            $clientsList['social']['facebook_url'] ?? '',
+            'Facebook',
+            'bg-[#1877f2]',
+        ],
+        [
+            'whatsapp',
+            'https://wa.me/917559435943',
+            'WhatsApp',
+            'bg-[#25d366]',
+        ],
+    ] as [$icon, $href, $label, $background])
+        @if(!empty($href) && $href !== '#')
+            <a
+                href="{{ $href }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="{{ $label }}"
+                title="{{ $label }}"
+                class="flex h-9 w-9 items-center justify-center rounded-full text-white shadow-sm transition hover:-translate-y-0.5 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 {{ $background }}"
+            >
+                @if($icon === 'instagram')
+                    <svg
+                        class="h-5 w-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                    >
+                        <rect x="3" y="3" width="18" height="18" rx="5"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                    </svg>
+                @elseif($icon === 'facebook')
+                    <svg
+                        class="h-5 w-5"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path d="M13.5 22v-9h3l.5-3.5h-3.5V7.3c0-1 .3-1.8 1.8-1.8H17V2.4c-.8-.1-1.6-.2-2.4-.2-2.4 0-4.1 1.5-4.1 4.3v3H7V13h3.5v9h3z"/>
+                    </svg>
+                @else
+                    <svg
+                        class="h-5 w-5"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path d="M20.52 3.48A11.91 11.91 0 0 0 12.05 0C5.47 0 .12 5.35.12 11.93c0 2.1.55 4.15 1.6 5.96L0 24l6.27-1.64a11.9 11.9 0 0 0 5.78 1.47h.01C18.63 23.83 24 18.48 24 11.9c0-3.18-1.24-6.17-3.48-8.42ZM12.06 21.82a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.73.98 1-3.64-.24-.38a9.88 9.88 0 0 1-1.52-5.26c0-5.47 4.45-9.92 9.93-9.92a9.85 9.85 0 0 1 7.02 2.91 9.86 9.86 0 0 1 2.9 7.02c0 5.47-4.45 9.88-9.97 9.88Zm5.45-7.42c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.47-1.74-1.64-2.04-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.5 1.7.64.72.23 1.37.2 1.88.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/>
+                    </svg>
+                @endif
+            </a>
+        @endif
+    @endforeach
+</div>
+                        
+                        <!-- <div class="flex flex-wrap gap-2">
                             @foreach([
                                 ['📸', $clientsList['social']['instagram_url'] ?? '#', 'linear-gradient(135deg,#f43f5e,#a855f7,#f59e0b)'],
                                 ['👥', $clientsList['social']['facebook_url']  ?? '#', '#1877f2'],
@@ -1056,7 +1123,7 @@ function selectCert(i) {
                                class="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
                                style="background:{{ $bg }};color:#fff;">{{ $icon }}</a>
                             @endforeach
-                        </div>
+                        </div> -->
                     </div>
                     <a href="{{ $googleMapUrl }}" target="_blank" rel="nofollow noopener noreferrer"
                        class="flex items-center justify-center gap-2 text-xs font-bold rounded-xl py-2.5 text-white hover:opacity-90 transition-opacity"
