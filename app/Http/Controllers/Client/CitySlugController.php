@@ -2832,7 +2832,7 @@ $reviewList = DB::table('clients')
 			$clientMap = $this->getClientSlugMap();  		 
 			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);	
 
-			// dd($cityName);
+		 
 			if (!empty($slugUrl) && $slugUrl !== $slug && !empty($cityName)) {
 				 
 				return redirect()->route('city.slug', [
@@ -2841,7 +2841,7 @@ $reviewList = DB::table('clients')
 				], 301);
 				
 			}
-		
+		 
 			if ($slugUrl && !empty($cityName)) {
 				 
 				if (!$this->clientsExists($slugUrl)) {
@@ -2854,6 +2854,29 @@ $reviewList = DB::table('clients')
 				}
 				return $this->getClientDetail($businessResponse, $slugUrl,$cityName);
 			}
+
+
+			if ($slugUrl) {
+				 
+				if (!$this->clientsExists($slugUrl)) {
+					abort(410);					 
+				}
+				$businessResponse = $this->fetchBusinessData($slugUrl,$cityName);
+			
+				if (!$businessResponse) {
+					abort(410);				
+				}
+
+				$cityName = $businessResponse['clientsList'];
+				if($cityName['city']){
+				return redirect()->route('city.slug', [
+						'city_slug'    => Str::slug(strtolower($cityName['city'])),
+						'service_slug' => $slugUrl,
+					], 301);
+				}
+				return redirect()->route('home');				 
+			}
+
 
 			abort(410);
 		}
