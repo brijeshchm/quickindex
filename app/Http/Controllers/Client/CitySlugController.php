@@ -2831,6 +2831,8 @@ $reviewList = DB::table('clients')
 
 			$clientMap = $this->getClientSlugMap();  		 
 			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);	
+
+			// dd($cityName);
 			if (!empty($slugUrl) && $slugUrl !== $slug && !empty($cityName)) {
 				 
 				return redirect()->route('city.slug', [
@@ -2840,7 +2842,8 @@ $reviewList = DB::table('clients')
 				
 			}
 		
-			if ($slugUrl) {
+			if ($slugUrl && !empty($cityName)) {
+				 
 				if (!$this->clientsExists($slugUrl)) {
 					abort(410);					 
 				}
