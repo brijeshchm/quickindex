@@ -800,7 +800,7 @@ class HomePageController extends Controller
 						'required',
 						'string',
 						'min:2',
-						'max:16',
+						'max:32',
 						'regex:/^\p{L}+(?: \p{L}+)*$/u',
 					],
                 'email'    => ['required', 'email:rfc', 'max:150'],
