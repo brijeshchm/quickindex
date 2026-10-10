@@ -27,9 +27,9 @@ class BusinessKeywordController extends Controller
 	 */
 	public function index()
 	{
-		//
-		$businessKeywords = BusinessKeyword::all();
-		$cities = Citieslists::all();
+		
+		$businessKeywords = BusinessKeyword::all();		 
+		$cities = Citieslists::orderBy('city', 'asc')->get();
 		$parentCategories = ParentCategory::all();
 		$childCategories = ChildCategory::all();
 		$keywords = Keyword::all();
@@ -96,7 +96,8 @@ class BusinessKeywordController extends Controller
 		} else {
 
 			$businessKeyword = BusinessKeyword::find($id);
-			$cities = Citieslists::all();
+		 
+			$cities = Citieslists::orderBy('city', 'asc')->get();
 			$parentCategories = ParentCategory::all();
 			$request->session()->put('businessKeywordToUpdate', $businessKeyword->id);
 			$childCategories = ChildCategory::where('parent_category_id', $businessKeyword->parent_category_id)->get();

@@ -87,8 +87,7 @@
                     </label>
 
                     <select id="city"
-                            name="city"
-                            required
+                            name="city"                            
                             @error('city') aria-invalid="true" aria-describedby="city-error" @enderror
                             class="select2-single-city {{ $inputBase }} {{ $errors->has('city') ? $inputBad : $inputOk }}">
                         <option value="">Select city</option>
@@ -140,4 +139,87 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
+<style>   
+
+    .state-search-dropdown .select2-search__field {
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    .state-search-dropdown .select2-results__option {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .state-search-dropdown .select2-results__option--highlighted[aria-selected] {
+        background: #315b80;
+        color: #fff;
+    }
+
+
+
+     .select2-single-city + .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-single-city + .select2-container .select2-selection--single {
+        height: 44px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .select2-single-city + .select2-container .select2-selection__rendered {
+        line-height: 42px;
+        padding-left: 12px;
+        padding-right: 30px;
+        color: #334155;
+        font-size: 14px;
+    }
+
+    .select2-single-city + .select2-container .select2-selection__arrow {
+        height: 42px;
+    }
+
+    .select2-single-city + .select2-container--focus .select2-selection--single,
+    .select2-single-city + .select2-container--open .select2-selection--single {
+        border-color: #315b80;
+    }
+
+
+
+
+ 
+
+
+</style>
+ <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link
+    href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+    rel="stylesheet"
+>     
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<!-- Initialize searchable state dropdown -->
+<script>
+$(function () {
+
+
+$('.select2-single-city').select2({
+placeholder: 'Search and select city',
+allowClear: true,
+minimumResultsForSearch: 0,
+width: '100%'
+});
+ 
+});
+</script>
+
+
+
 </x-layouts.sales.app>

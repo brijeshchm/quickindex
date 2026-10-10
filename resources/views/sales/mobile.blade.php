@@ -26,7 +26,7 @@
 									<option value="{{$email_v->email}}">{{$email_v->email}}</option>
 									@endforeach
 									@endif
- 
+ 	                                <option value="abhinandank096@gmail.com">abhinandank096@gmail.com</option>
 								</select>
                             </div>
 						</div>

@@ -11,13 +11,18 @@ use App\Subscribe;
 use App\Models\Blogdetails;
 use App\Models\Client\Client; //model
 use App\Models\Keyword;
- 
+use App\Mail\CareerApplicationMail;
 use App\Models\Citieslists;
 use App\Models\ChildCategory;
+use App\Models\Contacts;
 use App\Models\NewsArticle;
 use App\Models\ParentCategory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+
+use Illuminate\Support\Facades\Mail;
+ 
 use DB;
 class OfficialController extends Controller
 {
@@ -363,6 +368,73 @@ class OfficialController extends Controller
 
         return view('official.careers',compact('city','metaTitle','metaDescription','keyword'));
     }
+
+   
+    public function apply(Request $request)
+    {
+        $validated = $request->validate([
+            'name'    => ['required', 'string', 'max:255'],
+            'email'   => ['required', 'email', 'max:255'],
+            'mobile'  => ['required', 'string', 'max:30', 'regex:/^\+?[0-9\s()-]{7,30}$/'],
+            'job'     => ['nullable', 'string', 'max:255'],
+            'subject' => ['nullable', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:5000'],
+            'resume'  => ['required', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+        ], [
+            'resume.required' => 'Please upload your resume.',
+            'resume.mimes'    => 'Resume must be a PDF, DOC or DOCX file.',
+            'resume.max'      => 'Resume must not exceed 5 MB.',
+            'mobile.regex'    => 'Please enter a valid mobile number.',
+        ]);
+
+        $file = $request->file('resume');
+
+        // Collect file info for the mail ONLY (nothing is stored on disk)
+        $resume = [
+            'path' => $file->getRealPath(),
+            'name' => $file->getClientOriginalName(),
+            'mime' => $file->getMimeType(),
+        ];
+
+        // Save the application in DB (without the resume file)
+        $application = Contacts::create([
+            'name'    => $validated['name'],
+            'email'   => $validated['email'],
+            'mobile'  => $validated['mobile'],
+            'subject' => $validated['subject'] ?? 'Career application',
+            'message' => $validated['message']
+                . "\n\nJob: " . ($validated['job'] ?? 'Not specified'),
+        ]);
+
+        $mailSent = false;
+
+        try {
+            Mail::to('quickdials1@gmail.com')
+                ->send(new CareerApplicationMail($application, $resume));
+
+            $mailSent = true;
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        if ($mailSent) {
+            try {
+                $application->update(['mail_sent_at' => now()]);
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
+
+        return response()->json([
+            'status'    => $mailSent,
+            'mail_sent' => $mailSent,
+            'message'   => $mailSent
+                ? 'Your application has been sent successfully.'
+                : 'We saved your details, but the email could not be sent. Please try again.',
+        ], $mailSent ? 201 : 500);
+    }
+
+ 
 
     /**
      * Show the application dashboard.

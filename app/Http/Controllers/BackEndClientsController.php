@@ -82,7 +82,8 @@ class BackEndClientsController extends Controller
 			$clients = DB::select($query);
 		} else {
 			$clients = Client::all();
-			$citylist = Citieslists::all();
+			$citylist = Citieslists::orderBy('city', 'asc')->get();
+			
 			$clientCategories = ParentCategory::all();
 		}
 
@@ -710,7 +711,8 @@ class BackEndClientsController extends Controller
 				->distinct()
 				->get();
 
-			$citylist = Citieslists::get();
+			 
+			$citylist = Citieslists::orderBy('city', 'asc')->get();
 			$clientCategories = ClientCategory::all();
 			$parentCategory = ParentCategory::all();
 
@@ -2432,7 +2434,8 @@ protected function deleteOldImage($jsonString)
 				->distinct()
 				->get();
 
-			$citylist = Citieslists::all();
+			 
+			$citylist = Citieslists::orderBy('city', 'asc')->get();
 			$clientCategories = ClientCategory::all();
 			$parentCategory = ParentCategory::all();
 
@@ -3866,11 +3869,8 @@ protected function deleteOldImage($jsonString)
 	 */
 	public function editAssignedKeyword(Request $request, $id, $target_id)
 	{
-
 		$assignedKwd = AssignedKWDS::findOrFail($target_id);
-
-		$citylist = Citieslists::all();
-
+		$citylist = Citieslists::orderBy('city', 'asc')->get();
 		$cityOptions = "<option value=\"\">Select City</option>";
 		if (count($citylist) > 0) {
 			foreach ($citylist as $distinctCity) {

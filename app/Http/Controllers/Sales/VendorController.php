@@ -224,7 +224,8 @@ class VendorController extends Controller
     {
 
         $sales = Auth::guard('sales')->user();
-        $citylist = Citieslists::all();
+        
+		$citylist = Citieslists::orderBy('city', 'asc')->get();
         $statesis = State::get();     
 
 
@@ -255,7 +256,8 @@ class VendorController extends Controller
          $sales = Auth::guard('sales')->user();
 
 
-    $citylist = Citieslists::all();
+    
+	$citylist = Citieslists::orderBy('city', 'asc')->get();
     $clientCategories = ClientCategory::all();
     $parentCategory = ParentCategory::all();
     $discussions = Discussions::where('client_id',$sales->id)->get();

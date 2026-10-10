@@ -796,7 +796,13 @@ class HomePageController extends Controller
     {
         return match ($step) {
             0 => [
-                'name'     => ['required', 'string', 'min:2', 'max:100'],
+				'name' => [
+						'required',
+						'string',
+						'min:2',
+						'max:16',
+						'regex:/^\p{L}+(?: \p{L}+)*$/u',
+					],
                 'email'    => ['required', 'email:rfc', 'max:150'],
                 'phone'    => ['required', 'regex:/^[\d]{10,15}$/'],
                 
@@ -1456,6 +1462,112 @@ class HomePageController extends Controller
 		return view('client.playwrightAutomation', ['city' => $city, 'area' => $area,'keyword'=>$keyword,'metaDescription'=>$metaDescription,'metaTitle'=>$metaTitle]);
 	}
 
+
+
+	public function getCityAjax_old(Request $request)
+	{
+
+		$cid = trim($request->input('city')); 
+		$zoneResults = collect();
+
+		if (!empty($cid)) {
+
+			$zoneResults = DB::table('zones')
+				->join('citylists', 'citylists.id', '=', 'zones.city_id')
+				->where(function ($q) use ($cid) {
+					$q->where('zones.zone', 'LIKE', "{$cid}%")
+						->orWhere('citylists.city', 'LIKE', "{$cid}%")
+						->orWhere('zones.city_id', $cid)
+						->orWhere('zones.pincode', 'LIKE', "{$cid}%");
+				})
+				->select(
+					'zones.id as zone_id',
+					'zones.zone',
+					'citylists.id as city_id',
+					'citylists.city as cityName',
+					'zones.pincode'
+				)
+				->orderBy('zones.zone', 'asc')
+				->distinct()
+				->get();
+
+		} else {
+
+			$defaultCities = collect([
+				'Hyderabad',
+				'Patna',
+				'Gorakhpur',
+				'Faridabad',
+				'Delhi',
+				'Noida',
+				'Ghaziabad',
+				'Mumbai',
+				'Pune',
+				'Meerut',
+				'Bangalore',
+				'Indore',
+				'Kanpur',
+				'Chennai',
+				'Kolkata',
+				'Coimbatore',
+				'Prayagraj'
+			]);
+
+			$zoneResults = DB::table('zones')
+				->join('citylists', 'citylists.id', '=', 'zones.city_id')
+				->whereIn('citylists.city', $defaultCities)
+				->select(
+					DB::raw('MIN(zones.id) as zone_id'),
+					DB::raw('MIN(zones.zone) as zone'),
+					'citylists.id as city_id',
+					'citylists.city as cityName',
+					DB::raw('NULL as pincode')
+				)
+				->groupBy('citylists.id', 'citylists.city')
+				->orderBy('zone', 'asc')
+				->orderBy('citylists.city')
+				->get();
+		}
+
+		// -------- TRANSFORM USING COLLECTION --------
+		$data = $zoneResults->map(function ($zone) {
+
+			$cityDetails = collect([
+				$zone->zone ?? null,
+				$zone->cityName ?? null,
+			])->filter()->implode(', ');
+
+			if (!empty($zone->pincode)) {
+				$cityDetails .= ' - ' . $zone->pincode;
+			}
+
+			return [
+				'id' => $zone->zone_id,
+				'city' => $zone->cityName,
+				'cityDetails' => ucfirst($cityDetails)
+			];
+
+		})->unique('cityDetails')->values();
+
+		return response()->json([
+			'status' => true,
+			'message' => 'Successfully',
+			'data' => $data
+		], 200);
+
+	}
+
+
+	public function getCityAjax(Request $request)
+	{
+		$cid = trim((string) $request->input('city', ''));		
+		$data= 	getCityZone($cid);
+		return response()->json([
+			'status' => true,
+			'message' => 'Successfully',
+			'data' => $data,
+		], 200);
+	}
 
 	/*
 	 * Get matches trainers based on ajax.

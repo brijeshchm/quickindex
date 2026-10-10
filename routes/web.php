@@ -399,7 +399,7 @@ Route::get('/features', [App\Http\Controllers\Official\OfficialController::class
 Route::get('/faq', [App\Http\Controllers\Official\OfficialController::class, 'faq']);
 Route::get('/contact-us', [App\Http\Controllers\Official\OfficialController::class, 'contact'])->name('contactUs');
 Route::get('/careers', [App\Http\Controllers\Official\OfficialController::class, 'careers'])->name('careers');
-//Route::post('/api/careers/apply', [App\Http\Controllers\Official\OfficialController::class, 'apply'])->name('careers.apply');
+Route::post('/api/careers/apply', [App\Http\Controllers\Official\OfficialController::class, 'apply'])->name('careers.apply');
 Route::get('/pricing', [App\Http\Controllers\Official\OfficialController::class, 'pricing'])->name('pricing');
 
 Route::get('/advertise', [App\Http\Controllers\Official\OfficialController::class, 'advertise'])->name('advertise');
@@ -426,6 +426,7 @@ Route::get('/business-services', [App\Http\Controllers\Client\HomePageController
 Route::get('/getKWList', [App\Http\Controllers\Client\HomePageController::class, 'getKWList']);
 Route::get('/getCityKWList', [App\Http\Controllers\Client\HomePageController::class, 'getCityKWList']);
 Route::get('/getCityList', [App\Http\Controllers\Client\HomePageController::class, 'getCountryCode']);
+Route::get('/getCityAjax', [App\Http\Controllers\Client\HomePageController::class, 'getCityAjax']);
 
 Route::get('/disclaimer', function () {
 	return view('client.disclaimer');

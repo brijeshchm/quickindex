@@ -31,7 +31,8 @@ class CitiesController extends Controller
 		if ($request->has('search')) {
 			$search = $request->input('search');
 		}
-		$citiess = Citieslists::all();
+	 
+		$citiess = Citieslists::orderBy('city', 'asc')->get();
 		$states = Citieslists::select('state')->groupBy('state')->get();
 		return view('admin.citylist.citieslist', ['allCities' => $citiess, 'search' => $search, 'states' => $states]);
 

@@ -147,12 +147,12 @@
 
 <a href="https://play.google.com/store/apps/details?id=com.quick_dial&hl=en_IN" rel="nofollow noopener noreferrer"
    target="_blank"
-   class="group inline-flex items-center justify-center w-24 h-36 hover:bg-EB2C3B-700 from-green-500 to-emerald-600  transition-all duration-300">
+   class="group inline-flex items-center justify-center w-24 h-10 hover:bg-EB2C3B-700 from-green-500 to-emerald-600  transition-all duration-300">
 
     <img 
     src="{{ asset('play-store-android.png') }}" 
       alt="Download Quickdials app on Google Play Store"
-    class="h-14 w-auto sm:h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32 object-contain"
+    class="h-14 w-auto sm:h-10 md:h-10 lg:h-10 xl:h-10 2xl:h-10 object-contain"
      width="96"
     height="56"
      loading="lazy"
@@ -1089,7 +1089,8 @@ function filterStickyCities(q) {
     if (q.length < 1) { renderStickyCityList(FALLBACK_CITIES); return; }
     stickyCityTimeout = setTimeout(async () => {
         try {
-            const r = await fetch(`https://api.quickdials.com/api/website/getCityList?city=${encodeURIComponent(q)}`);
+           
+            const r = await fetch(`/getCityAjax?city=${encodeURIComponent(q)}`);
             const d = await r.json();
             // const m = (d.data ?? []).map(i => i.cityDetails);
             const m = (d.data ?? []).map(i => ({ city: i.city, cityDetails: i.cityDetails }));
@@ -1348,7 +1349,8 @@ function filterMobileCities(q) {
     if (q.length < 1) { renderMobileCityList(FALLBACK_CITIES); return; }
     mobileCityTimeout = setTimeout(async () => {
         try {
-            const r = await fetch(`https://api.quickdials.com/api/website/getCityList?city=${encodeURIComponent(q)}`);
+            console.log(q);
+            const r = await fetch(`/getCityAjax?city=${encodeURIComponent(q)}`);
             const d = await r.json();
             const m = (d.data ?? []).map(i => ({ city: i.city, cityDetails: i.cityDetails }));
             renderMobileCityList(m.length ? m : FALLBACK_CITIES, q);

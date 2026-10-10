@@ -2058,4 +2058,130 @@ function saveImageSmart($file, $destinationPath, $width = null, $height = null)
 		return trim($text, " \t\n\r\0\x0B,");
 	}
 
+
+
+		
+	use Illuminate\Support\Facades\Cache;
+
+	if (!function_exists('getCityList')) {
+		function getCityList()
+		{
+			return Cache::remember('cities_list_asc', now()->addHours(24), function () {
+				return Citieslists::select('id','city','city_slug')->orderBy('city', 'asc')->get();
+			});
+		}
+	}
+
+
 	
+	function getCityZone($cid)
+	{
+		 	 
+		// Separate cache key for each search and the default list.
+		$cacheKey = 'city_ajax:v1:' . hash('sha256', $cid);
+ 
+		$data = Cache::remember(
+			$cacheKey,
+			now()->addHour(),
+			function () use ($cid) {
+				$query = DB::table('zones')
+					->join(
+						'citylists',
+						'citylists.id',
+						'=',
+						'zones.city_id'
+					);
+
+				if ($cid !== '') {
+					$zoneResults = $query
+						->where(function ($q) use ($cid) {
+							$q->where('zones.zone', 'LIKE', "{$cid}%")
+								->orWhere('citylists.city', 'LIKE', "{$cid}%")
+								->orWhere('zones.pincode', 'LIKE', "{$cid}%");
+
+							// Avoid comparing text searches to a numeric city ID.
+							if (ctype_digit($cid)) {
+								$q->orWhere('zones.city_id', $cid);
+							}
+						})
+						->select(
+							'zones.id as zone_id',
+							'zones.zone',
+							'citylists.id as city_id',
+							'citylists.city as cityName',
+							'zones.pincode'
+						)
+						->orderBy('zones.zone', 'asc')
+						->distinct()
+						->get();
+				} else {
+					$defaultCities = [
+						'Hyderabad',
+						'Patna',
+						'Gorakhpur',
+						'Faridabad',
+						'Delhi',
+						'Noida',
+						'Ghaziabad',
+						'Mumbai',
+						'Pune',
+						'Meerut',
+						'Bangalore',
+						'Indore',
+						'Kanpur',
+						'Chennai',
+						'Kolkata',
+						'Coimbatore',
+						'Prayagraj',
+					];
+
+					// Pick one actual zone row per city.
+					$firstZones = DB::table('zones')
+						->select('city_id')
+						->selectRaw('MIN(id) as zone_id')
+						->groupBy('city_id');
+
+					$zoneResults = $query
+						->joinSub($firstZones, 'first_zones', function ($join) {
+							$join->on('zones.id', '=', 'first_zones.zone_id');
+						})
+						->whereIn('citylists.city', $defaultCities)
+						->select(
+							'zones.id as zone_id',
+							'zones.zone',
+							'citylists.id as city_id',
+							'citylists.city as cityName'
+						)
+						->selectRaw('NULL as pincode')
+						->orderBy('zones.zone', 'asc')
+						->orderBy('citylists.city', 'asc')
+						->get();
+				}
+
+				return $zoneResults
+					->map(function ($zone) {
+						$cityDetails = collect([
+							$zone->zone ?? null,
+							$zone->cityName ?? null,
+						])
+							->filter()
+							->implode(', ');
+
+						if (!empty($zone->pincode)) {
+							$cityDetails .= ' - ' . $zone->pincode;
+						}
+
+						return [
+							'id' => $zone->zone_id,
+							'city' => $zone->cityName,
+							'cityDetails' => ucfirst($cityDetails),
+						];
+					})
+					->unique('cityDetails')
+					->values()
+					->all();
+			}
+		);
+
+		 return $data;
+	}

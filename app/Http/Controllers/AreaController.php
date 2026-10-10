@@ -269,8 +269,7 @@ class AreaController extends Controller
 		if ($request->wantsJson()) {
 		 
 			if ($request->has('q')) {
-				//$city = Citieslists::where('city', 'LIKE', $request->input('city'))->first();
-			 
+				  
 			$city = Citieslists::where('id',  $request->input('city'))->first();
 				if ($city) {
 				$zones = DB::table('zones')				 
