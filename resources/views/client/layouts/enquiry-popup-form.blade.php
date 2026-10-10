@@ -93,7 +93,7 @@ select.ef-input { padding-left:1rem; }
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
                                 <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
                             </svg></span>
-                        <input type="text" name="name" placeholder="Enter full name" class="ef-input" required>
+                        <input type="text" name="name" placeholder="Enter full name" class="ef-input" validated>
                     </div>
                 </div>
 
@@ -134,7 +134,7 @@ select.ef-input { padding-left:1rem; }
                                             </svg>                           
                             </span>
                             <input type="tel" name="phone" placeholder="Enter phone number"
-                                   class="ef-input" style="padding-left:2.25rem;" maxlength="16" required>
+                                   class="ef-input" style="padding-left:2.25rem;" maxlength="16" validated>
 
                                    
                         </div>
@@ -145,7 +145,7 @@ select.ef-input { padding-left:1rem; }
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Email Address *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">✉️</span>
-                        <input type="email" name="email" placeholder="Enter email" class="ef-input" required>
+                        <input type="email" name="email" placeholder="Enter email" class="ef-input" validated>
                     </div>
                 </div>
 
@@ -604,7 +604,7 @@ const validateStep = (n) => {
     const stepEl = form.querySelector(`[data-step="${n}"]`);
     let valid = true;
 
-    stepEl.querySelectorAll('[required]').forEach(input => {
+    stepEl.querySelectorAll('[validated]').forEach(input => {
         removeError(input);
         const val = input.value.trim();
         if (!val) { showError(input, 'This field is required'); valid = false; return; }

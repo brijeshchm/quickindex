@@ -89,7 +89,7 @@ select.ef-input { padding-left:1rem; }
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Full Name *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">👤</span>
-                        <input type="text" name="name" placeholder="Enter full name" class="ef-input" required>
+                        <input type="text" name="name" placeholder="Enter full name" class="ef-input" validated>
                     </div>
                 </div>
 
@@ -115,7 +115,7 @@ select.ef-input { padding-left:1rem; }
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
                                     </svg>
-                                    <input type="text" id="cc-search" class="cc-search" placeholder="Search country or code…" autocomplete="off">
+                                    <input type="text" id="cc-search" class="cc-search" placeholder="Search country or code…" autocomplete="off" validated>
                                 </div>
                                 {{-- List --}}
                                 <div class="cc-list" id="cc-list"></div>
@@ -128,7 +128,7 @@ select.ef-input { padding-left:1rem; }
                     <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"/>
                 </svg></span>
                             <input type="tel" name="phone" placeholder="Enter phone number"
-                                   class="ef-input" style="padding-left:2.25rem;" maxlength="16" required>
+                                   class="ef-input" style="padding-left:2.25rem;" maxlength="16" validated>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ select.ef-input { padding-left:1rem; }
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Email Address *</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">✉️</span>
-                        <input type="email" name="email" placeholder="Enter email" class="ef-input" required>
+                        <input type="email" name="email" placeholder="Enter email" class="ef-input" validated>
                     </div>
                 </div>
 
@@ -158,7 +158,7 @@ select.ef-input { padding-left:1rem; }
     <div class="space-y-3">
 
         {{-- Location --}}
-        @include('client.layouts.location-search', ['mode' => 'vanilla', 'label' => 'Location', 'required' => true])
+        @include('client.layouts.location-search', ['mode' => 'vanilla', 'label' => 'Location', 'validated' => true])
 
         {{-- Age Range --}}
         <div>
@@ -623,7 +623,7 @@ select.ef-input { padding-left:1rem; }
             const stepEl = form.querySelector(`[data-step="${n}"]`);
             let valid = true;
 
-            stepEl.querySelectorAll('[required]').forEach(input => {
+            stepEl.querySelectorAll('[validated]').forEach(input => {
                 removeError(input);
                 const val = input.value.trim();
                 if (!val) { showError(input, 'This field is required'); valid = false; return; }

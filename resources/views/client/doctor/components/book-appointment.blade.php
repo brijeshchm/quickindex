@@ -122,26 +122,26 @@
                 <div class="grid sm:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="text-sm font-medium mb-1.5 block">Full Name *</label>
-                        <input x-model="form.patient_name" type="text" required minlength="2"
+                        <input x-model="form.patient_name" type="text" minlength="2"
                                class="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-primary"
                                placeholder="John Doe">
                     </div>
                     <div>
                         <label class="text-sm font-medium mb-1.5 block">Phone *</label>
-                        <input x-model="form.patient_phone" type="tel" required minlength="10"
+                        <input x-model="form.patient_phone" type="tel" maxlength="16"
                                class="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-primary"
-                               placeholder="+91 98765 43210">
+                               placeholder="Enter Email">
                     </div>
                 </div>
                 <div class="mb-4">
                     <label class="text-sm font-medium mb-1.5 block">Email *</label>
-                    <input x-model="form.patient_email" type="email" required
+                    <input x-model="form.patient_email" type="email" 
                            class="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-primary"
                            placeholder="you@example.com">
                 </div>
                 <div class="mb-4">
                     <label class="text-sm font-medium mb-1.5 block">Reason for Visit *</label>
-                    <textarea x-model="form.reason" required minlength="10" rows="3"
+                    <textarea x-model="form.reason" minlength="10" rows="3"
                               class="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:border-primary"
                               placeholder="Briefly describe your symptoms or reason for the visit..."></textarea>
                 </div>

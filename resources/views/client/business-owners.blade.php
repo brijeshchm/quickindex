@@ -453,7 +453,7 @@ select.form-input { padding-left:1rem; }
                                         <svg class="field-icon absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
                                         <input type="hidden" name="initial_form_submit" value="initialformsubmit">
                                         <input name="business_name" type="text" placeholder="Enter Business Name"
-                                               class="form-input" required minlength="2" />
+                                               class="form-input" minlength="2" />
                                     </div>
                                     <p class="field-error text-red-500 text-[10px] mt-0.5 hidden"></p>
                                 </div>
@@ -465,7 +465,7 @@ select.form-input { padding-left:1rem; }
                                         <div class="relative">
                                             <svg class="field-icon absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                             <input name="email" type="email" placeholder="Enter Email"
-                                                   class="form-input" required />
+                                                   class="form-input"  />
                                         </div>
                                         <p class="field-error text-red-500 text-[10px] mt-0.5 hidden"></p>
                                     </div>
@@ -474,7 +474,7 @@ select.form-input { padding-left:1rem; }
                                         <div class="relative">
                                             <svg class="field-icon absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .9h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.09a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 15z"/></svg>
                                             <input name="mobile" type="tel" placeholder="Enter Phone"
-                                                   class="form-input" minlength="10" required />
+                                                   class="form-input" minlength="10"  />
                                         </div>
                                         <p class="field-error text-red-500 text-[10px] mt-0.5 hidden"></p>
                                     </div>
