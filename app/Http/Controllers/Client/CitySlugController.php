@@ -541,7 +541,7 @@ class CitySlugController extends Controller
 				'reviewCount' => $client->comment_count,
 				'tags' => $assignedKeywords,
 				'category' => $assignedCategory ?? null,
-				'businessDescription' => $client->business_description ?? $template ?? null,
+				'business_description' => $client->business_description ?? $template ?? null,
 			];
 		});
  
@@ -1142,6 +1142,7 @@ $reviewList = DB::table('clients')
         GROUP BY comment_client_ID
     ) c'), 'c.comment_client_ID', '=', 'clients.id')
 
+
 			->select(
 				'clients.id as business_id',
 				'clients.business_name',
@@ -1294,7 +1295,7 @@ $reviewList = DB::table('clients')
 				'tags' => $assignedKeywords ?? null,
 				'category' => $assignedCategory ?? null,
 			 
-				'businessDescription' => $client->business_description ?? $template ?? null,
+				'business_description' => $client->business_description ?? $template ?? null,
 			];
 		});
 
@@ -2247,14 +2248,15 @@ $reviewList = DB::table('clients')
         $name     = $b['business_name'] ?? 'Business Name';
         $id       = $b['business_id'] ?? $index;
 
-        $gallery = is_array($b['gallery'] ?? null)
-            ? $b['gallery']
-            : [];
+		$gallery = is_array($b['gallery'] ?? null)
+		? array_slice($b['gallery'], 0, 5)
+		: [];
 
-        $overviewBusiness = $b['businessDescription']; 
+        $overviewBusiness = $b['business_description']; 
  
         return [
             'id'            => $id,
+            'client_id'     => $id,
             'name'          => $name,
             'business_slug' => $b['business_slug'] ?? '',
             'category'      => array_slice($category, 0, 5),
@@ -2284,7 +2286,7 @@ $reviewList = DB::table('clients')
             'established'   => $b['year_of_estb'] ?? '',
             'certifications'   => $b['certifications'] ?? '',
             'gallery'   => $gallery ?? '',
-            'businessDescription'   => $overviewBusiness ?? '',
+            'business_description'   => $overviewBusiness ?? '',
             'logo'   => $b['logo'] ?? '',
         ];
     }
@@ -2598,8 +2600,6 @@ $reviewList = DB::table('clients')
             ->map(fn ($b, $i) => $this->normalizeBusiness($b, $i))
             ->all();
 
- 
-             
         // ── Agents comparison table ────────────────────────────────────────
         $agents = collect($agents)
             ->map(fn ($b) => $this->normalizeAgent($b))
@@ -2628,9 +2628,7 @@ $reviewList = DB::table('clients')
         $zones     = $responseZones['data'] ?? [];
         $cityDetails     = $responseCityDetails['data'] ?? [];
  	
-		
-
-		 
+		 	 
         return view('client.searchlist', compact(
             'city', 'slug', 'keyword', 'area','zones',
             'childSlug', 'childCat','cityDetails',
@@ -3171,12 +3169,220 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 
      /**
      * Handle  GET /{city}/{slug}
-     */
+		*/
+ 
+	 
+ 
+public function search(Request $request, string $city)
+{
+    $validated = $request->validate([
+        'q' => ['required', 'string', 'min:2', 'max:150'],
+    ]);
 
+    $str     = Str::of($validated['q'])->squish()->toString();
+    $slug    = Str::slug($str);
+    $keyword = $str;
+
+		$keyword = ucfirst(preg_replace('/[\s\-]+/u', ' ', $str));
+ 
+    $like    = '%' . addcslashes($str, '%_\\') . '%';
+
+    // ── 1. Clients matching category / child / keyword / business ─────────
+    $clients = DB::table('clients as c')
+        ->join('assigned_kwds as ak', 'ak.client_id', '=', 'c.id')
+        ->join('keyword as k', 'k.id', '=', 'ak.kw_id')
+        ->leftJoin('child_category as cc', 'cc.id', '=', 'k.child_category_id')
+        ->leftJoin('parent_category as pc', 'pc.id', '=', 'cc.parent_category_id')
+		->leftJoin(DB::raw('(
+        SELECT 
+            comment_client_ID,          
+			 AVG(rating) AS avgRating,
+            COUNT(comment_ID) AS reviewCount
+        FROM comments
+        GROUP BY comment_client_ID
+    ) c'), 'c.comment_client_ID', '=', 'c.id')
 
 	 
+        ->select('c.*','c.id as business_id',
+		
+		)
+        // ->where('c.status', 1) // uncomment: only active clients
+        ->where(function ($q) use ($like) {
+            $q->where('pc.parent_slug', 'LIKE', $like)
+              ->orWhere('pc.parent_category', 'LIKE', $like)
+              ->orWhere('cc.child_slug', 'LIKE', $like)
+              ->orWhere('cc.child_category', 'LIKE', $like)
+              ->orWhere('k.slug', 'LIKE', $like)
+              ->orWhere('k.keyword', 'LIKE', $like)
+              ->orWhere('c.business_slug', 'LIKE', $like)
+              ->orWhere('c.business_name', 'LIKE', $like);
+        })
+        ->distinct()
+		->where('c.active_status','1')
+        ->orderBy('c.business_name')
+        ->limit(100)
+        ->get();
+
+    // ── 2. Best matching keyword row = source of meta, banners, FAQs ──────
+    $kwRow = DB::table('keyword as k')
+        ->leftJoin('child_category as cc', 'cc.id', '=', 'k.child_category_id')
+        ->leftJoin('parent_category as pc', 'pc.id', '=', 'cc.parent_category_id')
+        ->select(
+            'k.*',
+            'cc.child_slug as child_slug',
+            'cc.child_category as child_category',
+            'pc.parent_slug as parent_slug',
+            'pc.parent_category as parent_category'
+        )
+        ->where(function ($q) use ($slug, $like) {
+            $q->where('k.slug', $slug)
+              ->orWhere('k.keyword', 'LIKE', $like);
+        })
+        ->orderByRaw('CASE WHEN k.slug = ? THEN 0 ELSE 1 END', [$slug])
+        ->orderBy('k.keyword')
+        ->first();
+
+    $kwData = $kwRow ? (array) $kwRow : [];
+
+    // ── 3. City, zones, area ──────────────────────────────────────────────
+    $zones = DB::table('citylists')
+        ->join('zones', 'zones.city_id', '=', 'citylists.id')
+        ->where('citylists.city', 'LIKE', $city)
+        ->select('zones.id', 'zones.zone') // add 'zones.pincode' here if the column exists
+        ->orderBy('zones.zone', 'asc')
+        ->distinct()
+        ->get();
+
+    $firstZone = $zones->first();
+    $area      = $city;
+
+    if ($firstZone) {
+        $area = $city . ', ' . ($firstZone->zone ?? '');
+        if (!empty($firstZone->pincode)) {
+            $area .= ' ' . $firstZone->pincode;
+        }
+    }
+
+    $cityDetails  = $this->fetchCityDetails($city)['data'] ?? $firstZone;
+    $growthBusiness = $this->businessOwnersData()['data']['businessOwners'] ?? [];
+ 
+    // ── 4. Meta / content from keyword row ────────────────────────────────
+    $keywordBanners = [];
+    if (!empty($kwData['id'])) { // change to your banner table
+        $keywordBanners = DB::table('keyword_banners')
+            ->where('keyword_id', $kwData['id'])
+            ->get()
+            ->map(fn ($r) => (array) $r)
+            ->all();
+    }
+
+    $childSlug   = $kwData['child_slug'] ?? '';
+    $childCat    = $kwData['child_category'] ?? '';
+    $ratingCount = (int) ($kwData['ratingcount'] ?? 0);
+    $ratingValue = (float) ($kwData['ratingvalue'] ?? 0);
+    $bgImage     = !empty($kwData['child_banner']) ? $kwData['child_banner'] : ($kwData['category_banner'] ?? '');
+
+    $topDescription         = !empty($kwData['top_description'])          ? replaceCity($kwData['top_description'], $area) : '';
+    $bottomDescription      = !empty($kwData['bottom_description'])       ? replaceCity($kwData['bottom_description'], $area) : '';
+    $noidatopDescription    = !empty($kwData['noida_top_description'])    ? replaceCity($kwData['noida_top_description'], $area) : '';
+    $delhibottomDescription = !empty($kwData['delhi_bottom_description']) ? replaceCity($kwData['delhi_bottom_description'], $area) : '';
+
+    // ── 5. FAQs ───────────────────────────────────────────────────────────
+    $faqs = [];
+    for ($i = 0; $i <= 10; $i++) {
+        $q = replaceCity($kwData["faqq{$i}"] ?? '', $city);
+        $a = replaceCity($kwData["faqa{$i}"] ?? '', $city);
+        if ($q && $a) {
+            $faqs[] = ['q' => $q, 'a' => $a];
+        }
+    }
+
+    // ── 6. Related category / services (same parent / same child) ─────────
+    $relatedCategory = [];
+    $servicesRelated = [];
+
+    if (!empty($kwData['child_category_id'])) {
+        $servicesRelated = DB::table('keyword')
+            ->where('child_category_id', $kwData['child_category_id'])
+            ->where('id', '!=', $kwData['id'])
+            ->select('keyword', 'slug')
+            ->orderBy('keyword')
+            ->limit(12)
+            ->get()
+            ->map(fn ($r) => (array) $r)
+            ->all();
+
+        $parentId = DB::table('child_category')
+            ->where('id', $kwData['child_category_id'])
+            ->value('parent_category_id');
+
+        if ($parentId) {
+            $relatedCategory = DB::table('child_category')
+                ->where('parent_category_id', $parentId)
+                ->where('id', '!=', $kwData['child_category_id'])
+                ->select('child_category', 'child_slug')
+                ->orderBy('child_category')
+                ->limit(12)
+                ->get()
+                ->map(fn ($r) => (array) $r)
+                ->all();
+        }
+    }
+
+    // ── 7. Businesses, agents, reviews, categories ────────────────────────
+    $businesses = $clients
+        ->map(fn ($b, $i) => $this->normalizeBusiness((array) $b, $i))
+        ->values()
+        ->all();
+
+    $agents = $clients
+        ->take(5)
+        ->map(fn ($b) => $this->normalizeAgent((array) $b))
+        ->values()
+        ->all();
+
+    $reviews = [];
+
+    $categories = array_merge(
+        ['All'],
+        collect($businesses)->pluck('category')->flatten()->filter()->unique()->values()->all()
+    );
+
+    $businessChunks  = array_chunk($businesses, 5);
+    $quickBusinesses = [];
+ 
+
+		$metaTitle = !empty($kwData['meta_title']) ? replaceCity($kwData['meta_title'], $city) : '';
+		$metaDescription = !empty($kwData['meta_description']) ? replaceCity($kwData['meta_description'], $city) : '';
+		$metaKeywords = !empty($kwData['h1_heading']) ? replaceCity($kwData['h1_heading'], $city) : '';
+
+	 
+if($businesses){
+
+    // ── 8. Render ─────────────────────────────────────────────────────────
+    return view('client.search-no-results', compact(
+        'city', 'slug', 'keyword', 'area', 'zones',
+        'childSlug', 'childCat', 'cityDetails',
+        'ratingCount', 'ratingValue', 'bgImage',
+        'topDescription', 'bottomDescription', 'noidatopDescription', 'delhibottomDescription',
+        'faqs', 'kwData', 'keywordBanners',
+        'businesses', 'businessChunks',
+        'agents', 'reviews', 'categories',
+        'relatedCategory', 'servicesRelated',
+        'quickBusinesses', 'growthBusiness'
+    ) + [
+        'metaTitle'       => $metaTitle ?? 'Search results for "' . $str . '" in ' . ucfirst($city),
+        'metaDescription' => $metaDescription?? '',
+        'metaKeywords'    => $metaKeywords ?? '',
+    ]);
+}else{
 
 
+abort(410);
+}
+}
+
+  
     public function showCityOrService(Request $request, string $slug)
     {
 		// ── Normalize once ───────────────────────────────────────────────────

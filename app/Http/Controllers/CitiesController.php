@@ -31,7 +31,7 @@ class CitiesController extends Controller
 		if ($request->has('search')) {
 			$search = $request->input('search');
 		}
-	 
+
 		$citiess = Citieslists::orderBy('city', 'asc')->get();
 		$states = Citieslists::select('state')->groupBy('state')->get();
 		return view('admin.citylist.citieslist', ['allCities' => $citiess, 'search' => $search, 'states' => $states]);
@@ -254,7 +254,7 @@ class CitiesController extends Controller
 
 			if ($request->has('q')) {
 				$cities = DB::table('citylists')->select('id', 'city')->where('city', 'LIKE', '%' . $request->input('q') . '%')->get();
- 
+
 			} else {
 				$cities = Citieslists::select('id', 'city')->get();
 
@@ -274,12 +274,12 @@ class CitiesController extends Controller
 					->join('citylists', 'citylists.id', '=', 'zones.city_id')
 					->where(function ($query) use ($request) {
 						$q = $request->input('q');
-						$searchKW = implode(' ', array_map(function($word) {
-						return ucfirst($word);
+						$searchKW = implode(' ', array_map(function ($word) {
+							return ucfirst($word);
 						}, explode('-', $request->input('q'))));
 
 						$query->where('zones.zone', 'LIKE', "%$q%")
-							->orWhere('citylists.city','LIKE',"%$searchKW%")
+							->orWhere('citylists.city', 'LIKE', "%$searchKW%")
 							->orWhere('zones.pincode', 'LIKE', "%$q%");
 					})
 					->select('zones.id as zone_id', 'zones.zone', 'citylists.city', 'zones.pincode')
@@ -318,10 +318,6 @@ class CitiesController extends Controller
 					->whereIn('citylists.city', $cityList)
 					->groupBy('citylists.city')
 					->get();
-
-				//  dd($zones);
-
-
 			}
 			return response()->json(['status' => 1, 'zones' => $zones]);
 		}
@@ -331,89 +327,89 @@ class CitiesController extends Controller
 
 		header("Access-Control-Allow-Origin: *");
 		header('Access-Control-Allow-Credentials: true');
- 
+
 		// if ($request->wantsJson()) {
 
-			$q = trim($request->input('q'));
+		$q = trim($request->input('q'));
 
-			// Empty collection
-			$keywords = collect();
+		// Empty collection
+		$keywords = collect();
 
-			/* ------------------------
-			   1. Keyword table search
-			-------------------------*/
-			if (!empty($q)) {
- 
-				$keywordData = DB::table('keyword')
-					->where('keyword', 'LIKE', "%{$q}%")
-					->select('keyword','slug')
-					->distinct()
-					->limit('40')
-					->get();
+		/* ------------------------
+		   1. Keyword table search
+		-------------------------*/
+		if (!empty($q)) {
 
-			} else {
+			$keywordData = DB::table('keyword')
+				->where('keyword', 'LIKE', "%{$q}%")
+				->select('keyword', 'slug')
+				->distinct()
+				->limit('40')
+				->get();
 
-				$keywordList = [
-					'Dentists',
-					'PG Hostels',
-					'AWS Training',
-					'Data Science Training',
-					'Workday Training',
-					'SAP Training',
-					'Python Training',
-					'Nursing Services',
-					'Computer Repair',
-					'Government Agencies Lawyers',
-					'Tours and Travels',
-					'Real Estate Agent',
-					'Language Training',
-					'Spa Massages',
-					'Study Abroad',
-					'Wedding Organizers',
-					'Electric Services',
-					'Boarding Schools',
-					'Web Designers',
-					'CCTV Security',
-					'Dance Class'
-				];
+		} else {
 
-				$keywordData = DB::table('keyword')
-					->whereIn('keyword', $keywordList)
-					->select('keyword','slug')
-					->distinct()
-					->limit(20)
-					->get();
-			}
+			$keywordList = [
+				'Dentists',
+				'PG Hostels',
+				'AWS Training',
+				'Data Science Training',
+				'Workday Training',
+				'SAP Training',
+				'Python Training',
+				'Nursing Services',
+				'Computer Repair',
+				'Government Agencies Lawyers',
+				'Tours and Travels',
+				'Real Estate Agent',
+				'Language Training',
+				'Spa Massages',
+				'Study Abroad',
+				'Wedding Organizers',
+				'Electric Services',
+				'Boarding Schools',
+				'Web Designers',
+				'CCTV Security',
+				'Dance Class'
+			];
 
-			$keywords = $keywords->merge($keywordData);
+			$keywordData = DB::table('keyword')
+				->whereIn('keyword', $keywordList)
+				->select('keyword', 'slug')
+				->distinct()
+				->limit(20)
+				->get();
+		}
 
-			/* ------------------------
-			   2. Client business_name search
-			-------------------------*/
-			if (!empty($q)) {
+		$keywords = $keywords->merge($keywordData);
 
-				$clientData = DB::table('clients')
-					->where('business_name', 'LIKE', "%{$q}%")
-					->select('business_name as keyword','business_slug as slug')
-					->distinct()
-					->limit(20)
-					->get();
+		/* ------------------------
+		   2. Client business_name search
+		-------------------------*/
+		if (!empty($q)) {
 
-				$keywords = $keywords->merge($clientData);
-			}
+			$clientData = DB::table('clients')
+				->where('business_name', 'LIKE', "%{$q}%")
+				->select('business_name as keyword', 'business_slug as slug')
+				->distinct()
+				->limit(20)
+				->get();
 
-			/* ------------------------
-			   3. Clean collection
-			-------------------------*/
-			$keywords = $keywords
-				->unique('keyword')    
-				->values();          
- 
-			return response()->json([
-				'status' => true,
-				'keywords' => $keywords
-			]);
-		
+			$keywords = $keywords->merge($clientData);
+		}
+
+		/* ------------------------
+		   3. Clean collection
+		-------------------------*/
+		$keywords = $keywords
+			->unique('keyword')
+			->values();
+
+		return response()->json([
+			'status' => true,
+			'keywords' => $keywords
+		]);
+
 
 
 	}
@@ -444,7 +440,7 @@ class CitiesController extends Controller
 
 		$cid = $request->input('city');
 		$zid = $request->input('zone');
-		$zones = DB::table('zones')->where('city_id', $cid)->orderBy('zone','asc')->get();
+		$zones = DB::table('zones')->where('city_id', $cid)->orderBy('zone', 'asc')->get();
 
 		if ($zones) {
 			echo '<option value="">Select zone</option>';

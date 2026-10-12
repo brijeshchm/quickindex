@@ -145,7 +145,7 @@ class RazorpayController extends Controller
 	public function payDeposit(Request $request)
 	{
 
-	//dd('asdsd');
+	 
 		if (isset($_GET['status'], $_GET['o']) && !empty($_GET['o'])) {
 			$o = base64_decode($_GET['o'], $strict = false);
 			$data = json_decode($o);
@@ -154,7 +154,7 @@ class RazorpayController extends Controller
 			$data = array();
 		}
 
-		// dd($data);
+		 
 		return view('business.razorpay.pay-checkout',array_merge($this->common(), ['data' => $data]));
 
 	}
@@ -356,7 +356,6 @@ class RazorpayController extends Controller
 				$success = false;
 				$error = $e->getMessage();
 			}
-// dd($success);
 
 			if ($success === true) {
 				if (!$order_info['order_status_id']) {
@@ -819,7 +818,7 @@ class RazorpayController extends Controller
 	}
 	public function saveSubscribeFree(Request $request, $id)
 	{
-		// dd($request->all());
+		 
 			$oo = base64_decode($_POST['oo'], $strict = false);
 			$data = json_decode($oo);
 

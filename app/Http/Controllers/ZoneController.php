@@ -306,10 +306,7 @@ public function createBulkUploadZone(Request $request)
 	 
 	public function importExcelZone(Request $request)
 	{
-		// $request->validate([
-		// 	'upload_file' => 'required|mimes:xlsx,xls,csv'
-		// ]);
-	//   dd($request->all());
+		 
 		Excel::import(new ZoneExcelImport, $request->file('upload_file'));
 
 		$request->session()->flash('success_msg', 'Zone upload successfully!!');

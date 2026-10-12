@@ -136,9 +136,7 @@ class ProfileController extends Controller
      * Auto-save AVATAR
      */
     public function autosaveAvatar(Request $request)
-    {
-
-    // dd($request->all());
+    {   
         $user = Auth::guard('guest')->user();
 
         if (!$user) {

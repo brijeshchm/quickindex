@@ -1283,7 +1283,7 @@ class HomePageController extends Controller
 
  
 
-			//  dd($user);
+		 
             $message = "{$otp} is QuickDials Verification Code for {$request->email} .";
             $subject = "{$otp} is QuickDials Verification Code";
         
@@ -1915,7 +1915,7 @@ class HomePageController extends Controller
         /* ── extract data (mirrors the Next.js component) ── */
         $kwData       = $response['data']['keyword']      ?? [];
 
-		// dd($kwData);
+	 
         $categoryList = $response['data']['categoryList'] ?? [];
  
         $keyword          = $kwData['parent_category']   ?? '';

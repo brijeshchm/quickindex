@@ -179,21 +179,11 @@ class AuthController extends Controller
                     ]
                 );
             }
-
-            // if ($request->fcm_token) {
-            //     $user->fcm_token = $request->fcm_token;
-            //     $user->save();
-            // }
-
+ 
             // Issue Sanctum token
             $token = $user->createToken('api-token')->plainTextToken;
    
-// dd(auth()->guard('clients')->loginUsingId($user->id));
 
-
-	   // dd('ddddddd',Auth::guard('clients')->login($user));
-// 		 if(auth()->guard('clients')->loginUsingId($user->id)){
-		  //   Auth::guard('clients')->login($user); 
 		 auth()->guard('clients')->loginUsingId($user->id);
             return response()->json([
                 'status' => true,
@@ -205,36 +195,7 @@ class AuthController extends Controller
 
             ])->header('Access-Control-Allow-Origin', 'http://localhost:3000');
                
-    
-    
-		//return redirect('https://www.quickdials.com/business/dashboard');
-// 		 }
-		
-				// 	 return response()->json([
-    //         'status'   => true,
-    //         'message'  => 'Login successful',
-    //         'redirect' => 'https://www.quickdials.com/business/dashboard',
-    //     ]);
-        
-        
-        
-//         return response()->json([
-//     'status' => true,
-//     'redirect' => url('/business/dashboard'),
-// ]);
-
-
-
-            // return response()->json([
-            //     'status' => true,
-            //     'message' => 'Login successful',
-            //     'token' => $token,
-            //     'token_type' => 'Bearer',
-            //     //  'expires_in' => auth()->factory()->getTTL()*60,
-            //     'data' => $user,
-
-            // ]);
-					 
+     
 
         } else {
             return response()->json(['error' => 'Invalid OTP.'], 422);

@@ -164,9 +164,7 @@ $colorMap = [
 
                <div class="space-y-6">
         @php $colors = array_keys($colorMap); 
-      //  dd($categorySections);
-        
-        
+             
         @endphp
 
         @foreach($categorySections as $title => $sections)

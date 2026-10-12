@@ -71,6 +71,8 @@
                             onfocus="onHeroSearchFocus()"
                         />
 
+                            
+
                         {{-- Search button --}}
                         <button
                             onclick="doHeroSearch()"
@@ -390,8 +392,8 @@ function handleHeroKeydown(e) {
 }
 
 function doHeroSearch() {
-    const kw = document.getElementById('hero-search-input').value.trim();
-    redirectSearch(kw, heroSelectedCity);
+    const kw = document.getElementById('hero-search-input').value.trim();     
+    redirectSubmitSearch(kw, heroSelectedCity);
 }
 
 document.addEventListener('mousedown', e => {
@@ -406,6 +408,17 @@ function redirectSearch(keyword, city) {
     const c = city.toLowerCase().replace(/\s+/g, '-');
     const k = keyword.toLowerCase().replace(/\s+/g, '-');
     window.location.href = `/${c}/${k}`;
+}
+
+function redirectSubmitSearch(keyword, city) {
+    
+    const query = String(keyword ?? '').trim();
+    const cityName = String(city ?? '').trim();
+
+    if (!query || !cityName) return;
+
+    window.location.href =
+        `/${encodeURIComponent(cityName)}/search?q=${encodeURIComponent(query)}`;
 }
 
 // ─── Banner Slider ─────────────────────────────────────────────────────────

@@ -143,7 +143,7 @@ class VendorController extends Controller
 			->orderByDesc('clients.id')
 			->paginate(15)
 			->withQueryString();
-// dd($vendors->getCollection());
+
 		return view('sales.vendors.index', [
 			'vendors' => $vendors,
 			'cities' => '',
@@ -500,9 +500,7 @@ class VendorController extends Controller
 
 
     public function updateAccountSettings(Request $request, $id)
-	{
-
-		//  dd($request->all());
+	{	
          $id = $request->client_id;
 		if (!is_null($id)) {
 
@@ -850,7 +848,7 @@ class VendorController extends Controller
 	 */
 	public function status(Request $request,$id)
 	{
-        dd($request->all());
+        
 		try {
 
 			$paymentHistory = PaymentHistory::findorFail($id);
@@ -1084,7 +1082,7 @@ class VendorController extends Controller
 		$imageSrc  = 'data:image/png;base64,' . $imageData;
 
 
-	// dd($request->all());
+	 
 		$validated = $request->validate([
 			'pid' => ['required', 'integer'],
 		]);

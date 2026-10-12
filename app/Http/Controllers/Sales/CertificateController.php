@@ -66,7 +66,7 @@ class CertificateController extends Controller
 	public function autoSaveCertificate(Request $request)
 	{
 
-// dd($request->all());
+ 
 
 		$validator = Validator::make($request->all(), [
 
@@ -294,7 +294,7 @@ class CertificateController extends Controller
 	{
 
 		$delet_data = Client::findOrFail($id);
-// dd($delet_data);
+ 
 		$client = Client::find($id);
 
 		if ($delet_data->$slug != '') {

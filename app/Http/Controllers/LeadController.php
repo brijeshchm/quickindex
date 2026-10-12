@@ -2762,7 +2762,7 @@ class LeadController extends Controller
 	public function storeLeadFollowup(Request $request, $id)
 	{
 
-	// dd($request->all());
+ 
 		if ($request->ajax()) {
 			$validator = Validator::make($request->all(), [
 

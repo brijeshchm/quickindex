@@ -7065,7 +7065,7 @@ var clientCategory = {
 					if(typeof response.clientCategory['image']!='undefined'){
 						image = '<i class="fa fa-check" style="color:green" aria-hidden="true"></i>';
 					}
-					//dataTableExample.row.add([response.clientCategory['id'],response.clientCategory['name'],image,'<a href="javascript:void(0)"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i></a>','<a href="javascript:void(0)" onclick="return clientCategory.deleteClientCategory('+response.clientCategory['id']+',this)"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></a>']).draw(false);
+					 
 					dataTableAssignedKeywords.ajax.reload(null,false);
 					$this.find('input[name="reset_client_category"]').click();
 				}else{
@@ -7161,7 +7161,7 @@ var keyword = {
 				}else{
 					alert(response.message);
 				}
-				//dataTableExample.row.add([response.result['id'],]).draw(false);
+				 
 			},
 			error: function(response) {
 				alert("An error occured");
@@ -7182,7 +7182,7 @@ var keyword = {
 					alert(response.message);
 				}
 				dataTableTransactions.ajax.reload(null,false);
-				//dataTableExample.row.add([response.result['id'],]).draw(false);
+				 
 			},
 			error: function(response) {
 				alert("An error occured");
@@ -7216,7 +7216,7 @@ var keyword = {
 				}else{
 					alert('Assigned keyword must be unique');
 				}
-				//dataTableExample.row.add([response.result['id'],]).draw(false);
+			 
 			},
 			error:function(jqXHR, textStatus, errorThrown){
 						var response = JSON.parse(jqXHR.responseText);	 						
@@ -7492,7 +7492,7 @@ var keyword = {
 				}else{
 					alert(response.message);
 				}
-				//dataTableExample.row.add([response.result['id'],]).draw(false);
+				 
 			},
 			error:function(jqXHR, textStatus, errorThrown){
 						var response = JSON.parse(jqXHR.responseText);	 						
@@ -9451,7 +9451,7 @@ $(document).ready(function(){
 				}else{
 					alert(response.message);
 				}
-				//dataTableExample.row.add([response.result['id'],]).draw(false);
+			 
 			},
 			error: function(response) {
 				alert("An error occured");

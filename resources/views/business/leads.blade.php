@@ -5,8 +5,6 @@
  
 $filters=['all','new','contacted','favorites','converted','scrapLead'];
 $statusClass=['new'=>'border-blue-200 bg-blue-50 text-blue-700','contacted'=>'border-amber-200 bg-amber-50 text-amber-700','converted'=>'border-emerald-200 bg-emerald-50 text-emerald-700','closed'=>'border-slate-200 bg-slate-100 text-slate-600'];
-//    dd($leads->getCollection());
-
 
  $popupLeadSource = method_exists($leads, 'items') ? $leads->items() : $leads;
 $popupLeads = collect($popupLeadSource)->map(function ($lead) {
@@ -50,13 +48,10 @@ $popupLeads = collect($popupLeadSource)->map(function ($lead) {
 
  <div class="space-y-4">
 
- @php
- 
-//  dd($leads);
- @endphp
+
  @forelse($leads as $i => $lead)
   @php
-//  dd($lead);
+
  
    // FIX #1: match on the RAW lead id (lead_id), not the assignment id ($lead['id']).
    $leadFus  = $followups->where('lead_id', $lead['lead_id'])->whereNotNull('notes')

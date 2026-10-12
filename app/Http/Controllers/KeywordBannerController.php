@@ -34,7 +34,7 @@ public function upload(Request $request, $keywordId)
     if (!file_exists($uploadDir)) {
         mkdir($uploadDir, 0755, true);
     }
-//  dd($_FILES);
+ 
     $startOrder = (int) $keyword->banners()->max('sort_order') + 1;
     $clients    = $request->input('banner_clients', []);
     $saved      = [];

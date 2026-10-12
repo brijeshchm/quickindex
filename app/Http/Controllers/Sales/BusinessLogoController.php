@@ -194,16 +194,12 @@ class BusinessLogoController extends Controller
 
 		$pictures = is_array($pictures) ? $pictures : [];
 
-		// Form में image1 = array index 0.
+	 
 		$index = $slot - 1;
-// dd($pictures[$index]);
-		if (!isset($pictures[$index])) {
+ 		if (!isset($pictures[$index])) {
 			return response()->json(['message' => 'Image not found.'], 404);
 		}
 
-
-
-		
 
 	 if ($pictures[$index] != '') {
 			$image = $pictures[$index];

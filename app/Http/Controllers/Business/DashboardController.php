@@ -691,7 +691,7 @@ class DashboardController extends Controller
             ->filter(fn($bucket) => $bucket === $filter)
             ->keys()
             ->all();
-        //  dd($statusNamesForBucket);
+    
         // 1. Get latest follow_up id per lead for this client
         $latestFollowUpIds = DB::table('lead_follow_ups')
             ->select('lead_id', DB::raw('MAX(id) as max_id'))
@@ -743,7 +743,7 @@ class DashboardController extends Controller
             ->paginate(10)->withQueryString();
 
 
-        // dd($leads);
+     
         $businessName = $clientDetails->business_name ?? 'Our Company';
         $address = $clientDetails->address ?? '';
         $map = $clientDetails->business_map ?? '';
@@ -1382,7 +1382,7 @@ class DashboardController extends Controller
             $dateTo = $request->query('date_to');
             $statusId = $request->query('status');
             $member = $request->query('member', '');
-            // dd($dateFrom);
+            
             $rating = DB::table('comments')
                 ->where('comment_client_ID', $clientID)
                 ->selectRaw('COUNT(*) as total, COALESCE(SUM(rating),0) as sum')
@@ -1533,7 +1533,7 @@ class DashboardController extends Controller
             });
 
             $status = Status::where('lead_filter', '1')->get();
-            //   dd($leads->getCollection());
+            
 
             //count lead
             $leadsFollowQuery = DB::table('leads as leads')
@@ -1607,7 +1607,7 @@ class DashboardController extends Controller
                 ])
                 ->count();
 
-            //  dd($interestedCount);
+           
             $followList = [
                 'total_leads' => $totalLeads,
                 'new_lead' => $newLead,
@@ -1787,68 +1787,7 @@ class DashboardController extends Controller
         return back()->with('success', 'Follow-up added.');
     }
 
-    public function addFollowUp_olddddd(Request $request, int $id): RedirectResponse
-    {
-        $clientId = auth()->guard('clients')->user()->id;
-        if ($request->ajax()) {
-            $validator = Validator::make($request->all(), [
-
-                'status' => 'required',
-                'remark' => 'required',
-
-            ]);
-            if ($validator->fails()) {
-                $errorsBag = $validator->getMessageBag()->toArray();
-                return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
-            }
-
-            // check now expected date and time if status is not - not interested/location issue
-            $statusModel = Status::find($request->input('status'));
-            //if($statusModel->name!='Not Interested' && $statusModel->name!='Location Issue'){
-            if ($statusModel->show_exp_date) {
-                $validator = Validator::make($request->all(), [
-                    'expected_date_time' => 'required',
-                ]);
-                if ($validator->fails()) {
-                    $errorsBag = $validator->getMessageBag()->toArray();
-                    return response()->json(['status' => 1, 'errors' => $errorsBag], 400);
-                }
-            }
-
-            $lead = Lead::find($request->lead_id);
-            if (!empty($lead)) {
-                $leadFollowUp = new LeadFollowUp;
-                $status = Status::findorFail($request->input('status'));
-                if (!strcasecmp($status->name, 'npup')) {
-                    $npupCount = LeadFollowUp::where('lead_id', $request->lead_id)->where('client_id', $clientId)->where('status', $status->id)->count();
-                    if ($npupCount >= 15) {
-                        $status = Status::where('name', 'LIKE', 'Not Interested')->first();
-                        $leadFollowUp->status = $status->id;
-                    } else {
-                        $leadFollowUp->status = $request->input('status');
-                    }
-                } else {
-                    $leadFollowUp->status = $request->input('status');
-                }
-
-
-                $leadFollowUp->remark = htmlspecialchars(strip_tags(trim($request->input('remark'))));
-                $leadFollowUp->lead_id = $request->lead_id;
-                $leadFollowUp->client_id = $clientId;
-                $leadFollowUp->expected_date_time = NULL;
-                if ($request->input('expected_date_time') != '') {
-                    $leadFollowUp->expected_date_time = date('Y-m-d H:i:s', strtotime($request->input('expected_date_time')));
-                }
-                if ($leadFollowUp->save()) {
-                    return response()->json(['status' => 1], 200);
-                }
-            } else {
-
-                return response()->json(['status' => 0, '' => "Enquiry not found"], 200);
-            }
-        }
-        return back()->with('success', 'Follow-up added.');
-    }
+     
     public function updateFollowUp(Request $r, int $id): RedirectResponse
     {
 
@@ -2337,7 +2276,7 @@ class DashboardController extends Controller
         $dateTo = $r->query('date_to');
         $statusId = $r->query('status');
         $member = $r->query('member', '');
-        // dd($dateFrom);
+        
         $rating = DB::table('comments')
             ->where('comment_client_ID', $clientID)
             ->selectRaw('COUNT(*) as total, COALESCE(SUM(rating),0) as sum')
@@ -2496,15 +2435,9 @@ class DashboardController extends Controller
         });
 
 
-        // dd($leads->getCollection());
+     
         $status = Status::where('lead_filter', '1')->get();
-        //   dd($leads->getCollection());
-
-
-
-
-
-
+      
         //count lead
         $leadsFollowQuery = DB::table('leads as leads')
             ->join('assigned_leads', 'leads.id', '=', 'assigned_leads.lead_id');
@@ -2544,7 +2477,7 @@ class DashboardController extends Controller
 
         $totalLeads = (clone $leadsFollowQuery)->count();
 
-        // dd($totalLeads);
+       
         $interestedCount = (clone $leadsFollowQuery)
             ->where('fu.status_name', 'Interested')
             ->count();
@@ -2582,7 +2515,7 @@ class DashboardController extends Controller
             ])
             ->count();
 
-        //  dd($interestedCount);
+      
         $followList = [
             'total_leads' => $totalLeads,
             'new_lead' => $newLead,
@@ -2591,7 +2524,7 @@ class DashboardController extends Controller
             'overdue' => $pending,
             'joined' => $joined,
         ];
-        // dd($followList['total_leads']);
+         
 
         return view('business.follow-ups', array_merge($this->common(), [
             'followups' => $followups,
@@ -2660,7 +2593,7 @@ class DashboardController extends Controller
             ->where('comment_client_ID', $clientID)->get();
         // ->paginate($request->input('length'));
 
-        // dd($reviews);
+      
         return view(
             'business.pending-profile',
             array_merge(
@@ -3019,7 +2952,7 @@ class DashboardController extends Controller
             ->where('assigned_leads.client_id', $clientID)->paginate(10)
             ->withQueryString();
 
-        // dd($coinsLeads->getCollection());
+      
         $invoices = PaymentHistory::where('client_id', $clientID)
             ->orderBy('created_at', 'desc')
             ->paginate(10)

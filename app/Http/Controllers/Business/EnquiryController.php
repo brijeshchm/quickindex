@@ -628,8 +628,7 @@ class EnquiryController extends Controller
 			$avgRating = 0;
 			$ratingCount = 0;
 		}
-
-		//  dd($leads);
+ 
 		if (!empty($leads)) {
 
 			$leads_list = [];
@@ -715,8 +714,6 @@ class EnquiryController extends Controller
 				];
 
 			}
-			//  dd($leads_list);	
-
 		}
 
 		return view('business.new-enquiry', ['leads' => $leads_list]);

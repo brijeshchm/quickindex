@@ -112,7 +112,7 @@ class RewardsController extends Controller
 		->orderBy('assigned_leads.created_at', 'desc')
 		->where('assigned_leads.client_id', $clientID)->latest()->latest()->get();
 
-//  dd($allEnquiries);
+ 
         $pendingList = $allEnquiries->where('status', 'pending')->values();
         $activeList  = $allEnquiries->where('status', 'accepted')->values();
  
@@ -266,7 +266,7 @@ class RewardsController extends Controller
 		->orderBy('assigned_leads.created_at', 'desc')
 		->where('assigned_leads.client_id', $clientID)->latest()->latest()->get();
 
-//   dd($clientID);
+
         $pendingList = $allEnquiries->where('status', 'pending')->values();
         $activeList  = $allEnquiries->where('status', 'accepted')->values();
  
@@ -353,7 +353,7 @@ class RewardsController extends Controller
 		->orderBy('assigned_leads.created_at', 'desc')
 		->where('assigned_leads.client_id', $clientID)->latest()->latest()->get();
 
-//  dd($allEnquiries);
+
         $pendingList = $allEnquiries->where('status', 'pending')->values();
         $activeList  = $allEnquiries->where('status', 'accepted')->values();
  
@@ -440,7 +440,7 @@ class RewardsController extends Controller
 		->orderBy('assigned_leads.created_at', 'desc')
 		->where('assigned_leads.client_id', $clientID)->latest()->latest()->get();
 
-//  dd($allEnquiries);
+ 
         $pendingList = $allEnquiries->where('status', 'pending')->values();
         $activeList  = $allEnquiries->where('status', 'accepted')->values();
  

@@ -154,7 +154,7 @@ class BusinessOwnerController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		// dd($request->all());
+		 
 		if ($request->has('initial_form_submit')) {
 			$client = new Client;
 		 

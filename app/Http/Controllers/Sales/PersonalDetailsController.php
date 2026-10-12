@@ -44,8 +44,7 @@ class PersonalDetailsController extends Controller
 	public function savePersonalDetails(Request $request)
 	{ 
 
-//   dd($request->all());
-		if (!$request->ajax()) {
+ 		if (!$request->ajax()) {
 			return response()->json([
 				'status' => 0,
 				'msg' => 'Invalid request'

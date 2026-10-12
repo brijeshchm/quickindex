@@ -86,32 +86,23 @@ class BusinessKeywordController extends Controller
 	 */
 	public function getPaginatedAssignedKeywords(Request $request)
 	{		 
-		 
-			$clientID = $request->client_id;
-			// dd($clientID);
-			
-   $perPage = min(max((int) $request->input('per_page', 10), 1), 50);
-
-	 
-
-
-
-				$keywords = DB::table('assigned_kwds')
-    ->join('parent_category', 'assigned_kwds.parent_cat_id', '=', 'parent_category.id')
-    ->join('child_category', 'assigned_kwds.child_cat_id', '=', 'child_category.id')
-    ->join('keyword', 'assigned_kwds.kw_id', '=', 'keyword.id')
-    ->where('assigned_kwds.client_id', $request->integer('client_id'))
-    ->select(
-        'assigned_kwds.id as assign_id', // यही delete route की ID है
-        'keyword.keyword',
-        'child_category.child_category',
-        'parent_category.parent_category'
-    )
-    ->orderByDesc('assigned_kwds.id')
-    ->paginate($perPage);
+		$perPage = min(max((int) $request->input('per_page', 10), 1), 50);
+		$keywords = DB::table('assigned_kwds')
+		->join('parent_category', 'assigned_kwds.parent_cat_id', '=', 'parent_category.id')
+		->join('child_category', 'assigned_kwds.child_cat_id', '=', 'child_category.id')
+		->join('keyword', 'assigned_kwds.kw_id', '=', 'keyword.id')
+		->where('assigned_kwds.client_id', $request->integer('client_id'))
+		->select(
+		'assigned_kwds.id as assign_id',  
+		'keyword.keyword',
+		'child_category.child_category',
+		'parent_category.parent_category'
+		)
+		->orderByDesc('assigned_kwds.id')
+		->paginate($perPage);
 
 
-			return response()->json($keywords);
+		return response()->json($keywords);
 
 		
 	}
@@ -165,7 +156,7 @@ class BusinessKeywordController extends Controller
 						'errors' => 'Keyword is required'
 					], 400);
 				}
-// dd($keywordArray);
+
 				$saveStatus = false;
 
 				DB::beginTransaction();

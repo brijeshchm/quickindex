@@ -168,7 +168,7 @@ class SeoKwdAssignController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(Request $request, $id)
-	{  //dd($request->all());
+	{   
 		 
 			$keywords = Keyword::all();
 			$edit_seoKwdAssign = SeoKwdAssign::find($id);

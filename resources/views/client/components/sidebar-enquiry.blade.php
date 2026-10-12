@@ -12,11 +12,11 @@
         $z = (array) $z;
         return [
             'id'   => $z['id'],
-            'name' => $z['cityDetails'],
+            'name' => $z['cityDetails']??$z['zone'],
              
         ];
     })->filter(fn($z) => !empty($z['name']))->values()->all();
-//   echo "<pre>";print_r($zones);
+  
 @endphp
 
 <div class="relative rounded-3xl overflow-auto shadow-2xl shadow-indigo-500/15"

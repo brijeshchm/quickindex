@@ -322,10 +322,7 @@ class AuthController extends Controller
 
 	public function clientLoginPost_old(Request $request)
 	{
-
-
-
-		// dd($request->all());
+	 
 		if ($request->has('email')) {
 			$validator = Validator::make($request->all(), [
 				'email' => 'required',
@@ -951,8 +948,7 @@ class AuthController extends Controller
 	public function clientVerifyOtp(Request $request)
 	{
 
-		// if($request->has('otp')){
-		// dd($request->all());
+	 
 		$validator = Validator::make($request->all(), [
 			'otp' => 'required',
 		]);
@@ -1073,8 +1069,7 @@ class AuthController extends Controller
 	public function clientVerifyOtp_old(Request $request)
 	{
 
-		// if($request->has('otp')){
-		// dd($request->all());
+		 
 		$validator = Validator::make($request->all(), [
 			'otp' => 'required',
 		]);

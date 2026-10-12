@@ -842,9 +842,5 @@ class EnquiryController extends Controller
 
 
 
-	public function clientPushLead(request $request){
-
-		dd('push');
-
-	}
+	 
 }

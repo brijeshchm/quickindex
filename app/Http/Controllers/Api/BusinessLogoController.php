@@ -353,7 +353,7 @@ class BusinessLogoController extends Controller
 
 	public function saveGallery(Request $request)
 	{
-		// dd($request->all());
+		 
  
 		$validator = Validator::make($request->all(), [
 			'business_id'     => 'required|exists:clients,id',

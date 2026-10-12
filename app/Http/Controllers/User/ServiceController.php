@@ -84,7 +84,7 @@ class ServiceController extends Controller
 
     ->orderByDesc('leads.created_at')
     ->get();
-    //   dd($services);
+    
         $joinedIds='4';
             $interestedIds='4';
 

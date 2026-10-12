@@ -160,7 +160,7 @@ class BusinessDashboardController extends Controller
 
 
 
-        // dd($leads_list);
+     
         return view('business.dashboard', [
             'leads' => $leads,
             'clientDetails' => $clientDetails,

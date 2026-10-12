@@ -208,7 +208,7 @@ class SeoWorkController extends Controller
  
         if ($request->ajax()) {
             $search = $request->input('search', []);
-            // dd($search);
+             
             $seoWorks = SeoWork::orderBy('id', 'desc');
             if ($request->input('search.value') != '') {
 

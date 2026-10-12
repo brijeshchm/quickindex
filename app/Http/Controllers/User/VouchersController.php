@@ -67,7 +67,7 @@ class VouchersController extends Controller
 
 $vouchers = RewardsItem::get();
 
-// dd($vouchers);
+
         return view('user.profile.vouchers', compact('user','vouchers','categories'));
     }
 
@@ -110,11 +110,11 @@ $vouchers = RewardsItem::get();
      */
     public function claim(Request $request)
     {
-        // dd($request->all());
+         
         $request->validate(['voucher_id' => 'required|exists:rewards_items,id']);
 
         $user = Auth::user();
-        dd($user);
+        
         $voucher = Voucher::active()->findOrFail($request->voucher_id);
 
         // Already claimed?

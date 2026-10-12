@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="csrf-token" content="{{ csrf_token() }}" />
-<meta name="robots" content="noindex, nofollow">
-<link rel="canonical" href="{{ url()->current() }}" /> 
-<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('client/images/favicon.png') }}">
-<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('client/images/favicon.png') }}">
-<title>No results found @if(request('q')) for "{{ request('q') }}" @endif — QuickDials</title>
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen bg-white text-gray-900 antialiased" >
+@extends('client.layouts.appError')
+@section('title')
+Oops !Page Not Found
+@endsection  
+@section('content')	
+ <div class="w-full"></div>
 
-@include('client.layouts.navbar')
-
+ 
 <main>
 <section class="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4 py-16">
     <div class="max-w-xl w-full mx-auto text-center">
@@ -29,7 +19,7 @@
 
         {{-- Heading --}}
         <h1 class="mt-6 text-2xl md:text-3xl font-bold text-gray-900">
-            No results found
+            No results found 
             @if(request('q'))
                 for &ldquo;{{ request('q') }}&rdquo;
             @endif
@@ -40,7 +30,7 @@
         </p>
 
   
-  <div class="flex flex-wrap items-center gap-1.5 mt-2 justify-center" id="trending-tags">
+        <div class="flex flex-wrap items-center gap-1.5 mt-2 justify-center" id="trending-tags">
                     <span class="text-gray-400 text-[11px] font-medium">Trending:</span>
                    
                     
@@ -69,16 +59,6 @@
     </div>
 </section>
 </main>
-<script>
-    let heroSelectedCity = 'faridabad';
-    function redirectSearch(keyword, city) { 
-    if (!keyword || !city) return;
-    const c = city.toLowerCase().replace(/\s+/g, '-');
-    const k = keyword.toLowerCase().replace(/\s+/g, '-');
-    window.location.href = `/${c}/${k}`;
-}
-</script>
-
-
-</body>
-</html>
+               
+ 
+@endsection

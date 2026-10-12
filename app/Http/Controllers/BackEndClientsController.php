@@ -1249,7 +1249,7 @@ class BackEndClientsController extends Controller
 
 	public function autoSaveCertificate(Request $request,$client_id)
 	{		 
-//  dd($request->all());
+
 			$validator = Validator::make($request->all(), [
 
 				 'iso_no'  => 'nullable|string|max:50',
@@ -2701,9 +2701,7 @@ protected function deleteOldImage($jsonString)
 					->select('citylists.id', 'citylists.city', 'zones.*')
 					->where('zones.city_id', $request->input('city'))
 					->get();
-
-
-					// dd($zone);
+			 
 				return response()->json(['status' => 1, 'result' => $zone]);
 			}
 			if ("zone" === $what) {

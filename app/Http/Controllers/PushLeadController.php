@@ -407,7 +407,7 @@ class PushLeadController extends Controller
 	public function update(Request $request, $id)
 	{
 
-// dd($request->all());
+ 
 		$validator = Validator::make($request->all(), [
 			'name' => 'required|unique:leads,name,' . $id . ',id,mobile,' . $request->input('mobile'),
 			'mobile' => 'required',
@@ -647,7 +647,7 @@ class PushLeadController extends Controller
 			curl_setopt($objURL, CURLOPT_POST, 1);
 			curl_setopt($objURL, CURLOPT_POSTFIELDS, $data);
 			$retval = trim(curl_exec($objURL));
-			dd($objURL);
+	 
 			curl_close($objURL);
 			return $retval;
 		} */

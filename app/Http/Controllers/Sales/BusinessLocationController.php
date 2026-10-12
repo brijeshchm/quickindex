@@ -112,7 +112,7 @@ class BusinessLocationController extends Controller
 	
 	public function saveAssignLocation(Request $request)
 	{
-		// dd($request->all());
+		 
 		if ($request->ajax()) {
 
 			if ($request->input('zone_id') == "Other") {

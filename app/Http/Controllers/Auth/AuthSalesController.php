@@ -225,7 +225,7 @@ class AuthSalesController extends Controller
 		if($request->has('otp')){
 			if(($request->session()->get('client.otp')==$request->input('otp'))){
 				$user = $request->session()->get('user');
-                // dd($user);
+              
 				if (Auth::attempt(['email' => $user['email'], 'password' => $user['password']], $user['remember_token'])) {
 					$request->session()->forget('user');
                     if (Auth::guard('sales')->attempt($user)) {

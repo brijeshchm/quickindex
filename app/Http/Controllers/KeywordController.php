@@ -1520,7 +1520,7 @@ $leads->whereDate('created_at', '<=', $dateTo);
                     $owner[$user->id] = $user->first_name . " " . $user->last_name;
                 }
             }
-//dd($leads);
+ 
             foreach ($leads as $lead) {
 
                 $owner_name = '';
@@ -1589,7 +1589,7 @@ $leads->whereDate('created_at', '<=', $dateTo);
 
 		if ($request->ajax()) {
 
-//dd($request->input('search'));
+ 
 			$leads = DB::table('seo_logs');
 			if ($request->input('search.value') != '') {
 				$leads = $leads->where(function ($query) use ($request) {

@@ -24,7 +24,7 @@ class DoctorController extends Controller
             ->values();
 
 
-            // dd($clinics);
+          
         $doctors = $this->getDoctors();
 
         $stats = [
@@ -33,7 +33,7 @@ class DoctorController extends Controller
             ['value' => 10,  'suffix' => 'k+', 'label' => 'Appointments'],
             ['value' => 99,  'suffix' => '%',  'label' => 'Satisfaction'],
         ];
-//  dd($clinics->take(3));
+
         return view('client.doctor-hub', [
             'clinics'  =>  $clinics,
             'doctors'  =>  $doctors,

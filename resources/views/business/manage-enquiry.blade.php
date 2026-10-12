@@ -226,7 +226,7 @@ window.followupManager = function () {
  @forelse($leads as $i => $lead)
   @php
  
-//   dd($lead->lead_id);
+ 
    // FIX #1: match on the RAW lead id (lead_id), not the assignment id ($lead['id']).
    $leadFus  = $followups->where('lead_id', $lead->lead_id)->whereNotNull('notes')
         ->where('notes', '!=', '');

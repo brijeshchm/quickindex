@@ -20,6 +20,8 @@
     $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
 
     $rating = $business['rating'] ?? 0;
+
+    
     $reviewCount = $business['reviewCount'] ?? 0;
      //echo "<pre>";print_r($business);
     $isOpen = $business['active_status'] ?? false;
@@ -304,19 +306,19 @@ document.addEventListener('DOMContentLoaded', () => {
             </p>
             @endif
  
-             @if(!empty($business['businessDescription']))
+             @if(!empty($business['business_description']))
 
 <div x-data="{ showDescription: false }">
 
     {{-- Desktop Description --}}
     <p class="hidden sm:block text-sm text-gray-500 mt-1 line-clamp-3">
-        {!! $business['businessDescription'] !!}
+        {!! $business['business_description'] !!}
     </p>
 
     {{-- Mobile Description --}}
     <div class="sm:hidden mt-1">
         <p class="text-sm text-gray-500 line-clamp-2">
-            {!! strip_tags($business['businessDescription']) !!}
+            {!! strip_tags($business['business_description']) !!}
         </p>
  Read More
         

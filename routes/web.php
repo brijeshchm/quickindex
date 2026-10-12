@@ -496,7 +496,8 @@ Route::match(['GET', 'HEAD'], '/businessdetails/{slug}', function ($slug) {
 // Route::get('search', [App\Http\Controllers\Client\CitySlugController::class, 'searchKW'])->name('kw.search');
 Route::get('/{city}', [CitySlugController::class, 'showCityOrService'])
     ->name('showCity');
- 
+ Route::get('/{city}/search', [CitySlugController::class, 'search'])
+    ->name('city.search');
 
 Route::get('/{city_slug}/{service_slug}', [CitySlugController::class, 'showCityWithService']) 
     ->name('city.slug');

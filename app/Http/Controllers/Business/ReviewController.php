@@ -178,13 +178,13 @@ class ReviewController extends Controller
 
 		 
 		$comments = Comment::where('comment_ID', $id)->first();
-			// dd($comments);
+		 
 			if (!empty($comments)) {			 
 				$comments->comment_author = trim($request->input('name'));
 				$comments->comment_author_email = trim($request->input('email'));
 				$comments->comment_author_phone = trim($request->input('phone'));
 				$comments->comment_content = htmlspecialchars(strip_tags(trim($request->input('remark'))));		 
-			//  dd($comments);
+			 
 
 			$comments->save();
 				 
@@ -207,7 +207,7 @@ class ReviewController extends Controller
 	public function getReviewEdit(Request $request, $id)
 	{
 
-	// dd($id);
+	 
 		if ($request->ajax()) {
 
 		$comments = Comment::where('comment_ID',$id)->first();
@@ -270,8 +270,8 @@ class ReviewController extends Controller
     { 
 
  
-		$deleted = Comments::where('comment_ID', $id)->delete();
-		// dd($comments);
+		$deleted = Comment::where('comment_ID', $id)->delete();
+	 
 		if (!empty($deleted)) {
 		 			 
 			 
