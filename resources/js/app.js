@@ -14,3 +14,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Make available globally for Livewire/AJAX re-renders
 window.lucide = { createIcons: () => createIcons({ icons }) };
+
+

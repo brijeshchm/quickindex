@@ -135,7 +135,7 @@
 <img
     src="{{ $card['img'] ?? '' }}"
     alt="{{ $card['title'] ?? '' }}"    
-    fetchpriority="high"
+    loading="lazy"
     decoding="async"
     width="254"
     height="155"
@@ -280,20 +280,11 @@ function clearHeroCitySearch() {
     document.getElementById('hero-city-clear').classList.add('hidden');
 }
 
-
-
-
-
 function selectHeroCity(city) {
     heroSelectedCity = city;
     localStorage.setItem('city', city);
-    document.getElementById('hero-city-label').textContent = city;
-    // document.getElementById('sticky-city-label').textContent = city;
-    // document.getElementById('mobile-city-label').textContent = city;
-     
-    // document.getElementById('hero-city-panel').classList.add('hidden');
-    document.getElementById('hero-city-list').classList.add('hidden');
-    // document.getElementById('hero-city-dropdown').style.display = 'none';
+    document.getElementById('hero-city-label').textContent = city;   
+    document.getElementById('hero-city-list').classList.add('hidden');   
     document.getElementById('hero-city-chevron').style.transform = '';
     setTimeout(() => document.getElementById('hero-search-input').focus(), 60);
 }

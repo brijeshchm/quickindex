@@ -33,6 +33,7 @@
                     <button
                         id="sticky-city-btn"
                         class="flex items-center gap-1 h-12 px-2.5 text-xs font-semibold text-blue-700 border-r border-gray-200 hover:bg-blue-50 transition-colors whitespace-nowrap rounded-l-xl w-32"
+
                         onclick="toggleStickyCity()"
                     >
                         <i data-lucide="map-pin" class="w-3 h-3 text-blue-500"></i>
@@ -101,16 +102,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" aria-hidden="true" class="lucide lucide-search w-3.5 h-3.5"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
                     Search
                 </button>
-            </div>
-
-            {{-- Suggestions dropdown --}}
-            <!-- <div
-                id="sticky-suggestions"
-                class="hidden absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden dropdown-enter"
-                 absolute left-0 right-0 top-full z-50 mt-1 h-[300px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl
-            >
-                <ul id="sticky-suggestions-list"></ul>
-            </div> -->
+            </div>           
 
 <div 
     id="sticky-suggestions" 
@@ -122,7 +114,7 @@
         id="sticky-suggestions-list"
         class="h-full overflow-y-auto"
     >
-        <!-- Course URLs will load here -->
+         
     </ul>
 </div>
 
@@ -142,9 +134,6 @@
 
         {{-- Desktop action buttons --}}
         <div class="hidden md:flex items-center gap-3 shrink-0">
-           
-
-
             <a href="https://play.google.com/store/apps/details?id=com.quick_dial&hl=en_IN" rel="nofollow noopener noreferrer"
             target="_blank"
             class="group inline-flex items-center justify-center w-24 h-10 hover:bg-EB2C3B-700 from-green-500 to-emerald-600  transition-all duration-300">
@@ -182,7 +171,7 @@
                     Free Listing
                 </a>
 
-                <!-- Android App Download Button -->
+               
 
             </span>
 @elseif(auth()->guard('clients')->user())
@@ -192,7 +181,7 @@
     $client     = auth()->guard('clients')->user();
     $businessName = $client->business_name ?? 'Account';
 
-    // Profile logo with fallback
+   
     $profileImg = asset('client/images/user.png');
     if (!empty($client->logo)) {
         $logo = @unserialize($client->logo);
@@ -201,7 +190,7 @@
         }
     }
 
-    // Active route helper for highlighting current page in dropdown
+    
     $currentUrl = url()->current();
 @endphp
 
@@ -209,7 +198,7 @@
  
 <div class="head-right-lout relative" x-data="{ open: false }" @keydown.escape.window="open = false">
 
-    {{-- ════════════ PROFILE TRIGGER ════════════ --}}
+    
     <button @click="open = !open"
             @click.outside="open = false"
             class="flex items-center gap-2 px-2 py-1.5 rounded-full hover:bg-gray-100 transition-all duration-200 group"
@@ -356,7 +345,7 @@
             @endforeach
         </div>
 
-        {{-- Logout (separated) --}}
+      
         <div class="border-t border-gray-100 py-1.5 bg-gray-50/50">
             <a href="{{ route('clientLogout') }}"
                
@@ -373,17 +362,11 @@
 
     </div>
 </div>
-
-
-
-
 @else
  
  @php
     $client     = auth()->guard('guest')->user();
-    $businessName = $client->business_name ?? 'Account';
-
-    // Profile logo with fallback
+    $businessName = $client->business_name ?? 'Account';   
     $profileImg = asset('client/images/user.png');
     if (!empty($client->logo)) {
         $logo = @unserialize($client->logo);
@@ -392,21 +375,21 @@
         }
     }
 
-    // Active route helper for highlighting current page in dropdown
+    
     $currentUrl = url()->current();
 @endphp
 
  
 <div class="head-right-lout relative" x-data="{ open: false }" @keydown.escape.window="open = false">
 
-    {{-- ════════════ PROFILE TRIGGER ════════════ --}}
+ 
     <button @click="open = !open"
             @click.outside="open = false"
             class="flex items-center gap-2 px-2 py-1.5 rounded-full hover:bg-gray-100 transition-all duration-200 group"
             aria-haspopup="true"
             :aria-expanded="open">
 
-        {{-- Avatar --}}
+       
         <div class="relative shrink-0">
             <img loading="lazy"
                  src="{{ $profileImg }}"
@@ -463,12 +446,10 @@
         @php
             $menuItems = [
                 ['url' => 'user/personal-details',  'icon' => 'user',     'label' => 'My Profile'],
-                ['url' => 'user/service',  'icon' => 'gear',     'label' => 'Service'],
-              
+                ['url' => 'user/service',  'icon' => 'gear',     'label' => 'Service'],              
                 ['url' => 'user/admin-dashboard',  'icon' => 'star',     'label' => 'Dashboard'],
                 ['url' => 'privacy-policy',    'icon' => 'envelope', 'label' => 'Policy'],
-                 
-                
+                                
             ];
         @endphp
 
@@ -568,7 +549,7 @@
         </div>
 
 
-        {{-- Mobile buttons --}}
+      
         <div class="flex items-center gap-2 md:hidden">
 
             <a href="https://play.google.com/store/apps/details?id=com.quick_dial&hl=en_IN" rel="nofollow noopener noreferrer"
@@ -963,16 +944,6 @@ document.addEventListener('keydown', function (event) {
                 <i data-lucide="search" class="w-3.5 h-3.5" aria-hidden="true"></i>
             </button>
         </div>
-
-        {{-- Mobile Suggestions Dropdown --}}
-        <!-- <div
-            id="mobile-suggestions"
-            class="hidden absolute top-full left-3 right-3 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 z-[60] overflow-hidden"
-        >
-            <ul id="mobile-suggestions-list"></ul>
-        </div> -->
-
-
         <div
     id="mobile-suggestions"
     class="hidden absolute top-full left-3 right-3 mt-1 h-[300px] bg-white rounded-xl shadow-2xl border border-gray-100 z-[60] overflow-hidden"
@@ -1006,8 +977,6 @@ document.addEventListener('keydown', function (event) {
             </a>
         </div>
     </div>
-    
-
 </header>
 
 @include('client.layouts.login_popup')
@@ -1130,8 +1099,6 @@ let stickySearchTimeout = null;
 let stickySuggestions   = [];
 let activeStickyIdx     = -1;
 
-// Default/trending keywords shown on click before typing anything.
-// Replace this fallback array with whatever popular searches you want to show.
 const DEFAULT_KEYWORDS = [
     { id: 'artificial-intelligence-training', label: 'Artificial Intelligence Training', kind: 'trending' },
     { id: 'python-training', label: 'Python Training', kind: 'trending' },
@@ -1141,8 +1108,6 @@ const DEFAULT_KEYWORDS = [
     { id: 'cricket-academy', label: 'Cricket Academy', kind: 'trending' },
 ];
 
-// Fired on focus/click — shows default keywords if the box is empty,
-// or re-shows the last fetched suggestions if the user already typed something.
 function handleStickySearchFocus() {
     const val = document.getElementById('sticky-search-input').value.trim();
     if (val.length < 1) {
