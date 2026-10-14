@@ -39,14 +39,13 @@
             @include('client.saloon.components.reviews')
         </section>
     </main>
-
-    {{-- ════════════ STICKY MOBILE ACTION BAR ════════════ --}}
+   
     <div class="sticky-mob-bar fixed bottom-0 left-0 right-0 z-[999] hidden
                 bg-white/97 backdrop-blur-xl border-t border-black/8 shadow-[0_-4px_24px_rgba(0,0,0,0.1)]
                 px-3 py-2.5 gap-2 items-center"
          style="padding-bottom: calc(0.6rem + env(safe-area-inset-bottom));">
 
-        {{-- Call --}}
+        
         <a href="tel:{{ $spa['phone'] }}" rel="nofollow"
            class="flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-full
                   bg-green-500 text-white text-xs font-bold no-underline
@@ -57,7 +56,7 @@
             Call Now
         </a>
 
-        {{-- WhatsApp --}}
+       
         <a href="https://wa.me/{{ $spa['whatsapp'] }}?text={{ urlencode('Hi ' . $spa['name'] . '! I would like to book a treatment.') }}"
            target="_blank" rel="nofollow noopener noreferrer"
            class="flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-full
@@ -69,7 +68,7 @@
             WhatsApp
         </a>
 
-        {{-- Enquire --}}
+       
         <button @click="openModal()"
                 class="flex-[1.3] flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-full
                        bg-blue-500 text-white text-xs font-bold border-0 cursor-pointer
@@ -81,33 +80,25 @@
             Enquire Now
         </button>
     </div>
-
- 
-
-    {{-- ════════════ ENQUIRY MODAL ════════════ --}}
+   
     <div x-show="modalOpen"
          x-transition.opacity
          @keydown.escape.window="closeModal()"
          class="fixed inset-0 z-[1000] flex items-center justify-center p-4"
          style="display: none;">
-
-        {{-- Backdrop --}}
         <div @click="closeModal()"
              class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-
-        
+      
     </div>
 </div>
 
-{{-- ════════════ STYLES ════════════ --}}
+
 <style>
     @media (max-width: 640px) {
         .sticky-mob-bar { display: flex !important; }
         main { padding-bottom: 80px; }
     }
 </style>
-
-{{-- ════════════ ALPINE.JS STATE ════════════ --}}
 <script>
 function spaHub() {
     return {
@@ -138,9 +129,4 @@ function spaHub() {
     };
 }
 </script>
-
- 
- 
- 
- 
 @endsection

@@ -383,7 +383,6 @@
     border-bottom: 2px solid var(--qd-secondary);
 }
 
-/* ---------- FAQ schema blocks ---------- */
 
 .category-description [itemtype="https://schema.org/FAQPage"] {
     display: grid;
@@ -408,7 +407,6 @@
     line-height: 1.75;
 }
 
-/* ---------- Pagination ---------- */
 
 .current .btn-info {
     color: var(--qd-success);
@@ -450,8 +448,6 @@
 #pagin li.current {
     background: var(--qd-primary);
 }
-
-/* ---------- Popup overlay ---------- */
 
 .inquiry-popup {
     
@@ -860,9 +856,6 @@
 .quick_arrow input {
     height: 48px;
 }
-
-/* Checkbox option cards */
-
 .fieldblock {
     margin-bottom: 16px;
 }
@@ -905,9 +898,7 @@
     background: #eef5ff;
     color: #073b82;
 }
-
-/* Form validation */
-
+ 
 .erbr.has-error input,
 .erbr.has-error select,
 .erbr.has-error textarea,
@@ -930,7 +921,6 @@
     line-height: 1.45;
 }
 
-/* Popup buttons and terms */
 
 .btn-center {
     display: flex;
@@ -1017,7 +1007,7 @@
     height: 20px;
 }
 
-/* ---------- Scrollbars ---------- */
+ 
 
 .form-container {
     max-height: 420px;
@@ -1053,7 +1043,7 @@
     background: var(--qd-primary-dark);
 }
 
-/* ---------- Responsive layout ---------- */
+
 
 @media (min-width: 768px) {
     .col-sm-12 {
@@ -1552,9 +1542,7 @@ Instead of limiting learning to theory, the course takes you through
 			<ul>
 
 		 
-						<li style="font-size: 13px;">
-							 
-A practical starting point for automation testing
+						<li style="font-size: 13px;">A practical starting point for automation testing
 						</li>
 
 						<li>
@@ -2016,11 +2004,9 @@ A practical starting point for automation testing
 	<a href="javascript:void(0);" class="dealclosebtn">&nbsp;</a>
 		<style>
 		.form-container {
-			max-height: 420px;
-			/* adjust height */
+			max-height: 420px;			 
 			overflow-y: auto;
-			padding-right: 8px;
-			/* space for scrollbar */
+			padding-right: 8px;			  
 		}
 
 
@@ -2030,31 +2016,26 @@ A practical starting point for automation testing
 			padding-right: 8px;
 		}
 
-		/* Scrollbar width */
+		
 		.form-container::-webkit-scrollbar {
 			width: 6px;
 		}
 
-		/* Track */
+		
 		.form-container::-webkit-scrollbar-track {
 			background: #f1f1f1;
 			border-radius: 10px;
 		}
 
-		/* Thumb */
+		
 		.form-container::-webkit-scrollbar-thumb {
 			background: linear-gradient(180deg, #0a5bd3, #0a6adf);
 			border-radius: 10px;
 		}
 
-		/* Hover */
+		
 		.form-container::-webkit-scrollbar-thumb:hover {
 			background: #084298;
 		}
-	</style>
-
- 
-
-	 
-	 
+	</style>	 
 @endsection

@@ -70,8 +70,8 @@ class BusinessLogoController extends Controller
 				$filenameLogo = $this->saveImageSmart(
 					$request->file('logo'),
 					$destinationPath,
-					250,
-					141
+					null,
+					null
 				);
 
 				$client->logo = serialize([
@@ -88,7 +88,7 @@ class BusinessLogoController extends Controller
 				$filename = $this->saveImageSmart(
 					$request->file('profile_pic'),
 					$destinationPath,
-					840,
+					900,
 					400
 				);
 
@@ -332,7 +332,7 @@ public function saveGallary(Request $request)
                 $finalName = $baseFile . '.svg';
                 $file->move($destinationPath, $finalName);
             } else {
-                $finalName = $this->saveImageSmart($file, $destinationPath, 850, 600);
+                $finalName = $this->saveImageSmart($file, $destinationPath, null, null);
             }
 
             $images[$i]['large'] = [
@@ -401,176 +401,10 @@ public function saveGallary(Request $request)
     // return redirect("/business/gallery-pictures");
 }
 	 
-public function saveGallary___old(Request $request)
-{
-     
-	 
-    $client = Client::findOrFail($request->business_id);
-    $oldImages = !empty($client->pictures) ? unserialize($client->pictures) : [];
-    $images = [];
-
-    $filePath = getFolderStructure();
-    $destinationPath = public_path($filePath);
-
-    if (!file_exists($destinationPath)) {
-        mkdir($destinationPath, 0777, true);
-    }
-
-    for ($i = 0; $i < 21; $i++) {
-
-        $field = 'image' . ($i + 1);
-			 
-        if ($request->hasFile($field)) {
-
-            $file = $request->file($field);
-            $ext = strtolower($file->getClientOriginalExtension());
-
-            $baseName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeName = str_replace(' ', '_', $baseName);
-            $baseFile =  time() . '_' . $i;
-
-            /* ---------- SVG ---------- */
-            if ($ext === 'svg') {
-                $finalName = $baseFile . '.svg';
-                $file->move($destinationPath, $finalName);
-            }
-          
-            else {
-                $finalName = $this->saveImageSmart(
-                    $file,
-                    $destinationPath,
-                    850,
-                    600
-                );
-            }
-
-            $images[$i]['large'] = [
-                'name' => $finalName,
-                'alt'  => $finalName,
-                'width' => '',
-                'height' => '',
-                'src' => $filePath . '/' . $finalName
-            ];
-
-        	} else if (isset($_FILES['image' . ($i + 1)]) && $_FILES['image' . ($i + 1)]['size'] == 0) {
-						} else {
-			 
-            if (isset($oldImages[$i])) {
-                $images[$i] = $oldImages[$i];
-                unset($oldImages[$i]);
-            }
-        }
-    }
-
-    $client->pictures = count($images) ? serialize($images) : '';
-    $client->save();
-
-    /* ---------- DELETE REMOVED IMAGES ---------- */
-    foreach ($oldImages as $old) {
-        if (!empty($old['large']['src'])) {
-            $oldPath = public_path($old['large']['src']);
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
-            }
-        }
-    }
-
-    $request->session()->flash('success_msg', 'Profile gallery updated successfully!');
-    return redirect("/business/gallery-pictures");
-}
+ 
 	 
 
-	// public function saveGallary(Request $request)
-	// {
-	// 	if (!$request->has('fourth_form_submit')) {
-	// 		return redirect("/business/gallery-pictures");
-	// 	}
-
-	// 	$client = Client::find($request->business_id);
-	// 	$id = $client->id;
-
-	// 	$images = [];
-	// 	$oldImages = !empty($client->pictures) ? unserialize($client->pictures) : [];
-
-	// 	$filePath = getFolderStructure();
-	// 	$destinationPath = public_path($filePath);
-
-	// 	if (!file_exists($destinationPath)) {
-	// 		mkdir($destinationPath, 0777, true);
-	// 	}
-
-	// 	for ($i = 0; $i < 12; $i++) {
-
-	// 		$field = 'image' . ($i + 1);
-
-	// 		if ($request->hasFile($field)) {
-
-	// 			$file = $request->file($field);
-	// 			$ext = strtolower($file->getClientOriginalExtension());
-
-	// 			$baseName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-	// 			$safeName = str_replace(' ', '_', $baseName);
-	// 			$filename = $safeName . '_' . time() . '_' . $i;
-
-	// 			/* =========================
-	// 			   SVG → Save directly
-	// 			========================= */
-	// 			if ($ext === 'svg') {
-
-	// 				$finalName = $filename . '.svg';
-	// 				$file->move($destinationPath, $finalName);
-
-	// 			} else {
-
-	// 				/* =========================
-	// 				   COMPRESS & CONVERT TO WEBP
-	// 				========================= */
-	// 				// $finalName = $this->convertToWebp(
-	// 				// 	$file->getRealPath(),
-	// 				// 	$destinationPath,
-	// 				// 	$filename
-	// 				// );
-
-	// 				$filename = $this->saveImageSmart(
-	// 				$file->getRealPath(),
-	// 				$destinationPath,
-	// 				550,
-	// 				400
-	// 			);
-	// 			}
-
-	// 			$images[$i]['large'] = [
-	// 				'name' => $finalName,
-	// 				'alt' => $finalName,
-	// 				'width' => '',
-	// 				'height' => '',
-	// 				'src' => $filePath . '/' . $finalName
-	// 			];
-
-	// 		} else {
-	// 			// Keep old image if new not uploaded
-	// 			if (isset($oldImages[$i])) {
-	// 				$images[$i] = $oldImages[$i];
-	// 				unset($oldImages[$i]);
-	// 			}
-	// 		}
-	// 	}
-
-	// 	$client->pictures = count($images) ? serialize($images) : '';
-	// 	$client->save();
-
-	// 	/* =========================
-	// 	   DELETE REMOVED OLD IMAGES
-	// 	========================= */
-	// 	foreach ($oldImages as $old) {
-	// 		if (!empty($old['large']['src'])) {
-	// 			@unlink(public_path($old['large']['src']));
-	// 		}
-	// 	}
-
-	// 	$request->session()->flash('success_msg', 'Profile gallery updated successfully!');
-	// 	return redirect("/business/gallery-pictures");
-	// }
+	 
 
 	public function convertToWebp($imagePath, $destination, $filename)
 	{

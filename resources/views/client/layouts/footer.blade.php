@@ -96,7 +96,7 @@
         ],
     ];
 
-    // 🔑 Flatten all categories into ONE single array
+    
     $allServices = [];
     foreach ($popularServices as $group) {
         foreach ($group['items'] as $service) {
@@ -226,7 +226,7 @@
                 ],
             ];
             @endphp
-@if(!empty($seoSections_old))
+            @if(!empty($seoSections_old))
             @foreach($seoSections_old as $section)
                 <div class="px-5 py-4">
                     <h4 class="text-xs font-black text-gray-900 uppercase tracking-wider mb-3">{{ $section['heading'] }}</h4>
@@ -251,13 +251,9 @@
             @endforeach
                         @endif
         </div>
-
-        {{-- ─── Main Footer Grid ─── --}}
-        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-10 pl-3">
-
-            {{-- Col 1: Logo + Quick Links --}}
-            <div class="col-span-1">
-                 
+     
+        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-10 pl-3">     
+            <div class="col-span-1">                 
                 <ul class="space-y-3">
                     @foreach([
                         ['name' => 'Home',                      'route'=>route('home')],
@@ -265,9 +261,8 @@
                         ['name' => 'Contact Us',               'route'=>route('contactUs')],
                         ['name' => 'Careers',                   'route'=>route('careers')],
                         ['name' => 'Interviews',                   'route'=>route('interviews')],
-                        ['name' => 'Blog',                      'route'=>route('blog.show')],
-                       
-                      //  ['name' => 'Advertise on QuickDials',   'href' => '/business-owners','route'=>route('login')],
+                        ['name' => 'Blog',                      'route'=>route('blog.show')],                     
+                    
                        
                     ] as $link)
 
@@ -302,9 +297,9 @@
          
             
 
-            {{-- Col 4: For Businesses --}}
+           
             <div>
-                <!-- <h4 class="font-bold text-gray-900 mb-4 uppercase tracking-wider text-xs">For Businesses</h4> -->
+                
                 <ul class="space-y-2">
                     @foreach([
                         ['name' => 'Add your Business',  'href' => 'business-owners','route'=>route('login')],
@@ -323,8 +318,7 @@
                     @endforeach
                 </ul>
             </div>
-
-            {{-- Col 5: Contact + Social --}}
+         
             <div>
                 <h4 class="font-bold text-gray-900 mb-4 uppercase tracking-wider text-xs">Support & Contact</h4>
 
@@ -348,9 +342,7 @@
                         <span>🕒</span>
                         <span>Mon–Sat: 9:00 AM – 7:00 PM</span>
                     </p>
-                </div>
-
-                {{-- Social links --}}
+                </div>              
                 <div>
                     <h5 class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-3 pb-2 border-b border-gray-200">Follow Us</h5>
                     <div class="flex items-center gap-3 flex-wrap">
@@ -387,7 +379,7 @@
             </div>
         </div>
 
-        {{-- ─── Bottom bar ─── --}}
+        
         <div class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <p class="text-gray-500 text-xs">
                  {{ date('Y') }} QuickDials Directory. All rights reserved.

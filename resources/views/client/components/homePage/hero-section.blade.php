@@ -10,22 +10,27 @@
         <div class="pt-5 pb-4">
 
             {{-- Headline --}}
-            <div class="max-w-2xl mx-auto text-center mb-3 overflow-hidden">
-                <h1>QuickDials – Find Local Businesses and Services Near You</h1>
-                <h2 class="text-[clamp(1rem,3.5vw,1.5rem)] font-black text-gray-900 leading-snug whitespace-nowrap">
+
+            <div class="max-w-2xl mx-auto text-center mb-3">
+                <h1 class="text-1xl md:text-1xl font-bold text-gray-900 leading-tight mb-2">
+                    Find Local Businesses and Services Near You
+                </h1>
+
+                <h2 class="text-[clamp(1rem,3.5vw,1.5rem)] font-black text-gray-900 leading-snug">
                     Search across
-                    <span class="text-blue-600">'0.9 K+'</span>
-                    <span id="rotating-word" class="text-orange-500 inline-block word-animate">Institutes</span>
+                    <span class="text-blue-600">0.9 K+</span>
+                    <span id="rotating-word" class="text-orange-500 inline-block word-animate">
+                        Institutes
+                    </span>
                     <span class="text-gray-700">&amp; Services</span>
                 </h2>
             </div>
-
-            {{-- ─── Search Box ─── --}}
+         
             <div class="max-w-2xl mx-auto">
                 <div class="relative" id="hero-search-box">
                     <div class="flex bg-white rounded-xl shadow-lg shadow-gray-200/70 overflow-visible border border-gray-200">
 
-                        {{-- City selector --}}
+                         
                         <div id="hero-city-dropdown" class="relative shrink-0">
                             <button
                                 id="hero-city-btn"
@@ -36,8 +41,7 @@
                                 <span id="hero-city-label">faridabad</span>
                                 <i data-lucide="chevron-down" id="hero-city-chevron" class="w-3 h-3 text-gray-400 transition-transform duration-200"></i>
                             </button>
-
-                            {{-- City panel --}}
+                           
                             <div id="hero-city-panel" class="hidden absolute top-full left-0 mt-1.5 bg-white rounded-xl shadow-2xl border border-gray-100 z-[70] w-72 overflow-hidden dropdown-enter">
                                 <div class="p-2 border-b border-gray-100">
                                     <div class="flex items-center gap-1.5 bg-gray-50 rounded-lg px-2.5 py-1.5 border border-gray-200 focus-within:border-blue-300 focus-within:bg-white transition-colors">
@@ -53,12 +57,12 @@
                                     </div>
                                 </div>
                                 <div class="max-h-40 overflow-y-auto py-1" id="hero-city-list">
-                                    {{-- Populated by JS --}}
+                                   
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Search input --}}
+                       
                         <input
                             id="hero-search-input"
                             type="text"
@@ -70,10 +74,9 @@
                             onkeydown="handleHeroKeydown(event)"
                             onfocus="onHeroSearchFocus()"
                         />
+        
 
-                            
-
-                        {{-- Search button --}}
+                        
                         <button
                             onclick="doHeroSearch()"
                             aria-label="Search"
@@ -84,7 +87,7 @@
                         </button>
                     </div>
 
-                    {{-- Suggestions dropdown --}}
+                     
                     <div id="hero-suggestions" class="hidden absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden dropdown-enter">
                         <div id="hero-suggestions-loading" class="hidden flex items-center gap-2.5 px-4 py-3.5">
                             <div class="w-4 h-4 border-2 border-blue-200 border-t-blue-500 rounded-full animate-spin shrink-0"></div>
@@ -94,7 +97,7 @@
                     </div>
                 </div>
 
-                {{-- Trending tags --}}
+              
                 <div class="flex flex-wrap items-center gap-1.5 mt-2 justify-center" id="trending-tags">
                     <span class="text-gray-400 text-[11px] font-medium">Trending:</span>
                                    
@@ -108,7 +111,7 @@
             </div>
         </div>
 
-        {{-- ─── Banner Keyword Slider ─── --}}
+       
         <div class="relative pb-0" id="banner-slider-wrapper"
              onmouseenter="sliderPaused=true" onmouseleave="sliderPaused=false">
 
@@ -176,7 +179,7 @@
 
  
 <script>
-// ─── Hero rotating words ───────────────────────────────────────────────────
+
 const WORDS = ['Institutes','Doctors','Plumbers','Hotels','Electricians','Lawyers'];
 let wordIdx  = 0;
 const wordEl = document.getElementById('rotating-word');
@@ -188,7 +191,7 @@ setInterval(() => {
     wordEl.classList.add('word-animate');
 }, 2200);
 
-// ─── Hero City ────────────────────────────────────────────────────────────
+ 
 let heroSelectedCity = 'faridabad';
  
 const cityNames = ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Pune', 'Kolkata', 'Ahmedabad'];
@@ -298,7 +301,7 @@ document.addEventListener('mousedown', e => {
     }
 });
 
-// ─── Hero Search Suggestions ───────────────────────────────────────────────
+
 let heroSearchTimeout = null;
 let heroSuggestions   = [];
 let activeHeroIdx     = -1;
@@ -393,7 +396,7 @@ document.addEventListener('mousedown', e => {
     if (!box.contains(e.target) && !inp.contains(e.target)) hideHeroSuggestions();
 });
 
-// ─── Redirect helper ──────────────────────────────────────────────────────
+
 function redirectSearch(keyword, city) {
     if (!keyword || !city) return;
     const c = city.toLowerCase().replace(/\s+/g, '-');
@@ -412,7 +415,7 @@ function redirectSubmitSearch(keyword, city) {
         `/${encodeURIComponent(cityName)}/search?q=${encodeURIComponent(query)}`;
 }
 
-// ─── Banner Slider ─────────────────────────────────────────────────────────
+
 (function() {
     const track     = document.getElementById('slider-track');
     const dotsEl    = document.getElementById('slider-dots');
@@ -483,7 +486,7 @@ function redirectSubmitSearch(keyword, city) {
 
 
 
-// ─── Navbar scroll behavior ────────────────────────────────────────────────
+
 const navbarhome      = document.getElementById('main-navbar');
 const stickyWraphome  = document.getElementById('sticky-search-wrapper');
 const desktopNavhome  = document.getElementById('desktop-nav');

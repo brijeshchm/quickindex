@@ -675,25 +675,17 @@
                     <i data-lucide="user-round" class="h-4 w-4"></i>
                     My Profile dd
                 </a> -->
-
-
-
- 
     @php
         $guest = auth()->guard('guest')->user();
-
         $guestMenuItems = [
             ['url' => 'user/personal-details', 'icon' => 'user-round', 'label' => 'My Profile'],
-            ['url' => 'user/service', 'icon' => 'briefcase-business', 'label' => 'Service'],
-           
+            ['url' => 'user/service', 'icon' => 'briefcase-business', 'label' => 'Service'],           
             ['url' => 'user/admin-dashboard', 'icon' => 'layout-dashboard', 'label' => 'Dashboard'],
             ['url' => 'privacy-policy', 'icon' => 'shield-check', 'label' => 'Policy'],
            
         ];
     @endphp
-
-    <div id="mobile-guest-dropdown" class="relative">
-        {{-- Mobile trigger --}}
+    <div id="mobile-guest-dropdown" class="relative">        
         <button
             type="button"
             id="mobile-guest-button"
@@ -708,14 +700,11 @@
                 <i data-lucide="user-round" class="h-4 w-4"></i>
             </span>
             <i data-lucide="chevron-down" class="h-4 w-4 text-gray-500"></i>
-        </button>
-
-        {{-- Dropdown --}}
+        </button>       
         <div
             id="mobile-guest-panel"
             class="absolute right-0 top-full z-[100] mt-3 hidden w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-gray-900/15"
-        >
-            {{-- Account header --}}
+        >            
             <div class="border-b border-gray-100 bg-gradient-to-br from-indigo-50 to-sky-50 px-4 py-4">
                 <div class="flex items-center gap-3">
                     <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm">
@@ -746,7 +735,7 @@
                 @endif
             </div>
 
-            {{-- Menu links --}}
+         
             <nav class="max-h-[min(55vh,26rem)] overflow-y-auto p-2">
                 @foreach($guestMenuItems as $item)
                     @php
@@ -769,8 +758,7 @@
                     </a>
                 @endforeach
             </nav>
-
-            {{-- Logout --}}
+          
             <div class="border-t border-gray-100 bg-gray-50 p-2">
                 <a
                     href="{{ route('user.userLogout') }}"
@@ -873,22 +861,13 @@ document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') closeMobileAccount();
 });
 </script>
-
-
-        {{-- Mobile buttons --}}
-        
-
-
-    </div>
-
-   
-   {{-- Mobile search bar (always visible on mobile) --}}
+</div>   
 @if (!request()->is('/') && !request()->is('payment/checkout'))
 <div class="md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-md relative">
     <div class="px-3 py-2">
         <div class="flex bg-white rounded-xl border border-gray-200 shadow-md h-9 overflow-visible relative">
 
-            {{-- Mobile City selector (tappable) --}}
+           
             <div id="mobile-city-dropdown" class="relative shrink-0">
                 <button
                     type="button"
@@ -901,7 +880,7 @@ document.addEventListener('keydown', function (event) {
                     <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-gray-400 transition-transform duration-200" id="mobile-city-chevron"></i>
                 </button>
 
-                {{-- Mobile City Panel --}}
+                
                 <div
                     id="mobile-city-panel"
                     class="hidden absolute top-full left-0 mt-1.5 bg-white rounded-xl shadow-2xl border border-gray-100 z-[70] w-52 overflow-hidden"
@@ -923,7 +902,7 @@ document.addEventListener('keydown', function (event) {
                 </div>
             </div>
 
-            {{-- Mobile Search Input --}}
+           
             <input
                 id="mobile-search-input"
                 type="text"
@@ -935,7 +914,7 @@ document.addEventListener('keydown', function (event) {
                 onkeydown="handleMobileKeydown(event)"
             />
 
-            {{-- Mobile Search Button --}}
+             
             <button
                 type="button"
                 onclick="doMobileSearch()"
@@ -957,9 +936,6 @@ document.addEventListener('keydown', function (event) {
     </div>
 </div>
 @endif
-
-    {{-- Mobile menu dropdown --}}
-
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pb-4 shadow-lg">
         <nav class="flex flex-col gap-0.5 pt-2 mb-3">
             <a href="{{ route('home') }}" class="text-sm font-semibold text-gray-900 hover:text-primary px-2 py-2.5 rounded-lg hover:bg-blue-50 transition-colors">Home</a>
@@ -982,7 +958,7 @@ document.addEventListener('keydown', function (event) {
 @include('client.layouts.login_popup')
   
 <script>
-// ─── Navbar scroll behavior ────────────────────────────────────────────────
+
 const navbar      = document.getElementById('main-navbar');
 const stickyWrap  = document.getElementById('sticky-search-wrapper');
 const desktopNav  = document.getElementById('desktop-nav');
@@ -1013,7 +989,7 @@ window.addEventListener('scroll', () => {
 
 @endif
 
-// ─── Sticky City Dropdown ──────────────────────────────────────────────────
+ 
 let stickySelectedCity = 'faridabad';
  
 
@@ -1094,7 +1070,7 @@ document.addEventListener('mousedown', (e) => {
 });
 
 
-// ─── Sticky Search + Suggestions ──────────────────────────────────────────
+
 let stickySearchTimeout = null;
 let stickySuggestions   = [];
 let activeStickyIdx     = -1;
@@ -1234,7 +1210,7 @@ function redirectSearch(keyword, city) {
     window.location.href = `/${c}/${k}`;
 }
 
-// // ─── Mobile Menu ───────────────────────────────────────────────────────────
+
 function toggleMobileMenu() {
     const menu      = document.getElementById('mobile-menu');
     const iconOpen  = document.getElementById('menu-icon-open');
@@ -1279,7 +1255,7 @@ function showDefaultMobileSuggestions() {
     activeMobileIdx = -1;
 }
 
-// ─── MOBILE: City Dropdown ─────────────────────────────────────────────────
+
 function toggleMobileCity() {
     const panel   = document.getElementById('mobile-city-panel');
     const chevron = document.getElementById('mobile-city-chevron');
@@ -1306,7 +1282,7 @@ function renderMobileCityList(list, q = '') {
         </button>`).join('');
 }
 
-// let mobileCityTimeout = null;
+
 function filterMobileCities(q) {
     const clearBtn = document.getElementById('mobile-city-clear');
     if (clearBtn) clearBtn.classList.toggle('hidden', !q);
@@ -1332,21 +1308,21 @@ function clearMobileCitySearch() {
 
 function selectMobileCity(city) {
     stickySelectedCity = city;
-    // Sync labels everywhere
+    
     const stickyLabel = document.getElementById('sticky-city-label');
     const mobileLabel = document.getElementById('mobile-city-label');
     if (stickyLabel) stickyLabel.textContent = city;
     if (mobileLabel) mobileLabel.textContent = city;
-    // Close panel
+    
     document.getElementById('mobile-city-panel').classList.add('hidden');
     const chev = document.getElementById('mobile-city-chevron');
     if (chev) chev.style.transform = '';
-    // Focus search
+     
     const inp = document.getElementById('mobile-search-input');
     if (inp) inp.focus();
 }
 
-// // ─── MOBILE: Search Suggestions ────────────────────────────────────────────
+
 let mobileSearchTimeout = null;
 let mobileSuggestions   = [];
 let activeMobileIdx     = -1;
@@ -1420,7 +1396,7 @@ function doMobileSearch() {
     redirectSearch(kw, stickySelectedCity);
 }
 
-// // Close mobile city dropdown on outside tap
+
 document.addEventListener('mousedown', (e) => {
     const dd = document.getElementById('mobile-city-dropdown');
     if (dd && !dd.contains(e.target)) {
@@ -1429,7 +1405,7 @@ document.addEventListener('mousedown', (e) => {
         if (panel) panel.classList.add('hidden');
         if (chev) chev.style.transform = '';
     }
-    // Close mobile suggestions on outside tap
+     
     const inp = document.getElementById('mobile-search-input');
     const sug = document.getElementById('mobile-suggestions');
     if (inp && sug && !inp.contains(e.target) && !sug.contains(e.target)) {
@@ -1437,7 +1413,7 @@ document.addEventListener('mousedown', (e) => {
     }
 });
 
-// // Re-init Lucide icons after dynamic insert (run after DOM ready)
+
 document.addEventListener('DOMContentLoaded', () => {
     if (window.lucide) window.lucide.createIcons();
 });

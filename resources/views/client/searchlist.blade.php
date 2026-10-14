@@ -3,7 +3,7 @@
 @section('description', $metaDescription ?? 'Find the best ' . $keyword . ' in ' . ucwords(strtolower(str_replace('-', ' ', $city))) . ' with QuickDials. Discover verified businesses, addresses, phone numbers, reviews, ratings, photos, maps, and top local services near you.')
 
 @php
-     // Single source of truth: city => allowed keyword slugs
+    
     $cityKeywordMap = [
         'faridabad' => [
             'artificial-intelligence-training','python-training','workday-training',
@@ -25,27 +25,17 @@
         'bangalore' => [
            	'sap-sd-training','sap-hcm-training','sap-success-factors-training','workday-hcm-functional','tableau-training','deep-learning-training','php-training','mern-stack-training','catering-services','event-organizers','tent-house','table-tennis','archery'
         ],
-
-
     ];
-
     $currentCity    = strtolower(trim($city ?? ''));
-    $currentKeyword = strtolower(trim($kwData['keyword_slug'] ?? ''));
-
-    // TRUE only when this exact city+keyword combo is whitelisted
+    $currentKeyword = strtolower(trim($kwData['keyword_slug'] ?? ''));  
     $shouldIndex = isset($cityKeywordMap[$currentCity])
-        && in_array($currentKeyword, $cityKeywordMap[$currentCity]);
-
-    // Per-city flags — used ONLY to pick which content block to render
+        && in_array($currentKeyword, $cityKeywordMap[$currentCity]);    
     $faridabadIndex = $currentCity === 'faridabad' && $shouldIndex;
     $noidaIndex      = $currentCity === 'noida' && $shouldIndex;
     $delhiIndex      = $currentCity === 'delhi' && $shouldIndex;
-    $bangaloreIndex      = $currentCity === 'bangalore' && $shouldIndex;
-
-    // Does this page have curated, city-specific content at all?
+    $bangaloreIndex      = $currentCity === 'bangalore' && $shouldIndex;  
     $hasCuratedContent = $faridabadIndex || $noidaIndex || $delhiIndex || $bangaloreIndex;
 @endphp
-
 @section('meta_robots')
 <meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, follow' }}">
 @endsection
@@ -53,7 +43,6 @@
     ? asset($kwData['key_icon'])
     : asset('client/images/quickdials-og.png'))
 @section('content') 
-
 <style>  
     #enquiry-modal { display: none; }
     #enquiry-modal.open { display: flex; }
@@ -104,14 +93,11 @@ $starMap = [
 $bgImage = !empty($bgImage)
     ? $bgImage
     : '/client/images/computer-courses-training.jpg';
-// Calculate star image key
 $starKey = 0;
 foreach ($starMap as $k => $v) {
     if ($ratingValue >= $k) $starKey = $k;
 }
 $starImg = $starMap[$starKey] ?? 'star_4.5.png';
-
-// Reviews stats
 $totalReviews = count($reviews ?? []);
 $avgRating = $totalReviews > 0
     ? round(collect($reviews)->avg(fn($r) => floatval($r->avg_rating ?? 0)), 1)
@@ -131,24 +117,16 @@ $starPercentages = collect([5,4,3,2,1])->map(fn($s) => [
 @include('client.layouts.common_country_data')
 <div class="min-h-screen bg-gray-50 flex flex-col mt-4"
      x-data="listingPage()" x-init="init()">
-
-  @php
-    $hasBanners = is_countable($keywordBanners) && count($keywordBanners) > 0;
-
-    
+@php
+    $hasBanners = is_countable($keywordBanners) && count($keywordBanners) > 0;    
 @endphp
-
-@php     
-    
+@php         
     $cityName =$city ?: 'faridabad';
     if (!empty($childCat) && !empty($childSlug)) {
         $items[] = ['name' => ucfirst($childCat), 'url' => route('showCity', $childSlug) ];
     }
-
- 
 @endphp 
-@php   
- 
+@php    
 $keywordImg= !empty($kwData['key_icon'])
     ? asset($kwData['key_icon'])
     : asset('client/images/quickdials-og.png');
@@ -160,11 +138,6 @@ $keywordImg= !empty($kwData['key_icon'])
         'name' => "Quickdials",
         'url' => "https://www.quickdials.com/",
     ];
-    
-
-      // ---- 2. SERVICE (only if service data exists) ----
- 
-
     if (!empty($metaTitle) && !empty($cityDetails['city'])) {
 
         $address = [
@@ -172,8 +145,6 @@ $keywordImg= !empty($kwData['key_icon'])
             'addressLocality' => $cityDetails['city'],
             'addressCountry'  => 'IN',
         ];
-
-        // Only add optional address fields if they actually have data
         if (!empty($cityDetails['state'])) {
             $address['addressRegion'] = $cityDetails['state'];
         }
@@ -188,30 +159,17 @@ $keywordImg= !empty($kwData['key_icon'])
             'url'      => url()->current(),
             'description'  => $metaDescription,
         ];
-
-        // Only add image if present
+        
         if (!empty($keywordImg)) {
             $schema['image'] = $keywordImg;
         }
-
-        // // Only add aggregateRating if BOTH value and count are real (non-zero, non-empty)
-        // if (!empty($ratingValue) && !empty($ratingCount)) {
-        //     $schema['aggregateRating'] = [
-        //         '@type'       => 'AggregateRating',
-        //         'ratingValue' => (string) $ratingValue,
-        //         'ratingCount' => (string) $ratingCount,
-        //         'bestRating'  => '5',
-        //     ];
-        // }
-
         $schemas[] = $schema;
     }
  
 
     if(!empty($businesses)){
-$businessCollections = collect($businesses)->take(20);
-        foreach($businessCollections as $clientBus){
-    
+        $businessCollections = collect($businesses)->take(20);
+        foreach($businessCollections as $clientBus){    
             if (!empty($clientBus['logo']) && !empty($clientBus['name']) && !empty($clientBus['business_slug'])) {
 
                 $address = [
@@ -219,8 +177,7 @@ $businessCollections = collect($businesses)->take(20);
                     'addressLocality' => $clientBus['city'],
                     'addressCountry'  => 'IN',
                 ];
-
-                // Only add optional address fields if they actually have data
+            
                 if (!empty($clientBus['state'])) {
                     $address['addressRegion'] = $clientBus['state'];
                 }
@@ -238,8 +195,7 @@ $businessCollections = collect($businesses)->take(20);
                     'url' =>   route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($clientBus['city']),'service_slug' => $clientBus['business_slug']]),     
                     'address'  => $address,
                 ];
-
-                // Only add image if present
+               
                 if (!empty($clientBus['logo'])) {
                     $schema['image'] = $clientBus['logo'];
                 }
@@ -248,10 +204,7 @@ $businessCollections = collect($businesses)->take(20);
             }
         }
 
-    }
-
-
-  
+    } 
                      
  if (!empty($businesses)) {
 
@@ -296,9 +249,7 @@ $schema = [
     ]
 ];
 }
- 
-
- 
+  
 @endphp
 
 
@@ -320,8 +271,6 @@ $schema = [
 ) !!}
 </script>
 @endif 
-
-
 @if($hasBanners)
 <div x-data='bannerSlider(@json($keywordBanners), 4000)'
      x-init="init()"
@@ -365,8 +314,7 @@ $schema = [
             </div>
         </div>
     </template>
-
-    {{-- Pagination dots --}}
+  
     <div x-show="banners.length > 1"
          class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
         <template x-for="(b, idx) in banners" :key="'dot-'+b.id">
@@ -376,8 +324,7 @@ $schema = [
                     :aria-label="'Go to slide ' + (idx + 1)"></button>
         </template>
     </div>
-
-    {{-- Arrows --}}
+   
     <button x-show="banners.length > 1" @click="prev()" aria-label="Previous"
             class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -391,15 +338,11 @@ $schema = [
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
     </button>
-
-    {{-- Progress bar --}}
     <div x-show="banners.length > 1"
          class="absolute bottom-0 left-0 h-1 bg-white/80 z-20 transition-all ease-linear"
          :style="`width: ${progress}%; transition-duration: ${timer ? interval : 0}ms`">
     </div>
 </div>
-
-
 <script>
 function bannerSlider(banners, interval = 4000) {
     return {
@@ -430,7 +373,7 @@ function bannerSlider(banners, interval = 4000) {
 }
 </script>
 @else
-    {{-- Hero Banner --}}
+     
     <div x-show="showAd" x-cloak
          class="relative w-full overflow-hidden h-48"
          style="background-image: url('{{ $bgImage }}'); background-size: cover; background-position: center;">
@@ -446,11 +389,10 @@ function bannerSlider(banners, interval = 4000) {
         </div>
     </div>
 @endif
-    {{-- Filter / Sort bar --}}
+ 
     <div class="w-full bg-white border-b border-gray-100 px-4 sm:px-6 py-2">
         <div class="flex items-center justify-between gap-3 flex-wrap">
-            <div>
-                {{-- Breadcrumb --}}
+            <div>               
                 <nav class="text-black text-xs sm:text-sm mb-1 flex items-center gap-1.5 flex-wrap">
                     <a href="{{ route('home') }}" class="hover:text-indigo-600">Home</a>
                     <span>›</span>
@@ -458,12 +400,8 @@ function bannerSlider(banners, interval = 4000) {
                     <a href="{{ route('showCity', $city)}}" class="hover:text-indigo-600">{{ ucfirst($city) }}</a>
                     <span>›</span>
                     @endif
-                    <span>{{ $keyword }} in {{ ucwords(strtolower(str_replace('-', ' ', $city))) }}</span>
-
-                       <!-- <span>›</span>
-                    <span class="text-gray-600">{{ $keyword }} in {{ ucwords(strtolower(str_replace('-', ' ', $city))) }}</span> -->
-                </nav>
-                           
+                    <span>{{ $keyword }} in {{ ucwords(strtolower(str_replace('-', ' ', $city))) }}</span>                     
+                </nav>                           
                 <div itemscope itemtype="https://schema.org/Product" class="space-y-2">    
                     <div itemprop="name">
                         <h1 class="text-lg font-bold text-gray-900 leading-tight">{{ !empty($kwData['h1_heading']) ? $kwData['h1_heading'] : trim(($keyword ?? '') . (!empty($city) ? ' in ' . ucwords(strtolower(str_replace('-', ' ', $city))) : '' ))}}</h1>
@@ -495,8 +433,7 @@ function bannerSlider(banners, interval = 4000) {
                 </div> 
                  <p class="pt-1">{{ $kwData['short_definition']??'' }}</p>
             </div>
-
-            {{-- Controls --}}
+    
             <div class="flex items-center gap-2 flex-wrap">
                 <div class="relative">
                     <label for="sort-businesses" class="sr-only">
@@ -527,10 +464,7 @@ function bannerSlider(banners, interval = 4000) {
                 
             </div>
         </div>
-
-     
-
-        {{-- Advanced filters --}}
+    
         <div x-show="showFilters" x-cloak class="pt-3 mt-3 border-t border-gray-100 flex items-center gap-6 flex-wrap">
             <div class="flex items-center gap-2">
                 <span class="text-xs text-gray-500 font-medium">Min Rating:</span>
@@ -554,8 +488,7 @@ function bannerSlider(banners, interval = 4000) {
             </label>
             <button @click="resetFilters()" class="text-xs text-gray-400 hover:text-red-500 ml-auto">Reset</button>
         </div>
-
-        {{-- Search --}}
+       
         <div class="w-full py-2.5 flex items-center gap-3">
             <div class="flex-1 flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 gap-2 hover:border-indigo-300 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
             
@@ -574,36 +507,28 @@ function bannerSlider(banners, interval = 4000) {
         $adInterval = 4;   
         $businessChunks = collect($businesses)->chunk($adInterval);
     @endphp
-
     @foreach($businessChunks as $chunkIndex => $chunk)
-
-        {{-- ONE grid wrapper for the ENTIRE chunk --}}
+    
         <div :class="view === 'grid'
             ? 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4 mb-6'
             : 'bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-50 mb-6'"
              id="chunk-{{ $chunkIndex }}">
             @foreach($chunk as $bIndex => $business)
-                @php
-            
-                
-                 $globalIndex = $chunkIndex * $adInterval + $bIndex; @endphp
-       
-
-<div class="business-card"
-     data-id="{{ $business['id'] ?? $globalIndex }}"
-     data-name="{{ strtolower($business['name'] ?? '') }}"
-     data-category="{{ strtolower(is_array($business['category'] ?? '') ? implode(',', $business['category']) : ($business['category'] ?? '')) }}"
-     data-rating="{{ $business['rating'] }}"
-     data-gst-status="{{ $business['gst_status'] }}"
-     data-trusted-status="{{ $business['trusted_status'] }}"
-     data-verified="{{ $business['certified_status'] }}"
-     data-open="{{ $business['active_status'] }}"
-     data-reviews="{{ $business['reviewCount'] }}"
-     x-show="shouldShow($el)">
-    <x-business-card :business="$business" :index="$globalIndex" :view="'list'" />
-</div>
-
-                
+                @php         
+                $globalIndex = $chunkIndex * $adInterval + $bIndex; @endphp
+            <div class="business-card"
+                data-id="{{ $business['id'] ?? $globalIndex }}"
+                data-name="{{ strtolower($business['name'] ?? '') }}"
+                data-category="{{ strtolower(is_array($business['category'] ?? '') ? implode(',', $business['category']) : ($business['category'] ?? '')) }}"
+                data-rating="{{ $business['rating'] }}"
+                data-gst-status="{{ $business['gst_status'] }}"
+                data-trusted-status="{{ $business['trusted_status'] }}"
+                data-verified="{{ $business['certified_status'] }}"
+                data-open="{{ $business['active_status'] }}"
+                data-reviews="{{ $business['reviewCount'] }}"
+                x-show="shouldShow($el)">
+                <x-business-card :business="$business" :index="$globalIndex" :view="'list'" />
+            </div>                
             @endforeach
         </div>      
         @if(!$loop->last)
@@ -623,7 +548,7 @@ function bannerSlider(banners, interval = 4000) {
         @endif
     @endforeach
 
-    {{-- Enquiry Modal --}}
+     
     <div id="enquiry-modal"
          class="fixed inset-0 z-[210] items-center justify-center p-4"
          style="background:rgba(10,15,40,.75);backdrop-filter:blur(14px);"
@@ -655,14 +580,13 @@ function bannerSlider(banners, interval = 4000) {
             </div>
 
             @if($totalReviews)
-            {{-- Reviews Section --}}
+             
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mt-4">
                 <div class="flex items-center justify-between mb-5">
                     <span class="text-lg font-bold text-gray-900">User Reviews</span>
                     
                 </div>
-
-                {{-- Rating summary --}}
+         
                 <div class="flex items-center gap-6 mb-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
                     <div class="text-center">
                         <div class="text-4xl font-bold text-blue-700">{{ $avgRating }}</div>
@@ -687,8 +611,7 @@ function bannerSlider(banners, interval = 4000) {
                         </div>
                         @endforeach
                     </div>
-                </div>
-                {{-- Review list --}}
+                </div>               
                 @forelse($reviews as $review)
                 @php
                     $rName = $review->business_name ?? 'Anonymous';
@@ -722,21 +645,19 @@ function bannerSlider(banners, interval = 4000) {
                 @endforelse
             </div>
 
-            @endif
-            {{-- Property Banner --}}
+            @endif            
             <div class="w-full bg-[#E9D9B8] rounded-lg p-4 mt-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 flex items-center justify-center overflow-hidden rounded-lg">
-    
-    <img 
-        src="{{ $kwData['key_icon'] ?? $kwData['child_icon'] ??'' }}" 
-        alt="{{ $keyword }}"
-        class="w-16 h-16 object-contain group-hover:scale-105 transition-transform duration-500"
-        width="100"
-        height="100"
-        loading="lazy"
-        decoding="async">
-</div>
+                        <img 
+                            src="{{ $kwData['key_icon'] ?? $kwData['child_icon'] ??'' }}" 
+                            alt="{{ $keyword }}"
+                            class="w-16 h-16 object-contain group-hover:scale-105 transition-transform duration-500"
+                            width="100"
+                            height="100"
+                            loading="lazy"
+                            decoding="async">
+                    </div>
                 <div>
                         <span class="text-lg md:text-xl font-bold text-gray-800">Attention!</span>
                         <p class="text-sm md:text-base font-semibold text-gray-700">Advertise Owners</p>
@@ -751,8 +672,7 @@ function bannerSlider(banners, interval = 4000) {
                     </button>
                 </div>
             </div>
-
-            {{-- Quick Response Section --}}
+          
             <div class="py-10 bg-gray-50 mt-4 rounded-2xl">
                 <div class="px-4">
                     <div class="flex items-center gap-3 mb-8">
@@ -811,7 +731,7 @@ function bannerSlider(banners, interval = 4000) {
             </div>
 
             @if(!empty($growthBusiness))
-            {{-- Grow Your Business Banner --}}
+            
             <section class="w-full bg-[#057AEC] rounded-lg overflow-hidden mt-4">
                 <div class="flex flex-col lg:flex-row items-center">
                     <div class="flex-1 text-white px-6 py-10 md:px-10">
@@ -837,11 +757,11 @@ function bannerSlider(banners, interval = 4000) {
 @endif
         </main>
 
-        {{-- Sidebar --}}
+        
         <aside class="hidden lg:block w-80 xl:w-96 flex-shrink-0 sticky top-[80px] self-start">
             <div class="pt-2">@include('client.components.sidebar-enquiry')</div>
 
-            {{-- Ad Tiles --}}
+           
             <div class="pb-3 pt-2 border-t border-gray-100 mt-3 flex flex-col gap-2">
                 <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 p-3 cursor-pointer hover:-translate-y-0.5 transition-transform">
                     <div class="flex items-center gap-2.5">
@@ -868,8 +788,6 @@ function bannerSlider(banners, interval = 4000) {
             </div>
         </aside>
     </div>
-
-    {{-- Agents comparison table --}}
     @if(count($agents ?? []) > 0)
     <section class="w-full p-4">
         <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-4">TOP {{ count($agents) }} {{ $keyword }} in {{ ucwords(strtolower(str_replace('-', ' ', $city))) }}</h2>
@@ -913,7 +831,7 @@ function bannerSlider(banners, interval = 4000) {
     @endif
 
 @unless($hasCuratedContent)
-    {{-- Course About --}}
+  
     @if(!empty($kwData['heading']) && !empty($kwData['courseabout']))
     <div class="border rounded-lg p-4 bg-white shadow-sm mx-4">
         <section class="rounded-md p-1">
@@ -936,28 +854,23 @@ function bannerSlider(banners, interval = 4000) {
 @endunless
 
     @if($faridabadIndex && $cityName =='faridabad')
-       {{-- top_wcity_description --}}
+      
     @if(!empty($kwData['top_wcity_description']))
      @php
-    $top_wcity_heading = '';
-
-    if (!empty($kwData['top_wcity_heading'])) {
-        $top_wcity_heading=  $kwData['top_wcity_heading'];
-    }   
+        $top_wcity_heading = '';
+        if (!empty($kwData['top_wcity_heading'])) {
+            $top_wcity_heading=  $kwData['top_wcity_heading'];
+        }   
     @endphp
-
     <div class="bg-white rounded-2xl p-6 mt-4 mx-4">
         <h2 class="text-lg font-bold text-gray-900 mb-3">{{ $top_wcity_heading }}</h2>
         <div class="text-sm text-gray-600 leading-relaxed">{!! $kwData['top_wcity_description'] !!}</div>
     </div>
     @endif
-
-
-
 @endif
 
 @if($bangaloreIndex && $cityName =='bangalore')
-     {{-- bottom_wcity_heading --}}
+    
     @if(!empty($kwData['bottom_wcity_description']))
     
     @php
@@ -973,45 +886,35 @@ function bannerSlider(banners, interval = 4000) {
     @endif
 @endif
  
-  @unless($hasCuratedContent)
-    {{-- Top Description --}}
+  @unless($hasCuratedContent)  
     @if(!empty($topDescription))
     <div class="bg-white rounded-2xl p-6 mt-4 mx-4">
     @php
     $defaultHeading = '';
-
     if (!empty($kwData['top_heading'])) {
         $defaultHeading=  $kwData['top_heading'];
     }else{
      $defaultHeading = 'Trusted '. $keyword . ' in ' . ucwords(strtolower(str_replace('-', ' ', $city)));
     }    
     @endphp
-
     <h2 class="text-lg font-bold text-gray-900 mb-3">{{ $defaultHeading }}</h2>
     <div class="text-sm text-gray-600 leading-relaxed">{!! $topDescription !!}</div>
     </div>
     @endif
-
 @endunless
-
-
-
-
  @if($noidaIndex && $cityName =='noida')
  
-    {{-- Top Description --}}
+  
     @if(!empty($noidatopDescription))
     <div class="bg-white rounded-2xl p-6 mt-4 mx-4">
     @php
     $noidadefaultHeading = '';
-
     if (!empty($kwData['noida_top_heading'])) {
         $noidadefaultHeading=  $kwData['noida_top_heading'];
     }else{
      $noidadefaultHeading = 'Trusted '. $keyword . ' in ' . ucwords(strtolower(str_replace('-', ' ', $city)));
     }    
     @endphp
-
     <h2 class="text-lg font-bold text-gray-900 mb-3">{{ $noidadefaultHeading }}</h2>
     <div class="text-sm text-gray-600 leading-relaxed">{!! $noidatopDescription !!}</div>
     </div>
@@ -1046,12 +949,9 @@ function bannerSlider(banners, interval = 4000) {
     </style>
 
 
- @unless($hasCuratedContent)
-    {{-- Bottom Description --}}
+ @unless($hasCuratedContent)    
     @if(!empty($bottomDescription))
-
-
-     @php
+    @php
     $bottom_heading = '';
 
     if (!empty($kwData['bottom_heading'])) {
@@ -1069,12 +969,8 @@ function bannerSlider(banners, interval = 4000) {
     @endunless
     
  @if($delhiIndex && $cityName =='delhi')
-  
-    {{-- Bottom Description --}}
     @if(!empty($delhibottomDescription))
-
-
-     @php
+    @php
     $delhibottom_heading = '';
 
     if (!empty($kwData['delhi_bottom_heading'])) {
@@ -1090,12 +986,8 @@ function bannerSlider(banners, interval = 4000) {
     </div>
     @endif
     @endif
-
- 
-
-
   @unless($hasCuratedContent)
-    {{-- extra_description --}}
+    
     @if(!empty($kwData['extra_description']))
      @php
     $extra_heading = '';
@@ -4236,14 +4128,7 @@ There is no definite fee for Microsoft Azure training in Noida because the fees 
             </div>
         </div>
     </div>
-    @endif
-
-    {{-- Other Cities --}}
- 
- 
-    {{-- Related Services --}}
- 
-   
+    @endif     
 </div>
 
 <script>
@@ -4259,14 +4144,13 @@ function listingPage() {
         GstOnly: false,
         showFilters: true,
         filteredCount: {{ count(collect($businesses)->flatten(1)->all()) }},
-        _originalOrder: [], // stores original DOM order per card id, for "Best Match"
+        _originalOrder: [], 
 
         get activeFilterCount() {
             return [this.verifiedOnly, this.GstOnly, this.minRating > 0].filter(Boolean).length;
         },
 
-        init() {
-            // Remember the original render order so "Best Match" can restore it
+        init() {            
             this._originalOrder = Array.from(document.querySelectorAll('.business-card'));
             this.applyFilters();
         },
@@ -4287,8 +4171,7 @@ function listingPage() {
 
             return matchSearch && matchCat && matchRating && matchVerified && matchGst;
         },
-
-        // Comparator per dropdown option
+        
         getComparator() {
             switch (this.sortBy) {
                 case 'Highest Rated':
@@ -4305,16 +4188,12 @@ function listingPage() {
             }
         },
 
-        // Reorders cards in-place at their existing DOM "slots" so sponsored
-        // banners between chunks stay exactly where they are.
+        
         sortCards() {
             const cards = Array.from(document.querySelectorAll('.business-card'));
             if (!cards.length) return;
 
             const sorted = [...cards].sort(this.getComparator());
-
-            // Swap content in place using a detached fragment to avoid
-            // duplicate-node DOM errors during reordering.
             const placeholders = cards.map(c => {
                 const ph = document.createComment('slot');
                 c.replaceWith(ph);
@@ -4349,6 +4228,5 @@ function listingPage() {
         }
     }
 }
-</script>
- 
+</script> 
 @endsection

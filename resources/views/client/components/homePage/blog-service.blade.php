@@ -1,6 +1,3 @@
-{{-- ─────────────────────────────────────────
-    BLOG SECTION
-───────────────────────────────────────── --}}
 @if(!empty($blogPageList))
 <div class="py-10 bg-white border-t border-gray-100">
     <div class="max-w-7xl mx-auto px-4">
