@@ -1136,17 +1136,7 @@ function selectCert(i) {
     @endforeach
 </div>
                         
-                        <!-- <div class="flex flex-wrap gap-2">
-                            @foreach([
-                                ['📸', $clientsList['social']['instagram_url'] ?? '#', 'linear-gradient(135deg,#f43f5e,#a855f7,#f59e0b)'],
-                                ['👥', $clientsList['social']['facebook_url']  ?? '#', '#1877f2'],
-                                ['💬', 'https://wa.me/917559435943',                   '#25d366'],
-                            ] as [$icon,$href,$bg])
-                            <a href="{{ $href }}" target="_blank"
-                               class="w-9 h-9 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-                               style="background:{{ $bg }};color:#fff;">{{ $icon }}</a>
-                            @endforeach
-                        </div> -->
+                        
                     </div>
                     <a href="{{ $googleMapUrl }}" target="_blank" rel="nofollow noopener noreferrer"
                        class="flex items-center justify-center gap-2 text-xs font-bold rounded-xl py-2.5 text-white hover:opacity-90 transition-opacity"

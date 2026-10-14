@@ -1398,7 +1398,7 @@ class HomePageController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * 
 	 * @return \Illuminate\Http\Response
 	 */
 	public function searchUser(Request $request)
@@ -1419,30 +1419,7 @@ class HomePageController extends Controller
 		}
 	}
 
-	/*
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function searchKWcc(Request $request)
-	{
-		header("Access-Control-Allow-Origin: *");
-		header('Access-Control-Allow-Credentials: true');
-		if ($request->wantsJson()) {
-			$query = DB::table('keyword')
-				->select('keyword.keyword', 'keyword.slug', 'keyword.id');
-			$str = '';
-			if ($request->input('q') != "") {
-				$str = trim($request->input('q'));
-				$query = $query->orWhere('keyword.keyword', 'LIKE', '%' . $str . '%');
-				$query = $query->orderBy(DB::raw("CASE WHEN keyword.keyword LIKE '" . $str . "%' THEN 1 ELSE 2 END"));
-
-				$query = $query->distinct()->get();
-			}
-			return response()->json(['status' => 1, 'areas' => $query]);
-		}
-	}
+	 
 
 
 	/*
@@ -2330,8 +2307,7 @@ $reviews =  [
 				$query = $query->orderBy(DB::raw("CASE WHEN keyword.keyword LIKE '" . $str . "%' THEN 1 ELSE 2 END"));
 
 				$query = $query->distinct()->get();
-			}
-			 
+			}		 
 		
 		return response()->json([
 			'status' => true,

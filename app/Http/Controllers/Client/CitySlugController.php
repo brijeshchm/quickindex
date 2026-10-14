@@ -871,7 +871,7 @@ $reviewList = DB::table('clients')
 		return Cache::remember("city_exists_{$citySlug}", 3600, function () use ($citySlug) {
 			return DB::table('citylists')
 				->where(function ($query) use ($citySlug) {
-					$query->where('city_slug', $citySlug)          // Exact match
+					$query->where('city', $citySlug)          // Exact match
 						->orWhere('city_slug', 'LIKE', "%{$citySlug}%"); // Partial match
 				})
 				->exists();
@@ -1613,14 +1613,18 @@ $reviewList = DB::table('clients')
      */
     private function fetchCityData(string $city=null)
     {
+       
+
+		return Cache::remember('api:cityList:' . ($city ?? 'all'), now()->addHours(6), function () use ($city) {
         try {
-             $response = Http::timeout(5)
-               ->withoutVerifying()->get('https://api.quickdials.com/api/website/getCityList', ['city' => $city]);
- 
-            return $response->successful() ? $response->json() : null;
+            $r = Http::timeout(3)->get('https://api.quickdials.com/api/website/getCityList', ['city' => $city]);
+            return $r->successful() ? $r->json() : null;
         } catch (\Throwable $e) {
             return null;
         }
+    	});
+
+	
     }
      
 
@@ -2545,10 +2549,14 @@ $reviewList = DB::table('clients')
  
 		 
 
+		  $responseZones = $this->fetchCityData($city);
+       
+        $zones     = $responseZones['data'] ?? [];
+
         return view('client.client-detail', compact(
         
             'slug', 'clientsList', 'keywordList','certificate','metaTitle','metaKeywords','metaDescription','keyword',
-            'comment', 'areaBusiness', 'overviewBusiness','faqs',
+            'comment', 'areaBusiness','zones', 'overviewBusiness','faqs',
             'relatedList', 'gallery', 'hImages', 'vImages',
             'assignKeyword', 'certifications', 'govDocs', 'reviews',
             'gradients', 'bgColors', 'iconColors', 'planOptions',
@@ -3465,7 +3473,8 @@ abort(410);
 						'service_slug' => $slugUrl,
 					], 301);
 				}
-				return redirect()->route('home');
+				abort(410);  
+				//return redirect()->route('home');
 		}
 		
 		 

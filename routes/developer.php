@@ -39,7 +39,7 @@ Route::get('/cities/getajaxcities',[App\Http\Controllers\CitiesController::class
 Route::post('/city/getAjaxCity',[App\Http\Controllers\CitiesController::class, 'getAjaxCity']);
 Route::post('/zone/getAjaxZone',[App\Http\Controllers\CitiesController::class, 'getAjaxZone']);
 
-Route::get('/kw/search/cc', [App\Http\Controllers\Client\HomePageController::class, 'searchKWcc']);
+// Route::get('/kw/search/cc', [App\Http\Controllers\Client\HomePageController::class, 'searchKWcc']);
 
 Route::get('/register',[App\Http\Controllers\userController::class, 'getRegister']);
 Route::post('/saveRegister',[App\Http\Controllers\userController::class, 'postRegister']);

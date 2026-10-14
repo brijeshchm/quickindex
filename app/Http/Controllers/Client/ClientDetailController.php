@@ -319,53 +319,9 @@ class ClientDetailController extends Controller
 		return array_unique($result);
 	}
 
-     /**
-     * Handle  GET /{city}/{slug}
-     */
-    public function businessDetails(Request $request)
-    {
-               
-   
-        $response = $this->getBusinessList();
-
-        $data = $response['data'] ?? [];
-        // ── Keyword / meta ─────────────────────────────────────────────────
-      
-        // ── Businesses ─────────────────────────────────────────────────────
-        $rawList    = $data['agents'] ?? [];
-      
-        $businesses = collect($rawList)
-            ->map(fn ($b, $i) => $this->normalizeBusiness($b, $i))
-            ->all();
  
-        $businessOwners = $this->businessOwnersData();
 
-        $growthBusiness = $businessOwners['data']['businessOwners'] ?? [];
-
-        // ── Chunk businesses for ad insertion every 5 ─────────────────────
-        $businessChunks = array_chunk($businesses, 5);
-
-        $city = "";
-
-        $responseZones = $this->fetchCityData();
-        $zones     = $responseZones['data'] ?? [];
-
-
-
-         return view('client.businessdetails', compact(
-            'city', 'zones','growthBusiness',
-         
-            'businesses', 'businessChunks',
-            
-        ) + [
-            'metaTitle'       => "QuickDials - India’s Trusted Local Business Search Engine.",
-            'metaDescription' => "QuickDials is India’s leading local business search engine to discover top-rated IT training institutes, hotels, salons, healthcare services, real estate, travel agencies, schools, colleges, and more near you. Find verified business listings, addresses, phone numbers, reviews, ratings, photos, and maps across India.",
-            'metaKeywords'    => "QuickDials, local business directory India, business listing website, IT training institutes near me, coaching centres near me, hotels near me, salons near me, healthcare services, real estate services, travel agencies, schools and colleges near me, certified institutes, education consultants, online business directory, local search engine India, top businesses near me, business reviews and ratings.",
-        ]);
-    }
-
-
-      /**
+    /**
      * Fetch data from the QuickDials API.
      */
     private function businessOwnersData(): ?array
@@ -385,14 +341,14 @@ class ClientDetailController extends Controller
      */
     private function fetchCityData(string $city=null)
     {
+        return Cache::remember('api:cityList:' . ($city ?? 'all'), now()->addHours(6), function () use ($city) {
         try {
-             $response = Http::timeout(5)
-               ->withoutVerifying()->get('https://api.quickdials.com/api/website/getCityList', ['city' => $city]);
- 
-            return $response->successful() ? $response->json() : null;
+            $r = Http::timeout(3)->get('https://api.quickdials.com/api/website/getCityList', ['city' => $city]);
+            return $r->successful() ? $r->json() : null;
         } catch (\Throwable $e) {
             return null;
         }
+    	});
     }
 
 

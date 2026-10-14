@@ -1,3 +1,4 @@
+{{-- Requires in layout <head>: <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 <style>
 .step-dot { width:1.75rem;height:1.75rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;transition:all .3s; }
 .step-dot.done    { background:white;color:#2563eb; }
@@ -6,6 +7,7 @@
 .step-line { flex:1;height:2px;margin:.875rem .375rem;border-radius:9999px;transition:background .5s; }
 .ef-input { width:100%;padding:.625rem 1rem .625rem 2.25rem;border-radius:.75rem;border:1.5px solid rgba(37,99,235,.18);background:rgba(37,99,235,.04);font-size:.875rem;outline:none;color:#1e3a8a;transition:all .2s; }
 .ef-input:focus { border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.1);background:white; }
+.ef-input.border-red-500 { border-color:#ef4444; }
 select.ef-input { padding-left:1rem; }
 
 /* ── Country Code Picker ── */
@@ -38,50 +40,44 @@ select.ef-input { padding-left:1rem; }
 .phone-row .cc-wrapper { align-self:stretch; }
 .phone-row .cc-trigger { height:100%; }
 .phone-input-wrap { flex:1;position:relative; }
-
-/* OTP */
-.otp-box { width:2.75rem;height:3.5rem;text-align:center;font-size:1.25rem;font-weight:900;border-radius:.75rem;border:1.5px solid rgba(37,99,235,.2);background:rgba(37,99,235,.02);color:#1d4ed8;outline:none;transition:all .2s; }
-.otp-box.filled { border-color:#2563eb;background:rgba(37,99,235,.07);box-shadow:0 0 0 4px rgba(37,99,235,.1); }
 </style>
 
-<div data-all-enquiry-form class="rounded-2xl border overflow-y-auto" style="border-color:rgba(59,130,246,.15);">
+<div data-all-enquiry-form class="rounded-2xl border overflow-visible" style="border-color:rgba(59,130,246,.15);">
 
     {{-- Header --}}
-    <div class="px-6 py-5" style="background:linear-gradient(135deg,#2563EB 0%,#0891b2 100%);">
+    <div class="px-6 py-5 rounded-t-2xl" style="background:linear-gradient(135deg,#2563EB 0%,#0891b2 100%);">
         <div class="flex items-center justify-between mb-4">
             <h3 class="font-bold text-white text-lg">Make an Enquiry</h3>
-          
         </div>
+
         {{-- Step indicators --}}
         <div class="flex items-center gap-0">
-            @foreach(['Contact','Details','Message','Verify'] as $si => $label)
-            <div class="flex items-center flex-1 last:flex-none">
-                <div class="flex flex-col items-center gap-1">
-                    <div class="step-dot {{ $si===0?'active':'pending' }}" data-dot="{{ $si+1 }}">{{ $si+1 }}</div>
-                    <span class="text-[9px] font-semibold {{ $si===0?'text-white':'text-white/50' }}">{{ $label }}</span>
+            @foreach(['Contact','Details','Message'] as $si => $label)
+                <div class="flex items-center flex-1 last:flex-none">
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="step-dot {{ $si===0?'active':'pending' }}" data-dot="{{ $si }}">{{ $si }}</div>
+                        <span class="text-[9px] font-semibold {{ $si===0?'text-white':'text-white/50' }}">{{ $label }}</span>
+                    </div>
+                    @if($si < 3)
+                    <div class="step-line" data-line="{{ $si }}"></div>
+                    @endif
                 </div>
-                @if($si < 3)
-                <div class="step-line" data-line="{{ $si+1 }}"></div>
-                @endif
-            </div>
-            @endforeach
+                @endforeach
         </div>
     </div>
 
     {{-- Body --}}
-    <div class="bg-white px-6 py-5">
+    <div class="bg-white px-6 py-5 rounded-b-2xl">
 
         {{-- ── STEP 1 ── --}}
-        <div data-step="1">
+        <div data-step="0">
             <p class="text-sm font-semibold text-gray-500 mb-4">Step 1 — Your contact details</p>
             <div class="space-y-3">
 
                 {{-- Hidden tracking --}}
                 <input type="hidden" name="lead_form" value="1">
-                
                 <input type="hidden" name="city_id"   class="city" value="">
                 <input type="hidden" name="from_page" value="{{ request()->path() }}">
-                
                 <input type="hidden" name="country_code" id="ef-country-code" value="91">
 
                 {{-- Name --}}
@@ -93,15 +89,15 @@ select.ef-input { padding-left:1rem; }
                     </div>
                 </div>
 
-                 <div>
+                {{-- Phone --}}
+                <div>
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Mobile Number *</label>
                     <div class="phone-row">
 
                         {{-- Country Code Picker --}}
                         <div class="cc-wrapper" id="cc-wrapper">
                             <button type="button" class="cc-trigger" id="cc-trigger" aria-haspopup="listbox">
-                                <img id="cc-flag" src="https://flagcdn.com/w40/in.png" alt="IN"
-                                    >
+                                <img id="cc-flag" src="https://flagcdn.com/w40/in.png" alt="IN">
                                 <span id="cc-label">+91</span>
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -109,31 +105,31 @@ select.ef-input { padding-left:1rem; }
                             </button>
 
                             <div class="cc-dropdown" id="cc-dropdown" role="listbox">
-                                {{-- Search --}}
                                 <div class="cc-search-wrap" style="position:relative;">
                                     <svg class="cc-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/>
                                     </svg>
-                                    <input type="text" id="cc-search" class="cc-search" placeholder="Search country or code…" autocomplete="off" validated>
+                                    {{-- NOTE: no `validated` attribute here --}}
+                                    <input type="text" id="cc-search" class="cc-search" placeholder="Search country or code…" autocomplete="off">
                                 </div>
-                                {{-- List --}}
                                 <div class="cc-list" id="cc-list"></div>
                             </div>
                         </div>
 
                         {{-- Phone input --}}
                         <div class="phone-input-wrap">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style="z-index:1;"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
-                    <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"/>
-                </svg></span>
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style="z-index:1;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
+                                    <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"/>
+                                </svg>
+                            </span>
                             <input type="tel" name="phone" placeholder="Enter phone number"
                                    class="ef-input" style="padding-left:2.25rem;" maxlength="16" validated>
                         </div>
                     </div>
                 </div>
 
-                
                 {{-- Email --}}
                 <div>
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Email Address *</label>
@@ -143,80 +139,80 @@ select.ef-input { padding-left:1rem; }
                     </div>
                 </div>
 
-                
-               
-
-                <button data-next class="w-full py-3 mt-2 rounded-xl font-bold text-white text-sm"
+                <button type="button" data-next class="w-full py-3 mt-2 rounded-xl font-bold text-white text-sm disabled:opacity-60"
                         style="background:#2563eb;">Continue →</button>
             </div>
         </div>
 
-        
-         {{-- ── STEP 2 ── --}}
-<div data-step="2" class="hidden">
-    <p class="text-sm font-semibold text-gray-500 mb-4">Step 2 — Booking details</p>
-    <div class="space-y-3">
-
-        {{-- Location --}}
-        @include('client.layouts.location-search', ['mode' => 'vanilla', 'label' => 'Location', 'validated' => true])
-
-        {{-- Age Range --}}
-        <div>
-            <label class="text-xs font-semibold text-gray-500 mb-1 block">Age Range</label>
-            <select name="age" id="ef-age" class="ef-input" style="padding-left:1rem;">
-                <option value="">Select Age Range</option>
-                @foreach(['Under 20','20 – 24','25 – 29','30 – 34','35 – 39','40 – 44','45 – 49','50 – 54','55 – 59','60+'] as $age)
-                <option value="{{ $age }}" {{ $age === '25 – 29' ? 'selected' : '' }}>
-                    {{ $age }}
-                </option>
-                @endforeach
-            </select>
-            <p id="err-age" class="text-xs text-red-500 mt-1 hidden"></p>
-        </div>
-
-        {{-- When to Start --}}
-        <div>
-            <label class="text-xs font-semibold text-gray-500 mb-1 block">When do you want to Start?</label>
-            <select name="whenToStart" id="ef-plan" class="ef-input" style="padding-left:1rem;">
-                @foreach(['Immediately','Within 1 Week','Within 1 Month','Within 3 Months','Within 6 Months','Just Exploring'] as $timeline)
-                <option value="{{ $timeline }}" {{ $timeline === 'Immediately' ? 'selected' : '' }}>
-                    {{ $timeline }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="flex gap-2 mt-2">
-            <button data-back class="flex-1 py-2.5 rounded-xl font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 text-sm">← Back</button>
-            <button data-next class="flex-1 py-2.5 rounded-xl font-semibold text-white text-sm" style="background:#2563eb;">Continue →</button>
-        </div>
-    </div>
-</div>
-        {{-- ── STEP 3 ── --}}
-        <div data-step="3" class="hidden">
-
-
-            <p class="text-sm font-semibold text-gray-500 mb-4">Step 3 — Additional message</p>
-
+        {{-- ── STEP 1 ── --}}
+        <div data-step="1" class="hidden">
+            <p class="text-sm font-semibold text-gray-500 mb-4">Step 2 — Booking details</p>
             <div class="space-y-3">
-{{-- Service search in Step 3 --}}
-<div>
-    <label class="text-xs font-semibold text-gray-500 mb-1 block">Service *</label>
-    <div class="relative" style="position:relative;">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">🔍</span>
-        <input type="text"
-               id="side-service-input"
-               placeholder="Search service…"
-               autocomplete="off"
-               class="ef-input">
-        <input type="hidden" id="side-kw_text-id" name="kw_text">
-        <div id="side-kw_text-dropdown"
-             class="hidden absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
-            <div id="side-kw_text-list"></div>
+
+                {{-- Location --}}
+                <div>
+                    <label class="text-xs font-semibold text-gray-500 mb-1 block">Location *</label>
+                    <div class="relative" id="pf-city-wrapper">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">📍</span>
+                        <input type="text" id="pf-city-input" name="location"
+                               placeholder="Search city…" autocomplete="off"
+                               class="ef-input" validated>
+                        <input type="hidden" id="pf-city-id" name="location_id">
+                        <div id="pf-city-dropdown"
+                             class="hidden absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                            <div id="pf-city-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Age Range --}}
+                <div>
+                    <label class="text-xs font-semibold text-gray-500 mb-1 block">Age Range</label>
+                    <select name="age" id="ef-age" class="ef-input">
+                        <option value="">Select Age Range</option>
+                        @foreach(['Under 20','20 – 24','25 – 29','30 – 34','35 – 39','40 – 44','45 – 49','50 – 54','55 – 59','60+'] as $age)
+                        <option value="{{ $age }}" {{ $age === '25 – 29' ? 'selected' : '' }}>{{ $age }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- When to Start --}}
+                <div>
+                    <label class="text-xs font-semibold text-gray-500 mb-1 block">When do you want to Start?</label>
+                    <select name="whenToStart" id="ef-plan" class="ef-input">
+                        @foreach(['Immediately','Within 1 Week','Within 1 Month','Within 3 Months','Within 6 Months','Just Exploring'] as $timeline)
+                        <option value="{{ $timeline }}" {{ $timeline === 'Immediately' ? 'selected' : '' }}>{{ $timeline }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex gap-2 mt-2">
+                    <button type="button" data-back class="flex-1 py-2.5 rounded-xl font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 text-sm">← Back</button>
+                    <button type="button" data-next class="flex-1 py-2.5 rounded-xl font-semibold text-white text-sm disabled:opacity-60" style="background:#2563eb;">Continue →</button>
+                </div>
+            </div>
         </div>
-    </div>
-    <p id="err-service" class="text-xs text-red-500 mt-1 hidden"></p>
-</div>
+
+        {{-- ── STEP 2 ── --}}
+        <div data-step="2" class="hidden">
+            <p class="text-sm font-semibold text-gray-500 mb-4">Step 3 — Additional message</p>
+            <div class="space-y-3">
+
+                {{-- Service search --}}
+                <div>
+                    <label class="text-xs font-semibold text-gray-500 mb-1 block">Service *</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">🔍</span>
+                        <input type="text" id="side-service-input"
+                               placeholder="Search service…" autocomplete="off"
+                               class="ef-input" validated>
+                        <input type="hidden" id="side-kw_text-id" name="kw_text">
+                        <div id="side-kw_text-dropdown"
+                             class="hidden absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+                            <div id="side-kw_text-list"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <div>
                     <label class="text-xs font-semibold text-gray-500 mb-1 block">Message</label>
@@ -224,32 +220,12 @@ select.ef-input { padding-left:1rem; }
                               class="ef-input resize-none" style="padding-left:1rem;"></textarea>
                 </div>
 
-
-
                 <div class="flex gap-2 mt-2">
-                    <button data-back class="flex-1 py-2.5 rounded-xl font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 text-sm">← Back</button>
-                    <button data-send class="flex-1 py-2.5 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-1.5" style="background:#2563eb;">
+                    <button type="button" data-back class="flex-1 py-2.5 rounded-xl font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 text-sm">← Back</button>
+                    <button type="button" data-send class="flex-1 py-2.5 rounded-xl font-semibold text-white text-sm flex items-center justify-center gap-1.5 disabled:opacity-60" style="background:#2563eb;">
                         Send Enquiry ✓
                     </button>
                 </div>
-            </div>
-        </div>
-
-        {{-- ── STEP 4 — OTP ── --}}
-        <div data-step="4" class="hidden">
-            <div class="text-center mb-4">
-                <div class="w-10 h-10 mx-auto mb-2 rounded-full flex items-center justify-center text-xl" style="background:rgba(37,99,235,.08);">🔒</div>
-                <p class="text-sm font-bold text-gray-800">Verify your mobile</p>
-                <p class="text-xs text-gray-400 mt-0.5">OTP sent to your number</p>
-            </div>
-            <div class="flex gap-2 justify-center mb-4">
-                @for($o=0;$o<5;$o++)
-                <input type="text" inputmode="numeric" maxlength="1" class="otp-box">
-                @endfor
-            </div>
-            <div class="flex gap-2">
-                <button data-back   class="flex-1 py-2.5 rounded-xl font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 text-sm">← Back</button>
-                <button data-verify class="flex-1 py-2.5 rounded-xl font-semibold text-white text-sm" style="background:#2563eb;">Verify &amp; Submit</button>
             </div>
         </div>
 
@@ -260,14 +236,18 @@ select.ef-input { padding-left:1rem; }
                 <p class="font-bold text-gray-900 text-lg">Enquiry Sent!</p>
                 <p class="text-sm text-gray-400 mt-1">We'll get back to you within 24 hours.</p>
             </div>
-            <button onclick="location.reload()" class="px-5 py-2 rounded-full text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50">
+            <button type="button" onclick="location.reload()" class="px-5 py-2 rounded-full text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50">
                 New Enquiry
             </button>
         </div>
 
     </div>
 </div>
- 
+
+{{-- Countries list: pass $countries from your controller [{sortname, country_name, phonecode}] --}}
+<script>
+    const CC_COUNTRIES = @js($countries ?? [['sortname' => 'IN', 'country_name' => 'India', 'phonecode' => '91']]);
+</script>
 
 <script>
 /* ════════════════════════════════════════════════
@@ -293,21 +273,15 @@ select.ef-input { padding-left:1rem; }
         items.forEach(c => {
             const div = document.createElement('div');
             div.className = 'cc-item' + (
-                String(c.phonecode) === String(hiddenCode.value) &&
-                c.sortname === flagImg.alt ? ' active' : ''
+                String(c.phonecode) === String(hiddenCode.value) && c.sortname === flagImg.alt ? ' active' : ''
             );
             div.setAttribute('role', 'option');
             div.innerHTML = `
                 <img src="https://flagcdn.com/w40/${c.sortname.toLowerCase()}.png"
-                     alt="${c.sortname}"
-                     loading="lazy"
-                        decoding="async">
+                     alt="${c.sortname}" loading="lazy" decoding="async">
                 <span class="cc-name">${c.country_name}</span>
                 <span class="cc-code">+${c.phonecode}</span>`;
-            div.addEventListener('mousedown', e => {
-                e.preventDefault();
-                selectCountry(c);
-            });
+            div.addEventListener('mousedown', e => { e.preventDefault(); selectCountry(c); });
             list.appendChild(div);
         });
     }
@@ -318,7 +292,6 @@ select.ef-input { padding-left:1rem; }
         label.textContent = `+${c.phonecode}`;
         hiddenCode.value  = c.phonecode;
         closeDropdown();
-        renderList(CC_COUNTRIES);
     }
 
     function openDropdown() {
@@ -341,20 +314,17 @@ select.ef-input { padding-left:1rem; }
 
     searchInp.addEventListener('input', () => {
         const q = searchInp.value.toLowerCase().trim();
-        const filtered = !q ? CC_COUNTRIES : CC_COUNTRIES.filter(c =>
+        renderList(!q ? CC_COUNTRIES : CC_COUNTRIES.filter(c =>
             c.country_name.toLowerCase().includes(q) ||
             String(c.phonecode).includes(q) ||
             c.sortname.toLowerCase().includes(q)
-        );
-        renderList(filtered);
+        ));
     });
 
     document.addEventListener('click', e => {
         const wrapper = document.getElementById('cc-wrapper');
         if (wrapper && !wrapper.contains(e.target)) closeDropdown();
     });
-
-    renderList(CC_COUNTRIES);
 })();
 
 
@@ -364,24 +334,21 @@ select.ef-input { padding-left:1rem; }
    ════════════════════════════════════════════════ */
 (function initCitySearch() {
     const DEFAULT_ZONES = @js(collect($zones ?? [])->map(fn($z) => [
-        'id'   => is_array($z) ? ($z['id']          ?? null) : ($z->id          ?? null),
-        'name' => is_array($z) ? ($z['cityDetails']  ?? '')  : ($z->cityDetails  ?? ''),
+        'id'   => is_array($z) ? ($z['id']         ?? null) : ($z->id         ?? null),
+        'name' => is_array($z) ? ($z['cityDetails'] ?? '')  : ($z->cityDetails ?? ''),
     ])->filter(fn($z) => !empty($z['name']))->values()->all());
 
-    const input    = document.getElementById('ef-city-input');
-    const hidden   = document.getElementById('ef-city-id');
-    const dropdown = document.getElementById('ef-city-dropdown');
-    const listEl   = document.getElementById('ef-city-list');
-    const wrapper  = document.getElementById('ef-city-wrapper');
+    const input    = document.getElementById('pf-city-input');
+    const hidden   = document.getElementById('pf-city-id');
+    const dropdown = document.getElementById('pf-city-dropdown');
+    const listEl   = document.getElementById('pf-city-list');
+    const wrapper  = document.getElementById('pf-city-wrapper');
 
     if (!input) return;
 
-    let _timer       = null;
-    let _hasSearched = false;
-
+    let _timer = null;
     const csrf = () => document.querySelector('meta[name="csrf-token"]')?.content || '';
 
-    // ── Loading row ──
     function showLoading() {
         listEl.innerHTML = `
             <div class="px-3 py-2 text-xs text-gray-400 italic flex items-center gap-2">
@@ -404,13 +371,15 @@ select.ef-input { padding-left:1rem; }
             const btn = document.createElement('button');
             btn.type      = 'button';
             btn.className = 'w-full text-left px-3 py-2 text-xs hover:bg-blue-50 hover:text-blue-700 text-gray-700 flex items-center gap-2 cursor-pointer';
-            btn.innerHTML = `<span>🔍</span><span>${zone.name}</span>`;
+            btn.innerHTML = `<span>📍</span><span></span>`;
+            btn.lastElementChild.textContent = zone.name;   // textContent = no XSS
             btn.addEventListener('mousedown', e => {
                 e.preventDefault();
                 input.value  = zone.name;
                 hidden.value = zone.id || zone.name;
+                input.dispatchEvent(new Event('input', { bubbles: true })); // clears error
+                hidden.value = zone.id || zone.name;                         // re-set (input handler clears it)
                 dropdown.classList.add('hidden');
-                _hasSearched = false;
             });
             listEl.appendChild(btn);
         });
@@ -419,9 +388,7 @@ select.ef-input { padding-left:1rem; }
 
     function getFiltered(q) {
         if (!q) return DEFAULT_ZONES.slice(0, 30);
-        return DEFAULT_ZONES.filter(z =>
-            (z.name || '').toLowerCase().includes(q.toLowerCase())
-        ).slice(0, 30);
+        return DEFAULT_ZONES.filter(z => (z.name || '').toLowerCase().includes(q.toLowerCase())).slice(0, 30);
     }
 
     async function fetchCities(q) {
@@ -433,11 +400,9 @@ select.ef-input { padding-left:1rem; }
             const data = await res.json();
             const raw  = Array.isArray(data.data) ? data.data : Array.isArray(data) ? data : [];
             const mapped = raw.map(i => ({
-                id:   i.id          ?? null,
+                id:   i.id ?? null,
                 name: i.cityDetails ?? i.city ?? i.name ?? '',
             })).filter(c => c.name);
-
-            _hasSearched = true;
             renderList(mapped.length ? mapped : getFiltered(q));
         } catch {
             renderList(getFiltered(q));
@@ -445,24 +410,15 @@ select.ef-input { padding-left:1rem; }
     }
 
     input.addEventListener('focus', () => {
-        if (!input.value.trim()) {
-            _hasSearched = false;
-            renderList(DEFAULT_ZONES.slice(0, 30));
-        } else {
-            dropdown.classList.remove('hidden');
-        }
+        if (!input.value.trim()) renderList(DEFAULT_ZONES.slice(0, 30));
+        else dropdown.classList.remove('hidden');
     });
 
     input.addEventListener('input', () => {
         const q = input.value.trim();
-        hidden.value = '';
+        hidden.value = '';                 // typed text is not a selection
         clearTimeout(_timer);
-
-        if (q.length < 2) {
-            _hasSearched = false;
-            renderList(getFiltered(q));
-            return;
-        }
+        if (q.length < 2) { renderList(getFiltered(q)); return; }
         showLoading();
         _timer = setTimeout(() => fetchCities(q), 350);
     });
@@ -473,7 +429,9 @@ select.ef-input { padding-left:1rem; }
 })();
 
 
- 
+/* ════════════════════════════════════════════════
+   SERVICE SEARCH — /service/getAjaxKeyword
+   ════════════════════════════════════════════════ */
 (function initServiceSearch() {
     const input    = document.getElementById('side-service-input');
     const hidden   = document.getElementById('side-kw_text-id');
@@ -484,10 +442,6 @@ select.ef-input { padding-left:1rem; }
 
     let _timer = null;
     const csrf = () => document.querySelector('meta[name="csrf-token"]')?.content || '';
-
-    // ── Make dropdown position correctly ──
-    // The dropdown has `absolute` but parent needs `relative`
-    input.parentElement.style.position = 'relative';
 
     function showLoading() {
         listEl.innerHTML = `
@@ -511,14 +465,13 @@ select.ef-input { padding-left:1rem; }
             const btn = document.createElement('button');
             btn.type      = 'button';
             btn.className = 'w-full text-left px-3 py-2 text-xs hover:bg-blue-50 hover:text-blue-700 text-gray-700 flex items-center gap-2 cursor-pointer';
-            btn.innerHTML = `<span>🔍</span><span>${svc.label}</span>`;
+            btn.innerHTML = `<span>🔍</span><span></span>`;
+            btn.lastElementChild.textContent = svc.label;
             btn.addEventListener('mousedown', e => {
                 e.preventDefault();
-                input.value  = svc.label;
-                hidden.value = svc.value;
-                // Also update the main kw_text hidden input if it exists
-                const kwMain = document.querySelector('input[name="kw_text"]');
-                if (kwMain) kwMain.value = svc.value;
+                input.value = svc.label;
+                input.dispatchEvent(new Event('input', { bubbles: true })); // clears error + hidden
+                hidden.value = svc.value;                                    // set AFTER the clear
                 dropdown.classList.add('hidden');
             });
             listEl.appendChild(btn);
@@ -533,19 +486,13 @@ select.ef-input { padding-left:1rem; }
                 headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrf() }
             });
             const data = await res.json();
-
-            // Handle {keywords:[]} or {data:[]} or plain array
             const raw = Array.isArray(data.keywords) ? data.keywords
                       : Array.isArray(data.data)     ? data.data
-                      : Array.isArray(data)           ? data
-                      : [];
-
-            const mapped = raw.map(i => ({
+                      : Array.isArray(data)          ? data : [];
+            renderList(raw.map(i => ({
                 value: i.slug    ?? i.value ?? i.keyword ?? '',
                 label: i.keyword ?? i.label ?? i.name    ?? '',
-            })).filter(s => s.label);
-
-            renderList(mapped);
+            })).filter(s => s.label));
         } catch {
             listEl.innerHTML = '<div class="px-3 py-2 text-xs text-gray-400 italic">Error loading services</div>';
             dropdown.classList.remove('hidden');
@@ -554,190 +501,238 @@ select.ef-input { padding-left:1rem; }
 
     input.addEventListener('input', () => {
         const q = input.value.trim();
-        hidden.value = '';
+        hidden.value = '';                 // typed text is not a selection
         clearTimeout(_timer);
-
-        if (q.length < 2) {
-            dropdown.classList.add('hidden');
-            return;
-        }
+        if (q.length < 2) { dropdown.classList.add('hidden'); return; }
         showLoading();
         _timer = setTimeout(() => fetchServices(q), 350);
     });
 
     input.addEventListener('focus', () => {
-        if (input.value.trim().length >= 2) {
-            dropdown.classList.remove('hidden');
-        }
+        if (input.value.trim().length >= 2) dropdown.classList.remove('hidden');
     });
 
     document.addEventListener('click', e => {
-        if (!input.closest('div')?.contains(e.target)) {
-            dropdown.classList.add('hidden');
-        }
+        if (!input.parentElement.contains(e.target)) dropdown.classList.add('hidden');
     });
 })();
 
 
 /* ════════════════════════════════════════════════
-   MULTI-STEP FORM LOGIC
+   MULTI-STEP FORM LOGIC (server-validated)
+   ════════════════════════════════════════════════ */
+
+   /* ════════════════════════════════════════════════
+   MULTI-STEP FORM LOGIC (0-based steps, server-validated)
+   Steps: 0 = Contact, 1 = Details, 2 = Message
    ════════════════════════════════════════════════ */
 (function () {
-    document.querySelectorAll('[data-all-enquiry-form]').forEach(form => {
-        const steps    = form.querySelectorAll('[data-step]');
-        const dots     = form.querySelectorAll('[data-dot]');
-        const lines    = form.querySelectorAll('[data-line]');
-        const otpBoxes = form.querySelectorAll('.otp-box');
-        let current = 1;
+    const VALIDATE_URL = @js(route('form.validate.step'));
+    const SUBMIT_URL   = @js(url('/client/lead/saveEnquiry'));
 
+    const FIRST_STEP = 0;
+    const LAST_STEP  = 2;
+
+    // Server field name -> visible input that should show the error
+    const FIELD_TARGET = {
+        location_id:  '#pf-city-input',
+        kw_text:      '#side-service-input',
+        country_code: '[name="phone"]',
+    };
+
+    const csrf = () => document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+    const headers = () => ({
+        'X-CSRF-TOKEN': csrf(),
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+    });
+
+    document.querySelectorAll('[data-all-enquiry-form]').forEach(form => {
+        const steps = form.querySelectorAll('[data-step]');
+        const dots  = form.querySelectorAll('[data-dot]');
+        const lines = form.querySelectorAll('[data-line]');
+        let current = FIRST_STEP;
+
+        /* ── UI ── */
         const show = (n) => {
             current = n;
             steps.forEach(s => s.classList.toggle('hidden', +s.dataset.step !== n));
             dots.forEach(d => {
                 const dn = +d.dataset.dot;
-                d.className = 'step-dot ' + (dn < n ? 'done' : dn === n ? 'active' : 'pending');
-                d.textContent = dn < n ? '✓' : String(dn);
+                d.className   = 'step-dot ' + (dn < n ? 'done' : dn === n ? 'active' : 'pending');
+                d.textContent = dn < n ? '✓' : String(dn + 1);   // display is 1-based
             });
             lines.forEach(l => {
-                l.style.background = +l.dataset.line < n
-                    ? 'rgba(255,255,255,.7)'
-                    : 'rgba(255,255,255,.2)';
+                l.style.background = +l.dataset.line < n ? 'rgba(255,255,255,.7)' : 'rgba(255,255,255,.2)';
+            });
+            // Step labels under the dots
+            dots.forEach(d => {
+                const label = d.nextElementSibling;
+                if (!label) return;
+                const active = +d.dataset.dot <= n;
+                label.classList.toggle('text-white', active);
+                label.classList.toggle('text-white/50', !active);
             });
         };
 
-        const showError = (input, msg) => {
-            removeError(input);
+        /* ── Errors ── */
+        const removeError = (el) => {
+            el.classList.remove('border-red-500');
+            el._err?.remove();
+            el._err = null;
+        };
+
+        const showError = (el, msg) => {
+            removeError(el);
             const err = document.createElement('p');
-            err.className = 'error-msg text-xs text-red-500 mt-1';
+            err.className   = 'error-msg text-xs text-red-500 mt-1';
             err.textContent = msg;
-            input.closest('.relative, div')?.appendChild(err);
-            input.classList.add('border-red-500');
+            const host = el.closest('.phone-row')
+                      || (el.parentElement.classList.contains('relative') ? el.parentElement : null);
+            (host || el).insertAdjacentElement('afterend', err);
+            el.classList.add('border-red-500');
+            el._err = err;
         };
 
-        const removeError = (input) => {
-            input.classList.remove('border-red-500');
-            input.closest('.relative, div')?.querySelector('.error-msg')?.remove();
+        const clearStepErrors = (scope) =>
+            scope.querySelectorAll('.border-red-500').forEach(removeError);
+
+        const findInput = (field) => form.querySelector(FIELD_TARGET[field] ?? `[name="${field}"]`);
+
+        // Returns the lowest step index that had an error (or null).
+        // NOTE: step 0 is falsy, so we compare against null explicitly.
+        const applyServerErrors = (errors = {}) => {
+            let firstStep = null;
+            Object.entries(errors).forEach(([field, msgs]) => {
+                const el = findInput(field);
+                if (!el) return;
+                showError(el, msgs[0]);
+                const raw    = el.closest('[data-step]')?.dataset.step;
+                const stepNo = raw === undefined ? null : +raw;
+                if (stepNo !== null && (firstStep === null || stepNo < firstStep)) firstStep = stepNo;
+            });
+            return firstStep;
         };
 
-        const validateStep = (n) => {
+        /* ── Client-side quick check (saves a round trip) ── */
+        const quickCheck = (n) => {
             const stepEl = form.querySelector(`[data-step="${n}"]`);
-            let valid = true;
+            let ok = true;
 
-            stepEl.querySelectorAll('[validated]').forEach(input => {
-                removeError(input);
-                const val = input.value.trim();
-                if (!val) { showError(input, 'This field is required'); valid = false; return; }
-                if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-                    showError(input, 'Enter a valid email'); valid = false;
+            stepEl.querySelectorAll('[validated]').forEach(el => {
+                const val = el.value.trim();
+                if (!val) { showError(el, 'This field is required'); ok = false; return; }
+                if (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+                    showError(el, 'Enter a valid email'); ok = false; return;
                 }
-                if (input.type === 'tel' && !/^[0-9]{10,15}$/.test(val.replace(/[\s+\-()]/g, ''))) {
-                    showError(input, 'Enter a valid 10-digit number'); valid = false;
+                if (el.type === 'tel' && !/^\d{6,15}$/.test(val.replace(/[\s+\-()]/g, ''))) {
+                    showError(el, 'Enter a valid phone number'); ok = false;
                 }
             });
 
-            // ✅ Step 2: validate city
+            // Must pick from the dropdown, not just type
+            if (n === 1) {
+                const city = form.querySelector('#pf-city-input');
+                if (city.value.trim() && !form.querySelector('#pf-city-id').value) {
+                    showError(city, 'Please select a city from the list'); ok = false;
+                }
+            }
             if (n === 2) {
-                const cityInput = document.getElementById('ef-city-input');
-                if (cityInput && !cityInput.value.trim()) {
-                    showError(cityInput, 'Please enter your city');
-                    valid = false;
+                const svc = form.querySelector('#side-service-input');
+                if (svc.value.trim() && !form.querySelector('#side-kw_text-id').value) {
+                    showError(svc, 'Please select a service from the list'); ok = false;
                 }
             }
-
-            // ✅ Step 3: validate service
-            if (n === 3) {
-                const svcInput = document.getElementById('side-service-input');
-                if (svcInput && !svcInput.value.trim()) {
-                    showError(svcInput, 'Please select a service');
-                    valid = false;
-                }
-            }
-
-            return valid;
+            return ok;
         };
 
+        /* ── Server validation for one step ── */
+        const validateStep = async (n) => {
+            const stepEl = form.querySelector(`[data-step="${n}"]`);
+            console.log(stepEl);
+            clearStepErrors(stepEl);
+            if (!quickCheck(n)) return false;
+
+            const fd = new FormData();
+            fd.append('step', n);   // server rules are keyed 1..3
+            stepEl.querySelectorAll('input[name], select[name], textarea[name]')
+                  .forEach(el => fd.append(el.name, el.value));
+
+            try {
+                const res = await fetch(VALIDATE_URL, { method: 'POST', headers: headers(), body: fd });
+                if (res.status === 422) {
+                    applyServerErrors((await res.json()).errors);
+                    return false;
+                }
+                if (!res.ok) { alert('Something went wrong. Please try again.'); return false; }
+                return true;
+            } catch {
+                alert('Network error. Please check your connection.');
+                return false;
+            }
+        };
+
+        const withLoading = async (btn, label, fn) => {
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = label;
+            try { return await fn(); }
+            finally { btn.disabled = false; btn.innerHTML = orig; }
+        };
+
+        /* ── Next / Back ── */
         form.querySelectorAll('[data-next]').forEach(btn => {
-            btn.addEventListener('click', () => { if (validateStep(current)) show(current + 1); });
+            btn.addEventListener('click', () =>
+                withLoading(btn, 'Checking…', async () => {
+                    if (await validateStep(current)) show(Math.min(current + 1, LAST_STEP));
+                })
+            );
         });
 
         form.querySelectorAll('[data-back]').forEach(btn => {
-            btn.addEventListener('click', () => show(current - 1));
+            btn.addEventListener('click', () => show(Math.max(current - 1, FIRST_STEP)));
         });
 
-        form.querySelectorAll('[data-send]').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                const orig = btn.innerHTML;
-                btn.disabled = true;
-                btn.innerHTML = 'Sending…';
-
-                const fd = new FormData();
-                form.querySelectorAll('input, textarea, select').forEach(el => {
-                    if (el.name) fd.append(el.name, el.value);
-                });
-
-                try {
-                    const res  = await fetch('/client/lead/saveEnquiry', {
-                        method : 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
-                            'Accept':       'application/json',
-                        },
-                        body: fd,
-                    });
-                    const data = await res.json();
-
-                    if (data.success) {
-                        showSuccess();
-                    } else {
-                        if (data.errors) {
-                            Object.entries(data.errors).forEach(([field, msgs]) => {
-                                const inp = form.querySelector(`[name="${field}"]`);
-                                if (inp) showError(inp, msgs[0]);
-                            });
-                            if (data.errors.name || data.errors.email || data.errors.phone) show(1);
-                        }
-                        alert(data.message || 'Please fix the errors and try again.');
-                    }
-                } catch (err) {
-                    alert('Network error. Please check your connection.');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = orig;
-                }
-            });
-        });
-
+        /* ── Final submit ── */
         const showSuccess = () => {
             steps.forEach(s => s.classList.add('hidden'));
             form.querySelector('[data-success]')?.classList.remove('hidden');
         };
 
-        otpBoxes.forEach((box, i) => {
-            box.addEventListener('input', () => {
-                box.value = box.value.replace(/\D/g, '').slice(-1);
-                box.classList.toggle('filled', !!box.value);
-                if (box.value && i < otpBoxes.length - 1) otpBoxes[i + 1].focus();
-            });
-            box.addEventListener('keydown', e => {
-                if (e.key === 'Backspace' && !box.value && i > 0) otpBoxes[i - 1].focus();
-            });
+        form.querySelectorAll('[data-send]').forEach(btn => {
+            btn.addEventListener('click', () =>
+                withLoading(btn, 'Sending…', async () => {
+                    if (!(await validateStep(LAST_STEP))) return;
+
+                    const fd = new FormData();
+                    form.querySelectorAll('input[name], textarea[name], select[name]')
+                        .forEach(el => fd.append(el.name, el.value));
+
+                    try {
+                        const res  = await fetch(SUBMIT_URL, { method: 'POST', headers: headers(), body: fd });
+                        const data = await res.json().catch(() => ({}));
+
+                        if (res.ok && data.success) { showSuccess(); return; }
+
+                        if (res.status === 422 && data.errors) {
+                            const stepNo = applyServerErrors(data.errors);
+                            if (stepNo !== null) show(stepNo);   // jump to the step with the error
+                            return;
+                        }
+                        alert(data.message || 'Could not send enquiry. Please try again.');
+                    } catch {
+                        alert('Network error. Please check your connection.');
+                    }
+                })
+            );
         });
 
-        form.querySelectorAll('[data-verify]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const otp = Array.from(otpBoxes).map(b => b.value).join('');
-                if (otp.length < 5) { alert('Please enter complete OTP'); return; }
-                showSuccess();
-            });
-        });
-
+        /* ── Clear error as user types ── */
         form.querySelectorAll('input, textarea, select').forEach(el => {
             el.addEventListener('input', () => removeError(el));
         });
     });
 })();
-</script>
-
-
 
  
+</script>

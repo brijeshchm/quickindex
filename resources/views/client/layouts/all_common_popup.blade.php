@@ -65,7 +65,7 @@ select.ef-input { padding-left:1rem; }
 
         {{-- ── STEP 1 ── --}}
         <div data-step="1">
-            <p class="text-sm font-semibold text-gray-500 mb-4">Step 1 — Your contact details</p>
+            <p class="text-sm font-semibold text-gray-500 mb-4">Step 1 — Your contact details ss</p>
             <div class="space-y-3">
 
                 <input type="hidden" name="lead_form"    value="1">
