@@ -17,8 +17,6 @@
 
         @php
             $cityKeywordMap = [
-
-              
                 'noida' => [
                     'aws-training',
                     'cloud-computing-training',

@@ -7,8 +7,6 @@
 <div class="about-bg page-hearder-area">
     <div class="official-overly"></div> 
   </div>   
-  
-  
   <div id="faq" class="about-area area-padding">
      <div class="container">
       <div class="row">

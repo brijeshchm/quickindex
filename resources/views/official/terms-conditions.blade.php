@@ -9,7 +9,7 @@
 
         body { background: hsl(270 30% 98%); }
 
-        /* ── Glass card ── */
+     
         .glass-card {
             background: rgba(255,255,255,0.72);
             backdrop-filter: blur(16px);
@@ -117,10 +117,6 @@
 
  
  
-
-{{-- ══════════════════════════
-     DECORATIVE ORBS
-══════════════════════════ --}}
 <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
     <div class="orb-1 absolute top-20 right-[10%] w-96 h-96 rounded-full opacity-20"
          style="background:radial-gradient(circle,hsl(270 70% 75%),transparent 70%)"></div>
@@ -130,9 +126,6 @@
          style="background:radial-gradient(circle,hsl(250 70% 70%),transparent 70%)"></div>
 </div>
 
-{{-- ══════════════════════════
-     HERO
-══════════════════════════ --}}
 <div class="relative overflow-hidden"
      style="background:linear-gradient(135deg,hsl(270 50% 95%) 0%,hsl(290 60% 96%) 50%,hsl(250 45% 95%) 100%);border-bottom:1px solid rgba(139,92,246,.1)">
 
@@ -173,9 +166,6 @@
     </svg>
 </div>
 
-{{-- ══════════════════════════
-     MAIN CONTENT
-══════════════════════════ --}}
 <div class="max-w-6xl mx-auto px-6 py-12 relative z-10"
      x-data="termsPage()" x-init="init()">
 
@@ -458,9 +448,9 @@
                 </div>
             </div>
 
-        </div>{{-- /content --}}
-    </div>{{-- /flex --}}
-</div>{{-- /Alpine root --}}
+        </div>
+    </div>
+</div>
 
  
 
@@ -470,7 +460,7 @@ function termsPage() {
         active: 'terms',
 
         init() {
-            /* ── Scroll reveal ── */
+            
             const observer = new IntersectionObserver(
                 entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
                 { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
@@ -503,6 +493,4 @@ function termsPage() {
     };
 }
 </script>
-
- 
- @endsection
+@endsection

@@ -9,7 +9,6 @@
 @include('client.components.banner-section')
 @php
 
-// echo "<pre>";print_r($newsDetails['ratingvalue']);die;
 $starMap = [
     0 => 'star_1.png', 2 => 'star_2.png', 3 => 'star_3.png',
     3.5 => 'star_3.5.png', 4 => 'star_4.png', 4.5 => 'star_4.5.png',
@@ -18,7 +17,6 @@ $starMap = [
 
 $bgImage = $bgImage ?? '/computer-courses-training.jpg';
 
-// Calculate star image key
 $starKey = 0;
 foreach ($starMap as $k => $v) {
     if ($newsDetails['ratingvalue'] >= $k) $starKey = $k;
@@ -46,9 +44,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     border-radius: 0 2px 2px 0;
 }
 
-/* ══════════════════════════════════════════
-   TICKER
-══════════════════════════════════════════ */
 @keyframes ticker-scroll {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -61,9 +56,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 }
 @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
 
-/* ══════════════════════════════════════════
-   HERO TILT (replaces Framer Motion rotateX/Y)
-══════════════════════════════════════════ */
 #hero-card {
     transition: transform 0.12s ease, box-shadow 0.3s ease;
     transform-style: preserve-3d;
@@ -74,9 +66,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     box-shadow: 0 24px 60px rgba(37,99,235,0.18);
 }
 
-/* ══════════════════════════════════════════
-   REVEAL (IntersectionObserver)
-══════════════════════════════════════════ */
 .reveal {
     opacity: 0;
     transform: translateY(20px);
@@ -99,9 +88,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 }
 .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
-/* ══════════════════════════════════════════
-   ARTICLE PROSE
-══════════════════════════════════════════ */
+
 .prose-article { color: #374151; line-height: 1.8; font-size: 1.05rem; }
 .prose-article h1,.prose-article h2,.prose-article h3 { color: var(--primary); font-weight: 700; margin: 2rem 0 1rem; }
 .prose-article h2 { font-size: 1.35rem; }
@@ -117,9 +104,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 .prose-article td { padding: 0.6rem 0.8rem; border: 1px solid var(--border); }
 .prose-article blockquote { border-left: 4px solid var(--accent); padding-left: 1rem; color: var(--muted); font-style: italic; margin: 1.5rem 0; }
 
-/* ══════════════════════════════════════════
-   CARD GLOW
-══════════════════════════════════════════ */
+
 .card-glow {
     transition: box-shadow 0.3s ease;
 }
@@ -128,9 +113,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 0 0 0 1px rgba(37,99,235,0.07);
 }
 
-/* ══════════════════════════════════════════
-   FAQ ACCORDION
-══════════════════════════════════════════ */
+
 .faq-body {
     max-height: 0;
     overflow: hidden;
@@ -140,18 +123,13 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     max-height: 600px;
 }
 
-/* ══════════════════════════════════════════
-   BOOKMARK BUTTON
-══════════════════════════════════════════ */
 #bookmark-btn.saved {
     background: var(--accent);
     color: white;
     border-color: var(--accent);
 }
 
-/* ══════════════════════════════════════════
-   COPY LINK TOOLTIP
-══════════════════════════════════════════ */
+
 #copy-btn { position: relative; }
 #copy-tooltip {
     position: absolute;
@@ -170,9 +148,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 }
 #copy-tooltip.show { opacity: 1; }
 
-/* ══════════════════════════════════════════
-   TAG HOVER
-══════════════════════════════════════════ */
+
 .tag-chip {
     transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
                 background 0.2s, color 0.2s;
@@ -184,9 +160,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     border-color: var(--accent) !important;
 }
 
-/* ══════════════════════════════════════════
-   NEWSLETTER GRADIENT BG
-══════════════════════════════════════════ */
+
 .newsletter-bg {
     background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 60%, #0891b2 100%);
     position: relative;
@@ -207,22 +181,15 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     50%      { transform: scale(1.5); opacity: 0.28; }
 }
 
-/* ══════════════════════════════════════════
-   SCROLLBAR THIN (sidebar)
-══════════════════════════════════════════ */
+
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* ══════════════════════════════════════════
-   SIDEBAR RELATED ARTICLES HOVER
-══════════════════════════════════════════ */
 .related-item { transition: transform 0.2s ease; }
 .related-item:hover { transform: translateX(4px); }
 
-/* ══════════════════════════════════════════
-   IMAGE ZOOM
-══════════════════════════════════════════ */
+
 .img-zoom-wrap { overflow: hidden; }
 .img-zoom-wrap .img-inner {
     transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
@@ -233,15 +200,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 .related-item:hover .img-inner { transform: scale(1.05); }
 </style>
  
-
-{{-- ═══════════════════════════════
-     SCROLL PROGRESS BAR
-════════════════════════════════ --}}
 <div id="scroll-progress"></div>
 
-{{-- ═══════════════════════════════
-     BREADCRUMB
-════════════════════════════════ --}}
 <div class="bg-white border-b border-gray-200">
     <div class="container mx-auto px-4 lg:px-8 py-3 flex items-center gap-2 text-xs text-gray-400">
         <a href="{{ route('home') }}" class="hover:text-blue-600 transition-colors font-medium">Home</a>
@@ -258,9 +218,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </div>
 
-{{-- ═══════════════════════════════
-     LIVE TICKER
-════════════════════════════════ --}}
+
 @if(count($tickerItems))
 <div class="bg-blue-900 text-white overflow-hidden py-2 flex items-center gap-3 text-xs font-medium">
     <div class="shrink-0 flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1 rounded-sm font-bold uppercase tracking-widest ml-4">
@@ -287,18 +245,12 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 </div>
 @endif
 
-{{-- ═══════════════════════════════
-     MAIN CONTENT
-════════════════════════════════ --}}
 <main class="container mx-auto px-4 lg:px-8 py-10 lg:py-14">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-        {{-- ══════════════════════════════════════
-             ARTICLE — 8 cols
-        ══════════════════════════════════════ --}}
+        
         <article class="lg:col-span-8">
-
-            {{-- ── HERO IMAGE / TILT CARD ── --}}
+           
             <div id="hero-card"
                  class="reveal rounded-2xl overflow-hidden shadow-xl mb-8 card-glow">
                 <div class="w-full relative"
@@ -307,7 +259,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                                 ? 'background-image: url(' . e($newsDetails['newsImage']) . '); background-size: cover; background-position: center;'
                                 : 'background: linear-gradient(135deg,#1e3a5f 0%,#2563eb 50%,#0891b2 100%);' }}">
 
-                    {{-- Floating category initial --}}
+                   
                     @if(empty($newsDetails['newsImage']))
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white/20 font-black select-none leading-none"
@@ -330,7 +282,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 </div>
             </div>
 
-            {{-- ── TITLE & META ── --}}
+           
             <div class="reveal mb-8">
 
 
@@ -449,7 +401,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 </div>
             </div>
 
-            {{-- ── ABOUT News SECTION ── --}}
+          
             @if(!empty($newsDetails['heading']) && !empty($newsDetails['about_news']))
             <div class="reveal mb-8" >
                 <div class="border rounded-lg p-4 bg-white shadow-sm">
@@ -474,12 +426,9 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                     </section>
                 </div>
             </div>
-            @endif
-
-            {{-- ── ARTICLE BODY ── --}}
+            @endif            
             <div class="prose-article">
-
-                {{-- Section heading + description --}}
+             
                 @if(!empty($newsDetails['heading']))
                 <h2 class="reveal-x text-xl font-bold text-slate-900 mt-10 mb-4 flex items-center gap-3">
                     <span class="w-1 h-6 bg-blue-500 rounded-full inline-block shrink-0"></span>
@@ -516,7 +465,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 
             </div>
 
-            {{-- ── FAQ ── --}}
+            
             @if(count($faqs))
             <div class="reveal bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mt-8">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -568,14 +517,12 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 
         </article>
 
-        {{-- ══════════════════════════════════════
-             SIDEBAR — 4 cols
-        ══════════════════════════════════════ --}}
+       
         <aside class="lg:col-span-4">
             <div class="sticky top-6 space-y-6 max-h-[calc(500vh-2rem)]
                         overflow-y-auto pr-1 scrollbar-thin">
 
-                {{-- ── TABLE OF CONTENTS (newsList) ── --}}
+                
                 @if(!empty($categories))
                 <div class="reveal-right bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                     <h4 class="text-sm font-bold text-slate-900 mb-4 uppercase tracking-widest
@@ -730,7 +677,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 <script>
 (function () {
 
-    /* ── Scroll Progress Bar ── */
+    
     const bar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
         const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) || 0;

@@ -17,9 +17,6 @@
     border-radius: 0 2px 2px 0;
 }
 
-/* ══════════════════════════════════════════
-   TICKER
-══════════════════════════════════════════ */
 @keyframes ticker-scroll {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -34,9 +31,6 @@
     .ticker-track { animation: none; }
 }
 
-/* ══════════════════════════════════════════
-   CARD REVEAL (replaces Framer Motion)
-══════════════════════════════════════════ */
 .reveal-item {
     opacity: 0;
     transform: translateY(24px) scale(0.97);
@@ -54,7 +48,7 @@
 .reveal-item:nth-child(5) { transition-delay: 0.40s; }
 .reveal-item:nth-child(n+6) { transition-delay: 0.48s; }
 
-/* Sidebar reveal */
+
 .sidebar-reveal {
     opacity: 0;
     transform: translateX(-20px);
@@ -65,9 +59,6 @@
     transform: translateX(0);
 }
 
-/* ══════════════════════════════════════════
-   IMAGE ZOOM EFFECT
-══════════════════════════════════════════ */
 .image-zoom {
     transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
     background-size: cover;
@@ -77,9 +68,6 @@
     transform: scale(1.04);
 }
 
-/* ══════════════════════════════════════════
-   CARD GLOW BORDER
-══════════════════════════════════════════ */
 .card-glow {
     transition: box-shadow 0.35s ease, transform 0.25s ease;
 }
@@ -89,9 +77,7 @@
     transform: translateY(-3px);
 }
 
-/* ══════════════════════════════════════════
-   FEATURED HERO
-══════════════════════════════════════════ */
+
 .hero-card {
     transition: box-shadow 0.5s ease, transform 0.3s ease;
 }
@@ -100,9 +86,7 @@
     transform: scale(1.006);
 }
 
-/* ══════════════════════════════════════════
-   SHIMMER HEADING
-══════════════════════════════════════════ */
+
 .shimmer-heading {
     background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, var(--primary) 100%);
     background-size: 200% auto;
@@ -115,9 +99,7 @@
     to { background-position: 200% center; }
 }
 
-/* ══════════════════════════════════════════
-   SKELETON PULSE
-══════════════════════════════════════════ */
+
 .skeleton {
     background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
     background-size: 200% 100%;
@@ -129,9 +111,6 @@
     100% { background-position: -200% 0; }
 }
 
-/* ══════════════════════════════════════════
-   LOADING DOTS (replaces AnimatePresence spinner)
-══════════════════════════════════════════ */
 .dot-bounce {
     display: inline-block;
     width: 10px; height: 10px;
@@ -146,9 +125,7 @@
     50%      { transform: translateY(-10px); opacity: 1; }
 }
 
-/* ══════════════════════════════════════════
-   TAG HOVER SPRING
-══════════════════════════════════════════ */
+
 .tag-chip {
     display: inline-block;
     transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
@@ -161,16 +138,11 @@
     border-color: var(--accent) !important;
 }
 
-/* ══════════════════════════════════════════
-   SCROLLBAR THIN (sidebar)
-══════════════════════════════════════════ */
+
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* ══════════════════════════════════════════
-   POPULAR POSTS HOVER SLIDE
-══════════════════════════════════════════ */
 .popular-item {
     transition: transform 0.25s ease;
 }

@@ -12,15 +12,14 @@
       <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
           <div class="page-head-blog">
-            <div class="single-blog-page">
-      
+            <div class="single-blog-page">      
             </div>
             <div class="single-blog-page">
-              <!-- recent start -->
+              
               <div class="left-blog">
                 <h1>QuickDials RSS Feed – Latest Updates and News</h1>
                 <div class="recent-post">
-                  <!-- start single post -->
+                  
                        @if(!empty($blogrecents))
 					 @foreach($blogrecents as $blogrecent)
 						<?php 
@@ -50,8 +49,7 @@
             
           </div>
         </div>
-        <!-- End left sidebar -->
-        <!-- Start single blog -->
+       
         <div class="col-md-8 col-sm-8 col-xs-12">
           <div class="row">
                   <div class="single-blog-page">

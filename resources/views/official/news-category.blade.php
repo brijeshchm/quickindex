@@ -11,7 +11,7 @@
   
 <style>
     .view-btn.active {
-        background-color: #4f46e5;  /* indigo-600 */
+        background-color: #4f46e5;
         color: white;
         border-color: #4f46e5;
     }
@@ -21,9 +21,7 @@
 </style>
 <div class="min-h-screen bg-slate-50">
 
-    {{-- ════════════════════════════════
-         PAGE HEADER
-    ════════════════════════════════ --}}
+    
     <div class="bg-slate-900 text-white py-12">
         <div class="container mx-auto px-4">
             <div class="flex items-center gap-2 text-slate-400 text-sm mb-3">
@@ -36,14 +34,9 @@
             <h1 class="text-4xl font-bold mb-2">Explore Verified Services &amp; Experts</h1>
             <p class="text-slate-300 text-lg">High-quality services recognized and trusted across the globe</p>
         </div>
-    </div>
-
-    {{-- ════════════════════════════════
-         MAIN CONTENT
-    ════════════════════════════════ --}}
+    </div>   
     <div class="container mx-auto px-4 py-8">
-
-        {{-- Search + Controls --}}
+      
         <div class="flex flex-col md:flex-row gap-3 mb-6">
             <div class="relative flex-1">
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
@@ -96,12 +89,7 @@
             </div>
         </div>
 
-        <div class="flex gap-8" id="layout-wrap">
-
-            {{-- ── SIDEBAR FILTERS ── --}}
-             
-
-            {{-- ── COURSE LISTING ── --}}
+        <div class="flex gap-8" id="layout-wrap">             
             <div class="flex-1 min-w-0" id="course-area">
 
                 <div class="flex items-center justify-between mb-5">
@@ -110,8 +98,7 @@
                         courses found
                     </p>
                 </div>
-
-                {{-- GRID VIEW --}}
+            
                 <div id="grid-view"
                      class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                      @if($news)
@@ -124,7 +111,7 @@
                          data-rating="{{ $new['rating'] ?? 0 }}"
                          data-count="{{ $new['ratingcount'] ?? 0 }}">
                         <a href="{{ route('news.details', $new['slug']) }}" class="block h-full flex flex-col">
-                            {{-- Card image/header --}}
+                           
                             <div class="h-36 bg-gradient-to-br from-slate-100 to-indigo-50
                                         flex items-center justify-center p-5 relative overflow-hidden">
                                 <div class="card-bg-overlay"></div>
@@ -138,7 +125,7 @@
                                 </span>
                             </div>
 
-                            {{-- Card body --}}
+                         
                             <div class="p-4 flex-1 flex flex-col">
                                 <div class="flex justify-between items-center mb-2">
                                     <span class="text-sm font-medium text-slate-700 truncate">
@@ -187,10 +174,6 @@
                     </div>
                    @endif
                 </div>
-
-             
-
-                {{-- Empty state --}}
                 <div id="empty-state" class="hidden text-center py-16">
                     <p class="text-slate-500 text-lg font-medium">No new match your filters.</p>
                     <p class="text-slate-400 text-sm mt-2">Try adjusting your search or filters.</p>
@@ -199,28 +182,21 @@
             </div>
         </div>
     </div>
-</div>
-
- 
- 
- <script>
+</div> 
+<script>
 (function () {
-
-    /* ── IntersectionObserver reveals ── */
     const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
         });
     }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-    /* ── State ── */
+     
     let currentView   = 'grid';
     let selectedSlugs = new Set();
     let currentSort   = 'popular';
     let currentSearch = '';
-
-    /* ── DOM refs ── */
+   
     const searchInput = document.getElementById('course-search');
     const sortSelect  = document.getElementById('sort-select');
     const btnGrid     = document.getElementById('btn-grid');
@@ -238,9 +214,7 @@
     const allGridCards = Array.from(gridView.querySelectorAll('[data-title]'));
     // const allListCards = Array.from(listView.querySelectorAll('[data-title]'));
 
-    /* ────────────────────────────────────────────
-       VIEW SWITCHER  ← main fix
-       ──────────────────────────────────────────── */
+   
     function setView(view) {
         currentView = view;
 
@@ -262,22 +236,22 @@
     btnGrid.addEventListener('click', () => setView('grid'));
     btnList.addEventListener('click', () => setView('list'));
 
-    /* ── Mobile filter toggle ── */
+   
     btnFilters?.addEventListener('click', () => sidebar?.classList.toggle('open'));
 
-    /* ── Search ── */
+   
     searchInput.addEventListener('input', () => {
         currentSearch = searchInput.value.toLowerCase().trim();
         applyFilters();
     });
 
-    /* ── Sort ── */
+    
     sortSelect.addEventListener('change', () => {
         currentSort = sortSelect.value;
         applyFilters();
     });
 
-    /* ── Checkbox filters (safe: only if they exist) ── */
+    
     document.querySelectorAll('.child-filter').forEach(cb => {
         cb.addEventListener('change', () => {
             if (cb.checked) selectedSlugs.add(cb.value);
@@ -288,7 +262,7 @@
         });
     });
 
-    /* ── Clear filters (safe) ── */
+     
     btnClear?.addEventListener('click', () => {
         selectedSlugs.clear();
         document.querySelectorAll('.child-filter').forEach(cb => cb.checked = false);
@@ -296,7 +270,7 @@
         applyFilters();
     });
 
-    /* ── Core filter + sort ── */
+    
     function applyFilters() {
         const cards = currentView === 'grid' ? allGridCards : '';
 
@@ -315,14 +289,14 @@
             return matchSearch && matchCat;
         });
 
-        /* Sort */
+        
         visible.sort((a, b) => {
             if (currentSort === 'popular') return Number(b.dataset.count)  - Number(a.dataset.count);
             if (currentSort === 'rating')  return Number(b.dataset.rating) - Number(a.dataset.rating);
             return 0;
         });
 
-        /* Hide all, then show sorted visible ones */
+        
         cards.forEach(c => c.style.display = 'none');
         const parent = currentView === 'grid' ? gridView : listView;
 
@@ -330,16 +304,14 @@
             card.style.display = '';
             parent.appendChild(card);
         });
-
-        /* Empty state */
+ 
         emptyState.classList.toggle('hidden', visible.length > 0);
         resultCount.textContent = visible.length;
 
-        /* Re-observe for reveal */
+       
         visible.forEach(c => { c.classList.remove('visible'); io.observe(c); });
     }
-
-    /* Initial render */
+  
     applyFilters();
 
 })();

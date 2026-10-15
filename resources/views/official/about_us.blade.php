@@ -1,13 +1,9 @@
 @extends('client.layouts.app')
 @section('title', 'About QuickDials — Indias Trusted Service Marketplace & Lead Platform')
 @section('description', 'QuickDials connects 1M+ customers with verified businesses across IT, weddings, home services, healthcare, real estate, finance, travel & more. Get quality leads, real reviews, and direct customer connections')
-@section('keywords', 'About QuickDials, lead management software, service marketplace india, business listing, get business leads')
 @section('content')
 @include('client.components.banner-section')
 <style>
-/* ══════════════════════════════════════
-   GRADIENT TEXT
-══════════════════════════════════════ */
 .gradient-text {
     background: linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);
     -webkit-background-clip: text;
@@ -15,9 +11,7 @@
     background-clip: text;
 }
 
-/* ══════════════════════════════════════
-   SECTION DIVIDER LINE (animate scaleX)
-══════════════════════════════════════ */
+
 .section-line {
     flex:1; height:1px;
     background: linear-gradient(to right,#ddd6fe,transparent);
@@ -27,9 +21,7 @@
 }
 .section-line.visible { transform:scaleX(1); }
 
-/* ══════════════════════════════════════
-   GRID BACKGROUND LINES
-══════════════════════════════════════ */
+
 .bg-grid-lines {
     position:absolute;inset:0;pointer-events:none;overflow:hidden;
 }
@@ -38,9 +30,7 @@
     background:rgba(167,139,250,.2);
 }
 
-/* ══════════════════════════════════════
-   FLOATING ORBS
-══════════════════════════════════════ */
+
 .orb {
     position:absolute;border-radius:50%;
     filter:blur(80px);opacity:.12;pointer-events:none;
@@ -51,9 +41,7 @@
     50%      { transform:translate(30px,-25px) scale(1.2); }
 }
 
-/* ══════════════════════════════════════
-   REVEAL
-══════════════════════════════════════ */
+
 .reveal {
     opacity:0;transform:translateY(24px);
     transition:opacity .5s cubic-bezier(.22,1,.36,1),
@@ -68,7 +56,7 @@
 .reveal-scale { opacity:0;transform:scale(.9);transition:opacity .45s ease,transform .45s ease; }
 .reveal-scale.visible { opacity:1;transform:scale(1); }
 
-/* Stagger delay helpers */
+
 .d-0  { transition-delay:.00s; }
 .d-1  { transition-delay:.08s; }
 .d-2  { transition-delay:.16s; }
@@ -76,9 +64,7 @@
 .d-4  { transition-delay:.32s; }
 .d-5  { transition-delay:.40s; }
 
-/* ══════════════════════════════════════
-   CARDS
-══════════════════════════════════════ */
+
 .stat-card,.value-card,.team-card,.milestone-card {
     transition:transform .25s ease,box-shadow .25s ease;
 }
@@ -88,12 +74,10 @@
 .milestone-card   { transition:box-shadow .25s ease; }
 .milestone-card:hover { box-shadow:0 6px 24px rgba(0,0,0,.08); }
 
-/* team card heading colour on hover */
+
 .team-card:hover .team-name { color:#6d28d9; }
 
-/* ══════════════════════════════════════
-   TIMELINE
-══════════════════════════════════════ */
+
 .timeline-dot {
     width:1rem;height:1rem;border-radius:50%;flex-shrink:0;
     background:linear-gradient(135deg,#8b5cf6,#7c3aed);
@@ -102,29 +86,19 @@
     z-index:10;
 }
 
-/* ══════════════════════════════════════
-   CTA BUTTON HOVER
-══════════════════════════════════════ */
+
 .cta-btn-white { transition:transform .2s ease,box-shadow .2s ease; }
 .cta-btn-white:hover { transform:scale(1.04);box-shadow:0 12px 32px rgba(0,0,0,.15); }
 .cta-btn-ghost { transition:transform .2s ease,background .2s ease; }
 .cta-btn-ghost:hover { transform:scale(1.04);background:rgba(255,255,255,.2); }
 
-/* ══════════════════════════════════════
-   HERO CONTACT BUTTON
-══════════════════════════════════════ */
+
 .hero-cta { transition:transform .2s ease,box-shadow .2s ease; }
 .hero-cta:hover { transform:scale(1.04);box-shadow:0 10px 28px rgba(139,92,246,.4); }
 </style>
- 
-
- 
 
 <div class="flex flex-col w-full min-h-screen bg-slate-50 font-sans">
-
-    {{-- ════════════════════════════════════════
-         VERTICAL GRID LINES (background)
-    ════════════════════════════════════════ --}}
+    
     <div class="bg-grid-lines" aria-hidden="true">
         @for($i = 0; $i < 40; $i++)
         <span style="left:{{ ($i / 39) * 100 }}%"></span>
@@ -134,10 +108,7 @@
     <main>
 
         <div class="relative z-10 max-w-7xl mx-auto px-6">
-
-            {{-- ════════════════════════════════
-                 HERO
-            ════════════════════════════════ --}}
+          
             <section class="pt-10 pb-16">
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">
 
@@ -181,8 +152,7 @@
                         </a>
                     </div>
                 </div>
-
-                {{-- STATS GRID --}}
+               
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     @php
                     $stats = [
@@ -207,10 +177,7 @@
                     @endforeach
                 </div>
             </section>
-
-            {{-- ════════════════════════════════
-                 MISSION
-            ════════════════════════════════ --}}
+           
             <section class="pb-16">
                 <div class="relative overflow-hidden rounded-3xl border border-violet-200
                             bg-gradient-to-br from-violet-50 to-purple-50 p-8 sm:p-12">
@@ -233,10 +200,7 @@
                     </div>
                 </div>
             </section>
-
-            {{-- ════════════════════════════════
-                 USP'S
-            ════════════════════════════════ --}}
+           
             <section class="pb-16">
                 <div class="relative overflow-hidden rounded-3xl border border-violet-200
                             bg-gradient-to-br from-violet-50 to-purple-50 p-8 sm:p-12">
@@ -258,10 +222,7 @@
                     </div>
                 </div>
             </section>
-
-            {{-- ════════════════════════════════
-                 VALUES
-            ════════════════════════════════ --}}
+            
             <section class="pb-16">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center">
@@ -301,10 +262,7 @@
                     @endforeach
                 </div>
             </section>
-
-            {{-- ════════════════════════════════
-                 TIMELINE
-            ════════════════════════════════ --}}
+           
             <section class="pb-16">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center">
@@ -333,7 +291,7 @@
                 @endphp
 
                 <div class="relative flex flex-col gap-6">
-                    {{-- Centre vertical line --}}
+                   
                     <div class="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 pointer-events-none"
                          style="background:linear-gradient(to bottom,#ddd6fe,#a78bfa,transparent);">
                     </div>
@@ -343,7 +301,7 @@
                     <div class="{{ $isLeft ? 'reveal-left' : 'reveal-right' }} d-{{ min($i,5) }}
                                 flex items-center gap-6 {{ $isLeft ? '' : 'flex-row-reverse' }}">
 
-                        {{-- Card side --}}
+                       
                         <div class="flex-1 {{ $isLeft ? 'text-right flex justify-end' : 'text-left flex justify-start' }}">
                             <div class="milestone-card inline-flex flex-col {{ $isLeft ? 'items-end' : 'items-start' }}
                                         bg-white border border-gray-100 rounded-2xl shadow-sm
@@ -356,19 +314,15 @@
                             </div>
                         </div>
 
-                        {{-- Dot --}}
+                    
                         <div class="timeline-dot flex-shrink-0"></div>
-
-                        {{-- Empty side --}}
+                       
                         <div class="flex-1"></div>
                     </div>
                     @endforeach
                 </div>
             </section>
-
-            {{-- ════════════════════════════════
-                 TEAM
-            ════════════════════════════════ --}}
+            
             <section class="pb-16">
                 <div class="flex items-center gap-3 mb-8">
                     <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center">
@@ -418,10 +372,7 @@
                     @endforeach
                 </div>
             </section>
-
-            {{-- ════════════════════════════════
-                 CTA
-            ════════════════════════════════ --}}
+           
             <section class="pb-16">
                 <div class="reveal relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center"
                      style="background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 60%,#a855f7 100%);">
@@ -476,22 +427,6 @@
     </main>
 </div>
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-{{-- ═══════════════ 2. INTRODUCTION ═══════════════ --}}
 <section class="py-16 md:py-20 bg-white">
     <div class="container mx-auto px-4 max-w-4xl text-center">
         <span class="inline-block text-xs font-bold text-orange-600 uppercase tracking-wider mb-3">
@@ -506,7 +441,7 @@
     </div>
 </section>
 
-{{-- ═══════════════ 3. LEAD MANAGEMENT SOFTWARE — 9 FEATURES ═══════════════ --}}
+
 <section class="py-16 md:py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12 max-w-2xl mx-auto">
@@ -605,7 +540,6 @@
     </div>
 </section>
 
-{{-- ═══════════════ 4. WHAT PEOPLE USE QUICKDIALS FOR ═══════════════ --}}
 <section class="py-16 md:py-20 bg-white">
     <div class="container mx-auto px-4 max-w-6xl">
         <div class="text-center mb-12 max-w-2xl mx-auto">
@@ -689,7 +623,6 @@
     </div>
 </section>
 
-{{-- ═══════════════ 5. FINDING THE RIGHT SERVICES (9 CATEGORIES) ═══════════════ --}}
 <section class="py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12 max-w-2xl mx-auto">
@@ -771,7 +704,6 @@
     </div>
 </section>
 
-{{-- ═══════════════ 6. CTA ═══════════════ --}}
 <section class="py-16 md:py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-orange-600 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10"
          style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 24px 24px;"></div>
@@ -797,22 +729,9 @@
         </div>
     </div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
 (function () {
-    /* ── IntersectionObserver — all reveal classes ── */
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             if (e.isIntersecting) {
@@ -826,11 +745,9 @@
             .forEach(el => observer.observe(el));
 })();
 </script>
- <script>
-    // Re-init Lucide icons (after dynamic content)
+<script>    
     document.addEventListener('DOMContentLoaded', () => {
         if (window.lucide) window.lucide.createIcons();
     });
-</script>
-    
+</script>    
 @endsection

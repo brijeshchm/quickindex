@@ -3,35 +3,28 @@
 @section('description', 'Explore QuickDials package pricing for local search, IT training, professional services, and overseas education solutions tailored to your business and career needs.')
 @section('keywords', 'Package Price Dials, local search, IT training, professional services, overseas education')
 @section('content') 
+<style>
+    [x-cloak] { display: none !important; }
 
- 
-    <style>
-        [x-cloak] { display: none !important; }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-fade-up { animation: fadeUp .55s ease both; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .anim-fade-up { animation: fadeUp .55s ease both; }
-
-        .pkg-card {
-            transition: transform .22s ease, box-shadow .22s ease;
-        }
-        .pkg-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,.13);
-        }
-    </style>
- 
- 
-
- 
- 
+    .pkg-card {
+        transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .pkg-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,.13);
+    }
+</style> 
 <main>
 <section class="py-20 bg-slate-100/60">
     <div class="container mx-auto px-4 md:px-6">
 
-        {{-- Section header --}}
+       
         <div class="text-center mb-14 anim-fade-up">
           
 
@@ -47,7 +40,7 @@
             <div class="w-24 h-1 bg-indigo-600 mx-auto mt-6 rounded-full"></div>
         </div>
 
-        {{-- Pricing cards --}}
+        
         @php
         $packages = [
             [
@@ -244,7 +237,4 @@
     </div>
 </section>
 </main>
-
- 
-  
- @endsection
+@endsection

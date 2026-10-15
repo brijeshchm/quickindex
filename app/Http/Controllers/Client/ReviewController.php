@@ -24,19 +24,14 @@ class ReviewController extends Controller
 	 */
 
 	public function store(Request $request)
-{
-    // Ajax check
-    if (!$request->ajax()) {
-        return response()->json([
-            "status" => false, 
-            "message" => "Invalid request."
-        ], 400);
-    }
-
-   
-
-
-
+    {
+    
+        if (!$request->ajax()) {
+            return response()->json([
+                "status" => false, 
+                "message" => "Invalid request."
+            ], 400);
+        }
         $validator = Validator::make(
         $request->all(),
         [
@@ -66,8 +61,6 @@ class ReviewController extends Controller
         ]
     );
 
-
-
     if ($validator->fails()) {
         return response()->json([
             'status' => false, 
@@ -96,13 +89,14 @@ class ReviewController extends Controller
             ], 400);
         }
     }
-
+ 
     // Save
     $comment = new Comment();
     $comment->comment_client_ID    = $clientId;
     $comment->comment_author       = $request->name;
     $comment->comment_author_phone = $request->phone;
     $comment->comment_author_email = $request->email;
+    $comment->comment_city = $request->city;
     $comment->comment_content      = $request->comment_content;
     $comment->rating               = $request->s_rating;
     $comment->comment_author_IP    = $request->ip();

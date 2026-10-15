@@ -1,12 +1,9 @@
-{{-- ─────────────────────────────────────────
-    WEDDING PLANNING
-───────────────────────────────────────── --}}
 @if(!empty($weddingPlanning))
 <section class="relative overflow-hidden py-4 border-b border-yellow-900/50">
-    {{-- Golden gradient background --}}
+   
     <div class="absolute inset-0 bg-gradient-to-r from-[#7a4f00] via-[#b87800] to-[#7a4f00]"></div>
     <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 100% at 50% 50%,rgba(220,160,0,0.35),transparent)"></div>
-    {{-- Shimmer sweep --}}
+    
     <div class="absolute inset-0 opacity-30 pointer-events-none" style="background:linear-gradient(108deg,transparent 25%,rgba(255,215,0,0.55) 50%,transparent 75%);background-size:200% 100%;animation:shimmer-sweep 4s linear infinite;"></div>
  
     <div class="relative z-10 w-full px-4 md:px-8">

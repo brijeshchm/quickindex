@@ -2,7 +2,6 @@
 @extends('client.layouts.app')
 @section('title', 'Careers | Join QuickDials - Build Your Future With Us')
 @section('description', 'Explore career opportunities at QuickDials. Join our growing team in technology, digital marketing, sales, customer support, business development, and more.')
-@section('keywords', 'QuickDials careers, jobs at QuickDials, career opportunities India, digital marketing jobs, software developer jobs, sales jobs, customer support jobs, business development careers, local business platform jobs, IT company careers, startup jobs India, QuickDials hiring')
 @section('content') 
     <style>
         
@@ -36,19 +35,11 @@
             box-shadow: 0 0 0 3px rgba(99,102,241,.12);
         }
     </style>
-
-
-{{-- ══════════════════════════
-     BANNER
-══════════════════════════ --}}
 <!-- <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-7 text-center">
     <p class="text-xl font-bold">QuickDials – Grow With Us</p>
     <p class="text-indigo-200 mt-1 text-sm">Globally recognised training programmes</p>
 </div> -->
 
-{{-- ══════════════════════════
-     HERO
-══════════════════════════ --}}
 <section class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 text-center">
     <h1 class="text-3xl md:text-5xl font-bold mb-4 anim-fade-down">
         Careers at QuickDials – Join Our Growing Team
@@ -58,9 +49,7 @@
     </p>
 </section>
 
-{{-- ══════════════════════════
-     OPEN POSITIONS
-══════════════════════════ --}}
+
 <section class="max-w-6xl mx-auto px-4 py-14">
 
     <h2 class="text-2xl font-bold mb-8 text-center">Open Positions</h2>

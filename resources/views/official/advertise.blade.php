@@ -4,19 +4,12 @@
 @section('keywords', 'Advertise QuickDials- Local search, IT Training, Playschool, overseas education.')
 @section('content')	
 @include('client.components.banner-section')
-
-{{-- Use this only for testing --}}
     <script src="https://cdn.tailwindcss.com"></script>
-
-    {{-- Alpine.js --}}
     <script
         defer
         src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js">
     </script>
-
-    {{-- Lucide Icons --}}
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         @keyframes phoneFloat {
             0%, 100% {
@@ -84,9 +77,6 @@
     class="min-h-screen bg-white font-sans overflow-x-hidden"
 >
 
-    
-
-    {{-- ===== BREADCRUMB ===== --}}
     <div class="bg-gray-50 border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 py-2 flex items-center gap-1 text-xs text-gray-500">
             <a href="{{ route('home') }}" class="hover:text-[#0076D7] flex items-center gap-1">
@@ -98,18 +88,13 @@
         </div>
     </div>
  
-
-
-
-    {{-- ===== HERO ===== --}}
     <section class="bg-white relative overflow-hidden" id="hero">
         {{-- Ambient background shapes for hero energy --}}
         <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-60 pointer-events-none anim-pulse-slow"></div>
         <div class="absolute top-40 -left-24 w-72 h-72 bg-green-50 rounded-full blur-3xl opacity-50 pointer-events-none anim-pulse-slow" style="animation-delay:1.5s"></div>
 
         <div class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8 items-center relative z-10">
-
-            {{-- Left --}}
+           
             <div data-reveal data-reveal-from="left">
                 <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-3">
                     <span class="text-gradient-anim inline-block hover:scale-105 transition-transform duration-300">GROW</span>
@@ -119,14 +104,12 @@
                 <p class="text-gray-500 text-base mb-6">                  
                    Get Noticed Fast - Create your business profile, bring in qualified leads, and increase your online visibility, all from one platform
                 </p>
-
-                {{-- Mobile number lead capture (primary CTA) --}}
-                
+               
                 <h2 class="flex items-center gap-2 text-xl font-bold text-gray-800">
                     <i data-lucide="rocket" class="w-5 h-5 text-[#0076D7]"></i>
                     Sign Up Today
                 </h2>
-                {{-- Checkmarks --}}
+                
                 <ul class="mt-5 space-y-2">
                     @foreach(['Get Connected with Buyers', 'Establish Credibility with Your Business Profile', 'Answer All Inquiries in One Place'] as $i => $item)
                         <li class="flex items-center gap-2 text-sm text-gray-700" data-reveal data-reveal-delay="{{ 200 + $i * 100 }}">
@@ -136,11 +119,10 @@
                     @endforeach
                 </ul>
             </div>
-
-            {{-- Right — Single Phone Mockup + floating stat cards + ranked-business teaser --}}
+           
             <div class="relative flex justify-center" data-reveal data-reveal-from="right">
 
-                {{-- Floating stat cards --}}
+               
                 <div class="absolute top-0 right-0 flex flex-col gap-3 z-20">
                     <div class="bg-white rounded-xl shadow-lg border border-gray-100 px-4 py-3 flex items-center gap-3 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" data-reveal data-reveal-delay="300">
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -162,7 +144,7 @@
                     </div>
                 </div>
 
-                {{-- Phone mockup — tilts gently on mouse move, floats continuously --}}
+               
                 <div
                     x-data="{ rx: 0, ry: 0 }"
                     @mousemove="rx = (($event.offsetY / $el.offsetHeight) - 0.5) * -10; ry = (($event.offsetX / $el.offsetWidth) - 0.5) * 10"
@@ -171,8 +153,7 @@
                     class="w-64 h-[460px] bg-gray-900 rounded-[2.5rem] shadow-2xl border-4 border-gray-800 relative overflow-hidden mx-auto mt-10 anim-float transition-transform duration-300 ease-out"
                 >
                     <div class="absolute inset-0 bg-gray-50 flex flex-col">
-
-                        {{-- Status bar --}}
+                      
                         <div class="bg-[#0076D7] px-3 pt-2 pb-1 flex items-center justify-between text-white text-[7px] font-semibold flex-shrink-0">
                             <span>11:11</span>
                             <div class="flex items-center gap-1">
@@ -181,8 +162,7 @@
                                 <span>78%</span>
                             </div>
                         </div>
-
-                        {{-- Top app bar --}}
+                       
                         <div class="bg-[#0076D7] px-2.5 pb-2.5 flex items-center justify-between gap-1 flex-shrink-0">
                             <div class="text-white text-[9px] font-bold leading-none">QuickDials</div>
                             <div class="flex items-center gap-1">
@@ -191,7 +171,7 @@
                             </div>
                         </div>
 
-                        {{-- Location pill --}}
+                        
                         <div class="px-2.5 -mt-1.5 mb-2 flex-shrink-0 flex">
                             <div class="bg-white rounded-full shadow-sm px-2 py-1 flex items-center gap-1 w-fit">
                                 <svg class="w-2 h-2 text-[#0076D7]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6a2.5 2.5 0 010 5.5z"/></svg>
@@ -203,11 +183,7 @@
                                 <span class="text-[6.5px] text-gray-400">Search Services</span>
                             </div>
                         </div>
-
-                        {{-- Search bar --}}
-                      
-
-                        {{-- Auto-rotating banner carousel --}}
+                        
                         <div class="px-2.5 mb-2 flex-shrink-0" x-data="{ slide: 0 }" x-init="setInterval(() => slide = (slide + 1) % 3, 2200)">
                             <div class="relative rounded-lg overflow-hidden h-16 bg-gradient-to-br from-amber-100 via-lime-100 to-emerald-200">
                                 <div class="absolute inset-0 flex items-center justify-between px-2">
@@ -224,14 +200,10 @@
                                         <span class="w-1 h-1 rounded-full transition-colors duration-300" :class="slide === i - 1 ? 'bg-[#0076D7]' : 'bg-white/70'"></span>
                                     </template>
                                 </div>
-                            </div>
-
-
-                             
+                            </div>                           
 
                         </div>
-
-                        {{-- Ranked-higher business teaser card --}}
+                       
                         <div class="mx-2.5 border-2 border-[#0076D7] rounded-lg p-2 mb-2 relative flex-shrink-0 bg-white">
                             <div class="absolute -top-2 left-2 bg-[#0076D7] text-white text-[5px] px-1.5 py-0.5 rounded whitespace-nowrap">
                                 Your Business Will Get Ranked Higher
@@ -258,9 +230,7 @@
                                 @endforeach
                             </div>
                         </div>
-
-
-   {{-- Ranked-higher business teaser card --}}
+  
                         <div class="mx-2.5 border-2 border-[#0076D7] rounded-lg p-2 mb-2 relative flex-shrink-0 bg-white">
                             <div class="absolute -top-2 left-2 bg-[#0076D7] text-white text-[5px] px-1.5 py-0.5 rounded whitespace-nowrap">
                                 Your Business Will Get 2nd Ranked Higher
@@ -279,21 +249,13 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="flex gap-1 mt-1.5">
                                 @foreach(['Call Now', 'Send Enquiry', 'Chat'] as $a)
                                     <span class="text-[5px] bg-[#0076D7] text-white rounded px-1 py-0.5">{{ $a }}</span>
                                 @endforeach
                             </div>
                         </div>
-
-
-
-
-                        {{-- Categories --}}
-                        @php
-                            // ⚠️ Placeholder labels — replace with your real top-8 category list + slugs once confirmed.
+                        @php                           
                             $mockCategories = [
                                 ['icon' => 'graduation-cap', 'label' => 'Corporate Training'],
                                 ['icon' => 'heart',          'label' => 'Wedding Functions'],
@@ -318,13 +280,12 @@
                                 @endforeach
                             </div>
                         </div>
-
-                        {{-- Floating action button --}}
+             
                         <div class="absolute right-2.5 bottom-14 w-6 h-6 rounded-full bg-[#0076D7] shadow-lg flex items-center justify-center anim-pulse-ring">
                             <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                         </div>
 
-                        {{-- Bottom tab bar --}}
+                        
                         <div class="bg-white border-t border-gray-100 px-2.5 py-2 flex items-center justify-between mt-auto flex-shrink-0">
                             <div class="flex flex-col items-center gap-0.5">
                                 <svg class="w-2.5 h-2.5 text-[#0076D7]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-4v-6H10v6H6v-9H3z"/></svg>
@@ -341,15 +302,10 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
             </div>
         </div>
     </section>
-
-    {{-- ===== STATS BAR ===== --}}
+   
     <section class="bg-[#0076D7] py-10 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white relative z-10">
             @php
@@ -371,8 +327,7 @@
             @endforeach
         </div>
     </section>
-
-    {{-- ===== SUCCESS STORIES ===== --}}
+   
     @php
         $testimonials = [
             ['name' => 'Rajesh Chhabria', 'business' => 'Chhabria and Sons', 'category' => 'Sanitaryware dealers', 'quote' => "From 1 showroom to 4 in 20 years, QuickDials's growing returns have helped us to dominate the market.", 'since' => '14 years'],
@@ -427,9 +382,7 @@
             </div>
         </div>
     </section>-->
-
-    {{-- ===== BENEFITS ===== --}}
-    
+   
     <section id="benefits" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-12" data-reveal>
@@ -439,15 +392,13 @@
                 <h3 class="text-3xl font-bold text-gray-900">Advertise on Quick Dials: Grow Your Business with Greater Online Visibility</h3>
               
                 <h4 class="text-gray-500 mt-2 text-sm">Reach More Customers and Grow Faster with Quick Dials</h4>
-<p>In the present-day competitive world of business, an online presence becomes important in order to attract more customers and remain ahead of your competitors. Quick Dials is a reliable business directory service that can help businesses reach out to those who are looking for their products or services. No matter whether you are a startup, a local business, or an already established business, Quick Dials will provide you with all necessary means for development.</p>
+                <p>In the present-day competitive world of business, an online presence becomes important in order to attract more customers and remain ahead of your competitors. Quick Dials is a reliable business directory service that can help businesses reach out to those who are looking for their products or services. No matter whether you are a startup, a local business, or an already established business, Quick Dials will provide you with all necessary means for development.</p>
 
             </div>
          
         </div>
     </section>
-
-
-     {{-- ===== CTA BANNER ===== --}}
+  
     <section class="py-14 bg-[#0076D7] relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 anim-pulse-slow" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 24px 24px;"></div>
         <div class="max-w-3xl mx-auto px-4 text-center text-white relative z-10" data-reveal>
@@ -458,12 +409,12 @@
             <p class="text-blue-100 mb-8">Join 1.8 K+ businesses already thriving on QuickDials</p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-    href="{{ route('login') }}"
-    class="btn-shimmer bg-white text-[#0076D7] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all duration-300 inline-flex items-center justify-center gap-2"
->
-    <i data-lucide="rocket" class="w-4 h-4"></i>
-    Start Advertising Now
-</a>
+                href="{{ route('login') }}"
+                class="btn-shimmer bg-white text-[#0076D7] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all duration-300 inline-flex items-center justify-center gap-2"
+            >
+                <i data-lucide="rocket" class="w-4 h-4"></i>
+                Start Advertising Now
+            </a>
                
                 <a
                     href="tel:+917559435943" rel="nofollow"
@@ -475,8 +426,6 @@
             </div>
         </div>
     </section>
-
-
 
     @php
         $benefits = [
@@ -513,15 +462,6 @@
         </div>
     </section>
 
-
-
-
- 
-
-
-
-
-    {{-- ===== FEATURES ===== --}}
     @php
         $features = [
             ['icon' => 'search', 'title' => 'Business Listing Standard: ', 'desc' => 'Create a professional business listing to help customers locate your business easily on the internet.'],
@@ -556,11 +496,6 @@
             </div>
         </div>
     </section>
-    
-
-
-
-    {{-- ===== FEATURES ===== --}}
     @php
         $features = [
             ['icon' => 'search', 'title' => 'Build Your Business Profile ', 'desc' => 'Register for your business with accurate contact information, services, and other business details.'],
@@ -596,9 +531,6 @@
         </div>
     </section>
     
-
-
-     {{-- ===== CTA BANNER ===== --}}
     <section class="py-14 bg-[#0076D7] relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 anim-pulse-slow" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 24px 24px;"></div>
         <div class="max-w-3xl mx-auto px-4 text-center text-white relative z-10" data-reveal>
@@ -609,13 +541,13 @@
             <p class="text-blue-100 mb-8">Join 1.8 K+ businesses already thriving on QuickDials</p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
                  <a
-    href="{{ route('login') }}"
-    class="btn-shimmer bg-white text-[#0076D7] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all duration-300 inline-flex items-center justify-center gap-2"
->
-    <i data-lucide="rocket" class="w-4 h-4"></i>
-    Start Advertising Now
-</a>
-               
+                    href="{{ route('login') }}"
+                    class="btn-shimmer bg-white text-[#0076D7] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 hover:scale-105 transition-all duration-300 inline-flex items-center justify-center gap-2"
+                >
+                    <i data-lucide="rocket" class="w-4 h-4"></i>
+                    Start Advertising Now
+                </a>
+                            
                 <a
                     href="tel:+917559435943" rel="nofollow"
                     class="flex items-center justify-center gap-2 border-2 border-white text-white font-semibold px-8 py-3 rounded-xl hover:bg-white/10 hover:scale-105 transition-all duration-300"
@@ -627,16 +559,13 @@
         </div>
     </section>
 
-
-    {{-- ===== FEATURES ===== --}}
     @php
         $features = [
             ['icon' => 'search', 'title' => 'Business Listing', 'desc' => 'List your business and ensure that customers can find out about your services through the Internet.'],
             ['icon' => 'thumbs-up', 'title' => 'Verified Business Listing', 'desc' => 'Gain credibility with customers by creating a verified business listing.'],
             ['icon' => 'zap', 'title' => 'Lead Generation', 'desc' => 'Get genuine leads from customers who are interested in your services and products.'],
             ['icon' => 'podium', 'title' => 'Smart Lead Management', 'desc' => 'Manage all the customer leads using one simple interface.'],
-
-           
+ 
 
             ['icon' => 'handshake', 'title' => 'Business Profile Management', 'desc' => 'Edit your contact info, business hours, services offered, and any other business information you wish to add'],
 
@@ -671,10 +600,6 @@
             ['icon' => 'key-round', 'title' => 'Security in One Business Dashboard', 'desc' => 'Have access to all your business data in one business dashboard.'],
 
             ['icon' => 'user-round-pen', 'title' => 'Updating Your Business Profile', 'desc' => 'Update your business profiles regularly for increased visibility to your customers.'],
-
-
-
-
         ];
     @endphp
     <section id="features" class="py-16 bg-gray-50">
@@ -699,8 +624,7 @@
             </div>
         </div>
     </section>
-
-    {{-- ===== PRICING ===== --}}
+  
     <section id="pricing" class="py-20 bg-slate-100/60">
         <div class="container mx-auto px-4 md:px-6">
 
@@ -879,7 +803,7 @@
         </div>
     </section>
 
-    {{-- ===== FAQs ===== --}}
+   
     @php
         $faqs = [
             ['q' => 'Why should I include my business on Quick Dials?', 'a' => 'Including your business on Quick Dials allows you to increase your visibility online, connect with more local clients, and get actual queries regarding your business.'],
@@ -936,7 +860,7 @@
         </div>
     </section>
 
-    {{-- ===== STICKY MOBILE CTA (conversion booster — visible only on small screens) ===== --}}
+    
     <div
         x-data="{ show: false }"
         x-init="window.addEventListener('scroll', () => show = window.scrollY > 500)"
@@ -963,12 +887,9 @@
 
 </div>
 
-{{-- ===== Scroll-reveal engine + counter animation ===== --}}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    if (window.lucide) window.lucide.createIcons();
-
-    // ── Scroll-reveal: fade + directional slide-in, staggered via data-reveal-delay ──
+    if (window.lucide) window.lucide.createIcons();    
     var revealEls = document.querySelectorAll('[data-reveal]');
     var revealObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -983,8 +904,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
     revealEls.forEach(function (el) { revealObserver.observe(el); });
-
-    // ── Animated counters ──
+    
     document.querySelectorAll('[data-counter]').forEach(function (el) {
         var to = parseInt(el.getAttribute('data-counter'), 10);
         var suffix = el.getAttribute('data-suffix') || '';
@@ -1007,7 +927,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     function tick(now) {
                         if (!startTime) startTime = now;
                         var progress = Math.min((now - startTime) / dur, 1);
-                        var eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
+                        var eased = 1 - Math.pow(1 - progress, 3); 
                         var current = Math.floor(eased * to);
                         el.textContent = formatValue(current) + (progress >= 1 ? suffix : '');
                         if (progress < 1) {
@@ -1027,7 +947,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
-    /* ── Scroll-reveal base states ── */
+   
     [data-reveal] {
         opacity: 0;
         transform: translateY(28px);
@@ -1040,21 +960,21 @@ document.addEventListener('DOMContentLoaded', function () {
         transform: translate(0, 0);
     }
 
-    /* ── Ambient hero blobs ── */
+    
     @keyframes pulseSlow {
         0%, 100% { opacity: 0.5; transform: scale(1); }
         50% { opacity: 0.8; transform: scale(1.08); }
     }
     .anim-pulse-slow { animation: pulseSlow 6s ease-in-out infinite; }
 
-    /* ── Floating phone mockup ── */
+    
     @keyframes floatY {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
     }
     .anim-float { animation: floatY 4.5s ease-in-out infinite; }
 
-    /* ── Bounce-in for checkmark / badges ── */
+    
     @keyframes bounceIn {
         0% { opacity: 0; transform: scale(0.3); }
         60% { opacity: 1; transform: scale(1.15); }
@@ -1062,7 +982,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     .anim-bounce-in { animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 
-    /* ── Animated gradient headline text ── */
+   
     @keyframes gradientShift {
         0%, 100% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -1076,21 +996,21 @@ document.addEventListener('DOMContentLoaded', function () {
         animation: gradientShift 4s ease-in-out infinite;
     }
 
-    /* ── Notification "online" dot ping ── */
+    
     @keyframes pingSlow {
         0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
         100% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
     }
     .anim-ping-slow { animation: pingSlow 1.8s ease-out infinite; }
 
-    /* ── Floating action button pulse ring ── */
+    
     @keyframes pulseRing {
         0%, 100% { box-shadow: 0 0 0 0 rgba(0, 118, 215, 0.4); }
         50% { box-shadow: 0 0 0 5px rgba(0, 118, 215, 0); }
     }
     .anim-pulse-ring { animation: pulseRing 2.2s ease-in-out infinite; }
 
-    /* ── Section heading icon badge: consistent identity for every heading ── */
+     
     .heading-badge {
         position: relative;
         width: 4rem;
@@ -1120,8 +1040,7 @@ document.addEventListener('DOMContentLoaded', function () {
         transition: opacity 0.35s ease, transform 0.35s ease;
     }
     .heading-badge:hover::after { opacity: 1; transform: scale(1); }
-
-    /* ── Underline flourish beneath section headings ── */
+   
     .heading-underline {
         width: 56px;
         height: 4px;
@@ -1131,8 +1050,7 @@ document.addEventListener('DOMContentLoaded', function () {
         background-size: 200% auto;
         animation: gradientShift 4s ease-in-out infinite;
     }
-
-    /* ── Shimmer sweep on primary buttons ── */
+   
     .btn-shimmer { position: relative; overflow: hidden; }
     .btn-shimmer::after {
         content: '';
@@ -1151,8 +1069,7 @@ document.addEventListener('DOMContentLoaded', function () {
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-
-    /* ── Respect reduced-motion preference ── */
+     
     @media (prefers-reduced-motion: reduce) {
         [data-reveal] {
             opacity: 1 !important;
@@ -1165,9 +1082,4 @@ document.addEventListener('DOMContentLoaded', function () {
         .btn-shimmer::after { display: none; }
     }
 </style>
-
- 
-
-
-
 @endsection

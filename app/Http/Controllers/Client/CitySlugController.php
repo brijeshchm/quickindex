@@ -1611,20 +1611,16 @@ $reviewList = DB::table('clients')
     /**
      * Fetch data from the QuickDials API.
      */
-    private function fetchCityData(string $city=null)
+     private function fetchCityData(string $city=null)
     {
-       
-
-		return Cache::remember('api:cityList:' . ($city ?? 'all'), now()->addHours(6), function () use ($city) {
         try {
-            $r = Http::timeout(3)->get('https://api.quickdials.com/api/website/getCityList', ['city' => $city]);
-            return $r->successful() ? $r->json() : null;
+             $response = Http::timeout(5)
+               ->withoutVerifying()->get('https://api.quickdials.com/api/website/getCityList', ['city' => $city]);
+ 
+            return $response->successful() ? $response->json() : null;
         } catch (\Throwable $e) {
             return null;
         }
-    	});
-
-	
     }
      
 

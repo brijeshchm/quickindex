@@ -16,12 +16,12 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        {{-- 📊 Left: Step Indicator --}}
+       
         <div class="lg:col-span-3">
             @include('user.profile.step-indicator', ['currentStep' => 'vouchers'])
         </div>
 
-        {{-- 📝 Right: Vouchers --}}
+         
         <div class="lg:col-span-9">
             <div class="flex items-center justify-between mb-5 pt-4">
                 <h2 class="text-2xl font-semibold text-gray-800">
@@ -33,10 +33,7 @@
                     My Vouchers                 </a>
             </div>
 
-            {{-- 🏷️ Category Filter Tabs --}}
             
-
-            {{-- 🎟️ Voucher Grid --}}
             @if($vouchers)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="voucherGrid">
                     @foreach($vouchers as $voucher)
@@ -51,9 +48,9 @@
 <div class="voucher-card group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300"
      data-voucher-id="{{ $voucher->category_id }}">
 
-    {{-- Top colored strip --}}
+    
     <div class="flex">
-        {{-- LEFT: Discount Value (colored) --}}
+        
         <div class="relative w-28 flex-shrink-0 bg-gradient-to-br from-blue-600 to-indigo-700 flex flex-col items-center justify-center p-4 text-white">
             <span class="text-2xl font-extrabold leading-none">
                 {{ $voucher->coins_required ? rtrim(rtrim(number_format($voucher->coins_required,2),'0'),'.') . '₹' : "0" }}

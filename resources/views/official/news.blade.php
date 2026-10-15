@@ -18,9 +18,6 @@
     border-radius: 0 2px 2px 0;
 }
 
-/* ══════════════════════════════════════════
-   TICKER
-══════════════════════════════════════════ */
 @keyframes ticker-scroll {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -35,9 +32,7 @@
     .ticker-track { animation: none; }
 }
 
-/* ══════════════════════════════════════════
-   CARD REVEAL (replaces Framer Motion)
-══════════════════════════════════════════ */
+
 .reveal-item {
     opacity: 0;
     transform: translateY(24px) scale(0.97);
@@ -66,9 +61,7 @@
     transform: translateX(0);
 }
 
-/* ══════════════════════════════════════════
-   IMAGE ZOOM EFFECT
-══════════════════════════════════════════ */
+
 .image-zoom {
     transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
     background-size: cover;
@@ -78,9 +71,7 @@
     transform: scale(1.04);
 }
 
-/* ══════════════════════════════════════════
-   CARD GLOW BORDER
-══════════════════════════════════════════ */
+
 .card-glow {
     transition: box-shadow 0.35s ease, transform 0.25s ease;
 }
@@ -90,9 +81,7 @@
     transform: translateY(-3px);
 }
 
-/* ══════════════════════════════════════════
-   FEATURED HERO
-══════════════════════════════════════════ */
+
 .hero-card {
     transition: box-shadow 0.5s ease, transform 0.3s ease;
 }
@@ -101,9 +90,6 @@
     transform: scale(1.006);
 }
 
-/* ══════════════════════════════════════════
-   SHIMMER HEADING
-══════════════════════════════════════════ */
 .shimmer-heading {
     background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, var(--primary) 100%);
     background-size: 200% auto;
@@ -116,9 +102,6 @@
     to { background-position: 200% center; }
 }
 
-/* ══════════════════════════════════════════
-   SKELETON PULSE
-══════════════════════════════════════════ */
 .skeleton {
     background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
     background-size: 200% 100%;
@@ -130,9 +113,6 @@
     100% { background-position: -200% 0; }
 }
 
-/* ══════════════════════════════════════════
-   LOADING DOTS (replaces AnimatePresence spinner)
-══════════════════════════════════════════ */
 .dot-bounce {
     display: inline-block;
     width: 10px; height: 10px;
@@ -147,9 +127,6 @@
     50%      { transform: translateY(-10px); opacity: 1; }
 }
 
-/* ══════════════════════════════════════════
-   TAG HOVER SPRING
-══════════════════════════════════════════ */
 .tag-chip {
     display: inline-block;
     transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
@@ -162,16 +139,12 @@
     border-color: var(--accent) !important;
 }
 
-/* ══════════════════════════════════════════
-   SCROLLBAR THIN (sidebar)
-══════════════════════════════════════════ */
+
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* ══════════════════════════════════════════
-   POPULAR POSTS HOVER SLIDE
-══════════════════════════════════════════ */
+
 .popular-item {
     transition: transform 0.25s ease;
 }
@@ -179,15 +152,8 @@
 </style>
 
  
-
-{{-- ═══════════════════════════════
-     SCROLL PROGRESS BAR
-════════════════════════════════ --}}
 <div id="scroll-progress"></div>
 
-{{-- ═══════════════════════════════
-     LIVE TICKER
-════════════════════════════════ --}}
 @if(count($tickerArticles))
 <div class="bg-blue-900 text-white overflow-hidden py-2 flex items-center gap-3 text-xs font-medium">
     <div class="shrink-0 flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1 rounded-sm font-bold uppercase tracking-widest ml-4">
@@ -198,7 +164,7 @@
     </div>
     <div class="overflow-hidden flex-1">
         <div class="ticker-track">
-            {{-- Duplicated for seamless loop --}}
+           
             @foreach([$tickerArticles, $tickerArticles] as $group)
                 @foreach($group as $item)
                 <span class="inline-flex items-center mr-12">
@@ -215,9 +181,6 @@
 </div>
 @endif
 
-{{-- ═══════════════════════════════
-     MAIN LAYOUT
-════════════════════════════════ --}}
 <main class="container mx-auto px-4 lg:px-8 py-8 lg:py-12">
   <div class="mx-auto max-w-3xl px-4 py-6 text-center ">
     <h1 id="rotating-heading"
@@ -229,17 +192,14 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-        {{-- ══════════════════════════════════════
-             MAIN CONTENT — 8 cols, order 2
-        ══════════════════════════════════════ --}}
+       
         <div class="lg:col-span-8 lg:order-2 space-y-12">
 
-            {{-- ── FEATURED HERO ── --}}
+           
             @if($firstNews)
             <article class="group hero-card rounded-xl overflow-hidden bg-white shadow-sm border border-gray-200 cursor-pointer">
                 <a href="{{ route('news.details', $firstNews['url']) }}" class="block">
-
-                    {{-- Thumbnail / gradient fallback --}}
+                  
                     <div class="aspect-[2/1] w-full overflow-hidden relative">
                         @if(!empty($firstNews['img']))
                             <div class="image-zoom w-full h-full"
@@ -320,7 +280,7 @@
                             'linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 50%,#7c3aed 100%)',
                         ];
                         $grad = $gradients[$index % count($gradients)];
-                        // Hide articles beyond first 10 — JS will reveal via infinite scroll
+                        
                         $hidden = $index >= 10;
                     @endphp
                     <article data-article-index="{{ $index }}"
@@ -402,9 +362,6 @@
             </div>
         </div>
 
-        {{-- ══════════════════════════════════════
-             SIDEBAR — 4 cols, order 1
-        ══════════════════════════════════════ --}}
         <aside class="lg:col-span-4 lg:order-1">
             <div class="sticky top-6 space-y-8 max-h-[calc(100vh-3rem)] overflow-y-auto
                         pr-1 scrollbar-thin">
@@ -522,12 +479,9 @@
 
     </div>
 </main>
-
- 
- 
 <script>
 (function () {
-    /* ── Scroll Progress Bar ── */
+   
     const bar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
@@ -536,7 +490,6 @@
         bar.style.transform = `scaleX(${pct})`;
     }, { passive: true });
 
-    /* ── Reveal on scroll (IntersectionObserver) ── */
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             if (e.isIntersecting) {

@@ -6,10 +6,7 @@
     : asset('client/images/quickdials-og.png'))
 @section('content')
 @include('client.components.banner-section')
-
 @php
-
-
 $starMap = [
     0 => 'star_1.png', 2 => 'star_2.png', 3 => 'star_3.png',
     3.5 => 'star_3.5.png', 4 => 'star_4.png', 4.5 => 'star_4.5.png',
@@ -18,7 +15,6 @@ $starMap = [
 
 $bgImage = $bgImage ?? '/computer-courses-training.jpg';
 
-// Calculate star image key
 $starKey = 0;
 foreach ($starMap as $k => $v) {
     if ($blogDetails['ratingvalue'] >= $k) $starKey = $k;
@@ -47,9 +43,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     border-radius: 0 2px 2px 0;
 }
 
-/* ══════════════════════════════════════════
-   TICKER
-══════════════════════════════════════════ */
 @keyframes ticker-scroll {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -62,9 +55,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 }
 @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
 
-/* ══════════════════════════════════════════
-   HERO TILT (replaces Framer Motion rotateX/Y)
-══════════════════════════════════════════ */
 #hero-card {
     transition: transform 0.12s ease, box-shadow 0.3s ease;
     transform-style: preserve-3d;
@@ -75,9 +65,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     box-shadow: 0 24px 60px rgba(37,99,235,0.18);
 }
 
-/* ══════════════════════════════════════════
-   REVEAL (IntersectionObserver)
-══════════════════════════════════════════ */
+
 .reveal {
     opacity: 0;
     transform: translateY(20px);
@@ -100,9 +88,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 }
 .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
-/* ══════════════════════════════════════════
-   ARTICLE PROSE
-══════════════════════════════════════════ */
+
 .prose-article { color: #374151; line-height: 1.8; font-size: 1.05rem; }
 .prose-article h1,.prose-article h2,.prose-article h3 { color: var(--primary); font-weight: 700; margin: 2rem 0 1rem; }
 .prose-article h2 { font-size: 1.35rem; }
@@ -118,9 +104,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 .prose-article td { padding: 0.6rem 0.8rem; border: 1px solid var(--border); }
 .prose-article blockquote { border-left: 4px solid var(--accent); padding-left: 1rem; color: var(--muted); font-style: italic; margin: 1.5rem 0; }
 
-/* ══════════════════════════════════════════
-   CARD GLOW
-══════════════════════════════════════════ */
+
 .card-glow {
     transition: box-shadow 0.3s ease;
 }
@@ -129,9 +113,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 0 0 0 1px rgba(37,99,235,0.07);
 }
 
-/* ══════════════════════════════════════════
-   FAQ ACCORDION
-══════════════════════════════════════════ */
 .faq-body {
     max-height: 0;
     overflow: hidden;
@@ -141,18 +122,13 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     max-height: 600px;
 }
 
-/* ══════════════════════════════════════════
-   BOOKMARK BUTTON
-══════════════════════════════════════════ */
+
 #bookmark-btn.saved {
     background: var(--accent);
     color: white;
     border-color: var(--accent);
 }
 
-/* ══════════════════════════════════════════
-   COPY LINK TOOLTIP
-══════════════════════════════════════════ */
 #copy-btn { position: relative; }
 #copy-tooltip {
     position: absolute;
@@ -171,9 +147,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 }
 #copy-tooltip.show { opacity: 1; }
 
-/* ══════════════════════════════════════════
-   TAG HOVER
-══════════════════════════════════════════ */
+
 .tag-chip {
     transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1),
                 background 0.2s, color 0.2s;
@@ -185,9 +159,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     border-color: var(--accent) !important;
 }
 
-/* ══════════════════════════════════════════
-   NEWSLETTER GRADIENT BG
-══════════════════════════════════════════ */
+
 .newsletter-bg {
     background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 60%, #0891b2 100%);
     position: relative;
@@ -208,22 +180,16 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     50%      { transform: scale(1.5); opacity: 0.28; }
 }
 
-/* ══════════════════════════════════════════
-   SCROLLBAR THIN (sidebar)
-══════════════════════════════════════════ */
+
 .scrollbar-thin::-webkit-scrollbar { width: 4px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* ══════════════════════════════════════════
-   SIDEBAR RELATED ARTICLES HOVER
-══════════════════════════════════════════ */
+
 .related-item { transition: transform 0.2s ease; }
 .related-item:hover { transform: translateX(4px); }
 
-/* ══════════════════════════════════════════
-   IMAGE ZOOM
-══════════════════════════════════════════ */
+
 .img-zoom-wrap { overflow: hidden; }
 .img-zoom-wrap .img-inner {
     transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
@@ -235,14 +201,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 </style>
  
 
-{{-- ═══════════════════════════════
-     SCROLL PROGRESS BAR
-════════════════════════════════ --}}
 <div id="scroll-progress"></div>
 
-{{-- ═══════════════════════════════
-     BREADCRUMB
-════════════════════════════════ --}}
 <div class="bg-white border-b border-gray-200">
     <div class="container mx-auto px-4 lg:px-8 py-3 flex items-center gap-2 text-xs text-gray-400">
         <a href="{{ route('home') }}" class="hover:text-blue-600 transition-colors font-medium">Home</a>
@@ -259,9 +219,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </div>
 
-{{-- ═══════════════════════════════
-     LIVE TICKER
-════════════════════════════════ --}}
+
 @if(count($tickerItems))
 <div class="bg-blue-900 text-white overflow-hidden py-2 flex items-center gap-3 text-xs font-medium">
     <div class="shrink-0 flex items-center gap-1.5 bg-blue-500 text-white px-3 py-1 rounded-sm font-bold uppercase tracking-widest ml-4">
@@ -287,19 +245,10 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </div>
 @endif
-
-{{-- ═══════════════════════════════
-     MAIN CONTENT
-════════════════════════════════ --}}
 <main class="container mx-auto px-4 lg:px-8 py-10 lg:py-14">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-
-        {{-- ══════════════════════════════════════
-             ARTICLE — 8 cols
-        ══════════════════════════════════════ --}}
-        <article class="lg:col-span-8">
-
-            {{-- ── HERO IMAGE / TILT CARD ── --}}
+    
+        <article class="lg:col-span-8">           
             <div id="hero-card"
                  class="reveal rounded-2xl overflow-hidden shadow-xl mb-8 card-glow">
                 <div class="w-full relative"
@@ -307,8 +256,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                     {{ !empty($blogDetails['blogImage'])
                                 ? 'background-image: url(' . e($blogDetails['blogImage']) . '); background-size: cover; background-position: center;'
                                 : 'background: linear-gradient(135deg,#1e3a5f 0%,#2563eb 50%,#0891b2 100%);' }}">
-
-                    {{-- Floating category initial --}}
+                    
                     @if(empty($blogDetails['blogImage']))
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-white/20 font-black select-none leading-none"
@@ -331,7 +279,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 </div>
             </div>
 
-            {{-- ── TITLE & META ── --}}
+            
             <div class="reveal mb-8" >
                 
                 <div itemscope itemtype="https://schema.org/Product" class="space-y-2">    
@@ -360,12 +308,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                         <span class="text-gray-500">ratings</span>
                     </div>
                 </div> 
-
-
- 
-
-
-                
+            
                 <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-5">
                     {{-- Author --}}
                     @if(!empty($blogDetails['author_name']))
@@ -409,7 +352,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                         {{ $blogDetails['updated_at'] ?? '5 min' }} read
                     </span>
 
-                    {{-- Views (random, stable via JS) --}}
+                   
                     <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -419,9 +362,9 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                     </span>
                 </div>
 
-                {{-- Share & Bookmark bar --}}
+               
                 <div class="flex items-center justify-between py-4 border-y border-gray-200">
-                    {{-- Copy link --}}
+                    
                     <div class="flex items-center gap-2">
                         <span class="text-xs text-gray-400 font-medium mr-1">Share:</span>
                         <button id="copy-btn"
@@ -480,10 +423,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
             </div>
             @endif
 
-            {{-- ── ARTICLE BODY ── --}}
-            <div class="prose-article">
-
-                {{-- Section heading + description --}}
+          
+            <div class="prose-article">               
                 @if(!empty($blogDetails['heading']))
                 <h2 class="reveal-x text-xl font-bold text-slate-900 mt-10 mb-4 flex items-center gap-3">
                     <span class="w-1 h-6 bg-blue-500 rounded-full inline-block shrink-0"></span>
@@ -502,8 +443,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                     {{ $blogDetails['top_heading'] }}
                 </h2>
                 <div class="reveal" >
-                
-
                     {!! $blogDetails['top_content'] !!}
                 </div>
                 @endif
@@ -512,15 +451,12 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                    
                 <div class="reveal" >
                     <h2>
-                                  {{ $blogDetails['bottom_heading'] }}
+                    {{ $blogDetails['bottom_heading'] }}
                 </h2>
                     {!! $blogDetails['bottom_content'] !!}
                 </div>
                 @endif
-
-            </div>
-
-            {{-- ── FAQ ── --}}
+            </div>           
             @if(count($faqs))
             <div class="reveal bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mt-8">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -555,9 +491,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
             </div>
             @endif
 
-           
-
-            {{-- ── BACK TO BLOG ── --}}
             <div class="reveal mt-10">
                 <a href="{{ route('blog.show') }}"
                    class="inline-flex items-center gap-2 text-blue-600 font-semibold
@@ -570,16 +503,10 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 </a>
             </div>
 
-        </article>
-
-        {{-- ══════════════════════════════════════
-             SIDEBAR — 4 cols
-        ══════════════════════════════════════ --}}
+        </article>        
         <aside class="lg:col-span-4">
-            <div class="sticky top-6 space-y-6 max-h-[calc(500vh-2rem)]
-                        overflow-y-auto pr-1 scrollbar-thin">
-
-                {{-- ── TABLE OF CONTENTS (blogList) ── --}}
+            <div class="sticky top-6 space-y-6 max-h-[calc(500vh-2rem)] overflow-y-auto pr-1 scrollbar-thin">
+              
                 @if(!empty($categories))
                 <div class="reveal-right bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                     <h4 class="text-sm font-bold text-slate-900 mb-4 uppercase tracking-widest
@@ -591,9 +518,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                         @if($categories->isNotEmpty())
                        
                         @foreach($categories as $i => $tocItem)
-                     
-
-
+    
                         <li>
                             <a href="{{ url('blog/category/'.$tocItem->name) }}"
                                class="group flex items-center justify-between py-2 text-sm
@@ -668,8 +593,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                     </div>
                 </div>
                 @endif
-
-                {{-- ── NEWSLETTER ── --}}
+                
                 <div class="reveal-right newsletter-bg p-5 rounded-xl shadow-md text-white" >
                     <div class="relative z-10">
                         <h4 class="text-base font-bold mb-1">Never Miss a Post</h4>
@@ -692,8 +616,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                         </form>
                     </div>
                 </div>
-
-                {{-- ── SHARE SIDEBAR ── --}}
+                 
                 <div class="reveal-right bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
                     <h4 class="text-sm font-bold text-slate-900 mb-3 uppercase tracking-widest
                                flex items-center gap-2">
@@ -731,17 +654,14 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 <script>
 (function () {
 
-    /* ── Scroll Progress Bar ── */
+   
     const bar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
         const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) || 0;
         bar.style.transform = `scaleX(${pct})`;
     }, { passive: true });
 
-    /* ── Random stable view count ── */
     
-
-    /* ── IntersectionObserver — reveal on scroll ── */
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             if (e.isIntersecting) {
@@ -754,7 +674,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     document.querySelectorAll('.reveal, .reveal-x, .reveal-right')
             .forEach(el => observer.observe(el));
 
-    /* ── Hero Tilt (mouse parallax) ── */
+   
     const hero = document.getElementById('hero-card');
     if (hero) {
         hero.addEventListener('mousemove', (e) => {
@@ -769,15 +689,12 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         });
     }
 
-    /* ── FAQ Accordion ── */
     document.querySelectorAll('.faq-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
             const item    = btn.closest('.faq-item');
             const body    = item.querySelector('.faq-body');
             const chevron = item.querySelector('.faq-chevron');
-            const isOpen  = body.classList.contains('open');
-
-            // Close all
+            const isOpen  = body.classList.contains('open');            
             document.querySelectorAll('.faq-body').forEach(b => b.classList.remove('open'));
             document.querySelectorAll('.faq-chevron').forEach(c => c.style.transform = '');
 
@@ -788,7 +705,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         });
     });
 
-    /* ── Copy Link ── */
+  
     function copyLink(btn) {
         navigator.clipboard.writeText(window.location.href).catch(() => {});
         const original = btn.getAttribute('title');
@@ -801,8 +718,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
             btn.style.color      = '';
         }, 2000);
     }
-
-    // Inline copy tooltip
+    
     const copyBtn = document.getElementById('copy-btn');
     const tooltip = document.getElementById('copy-tooltip');
     if (copyBtn && tooltip) {
@@ -816,7 +732,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     const copySide = document.getElementById('copy-btn-sidebar');
     if (copySide) copySide.addEventListener('click', () => copyLink(copySide));
 
-    /* ── Bookmark Toggle ── */
+    
     const bookmarkBtn   = document.getElementById('bookmark-btn');
     const bookmarkIcon  = document.getElementById('bookmark-icon');
     const bookmarkLabel = document.getElementById('bookmark-label');
@@ -826,13 +742,11 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         bookmarkBtn.addEventListener('click', () => {
             saved = !saved;
             bookmarkBtn.classList.toggle('saved', saved);
-            bookmarkLabel.textContent = saved ? 'Saved' : 'Save';
-            // Fill the icon when saved
+            bookmarkLabel.textContent = saved ? 'Saved' : 'Save';            
             bookmarkIcon.setAttribute('fill', saved ? 'white' : 'none');
         });
     }
-
-    /* ── Newsletter form ── */
+   
     const newsletterForm = document.getElementById('newsletter-form');
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', (e) => {
@@ -845,9 +759,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
             input.value      = '';
         });
     }
-
 })();
 </script>
- 
- 
 @endsection

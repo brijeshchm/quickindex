@@ -1,7 +1,7 @@
  
 @push('styles')
 <style>
-/* ── Gradient text ──────────────────────────────── */
+
 .gradient-text {
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     -webkit-background-clip: text;
@@ -9,7 +9,6 @@
     background-clip: text;
 }
 
-/* ── Animated orbs ──────────────────────────────── */
 @keyframes orb-float {
     0%,100% { transform: translate(0,0) scale(1); }
     33%      { transform: translate(40px,-30px) scale(1.3); }
@@ -17,14 +16,14 @@
 }
 .orb { animation: orb-float 10s ease-in-out infinite; border-radius: 50%; filter: blur(80px); pointer-events: none; position: absolute; }
 
-/* ── Morphing blob ──────────────────────────────── */
+
 @keyframes morph {
     0%,100% { border-radius: 60% 40% 30% 70%/60% 30% 70% 40%; transform: rotate(0deg); }
     50%      { border-radius: 30% 60% 70% 40%/50% 60% 30% 60%; transform: rotate(180deg); }
 }
 .morph-blob { animation: morph 12s ease-in-out infinite; opacity: .3; filter: blur(32px); pointer-events: none; position: absolute; }
 
-/* ── Shimmer on form header ─────────────────────── */
+
 @keyframes shimmer-h {
     0%   { background-position: -200% 0; }
     100% { background-position:  200% 0; }
@@ -35,7 +34,7 @@
     animation: shimmer-h 3s linear infinite;
 }
 
-/* ── Rotating glow border ───────────────────────── */
+
 @keyframes rotate-bg {
     0%   { background-position: 0% 0%; }
     100% { background-position: 300% 300%; }
@@ -53,21 +52,21 @@
     opacity: .8;
 }
 
-/* ── Count-up number animation ──────────────────── */
+
 @keyframes count-in {
     from { opacity:0; transform: translateY(12px); }
     to   { opacity:1; transform: translateY(0); }
 }
 .count-in { animation: count-in .5s ease forwards; }
 
-/* ── FAQ accordion ──────────────────────────────── */
+
 .faq-answer { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.04,.62,.23,.98), opacity .25s ease; opacity: 0; }
 .faq-answer.open { max-height: 400px; opacity: 1; }
 
-/* ── Review slider ──────────────────────────────── */
+
 .review-track { display: flex; transition: transform .4s ease; }
 
-/* ── Grid dot background ────────────────────────── */
+
 .dot-grid {
     background-image: linear-gradient(#2563eb 1px, transparent 1px),
                       linear-gradient(90deg, #2563eb 1px, transparent 1px);
@@ -75,36 +74,33 @@
     opacity: .05;
 }
 
-/* ── Pulse dot ──────────────────────────────────── */
+
 @keyframes pulse-dot {
     0%,100% { opacity:1; transform:scale(1); }
     50%      { opacity:.4; transform:scale(.8); }
 }
 .pulse-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
 
-/* ── Slide-in animations ────────────────────────── */
+
 .slide-up   { opacity:0; transform:translateY(40px); transition: opacity .6s ease, transform .6s ease; }
 .slide-left { opacity:0; transform:translateX(-30px); transition: opacity .5s ease, transform .5s ease; }
 .slide-right{ opacity:0; transform:translateX(70px); transition: opacity .9s cubic-bezier(.16,1,.3,1); }
 .visible    { opacity:1 !important; transform:none !important; }
 
-/* ── Tilt card ──────────────────────────────────── */
+
 .tilt-card { transition: transform .2s ease; transform-style: preserve-3d; }
 .tilt-card:hover { transform: perspective(600px) rotateX(3deg) rotateY(-3deg) scale(1.02); }
 
-/* ── Step connector line ────────────────────────── */
+
 .step-line { height:2px; background:linear-gradient(90deg,#2563eb,#7c3aed); transform:scaleX(0); transform-origin:left; transition:transform 1.6s ease .3s; }
 .step-line.visible { transform:scaleX(1) !important; }
 
-/* ── Input focus ring ───────────────────────────── */
+
 .form-input:focus { border-color:#60a5fa; box-shadow: 0 0 0 4px rgba(59,130,246,.12); outline:none; background:#fff; }
 .form-input       { transition: border-color .2s, box-shadow .2s, background .2s; }
 </style>
 @endpush
 
- 
-
-{{-- ── HERO ─────────────────────────────────────────────────── --}}
 <section class="relative pt-24 pb-20 overflow-hidden" style="background:linear-gradient(135deg,#f0f4ff 0%,#f8f6ff 40%,#eff9ff 100%);">
     {{-- Orbs --}}
     <div class="orb w-[600px] h-[600px] bg-blue-400 opacity-15 -top-48 -left-48" style="animation-delay:0s"></div>
@@ -117,15 +113,14 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-14 items-start">
 
-            {{-- ─── LEFT COLUMN ─── --}}
+             
             <div class="pt-6 space-y-6 slide-left" id="hero-left">
 
-                {{-- Badge --}}
+                
                 <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur border border-blue-100 text-blue-700 text-sm font-semibold px-4 py-2 rounded-full shadow-sm">
                     ✨ Join 8,100+ Suppliers on QuickDials
                 </div>
-
-                {{-- Title --}}
+                
                 <h1 class="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-slate-900 leading-tight tracking-tight">
                     Grow <span class="gradient-text">Your</span> Business<br>
                     <span class="text-slate-700">With QuickDials</span>
@@ -136,7 +131,7 @@
                     unlock leads, visibility, and growth tools.
                 </p>
 
-                {{-- Stats grid --}}
+                
                 @php
                 $statItems = [
                     ['label'=>'Grow Client',    'value'=> $growthBusiness['GrowClient']         ?? '—', 'icon'=>'users',       'color'=>'text-blue-600',    'bg'=>'bg-blue-50'],
@@ -158,8 +153,7 @@
                     </div>
                     @endforeach
                 </div>
-
-                {{-- Benefits --}}
+               
                 @php
                 $benefits = [
                     ['icon'=>'trending-up',       'title'=>'Grow Your Business', 'desc'=>'Reach buyers across India',       'color'=>'text-blue-600',    'bg'=>'bg-blue-50',    'border'=>'border-blue-100'],
@@ -182,8 +176,7 @@
                     </div>
                     @endforeach
                 </div>
-
-                {{-- Success Story Slider --}}
+               
                 <div id="success-slider" class="relative rounded-2xl overflow-hidden cursor-default">
                       @php
                     $stories = [
@@ -234,7 +227,7 @@
                     @endforeach
                 </div>
 
-                {{-- Cities --}}
+                
                 <div class="bg-white/70 backdrop-blur rounded-2xl border border-white shadow-sm p-4">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-2">
@@ -252,9 +245,7 @@
                     </div>
                 </div>
             </div>
-            {{-- ─── END LEFT ─── --}}
-
-            {{-- ─── RIGHT COLUMN: Form ─── --}}
+             
             <div class="relative flex flex-col gap-5 slide-right" id="hero-right">
 
                 {{-- Glow card --}}
@@ -278,7 +269,7 @@
                             </div>
                         </div>
 
-                        {{-- Success flash --}}
+                        
                         @if(session('success'))
                         <div class="m-5 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 text-sm font-medium flex items-center gap-3">
                             <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white shrink-0">✓</div>
@@ -289,11 +280,11 @@
                         </div>
                         @endif
 
-                        {{-- Form --}}
+                        
                         <form action="{{ route('business-owners.submit') }}" method="POST" class="p-5 space-y-3" id="enquiry">
                             @csrf
 
-                            {{-- Business Name --}}
+                            
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1">Business / Company Name</label>
                                 <div class="relative">
@@ -305,7 +296,7 @@
                                 @error('business_name')<p class="text-red-500 text-[10px] mt-0.5">{{ $message }}</p>@enderror
                             </div>
 
-                            {{-- Email + Phone --}}
+                            
                             <div class="grid grid-cols-2 gap-2.5">
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">Email</label>
@@ -329,7 +320,7 @@
                                 </div>
                             </div>
 
-                            {{-- City + Category --}}
+                            
                             <div class="grid grid-cols-2 gap-2.5">
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-600 mb-1">City</label>
@@ -354,7 +345,7 @@
                                 </div>
                             </div>
 
-                            {{-- Package selector --}}
+                           
                             <div>
                                 <label class="block text-xs font-semibold text-slate-600 mb-1.5">Interested Package</label>
                                 <div class="grid grid-cols-3 gap-2" id="pkg-grid">
@@ -415,7 +406,7 @@
                     </div>
                 </div>
 
-                {{-- Live Activity Feed --}}
+               
                 <div class="bg-white/80 backdrop-blur-sm rounded-2xl border border-white shadow-sm overflow-hidden">
                     <div class="flex items-center gap-2.5 px-4 py-3 border-b border-slate-100">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span>
@@ -444,7 +435,7 @@
                     </div>
                 </div>
 
-                {{-- Why QuickDials mini-card --}}
+                
                 <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 relative overflow-hidden">
                     <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(circle at 80% 20%,#3b82f6 0%,transparent 50%)"></div>
                     <div class="relative">
@@ -470,13 +461,13 @@
                     </div>
                 </div>
             </div>
-            {{-- ─── END RIGHT ─── --}}
+            
 
         </div>
     </div>
 </section>
 
-{{-- ── HOW IT WORKS ─────────────────────────────────────────── --}}
+
 <section class="py-12 relative overflow-hidden" style="background:linear-gradient(135deg,#eef2ff 0%,#f0f9ff 50%,#faf5ff 100%);">
     <div class="absolute inset-0 pointer-events-none opacity-40" style="background-image:radial-gradient(circle at 20% 50%,#bfdbfe 0%,transparent 40%),radial-gradient(circle at 80% 50%,#ddd6fe 0%,transparent 40%)"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -492,7 +483,7 @@
         </div>
 
         <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 relative">
-            {{-- Connector line --}}
+            
             <div class="hidden lg:block absolute top-7 left-[12%] right-[12%] h-0.5 bg-slate-100 overflow-hidden rounded-full">
                 <div class="step-line h-full rounded-full" id="step-line"></div>
             </div>
@@ -528,7 +519,7 @@
     </div>
 </section>
 
-{{-- ── FEATURES ─────────────────────────────────────────────── --}}
+
 <section class="py-16 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 text-center">
         <span class="text-3xl font-bold mb-2 slide-up">Powerful Features for Your Business</span>
@@ -552,7 +543,7 @@
     </div>
 </section>
 
-{{-- ── GROW SECTION ─────────────────────────────────────────── --}}
+
 <section class="bg-gray-100">
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10 text-center">
         <h2 class="text-2xl md:text-3xl font-bold slide-up">How QuickDials help You to Grow your Business</h2>
@@ -595,7 +586,7 @@
     </div>
 </section>
 
-{{-- ── TESTIMONIALS / REVIEWS ───────────────────────────────── --}}
+
 <section class="py-16 bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10 slide-up">
@@ -605,7 +596,7 @@
         </div>
 
         @if(!empty($reviewList))
-        {{-- Review slider --}}
+         
         <div id="review-slider-wrap" class="relative overflow-hidden px-8">
             <div id="review-track" class="review-track gap-4">
                 @foreach(array_chunk($reviewList, 3) as $pageReviews)
@@ -641,14 +632,14 @@
             <button onclick="reviewNav(1)"  class="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-slate-600 hover:text-blue-600 transition-colors z-10">▶</button>
         </div>
 
-        {{-- Dots --}}
+         
         <div class="flex justify-center mt-4 gap-2" id="review-dots">
             @foreach(array_chunk($reviewList, 3) as $pi => $p)
             <button onclick="reviewGoTo({{ $pi }})" class="review-dot w-2 h-2 rounded-full {{ $pi === 0 ? 'bg-blue-500' : 'bg-gray-300' }} transition-colors"></button>
             @endforeach
         </div>
         @else
-        {{-- Placeholder when no reviews --}}
+         
         <div class="grid sm:grid-cols-3 gap-4">
             @for($i=0;$i<3;$i++)
             <div class="bg-white rounded-2xl p-5 shadow border animate-pulse h-40"></div>
@@ -656,7 +647,7 @@
         </div>
         @endif
 
-        {{-- CTA Banner --}}
+        
         <div class="mt-12 relative rounded-3xl overflow-hidden slide-up">
             <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 p-10 text-center relative">
                 <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 20% 50%,white 0%,transparent 40%),radial-gradient(circle at 80% 50%,white 0%,transparent 40%)"></div>
@@ -672,7 +663,7 @@
     </div>
 </section>
 
-{{-- ── FAQ ───────────────────────────────────────────────────── --}}
+
 <section class="py-20 relative overflow-hidden" style="background:linear-gradient(160deg,#f8faff 0%,#f0f4ff 45%,#f5f0ff 100%);">
     <div class="absolute inset-0 pointer-events-none opacity-35" style="background-image:linear-gradient(#c7d7f8 1px,transparent 1px),linear-gradient(90deg,#c7d7f8 1px,transparent 1px);background-size:64px 64px;"></div>
     <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -749,20 +740,19 @@
 
  
 <script>
-// ─── Intersection Observer: slide-up / slide-left / slide-right ────────────
+
 const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
 }, { threshold: 0.12 });
 document.querySelectorAll('.slide-up, .slide-left, .slide-right').forEach(el => io.observe(el));
 
-// Step-line special observer
 const lineIO = new IntersectionObserver(([e]) => {
     if (e.isIntersecting) { e.target.classList.add('visible'); lineIO.unobserve(e.target); }
 }, { threshold: 0.5 });
 const stepLine = document.getElementById('step-line');
 if (stepLine) lineIO.observe(stepLine);
 
-// ─── Package selector ──────────────────────────────────────────────────────
+
 function selectPkg(id) {
     document.querySelectorAll('.pkg-btn').forEach(btn => {
         btn.classList.remove('border-blue-500','border-violet-500','border-slate-500','shadow-md','-translate-y-0.5');
@@ -776,11 +766,11 @@ function selectPkg(id) {
     }
     document.getElementById('package_interest').value = id;
 }
-// Restore selection on validation error
+
 const savedPkg = document.getElementById('package_interest').value;
 if (savedPkg) selectPkg(savedPkg);
 
-// ─── Success Story Slider ──────────────────────────────────────────────────
+
 let currentStory = 0;
 const slides  = document.querySelectorAll('.success-slide');
 const allDots = document.querySelectorAll('.story-dot');
@@ -810,7 +800,7 @@ resetStoryTimer();
 document.getElementById('success-slider')?.addEventListener('mouseenter', () => clearInterval(storyTimer));
 document.getElementById('success-slider')?.addEventListener('mouseleave', resetStoryTimer);
 
-// ─── FAQ accordion ─────────────────────────────────────────────────────────
+
 function toggleFaq(btn) {
     const item    = btn.closest('.faq-item');
     const answer  = item.querySelector('.faq-answer');
@@ -818,7 +808,7 @@ function toggleFaq(btn) {
     const accent  = item.querySelector('.faq-accent');
     const isOpen  = answer.classList.contains('open');
 
-    // Close all
+     
     document.querySelectorAll('.faq-answer.open').forEach(a => {
         a.classList.remove('open');
         const ch = a.closest('.faq-item').querySelector('.faq-chevron');
@@ -839,7 +829,7 @@ function toggleFaq(btn) {
     }
 }
 
-// ─── Review Slider ─────────────────────────────────────────────────────────
+
 let reviewPage  = 0;
 const reviewPages = document.querySelectorAll('.review-page');
 const reviewDots  = document.querySelectorAll('.review-dot');
@@ -859,7 +849,6 @@ function reviewNav(dir) {
     reviewGoTo(((reviewPage + dir) % total + total) % total);
 }
 
-// Auto-play reviews
 let reviewTimer = setInterval(() => reviewNav(1), 4500);
 document.getElementById('review-slider-wrap')?.addEventListener('mouseenter', () => clearInterval(reviewTimer));
 document.getElementById('review-slider-wrap')?.addEventListener('mouseleave', () => { reviewTimer = setInterval(() => reviewNav(1), 4500); });

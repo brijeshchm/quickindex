@@ -32,45 +32,41 @@
                  onmouseenter="svcPaused=true" onmouseleave="svcPaused=false"
                  class="flex gap-3 overflow-x-auto pb-2"
                  style="scroll-behavior:smooth; scrollbar-width:none; -ms-overflow-style:none;">
-                @foreach($popularSearches as $svc)
-                 
+                @foreach($popularSearches as $svc)                 
                @php
                 $noCitySlugs = ['wedding-planning'];       
                 @endphp
-                 <a href="{{ route('showCity',$svc['url']) }}"
-   title="{{ $svc['title'] ?? '' }}"
-   class="block shrink-0 rounded-xl overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-300"
-   style="width:calc((100% - 12px) / 2.2); min-width:120px; max-width:200px;">
+                 <a href="{{ route('showCity',$svc['url']) }}" title="{{ $svc['title'] ?? '' }}"   class="block shrink-0 rounded-xl overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-md transition-shadow duration-300" style="width:calc((100% - 12px) / 2.2); min-width:120px; max-width:200px;">
 
-    <div class="h-[110px] sm:h-[130px] overflow-hidden relative">
-        <img loading="lazy"
-             decoding="async" 
-             src="{{ $svc['img'] ?? '' }}"
-             alt="{{ $svc['alt'] ?? '' }}"   
-            width="200"
-            height="130"          
-            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"/>
+                <div class="h-[110px] sm:h-[130px] overflow-hidden relative">
+                <img loading="lazy"
+                    decoding="async" 
+                    src="{{ $svc['img'] ?? '' }}"
+                    alt="{{ $svc['alt'] ?? '' }}"   
+                    width="200"
+                    height="130"          
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"/>
 
-        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" aria-hidden="true"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" aria-hidden="true"></div>
 
-        @if(!empty($svc['tag']))
-            <span class="absolute top-1.5 left-1.5 bg-white/20 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full border border-white/20">
-                {{ $svc['tag'] }}
-            </span>
-        @endif
-    </div>
+                        @if(!empty($svc['tag']))
+                            <span class="absolute top-1.5 left-1.5 bg-white/20 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full border border-white/20">
+                                {{ $svc['tag'] }}
+                            </span>
+                        @endif
+                    </div>
 
-    <div class="bg-white px-2 py-1.5 border-t border-gray-100 relative">
-        <p class="text-[11px] font-bold text-gray-800 truncate">
-            {{ $svc['title'] ?? '' }}
-        </p>
-        <p class="text-[9px] text-blue-600 font-medium mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            Explore →
-        </p>
-        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" aria-hidden="true"></div>
-    </div>
+                    <div class="bg-white px-2 py-1.5 border-t border-gray-100 relative">
+                        <p class="text-[11px] font-bold text-gray-800 truncate">
+                            {{ $svc['title'] ?? '' }}
+                        </p>
+                        <p class="text-[9px] text-blue-600 font-medium mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Explore →
+                        </p>
+                        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" aria-hidden="true"></div>
+                    </div>
 
-</a>
+                </a>
 
                 @endforeach
             </div>

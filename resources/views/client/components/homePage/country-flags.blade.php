@@ -1,6 +1,3 @@
-{{-- ─────────────────────────────────────────
-    COUNTRY FLAGS + CITY TABS
-───────────────────────────────────────── --}}
 <section class="py-12 bg-white border-t border-gray-100">
     <div class="w-full px-4 md:px-8">
         <h3 class="text-center text-sm font-bold text-gray-400 uppercase tracking-widest mb-8">We are available in</h3>
@@ -19,14 +16,14 @@
 </section>
 
 <script>
-// ─── City Tabs (CountryFlags) ──────────────────────────────────────────────
+
 (async function () {
     const tabBar     = document.getElementById('city-tab-bar');
     const tabContent = document.getElementById('city-tab-content');
     let allKeywords  = [];
     let cities       = [];
 
-    // Style strings — single source of truth
+    
     const ACTIVE_CLASSES   = 'border-blue-600 text-blue-600 bg-white';
     const INACTIVE_CLASSES = 'border-transparent text-gray-500 hover:text-gray-800 hover:bg-white/60';
     const BASE_CLASSES     = 'shrink-0 px-4 py-2.5 text-xs font-semibold whitespace-nowrap transition-colors border-b-2 cursor-pointer';
@@ -42,7 +39,7 @@
             return;
         }
 
-        // Render tabs (no inline onclick — use event delegation)
+        
         tabBar.innerHTML = cities.map((city, i) => `
             <button type="button"
                     data-idx="${i}"
@@ -52,15 +49,13 @@
                 ${city.city}
             </button>
         `).join('');
-
-        // Event delegation — one listener, handles all clicks
+       
         tabBar.addEventListener('click', (e) => {
             const btn = e.target.closest('button[data-idx]');
             if (!btn) return;
             setActiveTab(Number(btn.dataset.idx), btn.dataset.slug);
         });
-
-        // Default: activate the first tab
+       
         setActiveTab(0, cities[0].city);
 
     } catch (e) {

@@ -9,7 +9,7 @@
 
         body { background: hsl(270 30% 98%); }
 
-        /* ── Glass card ── */
+        
         .glass-card {
             background: rgba(255,255,255,0.72);
             backdrop-filter: blur(16px);
@@ -28,7 +28,7 @@
             transition: width .15s ease;
         }
 
-        /* ── Scroll reveal ── */
+      
         .scroll-reveal {
             opacity: 0;
             transform: translateY(22px);
@@ -111,12 +111,7 @@
         }
     </style>
 
-{{-- ── Progress bar ── --}}
 <div id="progress-bar" style="width:0%"></div>
-
-{{-- ══════════════════════════
-     DECORATIVE ORBS
-══════════════════════════ --}}
 <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
     <div class="orb-1 absolute top-20 right-[10%] w-96 h-96 rounded-full opacity-20"
          style="background:radial-gradient(circle,hsl(270 70% 75%),transparent 70%)"></div>
@@ -126,9 +121,6 @@
          style="background:radial-gradient(circle,hsl(250 70% 70%),transparent 70%)"></div>
 </div>
 
-{{-- ══════════════════════════
-     HERO
-══════════════════════════ --}}
 <div class="relative overflow-hidden"
      style="background:linear-gradient(135deg,hsl(270 50% 95%) 0%,hsl(290 60% 96%) 50%,hsl(250 45% 95%) 100%);border-bottom:1px solid rgba(139,92,246,.1)">
 
@@ -174,15 +166,12 @@
     </svg>
 </div>
 
-{{-- ══════════════════════════
-     MAIN CONTENT
-══════════════════════════ --}}
 <div class="max-w-6xl mx-auto px-6 py-12 relative z-10"
      x-data="privacyPolicyPage()" x-init="init()">
 
     <div class="flex gap-10">
 
-        {{-- ── STICKY SIDEBAR ── --}}
+       
         <aside class="hidden lg:block w-64 shrink-0">
             <nav class="sticky top-24 glass-card rounded-2xl p-6">
                 <div class="flex items-center gap-2 mb-5">
@@ -649,9 +638,9 @@
                 </div>
             </div>
 
-        </div>{{-- /content --}}
-    </div>{{-- /flex --}}
-</div>{{-- /Alpine root --}}
+        </div>
+    </div>
+</div>
 
 <script>
 function privacyPolicyPage() {
@@ -659,14 +648,14 @@ function privacyPolicyPage() {
         active: 'introduction',
 
         init() {
-            /* ── Scroll reveal ── */
+            
             const observer = new IntersectionObserver(
                 entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
                 { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
             );
             document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-            /* ── Progress bar + active section ── */
+            
             const sections = ['introduction','data-collection','data-usage','data-sharing','data-security','user-rights'];
             const bar = document.getElementById('progress-bar');
 

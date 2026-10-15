@@ -1,15 +1,14 @@
 <section class="relative pt-[108px] md:pt-14 overflow-hidden bg-white border-b border-gray-100">
-
-    {{-- Dot pattern --}}
+ 
     <div class="absolute inset-0 pointer-events-none opacity-30 dot-bg"></div>
-    {{-- Decorative blobs --}}
+    
     <div class="absolute -top-10 -right-10 w-56 h-56 rounded-full bg-blue-50 pointer-events-none"></div>
     <div class="absolute bottom-0 -left-8 w-48 h-48 rounded-full bg-orange-50/70 pointer-events-none"></div>
 
     <div class="relative z-10 w-full px-4 md:px-8">
         <div class="pt-5 pb-4">
 
-            {{-- Headline --}}
+        
 
             <div class="max-w-2xl mx-auto text-center mb-3">
                 <h1 class="text-1xl md:text-1xl font-bold text-gray-900 leading-tight mb-2">
@@ -127,23 +126,23 @@
             <div id="slider-track" class="flex slider-track" style="gap:4px">
                 @php
                 $colorMap = ['bg-blue-600','bg-indigo-600','bg-rose-800','bg-violet-700','bg-teal-600','bg-orange-500','bg-rose-600','bg-amber-600','bg-indigo-600','bg-rose-800','bg-teal-600','bg-amber-600','bg-blue-600','bg-orange-500','bg-violet-700','bg-blue-600'];
-               
+               $imgClass= 'absolute inset-0 w-full h-full object-cover object-center opacity-80 brightness-90 group-hover:opacity-100 group-hover:brightness-110 group-hover:scale-105 transition-all duration-500';
                 @endphp
                 @if($bannerKeyword)
                 @foreach($bannerKeyword as $i => $card)
                
-        <a href="{{ route('showCity',$card['url']) }}"
-            title="{{ $card['title'] ?? '' }}"
-            class="banner-card relative shrink-0 rounded-t-2xl overflow-hidden cursor-pointer group h-[140px] sm:h-[155px] block {{ $colorMap[$i % count($colorMap)] }}">
-<img
-    src="{{ $card['img'] ?? '' }}"
-    alt="{{ $card['title'] ?? '' }}"    
-    loading="lazy"
-    decoding="async"
-    width="254"
-    height="155"
-    class="absolute inset-0 w-full h-full object-cover object-center opacity-80 brightness-90 group-hover:opacity-100 group-hover:brightness-110 group-hover:scale-105 transition-all duration-500"
-/>
+                <a href="{{ route('showCity',$card['url']) }}"
+                title="{{ $card['title'] ?? '' }}"
+                class="banner-card relative shrink-0 rounded-t-2xl overflow-hidden cursor-pointer group h-[140px] sm:h-[155px] block {{ $colorMap[$i % count($colorMap)] }}">
+                <img
+                    src="{{ $card['img'] ?? '' }}"
+                    alt="{{ $card['title'] ?? '' }}"    
+                    loading="lazy"
+                    decoding="async"
+                    width="254"
+                    height="155"
+                    class="{{ $imgClass }}"
+                />
     <div class="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent"></div>
 
     <div class="relative z-10 p-3.5 flex flex-col justify-between h-full">
@@ -154,7 +153,7 @@
             <span class="flex items-center gap-0.5 text-[9px] text-gray-200 mt-0.5">
                 <span class="text-yellow-400 text-[10px]">★</span>
                 <span class="font-semibold">{{ $card['rating'] ?? '' }}</span>
-                <span class="opacity-70">({{ $card['count'] ?? '' }} Reviews) </span>
+                <span class="opacity-70">({{ $card['count'] ?? '' }} Reviews)</span>
             </span>
         </div>
 

@@ -245,9 +245,9 @@ select.ef-input { padding-left:1rem; }
 </div>
 
 {{-- Countries list: pass $countries from your controller [{sortname, country_name, phonecode}] --}}
-<script>
+<!-- <script>
     const CC_COUNTRIES = @js($countries ?? [['sortname' => 'IN', 'country_name' => 'India', 'phonecode' => '91']]);
-</script>
+</script> -->
 
 <script>
 /* ════════════════════════════════════════════════
@@ -517,15 +517,6 @@ select.ef-input { padding-left:1rem; }
     });
 })();
 
-
-/* ════════════════════════════════════════════════
-   MULTI-STEP FORM LOGIC (server-validated)
-   ════════════════════════════════════════════════ */
-
-   /* ════════════════════════════════════════════════
-   MULTI-STEP FORM LOGIC (0-based steps, server-validated)
-   Steps: 0 = Contact, 1 = Details, 2 = Message
-   ════════════════════════════════════════════════ */
 (function () {
     const VALIDATE_URL = @js(route('form.validate.step'));
     const SUBMIT_URL   = @js(url('/client/lead/saveEnquiry'));
@@ -649,7 +640,7 @@ select.ef-input { padding-left:1rem; }
         /* ── Server validation for one step ── */
         const validateStep = async (n) => {
             const stepEl = form.querySelector(`[data-step="${n}"]`);
-            console.log(stepEl);
+             
             clearStepErrors(stepEl);
             if (!quickCheck(n)) return false;
 

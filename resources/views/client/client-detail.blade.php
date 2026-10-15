@@ -123,9 +123,7 @@ foreach ($starMap as $k => $v) {
 }
 $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 @endphp
-{{-- ════════════════════════════════════════
-     HERO BANNER
-════════════════════════════════════════ --}}
+
 <div class="hero-wrap" style="height:46vh;min-height:380px;">
 
     {{-- Main hero image --}}
@@ -193,9 +191,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </div>
 
-{{-- ════════════════════════════════════════
-     STICKY ACTION BAR (desktop)
-════════════════════════════════════════ --}}
+
 <div class="hidden md:block">
     <div class="w-full px-8 md:px-16 py-3 flex flex-wrap gap-2 items-center">
         <!-- <a href="tel:+917559435943" rel="nofollow">
@@ -244,9 +240,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </div>
 
-{{-- ════════════════════════════════════════
-     INFO STRIP
-════════════════════════════════════════ --}}
 <div class="info-strip w-full">
     <div class="w-full px-8 md:px-16 py-3 flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2">
@@ -270,9 +263,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </div>
 
-{{-- ════════════════════════════════════════
-     ABOUT + ENQUIRY FORM
-════════════════════════════════════════ --}}
 <section class="bg-white">
     <div class="w-full px-8 md:px-16 py-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -353,9 +343,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </section>
 
-{{-- ════════════════════════════════════════
-     SERVICES SECTION
-════════════════════════════════════════ --}}
 @if(!empty($assignKeyword))
 <section style="background:linear-gradient(135deg,#f0f4ff 0%,#e8edf8 100%);">
     <div class="w-full px-8 md:px-16 py-10">
@@ -414,12 +401,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </section>
 @endif
-
-{{-- ════════════════════════════════════════
-     GALLERY SECTION
-════════════════════════════════════════ --}}
-
-
 @if(count($gallery))
 <section style="background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);">
     <div class="w-full px-8 md:px-16 pt-8 pb-2">
@@ -450,10 +431,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     </div>
 </section>
 @endif
-
-{{-- ════════════════════════════════════════
-     RECENT ACTIVITY
-════════════════════════════════════════ --}}
+@if(!empty($recentActivitys))
 <section style="background:linear-gradient(180deg,#f8faff 0%,#eef4ff 100%);">
     <div class="w-full px-8 md:px-16 py-10">
         <div class="flex items-end justify-between mb-7">
@@ -481,8 +459,6 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 @if(!empty($recentActivitys) && count($recentActivitys) > 0)
     @foreach($recentActivitys as $activity)
         @php
-
-    
             [$tagBg, $tagColor] = $tagPalette[$activity['index'] % count($tagPalette)];
         @endphp
 
@@ -523,18 +499,10 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         <p class="text-sm text-gray-400">No recent activities to show yet.</p>
     </div>
 @endif
-
-
- 
-        </div>
+       </div>
     </div>
 </section>
-
-{{-- ════════════════════════════════════════
-     GOVERNMENT RECOGNITIONS
-════════════════════════════════════════ --}}
-
- 
+ @endif
  @if(count($govDocs))
 <section style="background:linear-gradient(180deg,#f0f4ff 0%,#e8edf8 100%);">
     <div class="w-full px-8 md:px-16 py-10">
@@ -551,7 +519,7 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 
         <div class="grid grid-cols-1 md:grid-cols-[38%_1fr] gap-6">
 
-            {{-- ── Left: tile list ── --}}
+            
             <div class="flex flex-col gap-3" id="gov-tiles">
                 @foreach($govDocs as $i => $doc)
 
@@ -620,12 +588,12 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                            <div class="group rounded-xl overflow-hidden mx-auto w-full max-w-xs cursor-pointer
                 shadow-md border border-black/5
                 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-        <img src="{{ asset($doc['img']) }}"
-             alt="{{ $doc['title'] }}"
-             loading="lazy"
-             class="w-full h-48 object-cover block
-                    group-hover:scale-105 transition-transform duration-500">
-    </div>
+                    <img src="{{ asset($doc['img']) }}"
+                        alt="{{ $doc['title'] }}"
+                        loading="lazy"
+                        class="w-full h-48 object-cover block
+                                group-hover:scale-105 transition-transform duration-500">
+                </div>
                         @else
                         <div class="rounded-xl flex flex-col items-center gap-3 py-6 text-center"
                              style="background:rgba(29,78,216,.06);">
@@ -672,17 +640,17 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                     </div>
                     <div class="flex-1 min-h-0 px-6 pb-6 w-[600px] h-[200px]" id="gov-preview-img">
                     
-@if(!empty($doc['img']))
-    <div class="group rounded-xl overflow-hidden mx-auto w-full max-w-xs cursor-pointer
-                shadow-md border border-black/5
-                hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
-        <img src="{{ asset($doc['img']) }}"
-             alt="{{ $doc['title'] }}"
-             loading="lazy"
-             class="w-full h-48 object-cover block
-                    group-hover:scale-105 transition-transform duration-500">
-    </div>
-@endif
+                        @if(!empty($doc['img']))
+                            <div class="group rounded-xl overflow-hidden mx-auto w-full max-w-xs cursor-pointer
+                                        shadow-md border border-black/5
+                                        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+                                <img src="{{ asset($doc['img']) }}"
+                                    alt="{{ $doc['title'] }}"
+                                    loading="lazy"
+                                    class="w-full h-48 object-cover block
+                                            group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        @endif
  
  
 
@@ -787,12 +755,6 @@ function selectGov(i) {
 }
 </script>
 @endif
-
-{{-- ════════════════════════════════════════
-     CERTIFICATIONS & AWARDS
-════════════════════════════════════════ --}}
-
-
 
 @if(!empty($certifications))
 <section style="background:linear-gradient(180deg,#fffbf0 0%,#fef9ec 100%);">
@@ -913,7 +875,7 @@ function selectGov(i) {
 </section>
 
 <style>
-/* Smooth accordion via max-height transition */
+
 .cert-accordion {
     transition: max-height .35s cubic-bezier(.32,.72,0,1),
                 opacity    .3s ease,
@@ -977,12 +939,6 @@ function selectCert(i) {
 </script>
 @endif
 
-
- 
-
-{{-- ════════════════════════════════════════
-     HOURS & CONTACT
-════════════════════════════════════════ --}}
 <section class="bg-white">
     <div class="w-full px-8 md:px-16 py-8 reveal">
         <div class="rounded-2xl overflow-hidden border" style="border-color:rgba(234,88,12,.15);">
@@ -1149,9 +1105,6 @@ function selectCert(i) {
     </div>
 </section>
 
-{{-- ════════════════════════════════════════
-     RELATED SEARCHES
-════════════════════════════════════════ --}}
 @if(count($relatedList))
 <section class="bg-white">
     <div class="w-full px-8 md:px-16 py-6 reveal">
@@ -1182,9 +1135,6 @@ function selectCert(i) {
 </section>
 @endif
 
-{{-- ════════════════════════════════════════
-     AREA / OVERVIEW BUSINESS
-════════════════════════════════════════ --}}
 @if(!empty($areaBusiness['heading']) || !empty($overviewBusiness['heading']))
 <section class="py-16 bg-white">
     <div class="w-full px-6 md:px-8">
@@ -1257,11 +1207,6 @@ function selectCert(i) {
     </div>
     @endif
 
-
-
-{{-- ════════════════════════════════════════
-     REVIEWS
-════════════════════════════════════════ --}}
 <section style="background:linear-gradient(135deg,#faf5ff 0%,#ede9fe 40%,#f0f9ff 100%);">
     <div class="w-full px-8 md:px-16 py-10">
         <div class="reveal mb-12 flex flex-col items-center text-center gap-5">
@@ -1362,9 +1307,6 @@ function selectCert(i) {
     </div>
 </section>
 
-{{-- ════════════════════════════════════════
-     MOBILE BOTTOM BAR
-════════════════════════════════════════ --}}
 <div id="mobile-bar" class="fixed left-0 bottom-2 right-0 z-50 flex items-center gap-2 px-4 py-3 md:hidden"
      style="background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-top:1px solid rgba(59,130,246,.15);box-shadow:0 -4px 24px rgba(37,99,235,.1);">
     <!-- <a href="tel:+917559435943" class="flex-1" rel="nofollow">
@@ -1384,22 +1326,15 @@ function selectCert(i) {
     </button>
 </div>
 
-{{-- ════════════════════════════════════════
-     ENQUIRY MODAL (popup)
-════════════════════════════════════════ --}}
 <div id="enquiry-modal" class="fixed inset-0 z-[210] hidden items-center justify-center p-4"
-     style="background:rgba(10,15,40,.75);backdrop-filter:blur(14px);"
-     onclick="if(event.target===this)this.classList.remove('open')">
+     style="background:rgba(10,15,40,.75);backdrop-filter:blur(14px);">
     <div class="relative w-full max-w-md overflow-hidden" style="border-radius:1.75rem;" onclick="event.stopPropagation()">
         @include('client.layouts.all_common_popup', ['keywordList' => '', 'planOptions' => $planOptions, 'formId' => 'modal'])
     </div>
 </div>
-{{-- Show modal by adding .open = display:flex --}}
+
 <style>#enquiry-modal.open{display:flex;}</style>
 
-{{-- ════════════════════════════════════════
-     LOCATION MODAL
-════════════════════════════════════════ --}}
 <div id="location-modal" class="fixed inset-0 z-[210] hidden items-center justify-center p-4"
      style="background:rgba(10,15,40,.75);backdrop-filter:blur(14px);"
      onclick="if(event.target===this)this.classList.remove('open')">
@@ -1416,22 +1351,14 @@ function selectCert(i) {
     </div>
 </div>
 <style>#location-modal.open{display:flex;}</style>
-
-{{-- ════════════════════════════════════════
-     LIGHTBOX
-════════════════════════════════════════ --}}
 <div id="lightbox" onclick="if(event.target===this)closeLightbox()">
     <button onclick="closeLightbox()" class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">✕</button>
     <button onclick="lbPrev()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);">‹</button>
     <button onclick="lbNext()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);">›</button>
     <div id="lightbox-content" class="max-w-5xl max-h-[90vh] p-8 md:p-16 flex items-center justify-center w-full">
         <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
-    </div>
+    </div>  
 </div>
-
-{{-- ════════════════════════════════════════
-     GALLERY MODAL
-════════════════════════════════════════ --}}
 <div id="gallery-modal">
     <div class="flex items-center gap-3 px-4 py-3 shrink-0" style="background:#1a1a2e;border-bottom:1px solid rgba(255,255,255,.08);">
         <button onclick="document.getElementById('gallery-modal').classList.remove('open')" class="flex items-center gap-1.5 text-white/70 hover:text-white">
@@ -1471,7 +1398,11 @@ function selectCert(i) {
                 style="background:rgba(0,0,0,.06);">✕</button>
 
         <h2 class="text-xl font-bold mb-4 pr-8">Write a Review</h2>
-
+        @php
+        $city = (!empty($clientsList['city']) && !is_numeric($clientsList['city']))
+        ? Str::slug($clientsList['city'])
+        : 'bangalore ';                        
+        @endphp
         {{-- General status banner (success / network errors — not field-specific) --}}
         <div id="review-status" class="hidden mb-3 px-4 py-2 rounded-xl text-sm font-medium"></div>
 
@@ -1491,6 +1422,7 @@ function selectCert(i) {
         <p id="error-rating" class="hidden text-xs text-red-500 mt-1 mb-3"></p>
 
         <input type="hidden" id="review-rating-val" name="rating" value="0">
+        <input type="hidden" name="city" value="{{ $city }}">
         <input type="hidden" id="review-currentClient-val" name="business_id" value="{{ $clientsList['business_id'] ?? '' }}">
 
         {{-- Name --}}
@@ -1669,6 +1601,7 @@ async function submitReview() {
         name:             document.querySelector('#review-form-modal [name="name"]').value.trim(),
         email:            document.querySelector('#review-form-modal [name="email"]').value.trim(),
         phone:            document.querySelector('#review-form-modal [name="phone"]').value.trim(),
+        city:            document.querySelector('#review-form-modal [name="city"]').value.trim(),
         comment_content:  document.querySelector('#review-form-modal [name="review_text"]').value.trim(),
         s_rating:         document.querySelector('#review-form-modal [name="rating"]').value,
     };

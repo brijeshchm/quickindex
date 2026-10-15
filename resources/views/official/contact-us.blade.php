@@ -6,7 +6,7 @@
 @include('client.components.banner-section')
 <main class="relative mt-4">
 
-    {{-- Grid background lines --}}
+    
     <div class="absolute inset-0 pointer-events-none overflow-hidden grid-lines">
         @for($i = 0; $i < 20; $i++)
             <div style="left: {{ ($i / 19) * 100 }}%"></div>
@@ -14,8 +14,7 @@
     </div>
 
     <section class="relative z-10 px-6 pt-10 pb-14 max-w-7xl mx-auto">
-
-        {{-- ── HERO HEADER ── --}}
+ 
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-10">
             <div>
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-violet-200 bg-violet-100/70 mb-4 anim-fade-up" style="animation-delay:.05s">
@@ -47,8 +46,7 @@
                 </a>
             </div>
         </div>
-
-        {{-- ── QUICK CONTACT CARDS ── --}}
+        
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-14">
 
             @php
@@ -56,7 +54,7 @@
                 [
                     'label'     => 'Phone',
                     'value'     => '+91-75-5943-5943',
-                    'sub'       => 'Mon–Fri, 10am–7pm EST',
+                    'sub'       => 'Mon–Sat, 10am–7pm EST',
                     'href'      => 'tel:+917559435943',
                     'iconBg'    => 'bg-violet-50',
                     'iconColor' => 'text-violet-600',
@@ -125,10 +123,10 @@
             @endforeach
         </div>
 
-        {{-- ── OFFICES ── --}}
+       
         <div class="mb-14">
 
-            {{-- Section header --}}
+           
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center shrink-0">
                     <svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,11 +142,11 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
 
-                {{-- HEAD OFFICE (spans 2 cols) --}}
+                
                 <div class="col-span-1 lg:col-span-2 anim-fade-up" style="animation-delay:.05s">
                     <div class="relative overflow-hidden rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 p-8 shadow-md hover:shadow-lg transition-shadow duration-300 group h-full">
 
-                        {{-- Decorative orb --}}
+                        
                         <div class="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl bg-violet-300/20 pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
 
                         <div class="relative z-10 flex flex-col sm:flex-row gap-6 sm:items-start justify-between">
@@ -193,7 +191,7 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        Mon–Fri, 10am–7pm PST
+                                        Mon–Sat, 10am–7pm PST
                                     </p>
                                 </div>
                             </div>
@@ -213,7 +211,7 @@
                     </div>
                 </div>
 
-                {{-- BRANCH OFFICES --}}
+                
                 @php
                 $branches = [
                     [
@@ -279,10 +277,10 @@
             </div>
         </div>
 
-        {{-- ── FORM + FEATURES ── --}}
+       
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-            {{-- LEFT: features --}}
+             
             <div class="flex flex-col gap-6 anim-fade-left" style="animation-delay:.3s">
                 <div>
                     <span class="text-xl font-bold text-gray-900 mb-2">Send us a message</span>
@@ -331,11 +329,11 @@
                 </div>
             </div>
 
-            {{-- RIGHT: Contact Form (Alpine.js) --}}
+            
             <div class="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 anim-fade-right" style="animation-delay:.38s"
                  x-data="contactForm()" x-init="init()">
 
-                {{-- Success --}}
+                
                 <div x-show="submitted" x-cloak class="flex flex-col items-center justify-center gap-4 py-12 text-center">
                     <div class="relative w-16 h-16 anim-pop-in">
                         <div class="pulse-ring absolute inset-0 rounded-full"></div>
@@ -354,15 +352,13 @@
                     </button>
                 </div>
 
-                {{-- Form --}}
-                {{-- resources/views/client/contact-form.blade.php --}}
+               
 
 <div x-data="contactForm()" x-init="init()">
-    {{-- ✅ CSRF meta tag must exist in your <head>: <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-
+    
     <div x-show="!submitted">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-3.5">
-            {{-- Full Name --}}
+            
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Full Name</label>
                 <input x-model="form.name" type="text" placeholder="Enter Name"
@@ -371,7 +367,7 @@
                 <p x-show="errors.name" x-text="errors.name" class="text-xs text-red-500 mt-0.5"></p>
             </div>
 
-            {{-- Email --}}
+            
             <div class="flex flex-col gap-1.5">
                 <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</label>
                 <input x-model="form.email" type="email" placeholder="Enter Email"
@@ -381,7 +377,7 @@
             </div>
         </div>
 
-        {{-- ✅ NEW: Mobile field --}}
+       
         <div class="flex flex-col gap-1.5 mb-3.5">
             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Mobile</label>
             <input x-model="form.mobile" type="tel" inputmode="numeric" maxlength="10"
@@ -392,7 +388,7 @@
             <p x-show="errors.mobile" x-text="errors.mobile" class="text-xs text-red-500 mt-0.5"></p>
         </div>
 
-        {{-- Subject --}}
+        
         <div class="flex flex-col gap-1.5 mb-3.5">
             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Subject</label>
             <select x-model="form.subject"
@@ -417,17 +413,17 @@
             <p x-show="errors.message" x-text="errors.message" class="text-xs text-red-500 mt-0.5"></p>
         </div>
 
-        {{-- ✅ Honeypot (spam trap) — hidden from humans --}}
+         
         <input type="text" x-model="form.website" tabindex="-1" autocomplete="off"
                class="hidden" aria-hidden="true" />
 
-        {{-- Server error banner --}}
+       
         <div x-show="serverError" x-cloak
              class="mb-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs">
             <span x-text="serverError"></span>
         </div>
 
-        {{-- Submit button --}}
+       
         <button type="button" @click="submit()" :disabled="loading"
                 class="relative w-full mt-1 py-3.5 rounded-xl font-semibold text-white overflow-hidden btn-gradient hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-600">
             <template x-if="loading">
@@ -450,7 +446,7 @@
         </button>
     </div>
 
-    {{-- ✅ Success state --}}
+     
     <div x-show="submitted" x-cloak class="text-center py-10">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
             <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -466,7 +462,7 @@
 </div>
 
 
-            </div>{{-- /form card --}}
+            </div>
         </div>
 
     </section>
@@ -486,12 +482,12 @@ function contactForm() {
             mobile: '',
             subject: '',
             message: '',
-            website: '', // honeypot
+            website: '', 
         },
         errors: {},
 
         init() {
-            // optional: prefill from localStorage if you want
+            
         },
 
         clientValidate() {
@@ -507,8 +503,7 @@ function contactForm() {
         async submit() {
             this.serverError = '';
             if (!this.clientValidate()) return;
-
-            // honeypot: bot fills hidden field → silently fake success
+           
             if (this.form.website) { this.submitted = true; return; }
 
             this.loading = true;
@@ -538,8 +533,7 @@ function contactForm() {
                     this.resetFields();
                     return;
                 }
-
-                // validation errors from server (status 400)
+             
                 if (res.status === 400 && data?.errors) {
                     Object.keys(data.errors).forEach(k => this.errors[k] = data.errors[k][0]);
                     return;
@@ -567,7 +561,4 @@ function contactForm() {
     }
 }
 </script>
-  
-
- 
- @endsection
+@endsection

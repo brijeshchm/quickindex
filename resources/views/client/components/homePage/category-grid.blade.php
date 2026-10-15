@@ -13,8 +13,6 @@
             : route('city.slug', ['city_slug' => 'faridabad', 'service_slug' => $cat['url']]);
      
             @endphp
-
-
         <a href="{{ $popSUrl }}"
            class="flex flex-col items-center gap-2 p-3 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/50 transition-all group text-center block">
             <div class="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center">

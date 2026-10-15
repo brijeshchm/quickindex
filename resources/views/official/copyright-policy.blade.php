@@ -1,9 +1,7 @@
 @extends('client.layouts.app')
 @section('title', 'Copyright Policy | QuickDials – Content Protection')
 @section('description', 'Read QuickDials Copyright Policy covering content ownership, intellectual property rights, permitted use, infringement reporting, and digital content protection.')
- 
 @section('content')
-
 @php
     $sections = [
         ['id' => 'intro',        'title' => 'Introduction',                 'icon' => 'book-open'],
@@ -44,10 +42,7 @@
         'A statement of accuracy and authorization, under penalty of perjury',
     ];
 @endphp
-
 <div x-data="copyrightPage()" x-init="init()" class="min-h-screen bg-gray-50">
-
-    {{-- Hero --}}
     <div class="relative overflow-hidden border-b border-violet-100"
          style="background: linear-gradient(135deg, hsl(270 50% 95%) 0%, hsl(290 60% 96%) 50%, hsl(250 45% 95%) 100%);">
 
@@ -79,18 +74,13 @@
                 </div>
             </div>
         </div>
-
-        {{-- Decorative wave --}}
         <svg class="absolute bottom-0 left-0 right-0 w-full" viewBox="0 0 1440 40" fill="none" preserveAspectRatio="none">
             <path d="M0 40 C360 0 1080 0 1440 40 L1440 40 L0 40Z" fill="#fafaf9"></path>
         </svg>
     </div>
-
-    {{-- Main content --}}
+    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-10">
         <div class="flex flex-col lg:flex-row gap-10">
-
-            {{-- Sidebar TOC --}}
             <aside class="lg:w-64 flex-shrink-0">
                 <div class="lg:sticky lg:top-24">
                     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
@@ -111,8 +101,6 @@
                             @endforeach
                         </nav>
                     </div>
-
-                    {{-- Quick Stats Card --}}
                     <div class="mt-4 bg-gradient-to-br from-violet-100 to-fuchsia-50 border border-violet-200 rounded-2xl p-5">
                         <p class="text-xs font-bold uppercase tracking-widest text-violet-600 mb-4">Policy Summary</p>
                         <div class="space-y-3">
@@ -130,12 +118,10 @@
                         </div>
                     </div>
                 </div>
-            </aside>
-
-            {{-- Policy content --}}
+            </aside>           
             <main class="flex-1 min-w-0 space-y-8">
 
-                {{-- Section 1 - Introduction --}}
+                 
                 <section id="intro" x-intersect:enter="$el.classList.add('revealed')"
                          class="reveal bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
                     <div class="flex items-center gap-3 mb-6">
@@ -163,7 +149,7 @@
                     </div>
                 </section>
 
-                {{-- Section 2 - IP Ownership --}}
+               
                 <section id="ownership" x-intersect:enter="$el.classList.add('revealed')"
                          class="reveal bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
                     <div class="flex items-center gap-3 mb-6">
@@ -320,9 +306,7 @@
                
             </main>
         </div>
-    </div>
-
-    {{-- Back to top --}}
+    </div>    
     <button type="button"
             x-show="showBackToTop"
             x-cloak
@@ -344,7 +328,7 @@ function copyrightPage() {
         observer: null,
 
         init() {
-            // Active section tracking via IntersectionObserver
+             
             this.observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach(entry => {
@@ -377,7 +361,7 @@ function copyrightPage() {
 <style>
     [x-cloak] { display: none !important; }
 
-    /* Shimmer text on heading */
+ 
     .shimmer-text {
         background: linear-gradient(90deg, #8b5cf6 0%, #d946ef 50%, #8b5cf6 100%);
         background-size: 200% 100%;
@@ -390,8 +374,7 @@ function copyrightPage() {
         0%, 100% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
     }
-
-    /* Reveal-on-scroll */
+    
     .reveal {
         opacity: 0;
         transform: translateY(20px);
@@ -401,8 +384,7 @@ function copyrightPage() {
         opacity: 1;
         transform: translateY(0);
     }
-
-    /* Fade-in-up for hero */
+   
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }

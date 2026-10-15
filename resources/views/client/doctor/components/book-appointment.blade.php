@@ -1,4 +1,3 @@
-{{-- resources/views/client/book-appointment.blade.php --}}
 @extends('client.layouts.app')
 @section('title', 'Book Appointment — Dr. ' . $doctor->name)
 
@@ -10,9 +9,7 @@
     })" class="min-h-screen bg-sidebar/30 py-8 sm:py-12">
 
     <div class="max-w-3xl mx-auto px-4">
-
-        {{-- Stepper --}}
-        <div class="flex items-center justify-between mb-10 max-w-md mx-auto">
+       <div class="flex items-center justify-between mb-10 max-w-md mx-auto">
             <template x-for="(step, idx) in steps" :key="step.num">
                 <div class="flex items-center flex-1 last:flex-none">
                     <div class="flex flex-col items-center">
@@ -30,8 +27,7 @@
                 </div>
             </template>
         </div>
-
-        {{-- Doctor summary --}}
+        
         <div class="rounded-2xl border border-border/50 bg-white shadow-sm p-5 mb-6 flex items-center gap-4">
             <div class="w-16 h-16 rounded-xl overflow-hidden bg-muted shrink-0">
                 @if ($doctor->image_url)

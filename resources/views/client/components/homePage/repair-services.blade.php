@@ -26,11 +26,11 @@ $repairGradients = [
 <section class="py-4 bg-white border-b border-gray-100">
     <div class="w-full px-4 md:px-8">
  
-        {{-- Header --}}
+       
         <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2.5">
                 <div class="w-7 h-7 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
-                    {{-- Wrench icon --}}
+                   
                     <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -66,25 +66,27 @@ $repairGradients = [
             </div>
         </div>
  
-        {{-- Scrollable track --}}
+  
         <div class="relative overflow-hidden"
              onmouseenter="repairPaused=true"
              onmouseleave="repairPaused=false">
             <div id="repair-scroll-track"
                  class="flex gap-3 overflow-x-auto pb-2"
                  style="scroll-behavior:smooth; scrollbar-width:none; -ms-overflow-style:none;">
- 
+ @php
+$serClass= 'shrink-0 rounded-xl overflow-hidden relative group cursor-pointer border border-gray-100
+                            hover:shadow-md hover:-translate-y-0.5 transition-all duration-300';
+ @endphp
             @foreach($repairsServices as $i => $service)
                  
                 @php
                     $grad = $repairGradients[$i % count($repairGradients)];
                 @endphp
-                <a href="{{ route('showCity',$service['url']) }}"> 
-                <div class="shrink-0 rounded-xl overflow-hidden relative group cursor-pointer border border-gray-100
-                            hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                <a href="{{ route('showCity',$service['url']) }}">
+                <div class="{{ $serClass }}"
                      style="width:calc((100% - 12px) / 2.2); min-width:120px; max-width:200px;">
  
-                    {{-- Image area --}}
+                    
                     <div class="relative overflow-hidden" style="height:100px;">
                         <a href="{{ route('showCity',$service['url']) }}">
                             <img src="{{ $service['img'] ?? '' }}"
@@ -96,12 +98,12 @@ $repairGradients = [
                                 height="100"  
                                 />
                         </a>
-                        {{-- Gradient overlay matching COLOR_MAP --}}
+                  
                         <div class="absolute inset-0 pointer-events-none"
                              style="background: linear-gradient(to top, {{ $grad }}, transparent);"></div>
                     </div>
  
-                    {{-- Card body --}}
+               
                     <div class="p-2 bg-white relative">
                         <p class="text-[11px] font-bold text-gray-900 truncate mb-0.5">
                             <a href="{{ route('showCity',$service['url']) }}">{{ $service['title'] ?? '' }}</a>
@@ -116,13 +118,12 @@ $repairGradients = [
                                 Book
                             </span>
                         </div>
-                        {{-- Orange underline on hover --}}
+                     
                         <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-400
                                     scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                     </div>
                 </div>
-
-</a>
+                </a>
                 @endforeach
  
             </div>
@@ -135,7 +136,7 @@ $repairGradients = [
 </style>
  
 <script>
-// ─── Repair Services Scroll ────────────────────────────────────────────────
+ 
 let repairPaused = false;
 const repairTrack = document.getElementById('repair-scroll-track');
 const repairPrev  = document.getElementById('repair-prev');
@@ -169,8 +170,6 @@ function repairScroll(dir) {
 if (repairTrack) {
     repairTrack.addEventListener('scroll', updateRepairBtns, { passive: true });
     updateRepairBtns();
- 
-    // Auto-scroll every 2 s, loop back when at end
     setInterval(() => {
         if (repairPaused) return;
         const atEnd = repairTrack.scrollLeft >= repairTrack.scrollWidth - repairTrack.clientWidth - 4;

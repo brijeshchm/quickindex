@@ -26,7 +26,7 @@
          x-transition:leave-start="opacity-100 scale-100 translate-y-0"
          x-transition:leave-end="opacity-0 scale-90 translate-y-4">
 
-        {{-- LEFT PANEL --}}
+        
         <div class="hidden md:flex md:w-5/12 relative flex-col overflow-hidden flex-shrink-0">
             <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-violet-700"></div>
             <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/80 via-violet-900/70 to-black/60 z-10"></div>
@@ -59,8 +59,7 @@
                 </div>
             </div>
         </div>
-
-        {{-- MOBILE BANNER --}}
+        
         <div class="md:hidden relative h-28 flex-shrink-0 bg-gradient-to-br from-indigo-600 to-violet-700">
             <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/60 to-indigo-900/80"></div>
             <div class="relative z-10 h-full flex items-center px-5 gap-3">
@@ -74,23 +73,19 @@
                 </div>
             </div>
         </div>
-
-        {{-- RIGHT PANEL --}}
+        
         <div class="flex-1 flex flex-col overflow-hidden min-h-0">
-
-            {{-- Progress bar --}}
+          
             <div class="h-1 bg-gray-100 flex-shrink-0">
                 <div class="h-full bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 transition-all duration-500"
                      :style="`width:${(step/3)*100}%`"></div>
             </div>
-
-            {{-- Close --}}
+             
             <button @click="close()"
                     class="absolute top-3 right-3 z-20 w-8 h-8 flex items-center justify-center
                            rounded-xl bg-white/80 backdrop-blur-sm text-gray-500
                            hover:text-gray-800 hover:bg-white transition-all shadow-sm text-sm">✕</button>
-
-            {{-- Desktop step label --}}
+         
             <div class="hidden md:flex items-center gap-2 px-5 pt-4 pb-1 flex-shrink-0">
                 <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest">
                     Step <span x-text="step + 1"></span> / 3
@@ -98,8 +93,7 @@
                 <div class="flex-1 h-px bg-gray-100"></div>
                 <span class="text-xs text-gray-400" x-text="['Your Info','Preferences','Message'][step]"></span>
             </div>
-
-            {{-- Mobile dots --}}
+             
             <div class="flex md:hidden items-center justify-center gap-2 pt-3 flex-shrink-0">
                 @foreach(range(0,2) as $si)
                 <div class="h-1.5 rounded-full transition-all duration-300"
@@ -192,7 +186,7 @@
                     </div>
                 </div>
 
-                {{-- STEP 2 --}}
+               
                 <div x-show="!showSuccess && step === 2" style="display:none" class="space-y-3">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Step 3 — Your Message</p>
 
@@ -223,11 +217,10 @@
                     </div>
                     <p class="text-[10px] text-gray-400 text-center">By submitting you agree to our Terms &amp; Privacy Policy</p>
                 </div>
-
-            </div>{{-- /scroll --}}
-        </div>{{-- /right panel --}}
-    </div>{{-- /modal box --}}
-</div>{{-- /modal root --}}
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 function enquiryModal() {

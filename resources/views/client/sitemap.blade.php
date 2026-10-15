@@ -4,66 +4,61 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
 <loc>https://www.quickdials.com/</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod>
+<lastmod>2026-10-09T10:30:00+00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>1.00</priority>
 </url>
 <url>
 <loc>https://www.quickdials.com/about-us</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
 <url>
 <loc>https://www.quickdials.com/contact-us</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
 <url>
 <loc>https://www.quickdials.com/careers</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
-
 <url>
 <loc>https://www.quickdials.com/pricing</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod>
+<lastmod>2026-10-09T10:30:00+00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
-
 <url>
 <loc>https://www.quickdials.com/blog</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
-
 <url>
 <loc>https://www.quickdials.com/privacy-policy</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
-
 <url>
 <loc>https://www.quickdials.com/terms-conditions</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
 <url>
 <loc>https://www.quickdials.com/copyright-policy</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
-
 <url>
 <loc>https://www.quickdials.com/business-owners</loc>
-<lastmod>2026-06-09T10:30:00+00:00</lastmod> 
+<lastmod>2026-10-09T10:30:00+00:00</lastmod> 
 <changefreq>daily</changefreq>
 <priority>0.80</priority>
 </url>
@@ -93,7 +88,6 @@
 
     ];
 @endphp
-
 @foreach ($allowedCities as $city)
     @foreach ($keywordArray as $keyword)
         <url>
@@ -101,7 +95,7 @@
                 'city_slug' => $city,
                 'service_slug' => $keyword
             ]) }}</loc>
-
+        <lastmod>{{ now()->toAtomString() }}</lastmod> 
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -122,13 +116,12 @@
                 'city_slug' => $cityNoida,
                 'service_slug' => $keywordNoida
             ]) }}</loc>
+            <lastmod>{{ now()->toAtomString() }}</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
     @endforeach
 @endforeach
-
-
 @php
     $delhiCities = [
         'delhi'
@@ -144,12 +137,12 @@
                 'city_slug' => $cityDelhi,
                 'service_slug' => $keywordDelhi
             ]) }}</loc>
+            <lastmod>{{ now()->toAtomString() }}</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
     @endforeach
 @endforeach
-
 @php
     $bangaloreCities = [
         'bangalore'
@@ -165,6 +158,7 @@
                 'city_slug' => $cityBangalore,
                 'service_slug' => $keywordBangalore
             ]) }}</loc>
+            <lastmod>{{ now()->toAtomString() }}</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -180,5 +174,4 @@
     </url>
 @endforeach
 @endif
-
 </urlset>
