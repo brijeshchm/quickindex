@@ -503,7 +503,7 @@
                 const code = field('country_code').value;
 
                 if (name.length < 2 || name.length > 100) {
-                    fail('name', 'Enter a name between 2 and 100 characters.');
+                    fail('name', 'Enter a name.');
                 }
 
                 if (!email || field('email').validity.typeMismatch) {
