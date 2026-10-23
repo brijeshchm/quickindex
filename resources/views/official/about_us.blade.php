@@ -1,6 +1,6 @@
 @extends('client.layouts.app')
 @section('title', 'About QuickDials — Indias Trusted Service Marketplace & Lead Platform')
-@section('description', 'QuickDials connects 1M+ customers with verified businesses across IT, weddings, home services, healthcare, real estate, finance, travel & more. Get quality leads, real reviews, and direct customer connections')
+@section('description', 'QuickDials connects 1M+ customers with verified businesses across IT, weddings, home services, healthcare, real estate, finance, travel & more.')
 @section('content')
 @include('client.components.banner-section')
 <style>
