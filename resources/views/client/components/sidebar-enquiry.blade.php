@@ -134,7 +134,7 @@
                 
                      <img
                         :src="'https://flagcdn.com/w40/' + ccFlag + '.png'"
-                        :alt="ccFlag ? ccFlag.toUpperCase() + ' flag' : 'Country flag'"
+                        alt="Country flag"
                         loading="lazy" decoding="async"
                         class="w-4 h-3 object-cover rounded-sm flex-shrink-0"
                     />

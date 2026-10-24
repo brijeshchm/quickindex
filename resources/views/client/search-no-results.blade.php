@@ -229,7 +229,7 @@ $schema = [
     ]
 ];
 }
-  
+   
 @endphp
 @if(!empty($schema))
 <script type="application/ld+json">
@@ -250,6 +250,7 @@ $schema = [
 </script>
 @endif 
 @if($hasBanners)
+
 <div x-data='bannerSlider(@json($keywordBanners), 4000)'
      x-init="init()"
      @mouseenter="pause()"
@@ -259,7 +260,7 @@ $schema = [
      x-show="showAd"
      x-cloak
      class="relative w-full overflow-hidden h-48 group rounded-lg shadow-md">
-   
+   sdasd
     <template x-for="(banner, idx) in banners" :key="banner.id">
         <div class="absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out"
              :class="idx === current ? 'opacity-100 z-10' : 'opacity-0 z-0'"
@@ -276,8 +277,8 @@ $schema = [
                 </a>
             </template>
             <template x-if="!banner.click_url">
-                <img :src="banner.image_url"
-                     :alt="banner.alt_text"                     
+                <img src="banner.image_url"
+                     alt="banner.alt_text"                     
                      loading="eager"
                     fetchpriority="high"
                         decoding="async"

@@ -5721,6 +5721,7 @@ function triggerAutoSaveFor(form) {
     }
 }
 
+
 document.querySelectorAll('form[data-auto-save]').forEach(function (form) {
     const isPaymentForm = form.id === 'paymentOrderForm';
 
@@ -6388,7 +6389,7 @@ document.addEventListener('DOMContentLoaded', function () {
             placeholder: textarea.dataset.placeholder || 'Write here...',
             modules: {
                 toolbar: [
-                    [{ header: [2, 3, false] }],
+                    [{ header: [2, 3,4,5, true] }],
                     ['bold', 'italic', 'underline'],
                     [{ list: 'ordered' }, { list: 'bullet' }],
                     ['link'],
