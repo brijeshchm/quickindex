@@ -159,6 +159,10 @@ class WebsiteRazorpayController extends Controller
 	 */
 	public function razCheckOut(Request $request)
 	{
+		if(!(isset($_GET['encrypt']))){
+
+			abort('404');
+		}
 
 		$data = $this->dataDecodeJsonBase64($_GET['encrypt']);
 
@@ -478,7 +482,7 @@ class WebsiteRazorpayController extends Controller
 		$data = $request->order_id;	
 	 
 		if (!$request->filled('order_id')) {
-			abort(400, 'Order ID missing');
+			abort('404');
 		}
  	 
 		$paymentHistory = PaymentHistory::where('order_number', $request->order_id)->first();

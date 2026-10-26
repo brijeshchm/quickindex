@@ -3,7 +3,9 @@
 @section('title', 'QuickDials API Documentation')
 
 @section('description', 'QuickDials API integration guide with endpoint details, JSON request examples, headers and response formats.')
-
+@section('meta_robots')
+<meta name="robots" content="noindex, follow">
+@endsection
 @section('content')
 @include('client.components.banner-section')
 

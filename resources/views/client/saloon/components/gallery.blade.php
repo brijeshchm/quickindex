@@ -82,7 +82,7 @@
             >
                 <img
                     :src="p.url"
-                    :alt="p.label"
+                    alt="p.label"
                     loading="lazy"
                     class="block w-full rounded-2xl transition-all duration-300 ease-out group-hover:scale-[1.04] group-hover:brightness-[0.88]"
                 >
@@ -141,7 +141,7 @@
                     {{-- Main image --}}
                     <img
                         :src="currentPhoto.url"
-                        :alt="currentPhoto.label"
+                        alt="currentPhoto.label"
                         :key="currentPhoto.id"
                         class="mx-auto block max-h-[60vh] w-full rounded-2xl object-contain"
                         x-transition:enter="transition ease-out duration-200"
@@ -184,7 +184,7 @@
                         <template x-for="(p, i) in lbFiltered" :key="'thumb-' + p.id">
                             <img
                                 :src="p.url"
-                                :alt="p.label"
+                                alt="p.label"
                                 @click="idx = i"
                                 class="h-[60px] w-[60px] flex-shrink-0 cursor-pointer rounded-[10px] object-cover transition-all duration-150"
                                 :class="i === idx
@@ -215,7 +215,7 @@
                         >
                             <img
                                 :src="p.url"
-                                :alt="p.label"
+                                alt="p.label"
                                 loading="lazy"
                                 class="block w-full rounded-xl transition-transform duration-200 group-hover:scale-[1.03]"
                             >

@@ -183,7 +183,7 @@
                                 :class="form.country_code == c.phonecode && ccFlag == c.sortname.toLowerCase()
                                         ? 'bg-indigo-50 text-indigo-700 font-semibold' : ''">
                             <img :src="'https://flagcdn.com/w40/' + c.sortname.toLowerCase() + '.png'"
-                                :alt="ccFlag ? ccFlag.toUpperCase() + ' flag' : 'Country flag'"
+                                alt="Country flag"
                                  loading="lazy" decoding="async" class="w-5 h-3.5 object-cover rounded-sm flex-shrink-0">
                             <span class="flex-1 text-left truncate" x-text="c.country_name"></span>
                             <span class="text-gray-400 font-mono text-[10px] flex-shrink-0"

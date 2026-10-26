@@ -1846,33 +1846,33 @@ class HomePageController extends Controller
 
 
 	}
-	public function child(Request $request)
-	{
+	// public function child(Request $request)
+	// {
 		       
-        $data = Cache::remember('child_keyword_page', 3600, function () {
-            try {
-                $res = Http::timeout(10)->withoutVerifying()
-                    ->get('https://api.quickdials.com/api/website/getChild');
-                return $res->successful() ? $res->json('data', []) : [];
+    //     $data = Cache::remember('child_keyword_page', 3600, function () {
+    //         try {
+    //             $res = Http::timeout(10)->withoutVerifying()
+    //                 ->get('https://api.quickdials.com/api/website/getChild');
+    //             return $res->successful() ? $res->json('data', []) : [];
 
 
-            } catch (\Exception $e) {
-                \Log::error('getChild API: ' . $e->getMessage());
-                return [];
-            }
-        });
+    //         } catch (\Exception $e) {
+    //             \Log::error('getChild API: ' . $e->getMessage());
+    //             return [];
+    //         }
+    //     });
  
-        $childs  = $data['childsList'] ?? [];
-        $courses = $data['keywords']   ?? [];
+    //     $childs  = $data['childsList'] ?? [];
+    //     $courses = $data['keywords']   ?? [];
  
 
-		$city = "delhi";
-		$metaTitle = "Sub Categories in delhi | QuickDials Local Business Directory";
-		$metaDescription = "Find trusted sub categories in Delhi on QuickDials. Explore verified service providers, professionals, consultants, and local business solutions near you.";
-		$keyword = "Sub category";
+	// 	$city = "delhi";
+	// 	$metaTitle = "Sub Categories in delhi | QuickDials Local Business Directory";
+	// 	$metaDescription = "Find trusted sub categories in Delhi on QuickDials. Explore verified service providers, professionals, consultants, and local business solutions near you.";
+	// 	$keyword = "Sub category";
 
-        return view('client.child', compact('childs', 'courses','city','metaTitle','metaDescription','keyword'));
- 	}
+    //     return view('client.child', compact('childs', 'courses','city','metaTitle','metaDescription','keyword'));
+ 	// }
 
 	public function categories(Request $request, $slug)
 	{
@@ -1949,72 +1949,72 @@ class HomePageController extends Controller
 
 
 
-	public function childSlus(Request $request, $child_slug)
-	{
+	// public function childSlus(Request $request, $child_slug)
+	// {
 		  
  
     
-            $res = Http::timeout(10)->withoutVerifying()
-                ->get('https://api.quickdials.com/api/website/searchChild', [
-                    'child-slug' => $child_slug,
-                ]);
+    //         $res = Http::timeout(10)->withoutVerifying()
+    //             ->get('https://api.quickdials.com/api/website/searchChild', [
+    //                 'child-slug' => $child_slug,
+    //             ]);
  
             
 
-			   $response = $res->successful() ? $res->json() : null;
+	// 		   $response = $res->successful() ? $res->json() : null;
        
  
-        if (!$response) {
-            abort(410);
-        }
+    //     if (!$response) {
+    //         abort(410);
+    //     }
  
-        /* ── extract data (mirrors the Next.js component) ── */
-        $kwData       = $response['data']['keyword']      ?? [];
-        $childLists = $response['data']['childLists'] ?? []; 
-        $keyword          = $kwData['child_category']   ?? '';
-        $childCategory    = $kwData['child_category']   ?? '';
-        $childSlug        = $kwData['child_slug']       ?? '';
-        $topDescription   = strip_tags($kwData['top_description']    ?? '');
-        $bottomDescription= strip_tags($kwData['bottom_description'] ?? '');
-        $ratingCount      = $kwData['ratingcount']       ?? 0;
-        $ratingValue      = $kwData['ratingvalue']       ?? 4.8;
-        $bgImage          = $kwData['category_banner']   ?? '/computer-courses-training.jpg';
-        $metaTitle        = $kwData['meta_title']        ?? $keyword;
-        $metaDescription  = $kwData['meta_description']  ?? '';
-        $metaKeywords  = $kwData['h1_heading']  ?? '';
+    //     /* ── extract data (mirrors the Next.js component) ── */
+    //     $kwData       = $response['data']['keyword']      ?? [];
+    //     $childLists = $response['data']['childLists'] ?? []; 
+    //     $keyword          = $kwData['child_category']   ?? '';
+    //     $childCategory    = $kwData['child_category']   ?? '';
+    //     $childSlug        = $kwData['child_slug']       ?? '';
+    //     $topDescription   = strip_tags($kwData['top_description']    ?? '');
+    //     $bottomDescription= strip_tags($kwData['bottom_description'] ?? '');
+    //     $ratingCount      = $kwData['ratingcount']       ?? 0;
+    //     $ratingValue      = $kwData['ratingvalue']       ?? 4.8;
+    //     $bgImage          = $kwData['category_banner']   ?? '/computer-courses-training.jpg';
+    //     $metaTitle        = $kwData['meta_title']        ?? $keyword;
+    //     $metaDescription  = $kwData['meta_description']  ?? '';
+    //     $metaKeywords  = $kwData['h1_heading']  ?? '';
  
-  		$faqs = [];
-        for ($i = 1; $i <= 6; $i++) {
-            $q = $kwData["faqq{$i}"] ?? '';
-            $a = $kwData["faqa{$i}"] ?? '';
-            if ($q && $a) $faqs[] = ['q' => $q, 'a' => $a];
-        }
+  	// 	$faqs = [];
+    //     for ($i = 1; $i <= 6; $i++) {
+    //         $q = $kwData["faqq{$i}"] ?? '';
+    //         $a = $kwData["faqa{$i}"] ?? '';
+    //         if ($q && $a) $faqs[] = ['q' => $q, 'a' => $a];
+    //     }
 
-        /* star image map */
-        $starMap = [
-            0 => 'star_1.png', 2 => 'star_2.png', 3 => 'star_3.png',
-            3.5 => 'star_3.5.png', 4 => 'star_4.png', 4.5 => 'star_4.5.png',
-            4.75 => 'star_4.75.png', 5 => 'star_5.png',
-        ];
-        $stars = $starMap[$ratingValue] ?? 'star_4.5.png';
+    //     /* star image map */
+    //     $starMap = [
+    //         0 => 'star_1.png', 2 => 'star_2.png', 3 => 'star_3.png',
+    //         3.5 => 'star_3.5.png', 4 => 'star_4.png', 4.5 => 'star_4.5.png',
+    //         4.75 => 'star_4.75.png', 5 => 'star_5.png',
+    //     ];
+    //     $stars = $starMap[$ratingValue] ?? 'star_4.5.png';
  
-        /* category colour palette (index-based, mirrors Next.js CAT_STYLE) */
-        $catColors = [
-            '#1a5276','#1a6496','#4a235a','#b7770d','#0b3d5e',
-            '#145a32','#2c3e50','#154360','#7b241c','#117a65',
-            '#145a32','#784212','#1e8449','#1b4332',
-        ];
- 		$city = "faridabad";
+    //     /* category colour palette (index-based, mirrors Next.js CAT_STYLE) */
+    //     $catColors = [
+    //         '#1a5276','#1a6496','#4a235a','#b7770d','#0b3d5e',
+    //         '#145a32','#2c3e50','#154360','#7b241c','#117a65',
+    //         '#145a32','#784212','#1e8449','#1b4332',
+    //     ];
+ 	// 	$city = "faridabad";
 		
-        return view('client.child-slug', compact(
-            'child_slug', 'keyword', 'childCategory', 'childSlug',
-            'topDescription', 'bottomDescription','metaKeywords',
-            'ratingCount', 'ratingValue', 'stars', 'bgImage',
-            'childLists', 'catColors','faqs','kwData',
-            'metaTitle', 'metaDescription','city'
-        ));
+    //     return view('client.child-slug', compact(
+    //         'child_slug', 'keyword', 'childCategory', 'childSlug',
+    //         'topDescription', 'bottomDescription','metaKeywords',
+    //         'ratingCount', 'ratingValue', 'stars', 'bgImage',
+    //         'childLists', 'catColors','faqs','kwData',
+    //         'metaTitle', 'metaDescription','city'
+    //     ));
     
-	}
+	// }
 
 	public function weddingPannel(Request $request)
 	{

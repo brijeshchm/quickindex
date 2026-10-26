@@ -211,7 +211,7 @@ $services = [
             <div class="relative h-56 overflow-hidden">
                 <img
                     :src="featured.img"
-                    :alt="featured.title"
+                    alt="featured.title"
                     class="h-full w-full object-cover"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent"></div>

@@ -394,7 +394,7 @@ Route::get('/api-documentation', [App\Http\Controllers\Client\HomePageController
 
 Route::get('/about-us', [App\Http\Controllers\Official\OfficialController::class, 'about'])->name('aboutUs');
 
-Route::get('/rss', [App\Http\Controllers\Official\OfficialController::class, 'rss']);
+
 Route::get('/features', [App\Http\Controllers\Official\OfficialController::class, 'features']);
 Route::get('/faq', [App\Http\Controllers\Official\OfficialController::class, 'faq']);
 Route::get('/contact-us', [App\Http\Controllers\Official\OfficialController::class, 'contact'])->name('contactUs');
@@ -407,7 +407,7 @@ Route::get('/blog', [App\Http\Controllers\Official\OfficialController::class, 'b
  
 Route::get('/blog/{slug}', [App\Http\Controllers\Official\OfficialController::class, 'blogdetails'])->name('blog.details');
 Route::get('/blog/category/{url}',[App\Http\Controllers\Official\OfficialController::class, 'blogCategory'])->name('category.blog');
-Route::get('/subscribe', [App\Http\Controllers\Official\OfficialController::class, 'subscribe']);
+// Route::get('/subscribe', [App\Http\Controllers\Official\OfficialController::class, 'subscribe']);
  
 Route::get('/terms-conditions', [App\Http\Controllers\Official\OfficialController::class, 'termsconditions'])->name('terms.conditions');
 Route::get('/privacy-policy', [App\Http\Controllers\Official\OfficialController::class, 'privacypolicy'])->name('privacy.policy');
@@ -429,7 +429,11 @@ Route::get('/getCityList', [App\Http\Controllers\Client\HomePageController::clas
 Route::get('/getCityAjax', [App\Http\Controllers\Client\HomePageController::class, 'getCityAjax']);
 
 Route::get('/disclaimer', function () {
-	return view('client.disclaimer');
+	$metaTitle= "";
+	$metaDescription= "";
+	$city= "";
+	$keyword= "";
+	return view('client.disclaimer',compact('metaTitle','metaDescription','city','keyword'));
 });
 
 
@@ -452,15 +456,12 @@ Route::post('/client-login', [App\Http\Controllers\ClientAuth\AuthController::cl
 Route::post('auth/send-otp', [App\Http\Controllers\ClientAuth\AuthController::class, 'sendOtp']);
 Route::post('/client-verify-otp', [App\Http\Controllers\ClientAuth\AuthController::class, 'clientVerifyOtp']);
 
-Route::get('/sanctum/csrf-cookie', function (Request $request) {
-    return response()->json(['message' => 'CSRF cookie set']);
-})->middleware('web'); // 'web' middleware sets cookies
+// Route::get('/sanctum/csrf-cookie', function (Request $request) {
+//     return response()->json(['message' => 'CSRF cookie set']);
+// })->middleware('web'); // 'web' middleware sets cookies
 
 
-
-// Route::get('/businessdetails/{slug}', [App\Http\Controllers\Client\ClientDetailController::class, 'index'])->name('business.details');
-// Route::get('/businessdetails', [App\Http\Controllers\Client\ClientDetailController::class, 'businessDetails'])->name('lists.business');
-
+ 
 Route::post('/review', [App\Http\Controllers\Client\ReviewController::class, 'store']);
 Route::get('/client/logout', [App\Http\Controllers\LogoutController::class, 'clientLogout'])->name('clientLogout');
 Route::get('/sales/logout', [App\Http\Controllers\LogoutController::class, 'salesLogout'])->name('salesLogout');
@@ -471,12 +472,9 @@ Route::get('location/getAjaxCity', [HomePageController::class, 'getAjaxLocation'
 Route::get('service/getAjaxKeyword', [HomePageController::class, 'getAjaxKeyword'])->name('search.keyword');
 
 Route::get('/get-zones/{city_id}', [HomePageController::class, 'getZones'])->name('zones.get');
-Route::get('payment/checkout', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'razCheckOut'])->name('raz.checkout');;
-//?status=correction&encrypt=
+Route::get('payment/checkout', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'razCheckOut'])->name('raz.checkout');
 
-Route::get('package', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'getPackage'])->name('package.list');;
-
-
+ 
 
 Route::post('razorPayCheckout', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'razorPayCheckout']);
 Route::get('/payment-done', [App\Http\Controllers\Client\WebsiteRazorpayController::class, 'success']);

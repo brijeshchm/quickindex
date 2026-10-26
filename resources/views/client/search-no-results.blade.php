@@ -268,7 +268,7 @@ $schema = [
             <template x-if="banner.click_url">
                 <a :href="banner.click_url" rel="noopener sponsored" class="block w-full h-full">
                     <img :src="banner.image_url"
-                         :alt="banner.alt_text"                         
+                         alt="banner.alt_text"                         
                         loading="eager"
                         fetchpriority="high"
                         decoding="async"

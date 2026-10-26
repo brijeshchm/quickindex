@@ -2,7 +2,11 @@
 @section('title', 'News | QuickDials - Business, Education & Local Service Insights')
 @section('description', 'Explore the QuickDials News for the latest updates, business tips, education guides, career advice, local service insights, digital marketing trends, technology news, and helpful articles to grow your business and stay informed.')
 @section('keywords', 'QuickDials News, business News India, local business tips, education articles, career guidance, digital marketing tips, technology news, startup tips, local services News, IT training guides, business growth strategies, online business directory News, QuickDials articles')
+@section('meta_robots')
+<meta name="robots" content="noindex, follow">
+@endsection
 @section('content') 
+
 @include('client.components.banner-section')
 <style>
 

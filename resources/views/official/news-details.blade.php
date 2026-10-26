@@ -1,10 +1,12 @@
 @extends('client.layouts.app') 
 @section('title',$newsDetails['meta_title'])
 @section('description', $newsDetails['meta_description'])
-@section('keywords', $newsDetails['h1_heading'])
 @section('og_image', !empty($newsDetails['blogImage'])
     ? asset($newsDetails['blogImage'])
     : asset('client/images/quickdials-og.png'))
+    @section('meta_robots')
+<meta name="robots" content="noindex, follow">
+@endsection
 @section('content')
 @include('client.components.banner-section')
 @php
