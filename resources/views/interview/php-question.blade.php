@@ -370,26 +370,26 @@ $obj-&gt;greet(); // Output: Hello from Child<br>
   
   <code>
    
-abstract class Animal {<br>
-    &nbsp abstract public function makeSound();<br>
+abstract class Payment {<br>
+    &nbsp abstract public function pay();<br>
 
-    public function sleep() {<br>
-        &nbsp echo "Sleeping";<br>
+    public function paySuccess() {<br>
+        &nbsp echo "Payment success";<br>
     }<br>
 }<br>
 
-class Dog extends Animal {<br>
-   &nbsp public function makeSound() {<br>
-       &nbsp echo "Woof";<br>
+class Paypal extends Payment {<br>
+   &nbsp public function pay($amount) {<br>
+       &nbsp echo "pay amount $amount";<br>
     }<br>
 }<br>
 
-$dog = new Dog();<br>
-$dog-&gt;makeSound(); // Output: Woof!<br>
-$dog-&gt;sleep();     // Output: Sleeping...<br>
+$dog = new Paypal();<br>
+$dog-&gt;pay(5000); // Output: pay!<br>
+$dog-&gt;paySuccess();     // Output: pay success...<br>
 
 
-$test = New Animal(); // wrong not direct object create<br>
+$test = New Payment(); // wrong not direct object create<br>
   </code>
 
 </div></div></td><td >
@@ -400,35 +400,41 @@ $test = New Animal(); // wrong not direct object create<br>
  
  
 
-interface Payment<br>
+interface login<br>
 {<br>
-    public function pay($amount);<br>
-    public function refund($amount);<br>
+    public function login($data);<br>
+     
 }<br>
 
-class CreditCardPayment implements Payment<br>
+interface logout<br>
 {<br>
-    private $cardNumber;<br>
+    public function logout($data);<br>
+    
+}<br>
 
-    public function __construct($cardNumber)<br>
+class user implements login, logout<br>
+{<br>
+    private $data;<br>
+
+    public function __construct($data)<br>
     {<br>
-        $this->cardNumber = $cardNumber;<br>
+        $this->data = $data;<br>
     }<br>
 
-    public function pay($amount)<br>
+    public function login($data)<br>
     {<br>
-        return "Paid ₹" . $amount . " using Credit Card";<br>
+        return "User login ".$data;<br>
     }<br>
 
-    public function refund($amount)<br>
+    public function logout($data)<br>
     {<br>
-        return "Refunded ₹" . $amount . " to Credit Card";<br>
+        return "User Logout: all sessions destroyed for " . $data;<br>
     }<br>
 }<br>
 
-$payment = new CreditCardPayment("123456789");<br>
+$payment = new user("34789");<br>
 
-echo $payment->pay(5000);<br>
+echo $payment->login(34789);<br>
 
  
    </code></div></div></td></tr></tbody></table>

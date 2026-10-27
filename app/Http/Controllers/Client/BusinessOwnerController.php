@@ -114,12 +114,12 @@ class BusinessOwnerController extends Controller
         ];
  
         $features = [
-            ['icon' => '📍', 'title' => 'Google Maps Optimization',    'desc' => 'Improve your local visibility by optimizing Google Business Profile with keywords, reviews.'],
-            ['icon' => '🏷️', 'title' => 'Local Keyword Targeting',     'desc' => 'Rank for city-specific or "near me" search terms to drive local traffic and leads.'],
-            ['icon' => '📞', 'title' => 'Call & Form Tracking',        'desc' => 'Monitor how many calls and form submissions come from local searches.'],
-            ['icon' => '📄', 'title' => 'Lead Capture Landing Pages',  'desc' => 'Create location-specific landing pages designed to convert visitors into leads.'],
-            ['icon' => '⭐', 'title' => 'Review & Reputation Mgmt',    'desc' => 'Encourage and manage customer reviews to boost credibility and rankings.'],
-            ['icon' => '📊', 'title' => 'Citation & Local Listings',   'desc' => 'Submit your business info to trusted directories to improve consistency.'],
+            ['icon' => 'maps.png', 'title' => 'Google Maps Optimization',    'desc' => 'Improve your local visibility by optimizing Google Business Profile with keywords, reviews.'],
+            ['icon' => 'keywords.png', 'title' => 'Local Keyword Targeting',     'desc' => 'Rank for city-specific or "near me" search terms to drive local traffic and leads.'],
+            ['icon' => 'tracking.png', 'title' => 'Call & Form Tracking',        'desc' => 'Monitor how many calls and form submissions come from local searches.'],
+            ['icon' => 'landing-pages.png', 'title' => 'Lead Capture Landing Pages',  'desc' => 'Create location-specific landing pages designed to convert visitors into leads.'],
+            ['icon' => 'reviews.png', 'title' => 'Review & Reputation Mgmt',    'desc' => 'Encourage and manage customer reviews to boost credibility and rankings.'],
+            ['icon' => 'listings.png', 'title' => 'Citation & Local Listings',   'desc' => 'Submit your business info to trusted directories to improve consistency.'],
         ];
  
 		       $city = "delhi";

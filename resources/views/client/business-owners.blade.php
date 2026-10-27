@@ -2,7 +2,6 @@
 @extends('client.layouts.app')
 @section('title', 'Free Business Listing | QuickDials Business Search')
 @section('description','Find verified local businesses on QuickDials. Explore hotels, salons, real estate, travel, healthcare, education, reviews, phone numbers, addresses, and more.')
- 
 @section('content')
 @include('client.components.banner-section')
  
@@ -277,7 +276,7 @@ select.form-input { padding-left:1rem; }
                 <div class="reveal inline-flex items-center gap-2 bg-white/80 backdrop-blur
                             border border-blue-100 text-blue-700 text-sm font-semibold
                             px-4 py-2 rounded-full shadow-sm">
-                    ✨ Join 15,57+ Suppliers on QuickDials
+                    <img src="{{ asset('img/golden-sparkle.png') }}" alt="golden-sparkle" width="50"> Join 15,57+ Suppliers on QuickDials
                 </div>
 
                 {{-- Animated Title --}}
@@ -496,11 +495,26 @@ select.form-input { padding-left:1rem; }
                                 </button>
 
                                 <div class="flex items-center justify-center gap-5 pt-1">
-                                    @foreach([['🔒','100% Secure'],['⚡','2 min setup'],['⭐','4.8★ rated']] as $trust)
-                                    <div class="flex items-center gap-1 text-[10px] text-slate-400 font-medium">
-                                        {{ $trust[0] }} {{ $trust[1] }}
-                                    </div>
-                                    @endforeach
+
+                                @foreach([
+    ['lock.png', '100% Secure'],
+    ['setup.png', '2 min setup'],
+    ['star.png', '4.8★ rated'],
+] as $trust)
+    <div class="flex items-center gap-1 text-[10px] font-medium text-slate-400">
+        <img
+            src="{{ asset('img/' . $trust[0]) }}"
+            alt=""
+            width="80"
+            height="80"
+            class="h-4 w-4 object-contain"
+        >
+
+        <span>{{ $trust[1] }}</span>
+    </div>
+@endforeach
+
+                                     
                                 </div>
                             </form>
 
@@ -569,16 +583,23 @@ select.form-input { padding-left:1rem; }
                     </div>
                     <div class="grid grid-cols-4 gap-2">
                         @foreach([
-                            ['Retail','🛍️','bg-blue-50 text-blue-600','2.3K'],['Food','🍜','bg-orange-50 text-orange-500','1.8K'],
-                            ['Health','🏥','bg-emerald-50 text-emerald-500','1.4K'],['Tech','⚡','bg-violet-50 text-violet-500','1.1K'],
-                            ['Realty','🏠','bg-rose-50 text-rose-500','980'],['Auto','🚗','bg-cyan-50 text-cyan-500','860'],
-                            ['Beauty','💅','bg-pink-50 text-pink-500','740'],['Finance','💰','bg-teal-50 text-teal-500','620'],
+                            ['Retail','retail.png','bg-blue-50 text-blue-600','2.3K'],['Food','food.png','bg-orange-50 text-orange-500','1.8K'],
+                            ['Health','health.png','bg-emerald-50 text-emerald-500','1.4K'],['Tech','tech.png','bg-violet-50 text-violet-500','1.1K'],
+                            ['Realty','realty.png','bg-rose-50 text-rose-500','980'],['Auto','auto.png','bg-cyan-50 text-cyan-500','860'],
+                            ['Beauty','beauty.png','bg-pink-50 text-pink-500','740'],['Finance','finance.png','bg-teal-50 text-teal-500','620'],
                         ] as $cat)
                         <div class="flex flex-col items-center gap-1 p-2.5 rounded-xl border
                                     border-slate-100 bg-white hover:shadow-sm transition-all
                                     cursor-default hover:-translate-y-0.5 hover:scale-105">
                             <div class="w-8 h-8 {{ $cat[2] }} rounded-lg flex items-center justify-center text-lg">
-                                {{ $cat[1] }}
+                                 
+
+                                   <img
+            src="{{ asset('img/' . $cat[1]) }}"
+            alt="{{ $cat[1] }}"
+         
+            class="h-24 w-24 object-contain"
+        >
                             </div>
                             <span class="text-[9px] font-semibold text-slate-600 leading-tight">{{ $cat[0] }}</span>
                             <span class="text-[8px] text-slate-400">{{ $cat[3] }}+</span>
@@ -650,10 +671,10 @@ select.form-input { padding-left:1rem; }
             </div>
 
             @foreach([
-                ['01','Register','Fill the quick form in under 60 seconds','💬','from-blue-500 to-blue-600','bg-blue-50','~60 sec'],
-                ['02','Verify','Our team calls to confirm your details','✅','from-violet-500 to-purple-600','bg-violet-50','~2 min'],
-                ['03','Go Live','Your listing reaches thousands of buyers','🚀','from-indigo-500 to-blue-600','bg-indigo-50','~3 min'],
-                ['04','Grow','Receive leads & manage via your dashboard','📈','from-emerald-500 to-teal-600','bg-emerald-50','Ongoing'],
+                ['01','Register','Fill the quick form in under 60 seconds','Register.png','from-blue-500 to-blue-600','bg-blue-50','~60 sec'],
+                ['02','Verify','Our team calls to confirm your details','Verify.png','from-violet-500 to-purple-600','bg-violet-50','~2 min'],
+                ['03','Go Live','Your listing reaches thousands of buyers','GoLive.png','from-indigo-500 to-blue-600','bg-indigo-50','~3 min'],
+                ['04','Grow','Receive leads & manage via your dashboard','Grow.png','from-emerald-500 to-teal-600','bg-emerald-50','Ongoing'],
             ] as $i => $step)
             <div class="step-card reveal relative bg-white/80 backdrop-blur rounded-2xl p-5
                         border border-white shadow-sm hover:border-blue-100 cursor-default"
@@ -661,7 +682,14 @@ select.form-input { padding-left:1rem; }
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-2xl bg-gradient-to-br {{ $step[4] }}
                                 flex items-center justify-center shadow-lg text-xl">
-                        {{ $step[3] }}
+                        
+                        <img
+            src="{{ asset('img/' . $step[3]) }}"
+            alt="{{ $step[3] }}"
+           
+            
+            class="h-24 w-24 object-contain"
+        >
                     </div>
                     <div class="text-right">
                         <div class="text-2xl font-black gradient-text leading-none">{{ $step[0] }}</div>
@@ -686,15 +714,35 @@ select.form-input { padding-left:1rem; }
         <span class="reveal text-3xl font-bold mb-2">Powerful Features for Your Business</span>
         <p class="reveal text-gray-500 mb-10">Discover how QuickDials can transform your workforce management</p>
         <div class="grid md:grid-cols-3 gap-6">
-            @foreach($features as $i => $feat)
-            <div class="reveal bg-white rounded-2xl p-6 shadow-md hover:shadow-xl
-                        transition-all duration-300 hover:scale-105 cursor-default"
-                 >
-                <div class="text-4xl mb-4">{{ $feat['icon'] }}</div>
-                <h3 class="font-semibold text-lg mb-2">{{ $feat['title'] }}</h3>
-                <p class="text-gray-500 text-sm">{{ $feat['desc'] }}</p>
-            </div>
-            @endforeach
+
+        
+
+
+@foreach($features as $i => $feat)
+    <div
+        class="reveal cursor-default rounded-2xl bg-white p-6 shadow-md
+               transition-all duration-300 hover:scale-105 hover:shadow-xl"
+    >
+        {{-- Center image --}}
+        <div class="mb-4 flex justify-center">
+            <img
+                src="{{ asset('img/' . $feat['icon']) }}"
+                alt="{{ $feat['title'] }}"
+                
+                class="h-14 w-24 object-contain"
+            >
+        </div>
+
+        <h3 class="mb-2 text-center text-lg font-semibold">
+            {{ $feat['title'] }}
+        </h3>
+
+        <p class="text-center text-sm text-gray-500">
+            {{ $feat['desc'] }}
+        </p>
+    </div>
+@endforeach
+            
         </div>
     </div>
 </section>
@@ -857,7 +905,7 @@ select.form-input { padding-left:1rem; }
                     </svg>
                 </button>
                 <div class="faq-body">
-                    <div class="px-5 pb-5 pl-16 text-sm text-slate-500 leading-relaxed
+                    <div class="px-5 pb-5 pl-16 text-sm text-slate-500 
                                 border-t border-slate-100 pt-3">
                         {{ $faq['a'] }}
                     </div>
