@@ -98,11 +98,23 @@
 
               
                 <div class="flex flex-wrap items-center gap-1.5 mt-2 justify-center" id="trending-tags">
-                    <span class="text-gray-400 text-[11px] font-medium">Trending:</span>
-                                   
+                    <span class="text-gray-400 text-[11px] font-medium">Trending:</span>                              
+                    
+                    @php
+                    $citySlug = session('city_slug');
+                    @endphp
+                       
                     @if(!empty($trending))
                         @foreach($trending as $tag)
-                            <a href="{{ route('showCity', $tag['url']) }}" class="text-[11px] bg-gray-100 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 text-gray-500 hover:text-blue-700 px-2.5 py-0.5 rounded-full transition-colors"
+                          @php
+                            $tagUrl = !empty($citySlug)
+                            ? route('city.slug', [
+                            'city_slug' => $citySlug,
+                            'service_slug' => $tag['url'],
+                            ])
+                            : route('showCity',$tag['url']);
+                            @endphp
+                            <a href="{{ $tagUrl }}" class="text-[11px] bg-gray-100 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 text-gray-500 hover:text-blue-700 px-2.5 py-0.5 rounded-full transition-colors"
                             >{{ $tag['title'] }}</a>
                         @endforeach
                     @endif

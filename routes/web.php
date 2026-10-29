@@ -348,6 +348,7 @@ Route::get('/interviews/restapi-interview-question-answer', [App\Http\Controller
 
 
 Route::post('/register', [App\Http\Controllers\Auth\AuthController::class, 'register']);
+Route::post('/slugCity', [App\Http\Controllers\Auth\AuthController::class, 'slugCitySession'])->name('slugCity.save');
 
 //businees
 Route::get('/business-owners', [App\Http\Controllers\Client\BusinessOwnerController::class, 'index'])->name('login');

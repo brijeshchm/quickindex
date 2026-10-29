@@ -106,13 +106,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .hidden-init { display: none; }
     </style>     
        
+
+ 
 @php     
     $serviceName = !empty($metaTitle)
         ? $metaTitle
         : "";
-
+    $citySlug = session('city_slug');  
     $serviceDescription = $metaDescription? $metaDescription: 'India’s leading local business search and service directory. Find trusted businesses, services, it training, professionals, and service providers near you with QuickDials..';
-    $cityName =$city ?: 'faridabad';
+    $cityName =$city ?$city: $citySlug;     
     if(!empty($childCat) && !empty($childSlug)) {
         $items[] = ['name' => ucfirst($childCat), 'url' =>route('showCity',$childSlug)];
     }
@@ -477,13 +479,55 @@ function applyCity(rawCity) {
     if (hiddenInput) {
         hiddenInput.value = cityLower;
     }
+
+if(cityLower){
+  // Automatically save the city slug in the Laravel session.
+
+  let slug = cityLower.trim().toLowerCase().replace(/\s+/g, '-');
+    fetch(@json(route('slugCity.save')), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': @json(csrf_token()),
+        },
+        body: JSON.stringify({
+            city: slug
+        }),
+    })
+    .then(async function (response) {
+        var data = await response.json();
+
+         
+
+         
+    })
+    .catch(function (error) {
+        console.error('City save error:', error);
+    });
+
+} 
+ 
 }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  
 </script>
- 
-
  
 </body>
 </html>

@@ -44,7 +44,7 @@ class HomePageController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
     {
         $weddingPlanning    = $this->getWeddingPlanning();
         $repairsServices    = $this->getRepairsServices();
@@ -60,9 +60,9 @@ class HomePageController extends Controller
         $keywordCount = Keyword::get()->count();
         $childCategory = ChildCategory::get()->count();
         $citieslists = Citieslists::get()->count();
-
-
-		$city= "faridabad";
+	 
+		$city = session('city_slug');  
+		 
 		$metaTitle ="QuickDials | India’s Leading Local Business Search Directory";
 		$metaDescription  ="QuickDials is India’s trusted local business search and service directory, helping users find verified businesses, services, and professionals near them"; 
 		$keyword = "";
@@ -135,16 +135,16 @@ class HomePageController extends Controller
         return [
 
 			 ['url' => 'artificial-intelligence-training', 'img' => $img . 'artificial-intelligence.webp', 'alt' => 'Artificial Intelligence Training', 'title' => 'Artificial Intelligence Training', 'type' => 'keyword', 'rating' => '4', 'count' => '434'],
-			 ['url' => 'python-training', 'img' => $img . 'it_training.svg', 'alt' => '', 'title' => 'Python Training', 'type' => 'keyword', 'rating' => '4.75', 'count' => '789'],
-			 ['url' => 'workday-training', 'img' => $img . 'it_training.svg', 'alt' => 'Workday Training', 'title' => 'Workday Training', 'type' => 'keyword', 'rating' => '4.75', 'count' => '539'],
-			 ['url' => 'sap-training', 'img' => $img . 'it_training.svg', 'alt' => 'SAP Training', 'title' => 'SAP Training', 'type' => 'keyword', 'rating' => '4.75', 'count' => '678'],
+			 ['url' => 'python-training', 'img' => $img . 'python-training.jpg', 'alt' => '', 'title' => 'Python Training', 'type' => 'keyword', 'rating' => '4.75', 'count' => '789'],
+			 ['url' => 'workday-training', 'img' => $img . 'workday.svg', 'alt' => 'Workday Training', 'title' => 'Workday Training', 'type' => 'keyword', 'rating' => '4.75', 'count' => '539'],
+			 ['url' => 'sap-training', 'img' => $img . 'sap.svg', 'alt' => 'SAP Training', 'title' => 'SAP Training', 'type' => 'keyword', 'rating' => '4.75', 'count' => '678'],
 			 ['url' => 'banquet-hall', 'img' => $popular . 'Banquet-Halls.webp', 'alt' => 'Banquet Hall', 'title' => 'Banquet Hall', 'type' => 'keyword', 'rating' => '4.5', 'count' => '778'],
 	 		['url' => 'cricket-academy', 'img' => $popular . 'sports.png', 'alt' => 'Cricket academy', 'title' => 'Cricket Academy', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
 	 		['url' => 'data-science-training', 'img' => $img . 'data-science.webp', 'alt' => 'Data Science', 'title' => 'Data Science', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
 	 		['url' => 'judo-karate', 'img' => $img . 'judo-karate.png', 'alt' => 'Judo Karate', 'title' => 'Judo Karate', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
 	 		['url' => 'distance-education', 'img' => $popular . 'Education.png', 'alt' => 'Distance Education', 'title' => 'Distance Education', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
 	 		['url' => 'data-analytics-training', 'img' => $img . 'data-analytics.webp', 'alt' => 'Data Analytics', 'title' => 'Data Analytics', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
-	 		['url' => 'salesforce-training', 'img' => $img . 'it_training.svg', 'alt' => 'Salesforce Training', 'title' => 'Salesforce Training', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
+	 		['url' => 'salesforce-training', 'img' => $img . 'Salesforce.svg', 'alt' => 'Salesforce Training', 'title' => 'Salesforce Training', 'type' => 'categories', 'rating' => '4.75', 'count' => '480'],
 	 		['url' => 'wedding-organisers', 'img' => $img . 'wedding.png', 'alt' => 'Wedding Organisers', 'title' => 'Wedding Organisers', 'type' => 'categories', 'rating' => '4.45', 'count' => '380'],
 
 

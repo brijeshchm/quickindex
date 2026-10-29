@@ -314,4 +314,13 @@ class AuthController extends Controller
 		return redirect('/developer/login');    
 	}
 
+	public function slugCitySession(Request $request){
+
+ 
+			 $request->session()->put('city_slug', $request->city);
+
+
+
+	}
+
 }
