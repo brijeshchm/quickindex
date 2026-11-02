@@ -344,6 +344,9 @@ Route::get('/interviews/laravel-interview-question-answer', [App\Http\Controller
 Route::get('/interviews/javascript-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'javascriptInterview']);
 Route::get('/interviews/reactjs-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'reactjsInterview']);
 Route::get('/interviews/restapi-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'restapiInterview']);
+Route::get('/interviews/extjs-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'extjsInterview']);
+Route::get('/interviews/pimcore-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'pimcoreInterview']);
+Route::get('/interviews/computer-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'computerInterview']);
 
 
 

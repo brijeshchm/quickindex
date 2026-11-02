@@ -17,19 +17,29 @@ Prepare with PHP interview questions and answers covering OOP, arrays, sessions,
     <hr>
  <div class="light">
   
- <section id="services-section" class="py-12 bg-gray-100"><div class="container mx-auto px-4">
+ <section id="services-section" class="py-12 bg-gray-100">
+  
+ <div class="container mx-auto px-4">
   
  <div class="mb-12">
   <div class="question">
  <h2>What is PHP?</h2> 
  </div>
  <p class="text-lg text-gray-700">PHP stands for <strong>"Hypertext Preprocessor"</strong> a widely-used, open-source, server-side scripting language ideal for building dynamic websites, web applications, and mobile APIs.</p><p class="text-lg text-gray-700">It supports a wide range of databases, including:<strong>MySQL, PostgreSQL, Oracle, Sybase, Solid, Generic ODBC</strong></p><p><strong>PHP</strong> Originally developed by Rasmus Lerdorf in 1994, PHP has grown into a powerful tool for building interactive and data-driven websites.</p></div><div class="mb-12">
-  <div class="question">
+  
+ <div class="question">
  <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a session in PHP?</h2>
  </div>
  
- <p class="text-lg text-gray-700">A <strong>session</strong> is a way to store information (variables) across multiple pages. </p><p>Session data is stored on the server and stored on the user's browser.</p><p>Session is a temporary storage Data while close the browser then the session times out.</p><p>Session unique ID assigns to unique ID (PHPSESSID) of each session.</p><p class="text-lg text-gray-700"><strong>The Start a session</strong> session_start();</p><p class="text-lg text-gray-700"><strong>Set session variables:</strong> <span class="shadow-lg p-2">$_SESSION['username'] = 'john_doe';</span></p><p class="text-lg text-gray-700"><strong>Access session variables</strong> <span class="shadow-lg p-2">echo $_SESSION['username']; </span></p><p class="text-lg text-gray-700"><strong>Unset or destroy a session</strong> <span class="shadow-lg p-2">unset($_SESSION['username']); session_destroy(); </span></p></div><div class="mb-12">
+ <p class="text-lg text-gray-700">A <strong>session</strong> is a way to store information (variables) across multiple pages. </p><p>Session data is stored on the server and stored on the user's browser.</p><p>Session is a temporary storage Data while close the browser then the session times out.</p><p>Session unique ID assigns to unique ID (PHPSESSID) of each session.</p><p class="text-lg text-gray-700"><strong>The Start a session</strong> session_start();</p><p class="text-lg text-gray-700"><strong>Set session variables:</strong> <span class="shadow-lg p-2">$_SESSION['username'] = 'john_doe';</span></p><p class="text-lg text-gray-700"><strong>Access session variables</strong> <span class="shadow-lg p-2">echo $_SESSION['username']; </span></p><p class="text-lg text-gray-700"><strong>Unset or destroy a session</strong> <span class="shadow-lg p-2">unset($_SESSION['username']); session_destroy(); </span></p>
+
+</div>
+ 
+ 
+ <div class="mb-12">
   
+
+
  <div class="question">
  <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are cookies?</h2>
  
@@ -37,7 +47,9 @@ Prepare with PHP interview questions and answers covering OOP, arrays, sessions,
  
  
  
- <p class="text-lg text-gray-700">A <strong>Cookies</strong> is store information client computer your web browser. </p><p>They store data about a user on the browser.</p><p>Session is a temporary storage Data while close the browser then the session times out.</p><p class="text-lg text-gray-700"><strong>Session Cookies:</strong> <span class="shadow-lg p-2">Temporary; deleted when you close your browser.</span></p><p class="text-lg text-gray-700"><strong>Persistent Cookies</strong> <span class="shadow-lg p-2">Stored on your device for a set time. </span></p><p class="text-lg text-gray-700"><strong>Setcookie</strong> <span class="shadow-lg p-2">setcookie(name, value, expire, path, domain, secure, httponly);</span></p></div>
+ <p class="text-lg text-gray-700">A <strong>Cookies</strong> is store information client computer your web browser. </p><p>They store data about a user on the browser.</p><p>Session is a temporary storage Data while close the browser then the session times out.</p><p class="text-lg text-gray-700"><strong>Session Cookies:</strong> <span class="shadow-lg p-2">Temporary; deleted when you close your browser.</span></p><p class="text-lg text-gray-700"><strong>Persistent Cookies</strong> <span class="shadow-lg p-2">Stored on your device for a set time. </span></p><p class="text-lg text-gray-700"><strong>Setcookie</strong> <span class="shadow-lg p-2">setcookie(name, value, expire, path, domain, secure, httponly);</span></p>
+
+</div>
  
  
  <div class="mb-12">
@@ -766,6 +778,71 @@ class App {<br>
 
 
 
+<div class="mb-12">
+
+<div class="question"><h2 class="text-3xl font-bold text-primary mt-5 mb-4">Q2. What is Dependency Injection (DI), and why is it important?</h2></div>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Answer:</h3>
+
+<p class="mb-4 text-lg leading-8 text-gray-700">Dependency Injection means providing a class with the objects it needs instead of creating those objects inside the class.</p>
+
+<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>namespace App\Service;
+
+use App\Repository\ProductRepository;
+
+class ProductService
+{
+    public function __construct(
+        private ProductRepository $productRepository
+    ) {}
+
+    public function getProduct(int $id): ?object
+    {
+        return $this-&gt;productRepository-&gt;find($id);
+    }
+}</code></pre>
+
+<p class="mb-4 text-lg leading-8 text-gray-700">Symfony automatically injects the repository through its service container.</p>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Benefits:</h3>
+
+<ul class="mb-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+
+<li>Loose coupling between classes.</li>
+
+<li>Easier unit testing and mocking.</li>
+
+<li>Better maintainability.</li>
+
+<li>Easier replacement of implementations.</li>
+
+</ul>
+
+<p class="mb-4 text-lg leading-8 text-gray-700">For senior roles, mention constructor injection, interfaces, service configuration and autowiring.</p>
+
+</div>
+
+<div class="mb-12">
+
+<div class="question"><h2 class="text-3xl font-bold text-primary mt-5 mb-4">Q3. What is the difference between an interface, an abstract class, and a trait in PHP?</h2></div>
+
+<div class="my-5 overflow-x-auto"><table class="w-full border-collapse text-left text-gray-700">
+
+<tr><th class="border border-gray-200 p-3">Feature</th><th class="border border-gray-200 p-3">Interface</th><th class="border border-gray-200 p-3">Abstract class</th><th class="border border-gray-200 p-3">Trait</th></tr>
+
+<tr><td class="border border-gray-200 p-3">Purpose</td><td class="border border-gray-200 p-3">Defines a contract</td><td class="border border-gray-200 p-3">Shares common behavior and structure</td><td class="border border-gray-200 p-3">Reuses methods across classes</td></tr>
+
+<tr><td class="border border-gray-200 p-3">Multiple usage</td><td class="border border-gray-200 p-3">A class can implement multiple interfaces</td><td class="border border-gray-200 p-3">A class can extend only one class</td><td class="border border-gray-200 p-3">A class can use multiple traits</td></tr>
+
+<tr><td class="border border-gray-200 p-3">State</td><td class="border border-gray-200 p-3">No instance properties defining object state</td><td class="border border-gray-200 p-3">Can have properties</td><td class="border border-gray-200 p-3">Can have properties</td></tr>
+
+<tr><td class="border border-gray-200 p-3">Method implementation</td><td class="border border-gray-200 p-3">Can declare method signatures; modern PHP also supports constants</td><td class="border border-gray-200 p-3">Can contain abstract and concrete methods</td><td class="border border-gray-200 p-3">Can contain implemented methods</td></tr>
+
+</table></div>
+
+<p class="mb-4 text-lg leading-8 text-gray-700">Senior-level example: Define a ProductImporterInterface for the contract, implement separate CSV and API importers, and inject the required implementation into a service. This keeps the code testable and follows the Dependency Inversion Principle.</p>
+
+</div>
 
 
 

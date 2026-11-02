@@ -135,6 +135,7 @@ function getStyleValue(elmnt,style) {
       <a class="bar-item button" href="{{url('interviews/javascript-interview-question-answer')}}" title='javascript-interview-question-answer'>javascript</a>    
       <a class="bar-item button" href="{{url('interviews/reactjs-interview-question-answer')}}" title='reactjs-interview-question-answer'>reactjs</a> 
       <a class="bar-item button" href="{{url('interviews/restapi-interview-question-answer')}}" title='restapi-interview-question-answer'>Restapi </a>    
+      <a class="bar-item button" href="{{url('interviews/pimcore-interview-question-answer')}}" title='restapi-interview-question-answer'>Pimcore </a>    
      </div>
      
     <div id='nav_references' class='bar-block card-2'>
@@ -161,6 +162,9 @@ function getStyleValue(elmnt,style) {
 <a target="_top" href="{{url('interviews/javascript-interview-question-answer')}}">Javascript Interview Question Answer</a>
 <a target="_top" href="{{url('interviews/reactjs-interview-question-answer')}}">Reactjs Interview Question Answer</a>
 <a target="_top" href="{{url('interviews/restapi-interview-question-answer')}}">Rest API Interview Question Answer</a> 
+<a target="_top" href="{{url('interviews/extjs-interview-question-answer')}}">Extjs Interview Question Answer</a> 
+<a target="_top" href="{{url('interviews/pimcore-interview-question-answer')}}">Pimcore Interview Question Answer</a> 
+<a target="_top" href="{{url('interviews/computer-interview-question-answer')}}">computer Interview Question Answer</a> 
 <br><br>
     </div> 
     </div>

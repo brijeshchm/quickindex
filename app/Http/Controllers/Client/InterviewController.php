@@ -61,6 +61,23 @@ class InterviewController extends Controller
 	{ 
 		return view('interview.restapi-question');
 
+	} 
+	
+	public function extjsInterview()
+	{ 
+		return view('interview.extjs-question');
+
+	}
+     public function pimcoreInterview()
+	{ 
+		return view('interview.pimcore-question');
+
+	}
+     
+     public function computerInterview()
+	{ 
+		return view('interview.computer-question');
+
 	}
      
 
