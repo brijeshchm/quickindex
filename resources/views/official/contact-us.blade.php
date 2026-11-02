@@ -191,7 +191,7 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        Mon–Sat, 10am–7pm PST
+                                        Mon–Sat, 10am–7pm IST
                                     </p>
                                 </div>
                             </div>
@@ -219,7 +219,7 @@
                         'country'  => 'India',
                         'address'  => 'UNIT 101 OXFORD TOWERS, 139/88 HAL OLD AIRPORT RD, H.A.L II Stage, Bangalore North, Bangalore- 560008, Karnataka',
                         'phone'    => '+91-75-5943-5943',
-                        'hours'    => 'Mon–Sat, 6am–11pm EST',
+                        'hours'    => 'Mon–Sat, 6am–11pm IST',
                         'flag'     => '🇮🇳',
                         'gradient' => 'from-blue-500 to-indigo-500',
                         'bg'       => 'from-blue-50 to-indigo-50',
@@ -232,7 +232,7 @@
                         'country'  => 'India',
                         'address'  => 'G-13, Sector-3, Noida, UP, India, 201301',
                         'phone'    => '+91-75-5943-5943',
-                        'hours'    => 'Mon–sat, 6am–11pm GMT',
+                        'hours'    => 'Mon–sat, 6am–11pm IST',
                         'flag'     => '🇮🇳',
                         'gradient' => 'from-rose-500 to-pink-500',
                         'bg'       => 'from-rose-50 to-pink-50',
