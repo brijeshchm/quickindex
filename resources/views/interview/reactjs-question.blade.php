@@ -708,6 +708,1856 @@ export default ExampleComponent;
 
 
 
+  <div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">1. What is React.js?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React.js is an open-source JavaScript library used to build interactive user interfaces, especially single-page applications (SPAs).</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">React was developed by Meta.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Main features:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Component-based architecture.</li>
+<li>Virtual DOM.</li>
+<li>JSX syntax.</li>
+<li>One-way data flow.</li>
+<li>Reusable components.</li>
+<li>Hooks for state and lifecycle-related logic.</li>
+<li>Efficient UI updates.</li>
+</ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">2. What is the difference between React and JavaScript?</h2>
+    </div>
+
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>JavaScript is a programming language.</li>
+<li>React is a JavaScript library used to build user interfaces.</li>
+<li>JavaScript handles application logic.</li>
+<li>React provides a component-based approach to rendering UI.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">3. What is JSX?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">JSX stands for JavaScript XML.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It allows developers to write HTML-like syntax inside JavaScript.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function Welcome() {
+    const name = &quot;Brijesh&quot;;
+
+    return &lt;h1&gt;Welcome {name}&lt;/h1&gt;;
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">JSX is transformed into JavaScript that React can execute.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">4. What is the Virtual DOM?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Virtual DOM is an in-memory representation of the UI.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">When state or props change:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>React renders a new UI representation.</li>
+<li>React compares the previous and next render results.</li>
+<li>React calculates the required changes.</li>
+<li>React commits necessary updates to the actual DOM.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">This process helps React update the UI efficiently.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">5. What is reconciliation in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Reconciliation is the process React uses to determine how the UI should change when new rendering output is produced.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">React compares elements and uses element types and keys to determine which components can be preserved, updated, or replaced.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">6. What is the difference between props and state?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Props</th>
+<th class="border border-gray-200 bg-gray-50 p-3">State</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Passed from parent component</td>
+<td class="border border-gray-200 p-3">Managed by component or state owner</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Read-only to receiving component</td>
+<td class="border border-gray-200 p-3">Updated through state mechanisms</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Used to pass data</td>
+<td class="border border-gray-200 p-3">Used to manage changing data</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Changes when parent provides new values</td>
+<td class="border border-gray-200 p-3">Changes through state updates</td>
+</tr>
+</tbody>
+</table></div>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function User({ name }) {
+    return &lt;h2&gt;{name}&lt;/h2&gt;;
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Here, <code>name</code> is a prop.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">7. What are React components?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Components are reusable independent pieces of UI.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Two commonly discussed types are:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Functional components.</li>
+<li>Class components.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">Modern React development generally uses functional components with Hooks.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function Header() {
+    return &lt;h1&gt;My Application&lt;/h1&gt;;
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">8. What is the difference between functional and class components?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Functional Component</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Class Component</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">JavaScript function</td>
+<td class="border border-gray-200 p-3">ES6 class</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Uses Hooks</td>
+<td class="border border-gray-200 p-3">Uses lifecycle methods</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">No <code>this</code> binding for component state</td>
+<td class="border border-gray-200 p-3">Uses <code>this</code></td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Less boilerplate</td>
+<td class="border border-gray-200 p-3">More boilerplate</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Preferred in modern React</td>
+<td class="border border-gray-200 p-3">Common in older projects</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="2-react-hooks--advanced-questions">2. React Hooks – Advanced Questions</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">9. What are React Hooks?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Hooks are functions that allow functional components to use React features such as state, context, refs, and effect-related behavior.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Important Hooks:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>useState()</li>
+<li>useEffect()</li>
+<li>useContext()</li>
+<li>useRef()</li>
+<li>useMemo()</li>
+<li>useCallback()</li>
+<li>useReducer()</li>
+<li>useLayoutEffect()</li>
+<li>useId()</li>
+<li>useTransition()</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">10. Explain useState().</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">useState is used to manage local component state.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import React, { useState } from &quot;react&quot;;
+
+function Counter() {
+    const [count, setCount] = useState(0);
+
+    return (
+        &lt;&gt;
+            &lt;h2&gt;{count}&lt;/h2&gt;
+
+            &lt;button onClick={() =&gt; setCount(prev =&gt; prev + 1)}&gt;
+                Increment
+            &lt;/button&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">When state changes, React schedules a re-render.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">11. Explain useEffect().</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">useEffect is used to synchronize a component with external systems, such as API requests, subscriptions, and browser event listeners.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useEffect, useState } from &quot;react&quot;;
+
+function Users() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() =&gt; {
+        fetch(&quot;/api/users&quot;)
+            .then(res =&gt; res.json())
+            .then(data =&gt; setUsers(data));
+    }, []);
+
+    return &lt;div&gt;{users.length} Users&lt;/div&gt;;
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Dependency behavior:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>No dependency array: Runs after every committed render.</li>
+<li>Empty array <code>[]</code>: Runs after initial mount.</li>
+<li><code>[value]</code>: Re-runs when the dependency changes.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">React Strict Mode can perform an additional development-only setup and cleanup cycle to help identify incorrect effects.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">12. What is the cleanup function in useEffect()?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Cleanup is used to remove subscriptions, timers, and event listeners or cancel ongoing operations.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>useEffect(() =&gt; {
+    const timer = setInterval(() =&gt; {
+        console.log(&quot;Running&quot;);
+    }, 1000);
+
+    return () =&gt; {
+        clearInterval(timer);
+    };
+}, []);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">13. Explain useMemo().</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">useMemo caches the result of a calculation between renders when dependencies have not changed.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>const total = useMemo(() =&gt; {
+    return products.reduce(
+        (sum, product) =&gt; sum + product.price,
+        0
+    );
+}, [products]);</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">It is useful for expensive calculations, not for every variable.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">14. Explain useCallback().</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">useCallback caches a function definition between renders.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>const handleClick = useCallback(() =&gt; {
+    console.log(&quot;Button clicked&quot;);
+}, []);</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">It can be useful when passing callbacks to memoized child components.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">15. Difference between useMemo and useCallback?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">useMemo</th>
+<th class="border border-gray-200 bg-gray-50 p-3">useCallback</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Caches a calculated value</td>
+<td class="border border-gray-200 p-3">Caches a function definition</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Returns calculated result</td>
+<td class="border border-gray-200 p-3">Returns function</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Useful for expensive calculations</td>
+<td class="border border-gray-200 p-3">Useful for stable callbacks</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">16. Explain useRef().</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">useRef stores a mutable value that persists between renders without triggering a re-render when changed.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It is also used to access DOM elements.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useRef } from &quot;react&quot;;
+
+function Search() {
+    const inputRef = useRef(null);
+
+    const focusInput = () =&gt; {
+        inputRef.current.focus();
+    };
+
+    return (
+        &lt;&gt;
+            &lt;input ref={inputRef} /&gt;
+            &lt;button onClick={focusInput}&gt;Focus&lt;/button&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">17. What is useReducer()?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">useReducer manages complex component state using a reducer function and dispatched actions.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useReducer } from &quot;react&quot;;
+
+function reducer(state, action) {
+    switch (action.type) {
+        case &quot;increment&quot;:
+            return { count: state.count + 1 };
+
+        case &quot;decrement&quot;:
+            return { count: state.count - 1 };
+
+        default:
+            return state;
+    }
+}
+
+function Counter() {
+    const [state, dispatch] = useReducer(reducer, {
+        count: 0
+    });
+
+    return (
+        &lt;&gt;
+            &lt;h2&gt;{state.count}&lt;/h2&gt;
+            &lt;button onClick={() =&gt; dispatch({ type: &quot;increment&quot; })}&gt;
+                Increment
+            &lt;/button&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">18. What are custom Hooks?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Custom Hooks are reusable JavaScript functions whose names begin with <code>use</code> and which can use other React Hooks.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useState, useEffect } from &quot;react&quot;;
+
+function useUsers() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() =&gt; {
+        fetch(&quot;/api/users&quot;)
+            .then(response =&gt; response.json())
+            .then(data =&gt; setUsers(data));
+    }, []);
+
+    return users;
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Custom Hooks help share stateful logic between components.</p>
+<h2 id="3-react-component-lifecycle-and-rendering">3. React Component Lifecycle and Rendering</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">19. What is the React component lifecycle?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Component lifecycle describes the different stages of a component.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">In class components, there are three main phases:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Mounting – Component is created and inserted into the DOM.</li>
+<li>Updating – Component updates when props or state change.</li>
+<li>Unmounting – Component is removed from the DOM.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">Important class lifecycle methods:</p>
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Method</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">constructor()</td>
+<td class="border border-gray-200 p-3">Initializes state</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">componentDidMount()</td>
+<td class="border border-gray-200 p-3">Runs after mounting</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">componentDidUpdate()</td>
+<td class="border border-gray-200 p-3">Runs after updates</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">componentWillUnmount()</td>
+<td class="border border-gray-200 p-3">Performs cleanup</td>
+</tr>
+</tbody>
+</table></div>
+<p class="mb-3 text-lg leading-8 text-gray-700">In functional components, Hooks such as <code>useEffect</code> are used to synchronize with external systems.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">20. What causes a React component to re-render?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">A component can re-render when:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Its state changes.</li>
+<li>Its parent re-renders.</li>
+<li>Its consumed context value changes.</li>
+<li>An external store subscription triggers an update.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">A re-render does not necessarily mean the actual DOM will change.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">21. What is React.memo()?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React.memo is a higher-order component that can skip rendering a component when its props are unchanged according to a comparison.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import React from &quot;react&quot;;
+
+const User = React.memo(function User({ name }) {
+    console.log(&quot;User rendered&quot;);
+
+    return &lt;h2&gt;{name}&lt;/h2&gt;;
+});
+
+export default User;</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">It is useful when a component renders frequently with the same props and rendering is expensive.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">22. What is the difference between React.memo, useMemo, and useCallback?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Feature</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">React.memo</td>
+<td class="border border-gray-200 p-3">Memoizes a component</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">useMemo</td>
+<td class="border border-gray-200 p-3">Memoizes a calculated value</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">useCallback</td>
+<td class="border border-gray-200 p-3">Memoizes a function</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">23. What are keys in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Keys are unique identifiers used when rendering lists.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">They help React identify which items have been added, removed, or reordered.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>const users = [
+    { id: 1, name: &quot;Brijesh&quot; },
+    { id: 2, name: &quot;Rahul&quot; }
+];
+
+function UserList() {
+    return (
+        &lt;ul&gt;
+            {users.map(user =&gt; (
+                &lt;li key={user.id}&gt;
+                    {user.name}
+                &lt;/li&gt;
+            ))}
+        &lt;/ul&gt;
+    );
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Always prefer stable database IDs instead of array indexes when list items can change order or be inserted or deleted.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">24. What is conditional rendering?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Conditional rendering means displaying different UI elements based on conditions.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function Dashboard({ isLoggedIn }) {
+    return (
+        &lt;div&gt;
+            {isLoggedIn
+                ? &lt;h2&gt;Welcome User&lt;/h2&gt;
+                : &lt;h2&gt;Please Login&lt;/h2&gt;
+            }
+        &lt;/div&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">25. What are controlled and uncontrolled components?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Controlled components:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Form values are managed by React state.</li>
+<li>Input changes are handled through event handlers.</li>
+<li>React controls the displayed value.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">Uncontrolled components:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Form values are maintained by the DOM.</li>
+<li>Values are accessed using refs.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">Controlled example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function Login() {
+    const [email, setEmail] = useState(&quot;&quot;);
+
+    return (
+        &lt;input
+            value={email}
+            onChange={e =&gt; setEmail(e.target.value)}
+        /&gt;
+    );
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Uncontrolled example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function Login() {
+    const emailRef = useRef(null);
+
+    function submit() {
+        console.log(emailRef.current.value);
+    }
+
+    return (
+        &lt;&gt;
+            &lt;input ref={emailRef} /&gt;
+            &lt;button onClick={submit}&gt;Submit&lt;/button&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+<h2 id="4-state-management-in-react">4. State Management in React</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">26. What is state management in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">State management means managing and sharing application data across components.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Common approaches:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>useState – Local component state.</li>
+<li>useReducer – Complex component state.</li>
+<li>Context API – Share state across components.</li>
+<li>Redux Toolkit – Centralized application state.</li>
+<li>Zustand – Lightweight global state management.</li>
+<li>TanStack Query – Server-state fetching, caching, and synchronization.</li>
+</ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">27. What is Context API?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Context API allows data to be shared between components without passing props through every intermediate component.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">This solves the prop drilling problem.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { createContext, useContext } from &quot;react&quot;;
+
+const UserContext = createContext(null);
+
+function Parent() {
+    return (
+        &lt;UserContext.Provider value=&quot;Brijesh&quot;&gt;
+            &lt;Child /&gt;
+        &lt;/UserContext.Provider&gt;
+    );
+}
+
+function Child() {
+    const user = useContext(UserContext);
+
+    return &lt;h2&gt;{user}&lt;/h2&gt;;
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">28. What is prop drilling?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Prop drilling means passing data through multiple intermediate components to reach a deeply nested child.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Solutions include:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Context API.</li>
+<li>Redux Toolkit.</li>
+<li>Component composition.</li>
+<li>Other state management libraries.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">29. What is Redux?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Redux is a predictable state management library used to manage shared application state.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Important concepts:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Store – Holds application state.</li>
+<li>Action – Describes what happened.</li>
+<li>Reducer – Calculates the next state.</li>
+<li>Dispatch – Sends an action.</li>
+<li>Selector – Reads data from the store.</li>
+</ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">30. What is Redux Toolkit?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Redux Toolkit (RTK) is the recommended approach for writing Redux logic.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It reduces boilerplate and provides utilities such as:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>configureStore()</li>
+<li>createSlice()</li>
+<li>createAsyncThunk()</li>
+<li>createSelector()</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { createSlice } from &quot;@reduxjs/toolkit&quot;;
+
+const counterSlice = createSlice({
+    name: &quot;counter&quot;,
+
+    initialState: {
+        count: 0
+    },
+
+    reducers: {
+        increment: state =&gt; {
+            state.count += 1;
+        },
+
+        decrement: state =&gt; {
+            state.count -= 1;
+        }
+    }
+});
+
+export const { increment, decrement } =
+    counterSlice.actions;
+
+export default counterSlice.reducer;</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Redux Toolkit uses Immer internally to allow this convenient mutation-style syntax while producing immutable state updates.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">31. Difference between Context API and Redux Toolkit?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Context API</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Redux Toolkit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Built into React</td>
+<td class="border border-gray-200 p-3">External library</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Suitable for shared context values</td>
+<td class="border border-gray-200 p-3">Suitable for complex global state</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Less setup</td>
+<td class="border border-gray-200 p-3">More structured setup</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">No built-in Redux-style middleware</td>
+<td class="border border-gray-200 p-3">Middleware support</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">No built-in selector system like Redux</td>
+<td class="border border-gray-200 p-3">Selectors and optimized subscriptions</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">32. What is server state vs client state?</h2>
+    </div>
+
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Server state: Data coming from backend APIs, such as users, products, orders.</li>
+<li>Client state: UI-related data, such as modal visibility, selected tab, or temporary form state.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">TanStack Query is useful for server-state management, while Redux or Context can manage shared client state.</p>
+<h2 id="5-react-router-and-navigation">5. React Router and Navigation</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">33. What is React Router?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React Router is a routing library used to navigate between pages or views in React applications without full-page reloads.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import {
+    BrowserRouter,
+    Routes,
+    Route
+} from &quot;react-router-dom&quot;;
+
+function App() {
+    return (
+        &lt;BrowserRouter&gt;
+            &lt;Routes&gt;
+                &lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;
+                &lt;Route path=&quot;/users&quot; element={&lt;Users /&gt;} /&gt;
+                &lt;Route path=&quot;/about&quot; element={&lt;About /&gt;} /&gt;
+            &lt;/Routes&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">34. What is the difference between BrowserRouter and HashRouter?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">BrowserRouter</th>
+<th class="border border-gray-200 bg-gray-50 p-3">HashRouter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Uses browser History API</td>
+<td class="border border-gray-200 p-3">Uses URL hash</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Clean URLs</td>
+<td class="border border-gray-200 p-3">URLs contain #</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Requires server fallback configuration for SPA routes</td>
+<td class="border border-gray-200 p-3">Does not require server fallback for hash-based routes</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Commonly used in production SPAs</td>
+<td class="border border-gray-200 p-3">Useful where server routing cannot be configured</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">35. How do you implement protected routes?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Protected routes prevent unauthorized users from accessing restricted pages.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { Navigate, Outlet } from &quot;react-router-dom&quot;;
+
+function ProtectedRoute() {
+    const isAuthenticated = Boolean(
+        localStorage.getItem(&quot;token&quot;)
+    );
+
+    return isAuthenticated
+        ? &lt;Outlet /&gt;
+        : &lt;Navigate to=&quot;/login&quot; replace /&gt;;
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Important: Frontend route protection is only for user experience. The backend must independently authenticate and authorize every protected API request.</p>
+<h2 id="6-react-api-integration-with-php-and-laravel">6. React API Integration with PHP and Laravel</h2>
+<p class="mb-3 text-lg leading-8 text-gray-700">This section is particularly important for Full Stack PHP Developer interviews.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">36. How do you integrate React.js with Laravel?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I use React as the frontend and Laravel as the backend.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Typical architecture:</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">React.js Frontend</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Components · Hooks · Forms · Router</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">REST API / JSON</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">GET · POST · PUT/PATCH · DELETE</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Laravel Backend</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Routes · Middleware · Controllers · Validation</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">MySQL Database</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Models · Eloquent · Relationships · Transactions</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">The workflow:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>React sends an HTTP request.</li>
+<li>Laravel receives the API request.</li>
+<li>Middleware checks authentication and permissions.</li>
+<li>Controller processes the business logic.</li>
+<li>Eloquent communicates with MySQL.</li>
+<li>Laravel returns JSON.</li>
+<li>React updates the UI.</li>
+</ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">37. How do you call a Laravel API from React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I generally use Axios or Fetch API.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import axios from &quot;axios&quot;;
+import { useEffect, useState } from &quot;react&quot;;
+
+function Users() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() =&gt; {
+        axios.get(&quot;/api/users&quot;)
+            .then(response =&gt; {
+                setUsers(response.data.data ?? response.data);
+            })
+            .catch(error =&gt; {
+                console.error(error);
+            });
+    }, []);
+
+    return (
+        &lt;div&gt;
+            {users.map(user =&gt; (
+                &lt;p key={user.id}&gt;{user.name}&lt;/p&gt;
+            ))}
+        &lt;/div&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">38. Difference between Axios and Fetch API?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Axios</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Fetch</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">External library</td>
+<td class="border border-gray-200 p-3">Browser API</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Automatically transforms JSON response data</td>
+<td class="border border-gray-200 p-3">Requires response.json()</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Supports request interceptors</td>
+<td class="border border-gray-200 p-3">No built-in interceptor mechanism</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Rejects on non-2xx HTTP status</td>
+<td class="border border-gray-200 p-3">Does not reject just because of HTTP error status</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Supports cancellation</td>
+<td class="border border-gray-200 p-3">Supports AbortController</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">39. How do you implement CRUD operations in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">CRUD means:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Create – POST request.</li>
+<li>Read – GET request.</li>
+<li>Update – PUT or PATCH request.</li>
+<li>Delete – DELETE request.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import axios from &quot;axios&quot;;
+
+const API = &quot;/api/users&quot;;
+
+// Create
+const createUser = data =&gt;
+    axios.post(API, data);
+
+// Read
+const getUsers = () =&gt;
+    axios.get(API);
+
+// Update
+const updateUser = (id, data) =&gt;
+    axios.put(`${API}/${id}`, data);
+
+// Delete
+const deleteUser = id =&gt;
+    axios.delete(`${API}/${id}`);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">40. How do you handle API errors in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I use try/catch with async/await, maintain loading and error states, and display meaningful messages to users.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>async function getUsers() {
+    try {
+        setLoading(true);
+        setError(&quot;&quot;);
+
+        const response = await axios.get(&quot;/api/users&quot;);
+
+        setUsers(response.data);
+
+    } catch (error) {
+        setError(
+            error.response?.data?.message ||
+            &quot;Something went wrong&quot;
+        );
+    } finally {
+        setLoading(false);
+    }
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">41. How do you implement authentication in React with Laravel?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">My approach:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>User enters login credentials.</li>
+<li>React sends credentials to Laravel.</li>
+<li>Laravel validates the credentials.</li>
+<li>Laravel establishes an authenticated session or issues an appropriate token.</li>
+<li>React maintains the authentication state.</li>
+<li>Protected API requests use the configured authentication mechanism.</li>
+<li>Laravel validates authentication and authorization on every protected request.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">For first-party React and Laravel applications, Laravel Sanctum with cookie-based SPA authentication is often a suitable choice.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">42. What is CORS in React and Laravel?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">CORS controls whether the browser allows a frontend application to access APIs hosted on another origin.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">In Laravel, CORS settings can be configured to allow specific frontend origins, HTTP methods, and headers.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">For cookie-based authentication, credential settings and allowed origins must be configured correctly. Wildcard origins cannot be used with credentialed requests.</p>
+<h2 id="7-react-performance-optimization">7. React Performance Optimization</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">43. How do you optimize a large React application?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">My approach includes:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Use React.memo for suitable components.</li>
+<li>Use useMemo for expensive calculations.</li>
+<li>Use useCallback for stable callback references where useful.</li>
+<li>Implement lazy loading.</li>
+<li>Use code splitting.</li>
+<li>Avoid unnecessary state updates.</li>
+<li>Use pagination for large datasets.</li>
+<li>Optimize API requests.</li>
+<li>Use virtualization for large lists.</li>
+<li>Analyze performance using React Developer Tools.</li>
+</ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">44. What is lazy loading in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Lazy loading means loading a component only when it is required.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">React provides <code>React.lazy()</code> and <code>Suspense</code>.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import React, { Suspense, lazy } from &quot;react&quot;;
+
+const Dashboard = lazy(() =&gt; import(&quot;./Dashboard&quot;));
+
+function App() {
+    return (
+        &lt;Suspense fallback={&lt;h2&gt;Loading...&lt;/h2&gt;}&gt;
+            &lt;Dashboard /&gt;
+        &lt;/Suspense&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">45. What is code splitting in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Code splitting divides a large application into smaller JavaScript bundles.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">These bundles can be loaded only when required, reducing initial loading time.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Common techniques:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>React.lazy().</li>
+<li>Dynamic import().</li>
+<li>Route-based splitting.</li>
+<li>Build-tool configuration.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">46. What is list virtualization?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">List virtualization renders only the visible items instead of rendering thousands of elements simultaneously.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Libraries such as <code>react-window</code> can help with large lists.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example use cases:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Employee records.</li>
+<li>Product catalogs.</li>
+<li>Transaction history.</li>
+<li>Large admin dashboards.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">47. What is batching in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Batching means grouping multiple state updates into fewer rendering operations.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Modern React supports automatic batching in many asynchronous contexts.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function updateData() {
+    setName(&quot;Brijesh&quot;);
+    setAge(30);
+    setStatus(&quot;Active&quot;);
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">React can batch these updates instead of rendering separately for every update.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">48. What is React Profiler?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React Profiler is a development tool used to measure component rendering performance.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It helps identify:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Frequently rendering components.</li>
+<li>Slow rendering components.</li>
+<li>Unnecessary re-renders.</li>
+<li>Performance bottlenecks.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">49. What is the difference between CSR, SSR, and SSG?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Rendering</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">CSR</td>
+<td class="border border-gray-200 p-3">Client-Side Rendering</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">SSR</td>
+<td class="border border-gray-200 p-3">Server-Side Rendering</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">SSG</td>
+<td class="border border-gray-200 p-3">Static Site Generation</td>
+</tr>
+</tbody>
+</table></div>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>CSR: Browser JavaScript renders the UI.</li>
+<li>SSR: Server generates HTML for a request.</li>
+<li>SSG: HTML is generated ahead of time, usually during build.</li>
+</ul>
+<p class="mb-3 text-lg leading-8 text-gray-700">Next.js supports different rendering strategies.</p>
+<h2 id="8-advanced-react-architecture">8. Advanced React Architecture</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">50. What is an Error Boundary in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Error Boundaries catch rendering errors in their descendant component tree and display a fallback UI instead of allowing the affected part of the application to crash.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">They are generally implemented using class components.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import React from &quot;react&quot;;
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            hasError: false
+        };
+    }
+
+    static getDerivedStateFromError() {
+        return {
+            hasError: true
+        };
+    }
+
+    componentDidCatch(error, info) {
+        console.error(error, info);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return &lt;h2&gt;Something went wrong.&lt;/h2&gt;;
+        }
+
+        return this.props.children;
+    }
+}
+
+export default ErrorBoundary;</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">51. What is React Suspense?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Suspense allows a component to display fallback UI while a supported child operation is waiting, such as a lazy-loaded component.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>&lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+    &lt;Dashboard /&gt;
+&lt;/Suspense&gt;</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">52. What is Higher-Order Component (HOC)?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">A Higher-Order Component is a function that takes a component and returns an enhanced component.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It is a technique for reusing component logic.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function withLoading(Component) {
+    return function EnhancedComponent({ loading, ...props }) {
+        if (loading) {
+            return &lt;h2&gt;Loading...&lt;/h2&gt;;
+        }
+
+        return &lt;Component {...props} /&gt;;
+    };
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">53. What is the difference between HOC and Custom Hooks?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">HOC</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Custom Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Wraps a component</td>
+<td class="border border-gray-200 p-3">Reuses stateful logic</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Returns an enhanced component</td>
+<td class="border border-gray-200 p-3">Returns values or functions</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Can add component-level behavior</td>
+<td class="border border-gray-200 p-3">Shares logic without wrapping UI</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Can create wrapper nesting</td>
+<td class="border border-gray-200 p-3">Usually simpler composition</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">54. What is React Portal?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React Portal allows rendering a component into a DOM node outside its parent DOM hierarchy.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Common use cases:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Modals.</li>
+<li>Popup windows.</li>
+<li>Tooltips.</li>
+<li>Notification systems.</li>
+</ul>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { createPortal } from &quot;react-dom&quot;;
+
+function Modal() {
+    return createPortal(
+        &lt;div className=&quot;modal&quot;&gt;
+            Hello World
+        &lt;/div&gt;,
+        document.getElementById(&quot;modal-root&quot;)
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">55. What is forwardRef?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700"><code>forwardRef</code> is a React API used to pass a ref through a component to a child element.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It is useful when a parent needs access to a child DOM element or exposed imperative functionality.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">In React 19, ref can also be passed as a regular prop, so <code>forwardRef</code> is no longer necessary for new React 19 components.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">56. What is the difference between React Server Components and Client Components?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React Server Components are rendered on the server and allow server-side data access without shipping their component implementation as client JavaScript.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Client Components support browser interactivity, event handlers, and client-side Hooks.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">In frameworks such as Next.js App Router, Client Components are marked using <code>"use client"</code>.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">57. What is hydration in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Hydration is the process of attaching React's event handling and interactive behavior to HTML that was already generated on the server.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">It allows server-rendered HTML to become interactive in the browser.</p>
+<h2 id="9-react-security-interview-questions">9. React Security Interview Questions</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">58. How do you prevent XSS attacks in React?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">My approach includes:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Avoid untrusted HTML using dangerouslySetInnerHTML.</li>
+<li>Sanitize HTML when HTML rendering is necessary.</li>
+<li>Validate user inputs.</li>
+<li>Use secure authentication.</li>
+<li>Implement Content Security Policy.</li>
+<li>Avoid executing untrusted JavaScript.</li>
+<li>Keep dependencies updated.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">React escapes text rendered through normal JSX expressions by default, but developers must still handle unsafe HTML and URLs carefully.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">59. How do you secure API communication between React and Laravel?</h2>
+    </div>
+
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Use HTTPS.</li>
+<li>Authenticate every protected API request.</li>
+<li>Validate requests on the Laravel backend.</li>
+<li>Implement authorization policies.</li>
+<li>Configure CORS correctly.</li>
+<li>Use secure cookies where appropriate.</li>
+<li>Apply CSRF protection for cookie-authenticated requests.</li>
+<li>Avoid exposing API secrets in frontend code.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">60. Can we store authentication tokens in localStorage?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Technically yes, but it is not ideal for sensitive long-lived tokens because JavaScript can access localStorage.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">For applications using Laravel Sanctum, cookie-based SPA authentication with HttpOnly and Secure cookies is often a better approach.</p>
+<h2 id="10-react-testing-and-deployment">10. React Testing and Deployment</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">61. How do you test React applications?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I use different levels of testing:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Unit testing – Tests individual functions and components.</li>
+<li>Integration testing – Tests interactions between components and services.</li>
+<li>End-to-end testing – Tests complete user workflows.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">Common tools:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Jest or Vitest.</li>
+<li>React Testing Library.</li>
+<li>Playwright.</li>
+<li>Cypress.</li>
+</ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">62. What is React Testing Library?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">React Testing Library is a testing library that helps test components from the user's perspective.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">Example:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { render, screen } from &quot;@testing-library/react&quot;;
+
+function Welcome() {
+    return &lt;h1&gt;Welcome Brijesh&lt;/h1&gt;;
+}
+
+test(&quot;displays welcome message&quot;, () =&gt; {
+    render(&lt;Welcome /&gt;);
+
+    expect(
+        screen.getByText(&quot;Welcome Brijesh&quot;)
+    ).toBeInTheDocument();
+});</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">63. How do you deploy a React application?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">My deployment process:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Complete development.</li>
+<li>Run unit and integration tests.</li>
+<li>Build the production application.</li>
+<li>Configure environment variables.</li>
+<li>Upload or deploy build artifacts.</li>
+<li>Configure web server routing.</li>
+<li>Configure backend API endpoints.</li>
+<li>Enable HTTPS.</li>
+<li>Verify application functionality.</li>
+<li>Monitor production errors.</li>
+</ol>
+<p class="mb-3 text-lg leading-8 text-gray-700">For a Vite-based React application:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>npm install
+npm run build</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">The production build is generally generated in the <code>dist</code> directory.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">64. What is the difference between development and production builds?</h2>
+    </div>
+
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Development</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Production</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Debugging enabled</td>
+<td class="border border-gray-200 p-3">Optimized output</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">More diagnostic messages</td>
+<td class="border border-gray-200 p-3">Reduced diagnostics</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Faster development workflow</td>
+<td class="border border-gray-200 p-3">Optimized loading</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">Source maps may be enabled</td>
+<td class="border border-gray-200 p-3">Source maps configurable</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">Development server</td>
+<td class="border border-gray-200 p-3">Production deployment</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="11-practical-reactjs-coding-interview-questions">11. Practical React.js Coding Interview Questions</h2>
+<p class="mb-3 text-lg leading-8 text-gray-700">These are important for senior-level technical rounds.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">65. How do you remove duplicate values from an array?</h2>
+    </div>
+
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>const numbers = [1, 2, 3, 2, 4, 1];
+
+const unique = [...new Set(numbers)];
+
+console.log(unique);
+
+// [1, 2, 3, 4]</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">66. How do you find the second-largest number?</h2>
+    </div>
+
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>const numbers = [10, 50, 20, 90, 30];
+
+const unique = [...new Set(numbers)];
+
+unique.sort((a, b) =&gt; b - a);
+
+console.log(unique[1]); // 50</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">67. How do you search and filter products in React?</h2>
+    </div>
+
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useState } from &quot;react&quot;;
+
+function Products() {
+    const [search, setSearch] = useState(&quot;&quot;);
+
+    const products = [
+        &quot;Laptop&quot;,
+        &quot;Mobile&quot;,
+        &quot;Keyboard&quot;,
+        &quot;Mouse&quot;
+    ];
+
+    const filtered = products.filter(product =&gt;
+        product.toLowerCase().includes(search.toLowerCase())
+    );
+
+    return (
+        &lt;&gt;
+            &lt;input
+                value={search}
+                onChange={e =&gt; setSearch(e.target.value)}
+                placeholder=&quot;Search product&quot;
+            /&gt;
+
+            {filtered.map(product =&gt; (
+                &lt;p key={product}&gt;{product}&lt;/p&gt;
+            ))}
+        &lt;/&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">68. How do you implement pagination in React?</h2>
+    </div>
+
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useState } from &quot;react&quot;;
+
+function Pagination() {
+    const [page, setPage] = useState(1);
+
+    const data = Array.from(
+        { length: 100 },
+        (_, i) =&gt; `User ${i + 1}`
+    );
+
+    const limit = 10;
+
+    const start = (page - 1) * limit;
+
+    const currentData = data.slice(
+        start,
+        start + limit
+    );
+
+    return (
+        &lt;&gt;
+            {currentData.map(item =&gt; (
+                &lt;p key={item}&gt;{item}&lt;/p&gt;
+            ))}
+
+            &lt;button
+                disabled={page === 1}
+                onClick={() =&gt; setPage(p =&gt; p - 1)}
+            &gt;
+                Previous
+            &lt;/button&gt;
+
+            &lt;span&gt; Page {page} &lt;/span&gt;
+
+            &lt;button
+                disabled={page === 10}
+                onClick={() =&gt; setPage(p =&gt; p + 1)}
+            &gt;
+                Next
+            &lt;/button&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">In production applications with large datasets, I prefer server-side pagination through Laravel APIs.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">69. How do you prevent unnecessary API calls when searching?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">Use debouncing.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useEffect, useState } from &quot;react&quot;;
+
+function SearchUsers() {
+    const [search, setSearch] = useState(&quot;&quot;);
+
+    useEffect(() =&gt; {
+        if (!search.trim()) return;
+
+        const timer = setTimeout(() =&gt; {
+            fetch(`/api/users?search=${encodeURIComponent(search)}`);
+        }, 500);
+
+        return () =&gt; clearTimeout(timer);
+
+    }, [search]);
+
+    return (
+        &lt;input
+            value={search}
+            onChange={e =&gt; setSearch(e.target.value)}
+            placeholder=&quot;Search users&quot;
+        /&gt;
+    );
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">70. How do you create a reusable custom API Hook?</h2>
+    </div>
+
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>import { useEffect, useState } from &quot;react&quot;;
+
+function useFetch(url) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() =&gt; {
+        const controller = new AbortController();
+
+        async function fetchData() {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const response = await fetch(url, {
+                    signal: controller.signal
+                });
+
+                if (!response.ok) {
+                    throw new Error(&quot;API request failed&quot;);
+                }
+
+                const result = await response.json();
+
+                setData(result);
+
+            } catch (err) {
+                if (err.name !== &quot;AbortError&quot;) {
+                    setError(err.message);
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        fetchData();
+
+        return () =&gt; controller.abort();
+
+    }, [url]);
+
+    return { data, loading, error };
+}
+
+export default useFetch;</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Usage:</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>function Users() {
+    const { data, loading, error } =
+        useFetch(&quot;/api/users&quot;);
+
+    if (loading) return &lt;p&gt;Loading...&lt;/p&gt;;
+
+    if (error) return &lt;p&gt;{error}&lt;/p&gt;;
+
+    return &lt;pre&gt;{JSON.stringify(data, null, 2)}&lt;/pre&gt;;
+}</code></pre>
+<h2 id="12-scenario-based-react-interview-questions">12. Scenario-Based React Interview Questions</h2>
+<p class="mb-3 text-lg leading-8 text-gray-700">These questions are particularly important for senior developers and technical leads.</p>
+<div class="overflow-x-auto"><table class="mb-4 w-full border-collapse text-left text-gray-700">
+<thead>
+<tr class="header">
+<th class="border border-gray-200 bg-gray-50 p-3">Interview question</th>
+<th class="border border-gray-200 bg-gray-50 p-3">Strong answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="border border-gray-200 p-3">A component renders multiple times. How do you optimize it?</td>
+<td class="border border-gray-200 p-3">Analyze rendering with React Profiler, check state ownership, props, context and memoization.</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">API is returning duplicate records.</td>
+<td class="border border-gray-200 p-3">Check backend pagination, request duplication, state updates and API response handling.</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">React application is slow.</td>
+<td class="border border-gray-200 p-3">Analyze bundle size, rendering, network requests and expensive calculations.</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">How do you handle 100,000 records?</td>
+<td class="border border-gray-200 p-3">Server-side pagination, filtering and list virtualization.</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">How do you manage multiple developers working on the same React module?</td>
+<td class="border border-gray-200 p-3">Component ownership, feature branches, pull requests and code reviews.</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">How do you manage global authentication?</td>
+<td class="border border-gray-200 p-3">Context or Redux for auth UI state, secure session/token handling and backend authorization.</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">How do you prevent duplicate form submissions?</td>
+<td class="border border-gray-200 p-3">Loading state, disabled submit button and backend idempotency.</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">How do you handle production errors?</td>
+<td class="border border-gray-200 p-3">Error boundaries, logging, monitoring, API error handling and root-cause analysis.</td>
+</tr>
+<tr class="odd">
+<td class="border border-gray-200 p-3">How do you handle multiple API requests?</td>
+<td class="border border-gray-200 p-3">Promise.all, appropriate concurrency control and error handling.</td>
+</tr>
+<tr class="even">
+<td class="border border-gray-200 p-3">How do you improve maintainability?</td>
+<td class="border border-gray-200 p-3">Modular components, custom Hooks, reusable services, standards and automated testing.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="13-reactjs-project-architecture--senior-developer">13. React.js Project Architecture – Senior Developer</h2>
+<p class="mb-3 text-lg leading-8 text-gray-700">For an enterprise-level application, I prefer a modular folder structure.</p>
+<pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>src/
+│
+├── assets/
+│
+├── components/
+│   ├── Header.jsx
+│   ├── Footer.jsx
+│   ├── Button.jsx
+│   └── Modal.jsx
+│
+├── pages/
+│   ├── Dashboard.jsx
+│   ├── Users.jsx
+│   ├── Products.jsx
+│   └── Login.jsx
+│
+├── hooks/
+│   ├── useAuth.js
+│   └── useFetch.js
+│
+├── services/
+│   ├── api.js
+│   ├── userService.js
+│   └── productService.js
+│
+├── store/
+│   └── store.js
+│
+├── routes/
+│   └── AppRoutes.jsx
+│
+├── utils/
+│   └── helpers.js
+│
+├── context/
+│   └── AuthContext.jsx
+│
+└── App.jsx</code></pre>
+<p class="mb-3 text-lg leading-8 text-gray-700">Why do you use this architecture?</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Separation of concerns.</li>
+<li>Code reusability.</li>
+<li>Easier maintenance.</li>
+<li>Better scalability.</li>
+<li>Easier testing.</li>
+<li>Better team collaboration.</li>
+</ul>
+<h2 id="14-team-lead--reactjs-interview-questions">14. Team Lead – React.js Interview Questions</h2>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">71. How do you lead a React development team?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I start by understanding project requirements and defining the application architecture. Then I divide the work into components and modules, assign tasks according to developers' experience, and monitor progress.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">I conduct code reviews, help developers resolve technical issues, maintain coding standards, and coordinate with backend developers and project managers.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">72. How do you review React developer code?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I check:</p>
+<ol class="mb-4 list-decimal space-y-1 pl-6 text-gray-700" type="1">
+<li>Component reusability.</li>
+<li>Proper use of Hooks.</li>
+<li>State management.</li>
+<li>API integration.</li>
+<li>Performance.</li>
+<li>Error handling.</li>
+<li>Security.</li>
+<li>Code readability.</li>
+<li>Testing.</li>
+<li>Maintainability.</li>
+</ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">73. How do you handle disagreements about React architecture?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I listen to the team's suggestions and compare different approaches based on scalability, maintainability, performance, and project requirements.</p>
+<p class="mb-3 text-lg leading-8 text-gray-700">I prefer technical discussions supported by practical examples rather than personal opinions.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">74. How do you guide junior React developers?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I explain component architecture, Hooks, API integration, state management, debugging, and coding standards. I also provide code reviews and practical tasks so developers can improve their technical skills.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">75. How do you estimate React development tasks?</h2>
+    </div>
+
+<p class="mb-3 text-lg leading-8 text-gray-700">I consider:</p>
+<ul class="mb-4 list-disc space-y-1 pl-6 text-gray-700">
+<li>Requirement complexity.</li>
+<li>Number of components.</li>
+<li>API dependencies.</li>
+<li>UI complexity.</li>
+<li>Validation requirements.</li>
+<li>Testing effort.</li>
+<li>Integration and deployment.</li>
+<li>Possible technical risks.</li>
+</ul>
+</div>
+
+
+
 
 
 

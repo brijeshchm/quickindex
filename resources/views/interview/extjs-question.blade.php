@@ -1600,6 +1600,414 @@ ON users(email);</code></pre>
 
   
 
+
+
+
+<section aria-labelledby="php-experience">
+    <h2 id="php-experience" class="mb-6 text-4xl font-bold text-gray-900">
+        PHP Web Development Experience
+    </h2>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q1. Explain your PHP development experience.</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            I have experience in PHP web development, including:
+        </p>
+        <ol class="list-decimal space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li>Core PHP and object-oriented programming.</li>
+            <li>MVC architecture and design patterns.</li>
+            <li>Laravel and CodeIgniter frameworks.</li>
+            <li>MySQL database design and query optimization.</li>
+            <li>REST API development and integration.</li>
+            <li>AJAX and jQuery functionality.</li>
+            <li>Authentication and authorization.</li>
+            <li>Payment gateway integration.</li>
+            <li>Error handling and debugging.</li>
+            <li>Application security, including SQL injection and XSS prevention.</li>
+        </ol>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q2. What is MVC architecture?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            MVC stands for <strong>Model-View-Controller</strong>.
+        </p>
+        <ul class="mb-4 list-disc space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li><strong>Model:</strong> Represents application data and its associated rules.</li>
+            <li><strong>View:</strong> Handles the user interface and presentation.</li>
+            <li><strong>Controller:</strong> Handles requests, coordinates with the model or services, and returns a response.</li>
+        </ul>
+        <p class="text-lg leading-8 text-gray-700">
+            Separating these responsibilities makes the application easier to maintain and test.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q3. How do you improve PHP application performance?</h3>
+        </div>
+        <ul class="list-disc space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li>Identify slow MySQL queries and add indexes based on query patterns.</li>
+            <li>Remove unnecessary database queries and cache frequently requested data.</li>
+            <li>Use pagination for large datasets.</li>
+            <li>Optimize images and static assets.</li>
+            <li>Move slow tasks, such as sending email or processing imports, into background queues.</li>
+            <li>Keep the code easy to profile and measure performance after changes.</li>
+        </ul>
+    </div>
+</section>
+
+<section aria-labelledby="ext-js-experience">
+    <h2 id="ext-js-experience" class="mb-6 text-4xl font-bold text-gray-900">
+        Ext JS Experience
+    </h2>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q1. What is Ext JS?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            Ext JS is a JavaScript framework developed by Sencha. It is used to build
+            data-driven web applications with components such as grids, forms,
+            windows, panels, trees, and charts.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q2. What are the important components of Ext JS?</h3>
+        </div>
+        <ol class="list-decimal space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li><strong>Grid Panel:</strong> Displays tabular data.</li>
+            <li><strong>Form Panel:</strong> Groups input fields into a form.</li>
+            <li><strong>Store:</strong> Manages a collection of records.</li>
+            <li><strong>Model:</strong> Defines the structure of a record.</li>
+            <li><strong>Controller:</strong> Handles application events and actions.</li>
+            <li><strong>View:</strong> Displays the user interface.</li>
+            <li><strong>Window:</strong> Displays a popup or dialog.</li>
+            <li><strong>Tree Panel:</strong> Displays hierarchical data.</li>
+        </ol>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q3. What is a Store in Ext JS?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            A Store manages a collection of records. It can load data from an API
+            and provide those records to UI components such as Grid Panels
+            and Combo Boxes.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q4. How do you integrate Ext JS with PHP?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            The Ext JS frontend sends AJAX requests to PHP endpoints. PHP handles
+            the request, performs any required MySQL operations, and returns JSON.
+        </p>
+        <p class="mb-3 text-lg text-gray-700"><strong>Example: Ext JS AJAX request</strong></p>
+        <pre class="overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Ext.Ajax.request({
+    url: 'api/users.php',
+    method: 'GET',
+
+    success: function (response) {
+        var result = Ext.decode(response.responseText);
+        console.log(result);
+    },
+
+    failure: function (response) {
+        console.error('Request failed:', response.status);
+    }
+});</code></pre>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q5. How do you bind API data to an Ext JS Grid?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            I define a Model for the record fields and create a Store with a proxy
+            pointing to the API endpoint. I configure the JSON reader to match
+            the response and assign the Store to the Grid Panel. When the Store
+            loads, the Grid displays the records using its configured columns.
+        </p>
+    </div>
+</section>
+
+<section aria-labelledby="javascript-experience">
+    <h2 id="javascript-experience" class="mb-6 text-4xl font-bold text-gray-900">
+        JavaScript Experience
+    </h2>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q1. What is JavaScript?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            JavaScript is a programming language used to make web pages interactive.
+            In the browser, it handles events, form validation, DOM updates,
+            network requests, and asynchronous operations. It can also run on the server.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q2. What is the difference between var, let, and const?</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-left text-lg text-gray-700">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th scope="col" class="border border-gray-200 px-4 py-3">Keyword</th>
+                        <th scope="col" class="border border-gray-200 px-4 py-3">Scope</th>
+                        <th scope="col" class="border border-gray-200 px-4 py-3">Reassignment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row" class="border border-gray-200 px-4 py-3"><code>var</code></th>
+                        <td class="border border-gray-200 px-4 py-3">Function-scoped inside a function</td>
+                        <td class="border border-gray-200 px-4 py-3">Allowed</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="border border-gray-200 px-4 py-3"><code>let</code></th>
+                        <td class="border border-gray-200 px-4 py-3">Block-scoped</td>
+                        <td class="border border-gray-200 px-4 py-3">Allowed</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="border border-gray-200 px-4 py-3"><code>const</code></th>
+                        <td class="border border-gray-200 px-4 py-3">Block-scoped</td>
+                        <td class="border border-gray-200 px-4 py-3">Not allowed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="mt-4 text-lg leading-8 text-gray-700">
+            A <code>const</code> binding cannot be reassigned, but properties of
+            an object held by that binding can still change.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q3. What is the difference between == and ===?</h3>
+        </div>
+        <ul class="mb-4 list-disc space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li><code>==</code> can convert operands to another type before comparison.</li>
+            <li><code>===</code> compares operands without type conversion.</li>
+        </ul>
+        <pre class="overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>console.log(5 == "5");  // true
+console.log(5 === "5"); // false</code></pre>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q4. What is a Promise?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            A Promise represents the eventual result of an operation. It has three states:
+        </p>
+        <ul class="list-disc space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li><strong>Pending:</strong> The Promise has not settled yet.</li>
+            <li><strong>Fulfilled:</strong> The Promise settled with a value.</li>
+            <li><strong>Rejected:</strong> The Promise settled with a reason for failure.</li>
+        </ul>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q5. What is async/await?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            An <code>async</code> function returns a Promise. Inside it,
+            <code>await</code> lets you wait for a Promise to settle without
+            blocking the rest of the application.
+        </p>
+        <pre class="overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>async function getUsers() {
+    try {
+        const response = await fetch('/api/users');
+
+        if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}</code></pre>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q6. What is event delegation?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            Event delegation uses one listener on a parent element to handle events
+            that bubble up from its children. The listener checks which child
+            triggered the event. This is useful for rows or buttons added dynamically.
+        </p>
+    </div>
+</section>
+
+<section aria-labelledby="team-leading-experience">
+    <h2 id="team-leading-experience" class="mb-6 text-4xl font-bold text-gray-900">
+        Team Leading Experience
+    </h2>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q1. Explain your team-leading experience.</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            I have handled development responsibilities and team coordination. My responsibilities include:
+        </p>
+        <ol class="list-decimal space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li>Understanding project requirements.</li>
+            <li>Breaking requirements into development tasks.</li>
+            <li>Assigning tasks to developers.</li>
+            <li>Monitoring daily development progress.</li>
+            <li>Reviewing code and maintaining coding standards.</li>
+            <li>Helping team members resolve technical issues.</li>
+            <li>Coordinating with project managers and clients.</li>
+            <li>Managing deadlines and project priorities.</li>
+            <li>Testing and checking application quality.</li>
+            <li>Supporting deployments and resolving production issues.</li>
+        </ol>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q2. How do you manage a development team?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            I clarify the requirements, break the work into smaller tasks, and assign
+            them according to each developer’s skills and experience.
+        </p>
+        <p class="text-lg leading-8 text-gray-700">
+            I track progress, review code, and help remove blockers so the team
+            can meet deadlines while maintaining coding standards.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q3. How do you handle conflicts between team members?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            I listen to both sides, clarify the issue, and compare possible solutions
+            against the technical facts and project requirements. I help the team
+            agree on a decision and a clear next step.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q4. How do you handle tight project deadlines?</h3>
+        </div>
+        <p class="text-lg leading-8 text-gray-700">
+            I prioritize work based on business needs and technical dependencies,
+            assign owners to critical tasks, and track progress regularly.
+            If delivery is at risk, I communicate early and discuss what can be deferred.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q5. How do you perform code reviews?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">I check:</p>
+        <ul class="list-disc space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li>Correctness, readability, and coding standards.</li>
+            <li>Security vulnerabilities and input validation.</li>
+            <li>Database query and application performance.</li>
+            <li>Reusability and maintainability.</li>
+            <li>Error handling and coverage of important edge cases.</li>
+        </ul>
+    </div>
+</section>
+
+<section aria-labelledby="technical-leadership">
+    <h2 id="technical-leadership" class="mb-6 text-4xl font-bold text-gray-900">
+        Project Management and Technical Leadership
+    </h2>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q1. How do you handle production issues?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            I assess the impact and try to reproduce the issue. I check application
+            logs, database queries, API responses, and server errors to find the cause.
+        </p>
+        <p class="text-lg leading-8 text-gray-700">
+            I test the fix in staging, coordinate the production deployment, and
+            monitor the affected feature afterward to confirm recovery.
+        </p>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q2. How do you manage Git and team collaboration?</h3>
+        </div>
+        <p class="mb-4 text-lg leading-8 text-gray-700">
+            I use Git for version control and pull requests for team review.
+        </p>
+        <ul class="list-disc space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li>Create a feature branch for each change.</li>
+            <li>Commit changes with meaningful messages.</li>
+            <li>Push the branch and open a pull request.</li>
+            <li>Review the code and address feedback.</li>
+            <li>Resolve merge conflicts and run the relevant checks.</li>
+            <li>Merge approved changes into the main branch.</li>
+        </ul>
+    </div>
+
+    <div class="mb-12">
+        <div class="question">
+            <h3 class="mt-5 mb-4 text-3xl font-bold text-primary">Q3. What is your approach to project delivery?</h3>
+        </div>
+        <ol class="list-decimal space-y-2 pl-6 text-lg leading-8 text-gray-700">
+            <li>Analyze the requirements.</li>
+            <li>Plan the technical approach.</li>
+            <li>Design the database.</li>
+            <li>Distribute tasks and identify dependencies.</li>
+            <li>Develop the features.</li>
+            <li>Review the code.</li>
+            <li>Test against the requirements.</li>
+            <li>Deploy the release.</li>
+            <li>Monitor production.</li>
+            <li>Provide maintenance and support.</li>
+        </ol>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
