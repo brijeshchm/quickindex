@@ -214,7 +214,7 @@
                 
                 @php
                 $branches = [
-                    [
+                   /* [
                         'city'     => 'Bangalore ',
                         'country'  => 'India',
                         'address'  => 'UNIT 101 OXFORD TOWERS, 139/88 HAL OLD AIRPORT RD, H.A.L II Stage, Bangalore North, Bangalore- 560008, Karnataka',
@@ -226,7 +226,7 @@
                         'border'   => 'border-blue-100',
                         'accent'   => 'text-blue-600',
                         'delay'    => '.1s',
-                    ],
+                    ], */
                     [
                         'city'     => 'Noida',
                         'country'  => 'India',
