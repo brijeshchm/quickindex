@@ -196,7 +196,7 @@
                                 </div>
                             </div>
 
-                            <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer"
+                            <!-- <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer"
                                class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 text-white text-sm font-semibold shadow-md shadow-violet-300/40 hover:shadow-lg transition-all duration-200 self-start">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -206,7 +206,7 @@
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                 </svg>
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                 </div>
