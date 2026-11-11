@@ -41,7 +41,8 @@ class CitySlugController extends Controller
 			->leftjoin('child_category', 'keyword.child_category_id', '=', 'child_category.id')
 		 
 			->where('keyword.slug', $search_kw)
-			->select('keyword.*', 'parent_category.*','child_category.*', 'keyword.id as key_id', 'keyword.faqq1', 'keyword.faqa1', 'keyword.faqq2', 'keyword.faqa2', 'keyword.faqq3', 'keyword.faqa3', 'keyword.faqq4', 'keyword.faqa4', 'keyword.faqq5', 'keyword.faqa5','keyword.faqq6', 'keyword.faqa6', 'keyword.faqq7', 'keyword.faqa7','keyword.faqq8', 'keyword.faqa8','keyword.faqq9', 'keyword.faqa9','keyword.faqq10', 'keyword.faqa10','keyword.meta_title', 'keyword.meta_description', 'keyword.h1_heading', 'keyword.top_description', 'keyword.bottom_description','keyword.ratingvalue', 'keyword.ratingcount','keyword.courseabout','keyword.heading','keyword.paragraph1','keyword.paragraph2','keyword.paragraph3','keyword.paragraph4','keyword.paragraph5','keyword.paragraph6','keyword.paragraph7','keyword.paragraph8','keyword.slug','keyword.bottom_heading','keyword.top_heading','keyword.extra_heading','keyword.extra_description','keyword.noida_top_description','keyword.delhi_bottom_description','keyword.noida_top_heading','keyword.delhi_bottom_heading')
+			->select('keyword.*', 'parent_category.*','child_category.*', 'keyword.id as key_id', 'keyword.faqq1', 'keyword.faqa1', 'keyword.faqq2', 'keyword.faqa2', 'keyword.faqq3', 'keyword.faqa3', 'keyword.faqq4', 'keyword.faqa4', 'keyword.faqq5', 'keyword.faqa5','keyword.faqq6', 'keyword.faqa6', 'keyword.faqq7', 'keyword.faqa7','keyword.faqq8', 'keyword.faqa8','keyword.faqq9', 'keyword.faqa9','keyword.faqq10', 'keyword.faqa10','keyword.meta_title', 'keyword.meta_description', 'keyword.h1_heading', 'keyword.top_description', 'keyword.bottom_description','keyword.ratingvalue', 'keyword.ratingcount','keyword.courseabout','keyword.heading','keyword.paragraph1','keyword.paragraph2','keyword.paragraph3','keyword.paragraph4','keyword.paragraph5','keyword.paragraph6','keyword.paragraph7','keyword.paragraph8','keyword.slug','keyword.bottom_heading','keyword.top_heading','keyword.extra_heading','keyword.extra_description','keyword.noida_top_description','keyword.delhi_bottom_description','keyword.noida_top_heading','keyword.delhi_bottom_heading','keyword.created_at',
+            'keyword.updated_at')
 			->first();
  
 			 
@@ -375,6 +376,8 @@ class CitySlugController extends Controller
 			'parent_slug' => $keywordDetails->parent_slug,
 			'child_category' => $keywordDetails->child_category,
 			'child_slug' => $keywordDetails->child_slug,
+			'created_at' => $keywordDetails->created_at,
+			'updated_at' => $keywordDetails->updated_at,
 			'zone' => $zones,
 			'city' => $cityName,
 			'area' => $area,
@@ -905,7 +908,7 @@ $reviewList = DB::table('clients')
 			->leftjoin('parent_category', 'keyword.parent_category_id', '=', 'parent_category.id')
 			->leftjoin('child_category', 'keyword.child_category_id', '=', 'child_category.id')
 			->where('slug', $search_kw)
-			->select('keyword.*', 'parent_category.*', 'child_category.*', 'keyword.id as key_id', 'keyword.faqq1', 'keyword.faqa1', 'keyword.faqq2', 'keyword.faqa2', 'keyword.faqq3', 'keyword.faqa3', 'keyword.faqq4', 'keyword.faqa4', 'keyword.faqq5', 'keyword.faqa5','keyword.faqq6','keyword.faqa6','keyword.faqq7','keyword.faqa7','keyword.faqq8','keyword.faqa8','keyword.faqq9','keyword.faqa9','keyword.faqq10','keyword.faqa10','keyword.meta_title', 'keyword.meta_description', 'keyword.h1_heading', 'keyword.top_description', 'keyword.bottom_description', 'keyword.ratingvalue', 'keyword.ratingcount','keyword.courseabout','keyword.heading','keyword.paragraph1','keyword.paragraph2','keyword.paragraph3','keyword.paragraph4','keyword.paragraph5','keyword.paragraph6','keyword.paragraph7','keyword.paragraph8','keyword.slug','keyword.bottom_heading','keyword.top_heading','keyword.extra_heading','keyword.extra_description'
+			->select('keyword.*', 'parent_category.*', 'child_category.*', 'keyword.id as key_id', 'keyword.faqq1', 'keyword.faqa1', 'keyword.faqq2', 'keyword.faqa2', 'keyword.faqq3', 'keyword.faqa3', 'keyword.faqq4', 'keyword.faqa4', 'keyword.faqq5', 'keyword.faqa5','keyword.faqq6','keyword.faqa6','keyword.faqq7','keyword.faqa7','keyword.faqq8','keyword.faqa8','keyword.faqq9','keyword.faqa9','keyword.faqq10','keyword.faqa10','keyword.meta_title', 'keyword.meta_description', 'keyword.h1_heading', 'keyword.top_description', 'keyword.bottom_description', 'keyword.ratingvalue', 'keyword.ratingcount','keyword.courseabout','keyword.heading','keyword.paragraph1','keyword.paragraph2','keyword.paragraph3','keyword.paragraph4','keyword.paragraph5','keyword.paragraph6','keyword.paragraph7','keyword.paragraph8','keyword.slug','keyword.bottom_heading','keyword.top_heading','keyword.extra_heading','keyword.extra_description','keyword.created_at','keyword.updated_at'
 			)
 			->first();
 		 
@@ -1117,6 +1120,8 @@ $reviewList = DB::table('clients')
 			'parent_slug' => $keywordDetails->parent_slug,
 			'child_category' => $keywordDetails->child_category,
 			'child_slug' => $keywordDetails->child_slug,
+			'created_at' => $keywordDetails->created_at,
+			'updated_at' => $keywordDetails->updated_at,
 			'keywordBanners' => $keywordBanners,
 
 		);
@@ -3187,7 +3192,7 @@ public function search(Request $request, string $city)
     $slug    = Str::slug($str);
     $keyword = $str;
 
-		$keyword = ucfirst(preg_replace('/[\s\-]+/u', ' ', $str));
+	$keyword = ucfirst(preg_replace('/[\s\-]+/u', ' ', $str));
  
     $like    = '%' . addcslashes($str, '%_\\') . '%';
 
@@ -3236,7 +3241,9 @@ public function search(Request $request, string $city)
             'cc.child_slug as child_slug',
             'cc.child_category as child_category',
             'pc.parent_slug as parent_slug',
-            'pc.parent_category as parent_category'
+            'pc.parent_category as parent_category',
+            'k.created_at',
+            'k.updated_at',
         )
         ->where(function ($q) use ($slug, $like) {
             $q->where('k.slug', $slug)

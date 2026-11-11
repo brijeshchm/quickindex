@@ -36,12 +36,51 @@
     $bangaloreIndex      = $currentCity === 'bangalore' && $shouldIndex;  
     $hasCuratedContent = $faridabadIndex || $noidaIndex || $delhiIndex || $bangaloreIndex;
 @endphp
+
 @section('meta_robots')
 <meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, follow' }}">
 @endsection
 @section('og_image', !empty($kwData['key_icon'])
     ? asset($kwData['key_icon'])
     : asset('client/images/quickdials-og.png'))
+   
+@php
+    // Use these only if they reflect actual publication/content updates.
+    $publishedDate = $kwData['created_at'];
+    $modifiedDate = $kwData['updated_at'];
+$publishedDate = \Carbon\Carbon::parse($kwData['created_at'])->toIso8601String();
+$modifiedDate = \Carbon\Carbon::parse($kwData['updated_at'])->toIso8601String();
+    $pageSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebPage',
+        '@id' => url()->current() . '#webpage',
+        'url' => url()->current(),
+        'name' => $metaTitle,
+        'datePublished' => $publishedDate,
+        'dateModified' => $modifiedDate,
+    ];
+@endphp
+
+
+
+@section('schema')
+<meta property="og:type" content="Course">
+<meta property="article:published_time"
+      content="{{ $publishedDate }}">
+<meta property="article:modified_time"
+      content="{{ $modifiedDate }}">
+<script type="application/ld+json">
+{!! json_encode(
+    $pageSchema,
+    JSON_UNESCAPED_SLASHES |
+    JSON_HEX_TAG |
+    JSON_HEX_AMP |
+    JSON_HEX_APOS |
+    JSON_HEX_QUOT
+) !!}
+</script>
+@endsection
+
 @section('content') 
 <style>  
     #enquiry-modal { display: none; }

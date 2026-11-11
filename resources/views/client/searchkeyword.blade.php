@@ -11,6 +11,42 @@ $shouldIndex = $kwData['seo_index']?$kwData['seo_index']:'' ;
 @section('meta_robots')
 <meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, follow' }}">
 @endsection
+  
+@php
+    // Use these only if they reflect actual publication/content updates.
+    $publishedDate = date('Y-m-d',strtotime($kwData['created_at']));
+    $modifiedDate = date('Y-m-d',strtotime($kwData['updated_at']));
+$publishedDate = \Carbon\Carbon::parse($publishedDate)->toIso8601String();
+$modifiedDate = \Carbon\Carbon::parse($modifiedDate)->toIso8601String();
+    $pageSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebPage',
+        '@id' => url()->current() . '#webpage',
+        'url' => url()->current(),
+        'name' => $metaTitle,
+        'datePublished' => $publishedDate,
+        'dateModified' => $modifiedDate,
+    ];
+@endphp
+
+@section('schema')
+<meta property="og:type" content="Course">
+<meta property="article:published_time"
+      content="{{ $publishedDate }}">
+<meta property="article:modified_time"
+      content="{{ $modifiedDate }}">
+<script type="application/ld+json">
+{!! json_encode(
+    $pageSchema,
+    JSON_UNESCAPED_SLASHES |
+    JSON_HEX_TAG |
+    JSON_HEX_AMP |
+    JSON_HEX_APOS |
+    JSON_HEX_QUOT
+) !!}
+</script>
+@endsection
+
 @section('content') 
 <style>
 #enquiry-modal { display: none; }

@@ -39,6 +39,9 @@
 <meta name="msvalidate.01" content="456AED0115D50D42C4F3A79DAB89D41D" />
 <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('client/images/favicon.png') }}">
 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+@if(View::hasSection('schema'))
+@yield('schema')
+@endif
 <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('client/images/favicon.png') }}">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF6W10RN9L"></script>
 <script>
@@ -139,6 +142,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         $items
     );
 @endphp 
+
+
 @php   
     $schemas = [];  
     if (request()->is('/')){

@@ -4,6 +4,42 @@
 @section('og_image', !empty($blogDetails['blogImage'])
     ? asset($blogDetails['blogImage'])
     : asset('client/images/quickdials-og.png'))
+
+    @php
+    // Use these only if they reflect actual publication/content updates.
+    $publishedDate = date('Y-m-d', strtotime($blogDetails['created_at']));
+    $modifiedDate =date('Y-m-d', strtotime($blogDetails['updated_at']));
+$publishedDate = \Carbon\Carbon::parse($publishedDate)->toIso8601String();
+$modifiedDate = \Carbon\Carbon::parse($modifiedDate)->toIso8601String();
+    $pageSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebPage',
+        '@id' => url()->current() . '#webpage',
+        'url' => url()->current(),
+        'name' => $metaTitle,
+        'datePublished' => $publishedDate,
+        'dateModified' => $modifiedDate,
+    ];
+@endphp
+
+@section('schema')
+<meta property="og:type" content="Course">
+<meta property="article:published_time"
+      content="{{ $publishedDate }}">
+<meta property="article:modified_time"
+      content="{{ $modifiedDate }}">
+<script type="application/ld+json">
+{!! json_encode(
+    $pageSchema,
+    JSON_UNESCAPED_SLASHES |
+    JSON_HEX_TAG |
+    JSON_HEX_AMP |
+    JSON_HEX_APOS |
+    JSON_HEX_QUOT
+) !!}
+</script>
+@endsection
+
 @section('content')
 @include('client.components.banner-section')
 @php
@@ -22,6 +58,7 @@ foreach ($starMap as $k => $v) {
 $starImg = $starMap[$starKey] ?? 'star_4.5.png';
 
 @endphp
+
 
 <style> 
 :root {
