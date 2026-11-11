@@ -31,10 +31,8 @@ $modifiedDate = \Carbon\Carbon::parse($modifiedDate)->toIso8601String();
 
 @section('schema')
 <meta property="og:type" content="Course">
-<meta property="article:published_time"
-      content="{{ $publishedDate }}">
-<meta property="article:modified_time"
-      content="{{ $modifiedDate }}">
+<meta property="article:published_time" content="{{ $publishedDate }}">
+<meta property="article:modified_time" content="{{ $modifiedDate }}">
 <script type="application/ld+json">
 {!! json_encode(
     $pageSchema,
