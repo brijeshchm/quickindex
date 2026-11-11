@@ -1048,8 +1048,7 @@ function bannerSlider(banners, interval = 4000) {
         <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             💬 Frequently Asked Questions(FAQ's) of {{ $keyword }}
         </h3>
-        <div class="space-y-2">
-        
+        <div class="space-y-2">        
             @foreach($faqs as $fi => $faq)
             @if(!empty($faq['q']) && !empty($faq['a']))
             <div  class="border border-gray-100 rounded-xl overflow-hidden mt-4">
