@@ -275,6 +275,7 @@ echo $userService-&gt;getUser()<br>
 </div>
 <div class="code">
 <br>
+
 <pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>namespace App\Service;
 
 use App\Repository\ProductRepository;
@@ -325,7 +326,10 @@ class ProductService
 <p class="mt-3 text-lg leading-8 text-gray-700">OOP stands for Object-Oriented Programming. It is a programming approach based on classes and objects.</p>
 <p class="text-lg text-gray-700"><strong>Class: </strong>Classes define the blueprint for creating objects.</p>
 
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Employee
+ <div class="example">
+ <div class="code">  
+  <pre>
+<code>class Employee
 {
     public $name = &quot;Brijesh&quot;;
 
@@ -338,6 +342,9 @@ class ProductService
 $employee = new Employee();
 
 echo $employee-&gt;getName();</code></pre>
+  </div>
+  </div>
+
 
 <p class="text-lg text-gray-700"><strong>Object:</strong> Objects are instance of classes an instance of a class containing real data and behavior.</p>
 
@@ -347,6 +354,8 @@ Encapsulation is the process of bundling data and the methods that operate on th
 
 <p class="text-lg text-gray-700">
 <ul><li><strong>Definition:</strong> Combining variables (attributes) and functions (methods) into a single class.</li><li><strong>Data Hiding:</strong> Making internal fields private so external code cannot change them directly.</li><li><strong>Controlled Access:</strong>Using public getter and setter methods to read or update hidden data safely. </li><li><strong>Benefit:</strong>Protects data integrity and allows internal code changes without breaking outside programs. </li></ul>
+ <div class="example">
+ <div class="code">  
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Employee
 {
     private $salary = 50000;
@@ -361,7 +370,8 @@ $obj = new Employee();
 
 echo $obj-&gt;getSalary();</code></pre>
 
-
+  </div>
+  </div>
 <strong>Access Modifies:</strong>
 <ul><li><strong>Public:</strong> Accessible from any where - inside or outside the class.</li><li><strong>Protected:</strong> Accessible within the class and by inheriting class or derived class.</li><li><strong>Private:</strong>Accessible only within the class itself. </li><li><strong>Getters:</strong>Allow you to retrieving the value of private properties. </li><li><strong>Setters:</strong>Allow you to modify the values of private properties sately.</li></ul>
 
@@ -392,8 +402,13 @@ echo $user-&gt;name(); // error connot access private properties<br>
 </ul></p>
   
   <p class="text-lg text-gray-700"><strong>Inheritance:</strong> a class can inherit properties and methods from another class. </p>
+
+
+  <div class="example">
  
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class ParentClass
+<div class="code">
+  <pre>
+<code>class ParentClass
 {
     public function message()
     {
@@ -414,7 +429,8 @@ $obj = new ChildClass();
 echo $obj-&gt;message();</code></pre>
 
 
-
+  </div>
+  </div>
 
   <p class="text-lg text-gray-700"><strong>Polymorphism:</strong> Polymorphism means one interface or method contract can have multiple implementations. </p>
  <p> .</p>
@@ -1063,6 +1079,9 @@ echo implode(&quot; | &quot;, $arr);
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Class: A blueprint that defines properties and methods.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">Object: An instance of a class that can access its properties and methods.</p>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Employee
 {
     public $name = &quot;Brijesh&quot;;
@@ -1076,6 +1095,8 @@ echo implode(&quot; | &quot;, $arr);
 $employee = new Employee();
 
 echo $employee-&gt;getName();</code></pre>
+  </div>
+  </div>
 </div>
 
 
@@ -1086,6 +1107,10 @@ echo $employee-&gt;getName();</code></pre>
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is a trait in PHP?</h2>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">A trait is a mechanism for code reuse in PHP. It allows multiple classes to reuse methods without inheritance.</p>
+
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>trait Logger
 {
     public function logMessage()
@@ -1102,6 +1127,10 @@ class User
 $obj = new User();
 
 echo $obj-&gt;logMessage();</code></pre>
+
+
+  </div>
+  </div>
 </div>
 
 <div class="mb-12">
@@ -1109,6 +1138,14 @@ echo $obj-&gt;logMessage();</code></pre>
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is the difference between self and $this?</h2>
     </div>
 <div class="my-4 overflow-x-auto"><table class="w-full border-collapse text-left text-sm"><thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">self</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">$this</th></tr></thead><tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Refers to the class where the method is defined</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Refers to the current object</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Used for static properties and methods</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Used for instance properties and methods</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Uses <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">::</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Uses <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">-&gt;</code></td></tr></tbody></table></div>
+
+
+ <div class="example">
+ 
+<div class="code">
+
+
+
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Test
 {
     public static $count = 10;
@@ -1125,6 +1162,8 @@ echo $obj-&gt;logMessage();</code></pre>
     }
 }</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1132,6 +1171,12 @@ echo $obj-&gt;logMessage();</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Constructor: Automatically executes when an object is created.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">Destructor: Automatically executes when an object is destroyed or during shutdown.</p>
+
+ <div class="example">
+ 
+<div class="code">
+
+
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Database
 {
     public function __construct()
@@ -1147,6 +1192,8 @@ echo $obj-&gt;logMessage();</code></pre>
 
 $obj = new Database();</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1154,6 +1201,10 @@ $obj = new Database();</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Method Overloading: In PHP, similar behavior can be implemented using magic methods such as <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__call()</code> and <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__callStatic()</code> to handle inaccessible or undefined method calls.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">Method Overriding: A child class provides its own implementation of an inherited method.</p>
+
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class ParentClass
 {
     public function show()
@@ -1173,6 +1224,8 @@ class ChildClass extends ParentClass
 $obj = new ChildClass();
 $obj-&gt;show(); // Child</code></pre>
 </div>
+</div>
+</div>
 
 
 
@@ -1182,6 +1235,12 @@ $obj-&gt;show(); // Child</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Static method: Can be called directly using the class name without creating an object.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">Non-static method: Requires an object to access it.</p>
+
+ <div class="example">
+ 
+<div class="code">
+
+
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Demo
 {
     public static function show()
@@ -1200,12 +1259,17 @@ echo Demo::show();
 $obj = new Demo();
 echo $obj-&gt;display();</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is a namespace in PHP?</h2>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">A namespace is used to organize classes, interfaces, traits and functions and prevent naming conflicts between different parts of an application.</p>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>namespace App\Services;
 
 class UserService
@@ -1215,10 +1279,17 @@ class UserService
         return &quot;User Details&quot;;
     }
 }</code></pre>
+  </div>
+  </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Using the class:</p>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>use App\Services\UserService;
 
 $user = new UserService();</code></pre>
+</div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -1229,6 +1300,10 @@ $user = new UserService();</code></pre>
 <p class="mt-3 text-lg leading-8 text-gray-700">Important magic methods:</p>
 <div class="my-4 overflow-x-auto"><table class="w-full border-collapse text-left text-sm"><thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Magic method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Purpose</th></tr></thead><tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__construct()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Object creation</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__destruct()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Object destruction</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__get()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Access inaccessible properties</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__set()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Set inaccessible properties</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__call()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Call inaccessible methods</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__toString()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Convert object to string</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__clone()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Clone an object</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__invoke()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Call an object as a function</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__isset()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Check inaccessible properties</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">__unset()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Unset inaccessible properties</td></tr></tbody></table></div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Example:</p>
+
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class User
 {
     public function __get($name)
@@ -1241,12 +1316,17 @@ $user = new User();
 
 echo $user-&gt;username;</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is the difference between final and abstract?</h2>
     </div>
 <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700"><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">final</code> prevents a class from being extended or a method from being overridden.</li><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">abstract</code> requires a child class to implement abstract methods and prevents direct instantiation of the abstract class.</li></ul>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>final class Payment
 {
     public function pay()
@@ -1255,6 +1335,8 @@ echo $user-&gt;username;</code></pre>
     }
 }</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1262,6 +1344,9 @@ echo $user-&gt;username;</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Pass by Value: A copy of the variable is passed to the function. Changes inside the function do not affect the original variable.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">Pass by Reference: The function receives a reference to the original variable. Changes affect the original variable.</p>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// Pass by value
 function updateValue($num)
 {
@@ -1284,12 +1369,17 @@ updateReference($b);
 
 echo $b; // 100</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is a closure in PHP?</h2>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">A closure is an anonymous function that can be assigned to a variable, passed as an argument, or returned from another function.</p>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$message = &quot;Hello&quot;;
 
 $greet = function ($name) use ($message) {
@@ -1298,6 +1388,8 @@ $greet = function ($name) use ($message) {
 
 echo $greet(&quot;Brijesh&quot;);</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1305,6 +1397,9 @@ echo $greet(&quot;Brijesh&quot;);</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">A generator allows you to iterate through values one at a time using the <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">yield</code> keyword instead of creating an entire array in memory.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">It is useful for processing large datasets.</p>
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function getNumbers()
 {
     for ($i = 1; $i &lt;= 5; $i++) {
@@ -1316,12 +1411,19 @@ foreach (getNumbers() as $number) {
     echo $number . &quot;&lt;br&gt;&quot;;
 }</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is the difference between array_map(), array_filter() and array_reduce()?</h2>
     </div>
 <div class="my-4 overflow-x-auto"><table class="w-full border-collapse text-left text-sm"><thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Function</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Purpose</th></tr></thead><tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">array_map()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Applies a function to every array element</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">array_filter()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Filters elements based on a condition</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">array_reduce()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Reduces an array to a single value</td></tr></tbody></table></div>
+
+ <div class="example">
+ 
+<div class="code">
+
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$numbers = [1, 2, 3, 4, 5];
 
 // Map
@@ -1337,6 +1439,8 @@ $result3 = array_reduce(
     0
 );</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1344,7 +1448,12 @@ $result3 = array_reduce(
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">array_merge(): Combines two or more arrays.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">array_combine(): Creates a new associative array using one array as keys and another as values.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$a = [&quot;PHP&quot;, &quot;Laravel&quot;];
+
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>$a = [&quot;PHP&quot;, &quot;Laravel&quot;];
 $b = [&quot;React&quot;, &quot;MySQL&quot;];
 
 print_r(array_merge($a, $b));
@@ -1354,6 +1463,8 @@ $values = [&quot;Brijesh&quot;, 30];
 
 print_r(array_combine($keys, $values));</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1362,7 +1473,12 @@ print_r(array_combine($keys, $values));</code></pre>
 <p class="mt-3 text-lg leading-8 text-gray-700">Exception handling is a mechanism used to handle runtime problems without abruptly terminating the application.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">PHP provides:</p>
 <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700"><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">try</code> – Contains code that may throw an exception.</li><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">catch</code> – Handles the exception.</li><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">finally</code> – Executes whether an exception occurs or not.</li><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">throw</code> – Throws an exception.</li></ul>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>try {
+
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>try {
     $number = 10;
 
     if ($number &gt; 5) {
@@ -1374,6 +1490,8 @@ print_r(array_combine($keys, $values));</code></pre>
     echo &quot;Execution completed&quot;;
 }</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
@@ -1381,11 +1499,18 @@ print_r(array_combine($keys, $values));</code></pre>
     </div>
 <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700"><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">Exception</code> represents conditions that applications can handle.</li><li><code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">Error</code> represents serious PHP runtime problems, such as type errors or undefined function calls.</li></ul>
 <p class="mt-3 text-lg leading-8 text-gray-700">Both implement the <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">Throwable</code> interface.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>try {
+
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>try {
     throw new Exception(&quot;Something went wrong&quot;);
 } catch (Throwable $e) {
     echo $e-&gt;getMessage();
 }</code></pre>
+</div>
+</div>
 </div>
 
 
@@ -1396,7 +1521,12 @@ print_r(array_combine($keys, $values));</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">PDO stands for PHP Data Objects. It provides a consistent database access interface for multiple database systems.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">It supports prepared statements, which help prevent SQL injection.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$pdo = new PDO(
+
+ <div class="example">
+ 
+<div class="code">
+<pre>
+<code>$pdo = new PDO(
     &quot;mysql:host=localhost;dbname=test&quot;,
     &quot;root&quot;,
     &quot;&quot;
@@ -1409,6 +1539,8 @@ $stmt = $pdo-&gt;prepare(
 $stmt-&gt;execute([&#x27;id&#x27; =&gt; 1]);
 
 $user = $stmt-&gt;fetch(PDO::FETCH_ASSOC);</code></pre>
+</div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -1463,7 +1595,11 @@ composer dump-autoload</code></pre>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">The <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">match</code> expression compares a value against different conditions and returns a value.</p>
 <p class="mt-3 text-lg leading-8 text-gray-700">Unlike <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">switch</code>, it uses strict comparison and does not require <code class="rounded bg-slate-100 px-1 py-0.5 text-sm text-slate-900">break</code>.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$status = 200;
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>$status = 200;
 
 $result = match ($status) {
     200 =&gt; &quot;Success&quot;,
@@ -1473,6 +1609,8 @@ $result = match ($status) {
 };
 
 echo $result;</code></pre>
+</div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -1490,7 +1628,12 @@ echo $result;</code></pre>
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What are named arguments?</h2>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Named arguments allow passing arguments to functions using parameter names rather than their positions.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function employee($name, $age, $city)
+
+ <div class="example">
+ 
+<div class="code">
+<pre>
+<code>function employee($name, $age, $city)
 {
     return &quot;$name - $age - $city&quot;;
 }
@@ -1501,13 +1644,20 @@ echo employee(
     age: 30
 );</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is constructor property promotion?</h2>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">Constructor property promotion allows declaring and initializing class properties directly in the constructor parameters.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Employee
+
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>class Employee
 {
     public function __construct(
         public string $name,
@@ -1520,19 +1670,28 @@ $obj = new Employee(&quot;Brijesh&quot;, 30);
 
 echo $obj-&gt;name;</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="mb-4 mt-5 text-3xl font-bold text-blue-700">What is a Union Type?</h2>
     </div>
 <p class="mt-3 text-lg leading-8 text-gray-700">A union type allows a variable, property, or function parameter to accept multiple specified types.</p>
-<pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function getId(int|string $id): int|string
+
+ <div class="example">
+ 
+<div class="code">
+<pre>
+<code>function getId(int|string $id): int|string
 {
     return $id;
 }
 
 echo getId(101);
 echo getId(&quot;EMP101&quot;);</code></pre>
+</div>
+</div>
 </div>
 
 
@@ -1550,13 +1709,18 @@ echo getId(&quot;EMP101&quot;);</code></pre>
 <p class="mb-4 text-lg leading-8 text-gray-700">Autowiring</p>
 
 <p class="mb-4 text-lg leading-8 text-gray-700">Symfony automatically determines which dependencies need to be injected based on type hints.</p>
-
-<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class UserController
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>class UserController
 {
     public function __construct(
         private UserService $userService
     ) {}
 }</code></pre>
+  </div>
+  </div>
 
 <p class="mb-4 text-lg leading-8 text-gray-700">You don&#x27;t normally need to manually create UserService.</p>
 
@@ -1591,8 +1755,11 @@ echo getId(&quot;EMP101&quot;);</code></pre>
 <p class="mb-4 text-lg leading-8 text-gray-700">PHP Reflection API allows us to inspect classes, methods, properties, parameters, etc. at runtime.</p>
 
 <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Example:</h3>
-
-<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class User
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>class User
 {
     public function login($email)
     {
@@ -1604,16 +1771,21 @@ $reflection = new ReflectionClass(User::class);
 
 echo $reflection-&gt;getName();
 
-print_r($reflection-&gt;getMethods());</code></pre>
+print_r($reflection-&gt;getMethods());</code>
+</>
+</div></div>
 
 <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Getting method parameters:</h3>
-
+ <div class="example">
+ 
+<div class="code">
 <pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$method = new ReflectionMethod(User::class, &#x27;login&#x27;);
 
 foreach ($method-&gt;getParameters() as $parameter) {
     echo $parameter-&gt;getName();
 }</code></pre>
-
+  </div>
+  </div>
 <p class="mb-4 text-lg leading-8 text-gray-700">Where is Reflection useful?</p>
 
 <ul class="mb-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
@@ -1650,8 +1822,11 @@ foreach ($method-&gt;getParameters() as $parameter) {
 <p class="mb-4 text-lg leading-8 text-gray-700">static supports late static binding and refers to the class that was actually called.</p>
 
 <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Example:</h3>
-
-<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class ParentClass
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>class ParentClass
 {
     public static function selfTest()
     {
@@ -1670,6 +1845,8 @@ class ChildClass extends ParentClass
 
 ChildClass::selfTest();
 ChildClass::staticTest();</code></pre>
+  </div>
+  </div>
 
 <h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Output conceptually:</h3>
 
@@ -1691,7 +1868,11 @@ ChildClass::staticTest();</code></pre>
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between array and object in PHP?</h2>
     </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">An array stores multiple values using numeric or associative keys, whereas an object is an instance of a class that contains properties and methods.</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// Array
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+  <code>// Array
 $user = [
     "name" =&gt; "Brijesh",
     "age" =&gt; 30
@@ -1708,16 +1889,27 @@ $obj = new User();
 
 echo $obj-&gt;name;</code></pre>
 </div>
+</div>
+</div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between count() and sizeof()?</h2>
     </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Both functions return the number of elements in an array or Countable object.</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$arr = [10, 20, 30, 40];
+    <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>$arr = [10, 20, 30, 40];
 
 echo count($arr);  // 4
-echo sizeof($arr); // 4</code></pre>
+echo sizeof($arr); // 4</code>
+
+  </pre>
+</div></div>
+
+
     <p class="text-lg text-gray-700 mt-3 leading-8"><code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">sizeof()</code> is an alias of <code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">count()</code>.</p>
 </div>
 
@@ -1745,7 +1937,11 @@ var_dump(isset($user["name"])); // false</code></pre>
         <li><code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">foreach</code>: Used to iterate over arrays and iterable objects.</li>
         <li><code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">while</code>: Used when execution depends on a condition.</li>
     </ul>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>for ($i = 1; $i &lt;= 5; $i++) {
+
+     <div class="example">
+ 
+<div class="code">
+    <pre><code>for ($i = 1; $i &lt;= 5; $i++) {
     echo $i;
 }
 
@@ -1761,6 +1957,8 @@ while ($i &lt;= 5) {
     echo $i;
     $i++;
 }</code></pre>
+</div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -1850,7 +2048,13 @@ echo json_encode($user);</code></pre>
         <li>D – Dependency Inversion Principle: High-level modules should depend on abstractions rather than concrete implementations.</li>
     </ol>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example of Dependency Inversion:</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>interface PaymentGateway
+
+     <div class="example">
+ 
+<div class="code">
+
+<pre>
+    <code>interface PaymentGateway
 {
     public function pay(float $amount);
 }
@@ -1874,6 +2078,9 @@ class PaymentService
         return $this-&gt;gateway-&gt;pay($amount);
     }
 }</code></pre>
+
+</div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -1901,7 +2108,12 @@ class PaymentService
     </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Late static binding allows PHP to resolve a static method or property using the class that was called at runtime.</p>
     <p class="text-lg text-gray-700 mt-3 leading-8">It uses <code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">static::</code> instead of <code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">self::</code>.</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class ParentClass
+
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+     <code>class ParentClass
 {
     public static function show()
     {
@@ -1915,7 +2127,8 @@ class ChildClass extends ParentClass
 
 ChildClass::show();
 
-// ChildClass</code></pre>
+// ChildClass</code></pre></div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -1923,7 +2136,11 @@ ChildClass::show();
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is reflection in PHP?</h2>
     </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Reflection allows developers to inspect classes, methods, properties, parameters and other program structures at runtime.</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Employee
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+    <code>class Employee
 {
     public function getName()
     {
@@ -1935,7 +2152,7 @@ $reflection = new ReflectionClass(Employee::class);
 
 echo $reflection-&gt;getName();
 
-print_r($reflection-&gt;getMethods());</code></pre>
+print_r($reflection-&gt;getMethods());</code></pre></div></div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Real-time use: Dependency injection containers, framework internals, testing tools and automatic object creation.</p>
 </div>
 
@@ -1961,7 +2178,12 @@ gc_collect_cycles();</code></pre>
         <li><code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">unset()</code> removes a variable.</li>
         <li>Assigning <code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">null</code> keeps the variable defined but changes its value to null.</li>
     </ul>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$name = "Brijesh";
+
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+    <code>$name = "Brijesh";
 
 unset($name);
 
@@ -1969,7 +2191,7 @@ $age = 30;
 
 $age = null;
 
-var_dump(isset($age)); // false</code></pre>
+var_dump(isset($age)); // false</code></pre></div></div>
 </div>
 
 <div class="mb-12">
@@ -2012,7 +2234,11 @@ echo memory_get_peak_usage();</code></pre>
     <p class="text-lg text-gray-700 mt-3 leading-8">Lazy Loading: Related data is loaded only when it is accessed.</p>
     <p class="text-lg text-gray-700 mt-3 leading-8">Eager Loading: Related data is loaded in advance to reduce repeated database queries.</p>
     <p class="text-lg text-gray-700 mt-3 leading-8">In Laravel:</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// Lazy loading
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+  <code>// Lazy loading
 $users = User::all();
 
 foreach ($users as $user) {
@@ -2020,7 +2246,9 @@ foreach ($users as $user) {
 }
 
 // Eager loading
-$users = User::with('orders')-&gt;get();</code></pre>
+$users = User::with('orders')-&gt;get();</code></pre></div>
+
+  </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Eager loading helps prevent the N+1 query problem.</p>
 </div>
 
@@ -2030,18 +2258,30 @@ $users = User::with('orders')-&gt;get();</code></pre>
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is password_hash() in PHP?</h2>
     </div>
     <p class="text-lg text-gray-700 mt-3 leading-8"><code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">password_hash()</code> securely hashes passwords using a supported password hashing algorithm.</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$password = "Admin&#64;123";
+ <div class="example">
+ 
+<div class="code">
+  <pre>
+    <code>$password = "Admin&#64;123";
 
 $hash = password_hash(
     $password,
     PASSWORD_DEFAULT
-);</code></pre>
+);</code></pre></div>
+  </div>
+
     <p class="text-lg text-gray-700 mt-3 leading-8">To verify:</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>if (password_verify("Admin&#64;123", $hash)) {
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+    <code>if (password_verify("Admin&#64;123", $hash)) {
     echo "Password matched";
 } else {
     echo "Invalid password";
 }</code></pre>
+
+</div></div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Never store plain-text passwords.</p>
 </div>
 
@@ -2068,9 +2308,10 @@ $hash = password_hash(
     <p class="text-lg text-gray-700 mt-3 leading-8">CORS stands for Cross-Origin Resource Sharing.</p>
     <p class="text-lg text-gray-700 mt-3 leading-8">It is a browser security mechanism that controls whether a frontend application from one origin can access resources from another origin.</p>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Access-Control-Allow-Origin: https://example.com
+     <div class="example"> 
+<div class="code"><code>Access-Control-Allow-Origin: https://example.com
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE
-Access-Control-Allow-Headers: Content-Type, Authorization</code></pre>
+Access-Control-Allow-Headers: Content-Type, Authorization</code></div></div>
 </div>
 
 <div class="mb-12">
@@ -2105,7 +2346,11 @@ Access-Control-Allow-Headers: Content-Type, Authorization</code></pre>
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find the first non-repeating character in a string.</h2>
     </div>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function firstNonRepeating($str)
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+<code>function firstNonRepeating($str)
 {
     $count = array_count_values(str_split($str));
 
@@ -2120,7 +2365,7 @@ Access-Control-Allow-Headers: Content-Type, Authorization</code></pre>
 
 echo firstNonRepeating("swiss");
 
-// w</code></pre>
+// w</code></pre></div></div>
 </div>
 
 <div class="mb-12">
@@ -2128,7 +2373,11 @@ echo firstNonRepeating("swiss");
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find the missing number in an array.</h2>
     </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Suppose an array contains numbers from 1 to 5, but number 3 is missing.</p>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$arr = [1, 2, 4, 5];
+     <div class="example">
+ 
+<div class="code">
+  <pre>
+  <code>$arr = [1, 2, 4, 5];
 
 $n = 5;
 
@@ -2138,14 +2387,18 @@ $actual = array_sum($arr);
 
 echo $expected - $actual;
 
-// 3</code></pre>
+// 3</code></pre></div></div>
 </div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Sort an associative array by value.</h2>
     </div>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$employees = [
+     <div class="example">
+ 
+<div class="code">
+<pre>  
+<code>$employees = [
     "Amit" =&gt; 30000,
     "Rahul" =&gt; 50000,
     "Brijesh" =&gt; 40000
@@ -2153,7 +2406,8 @@ echo $expected - $actual;
 
 asort($employees);
 
-print_r($employees);</code></pre>
+print_r($employees);</code></pre></div></div>
+
     <p class="text-lg text-gray-700 mt-3 leading-8">Use <code class="rounded bg-slate-100 px-1 py-0.5 text-base text-slate-900">arsort()</code> for descending order.</p>
 </div>
 
@@ -2161,7 +2415,11 @@ print_r($employees);</code></pre>
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find common elements between two arrays.</h2>
     </div>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$arr1 = [10, 20, 30, 40];
+     <div class="example">
+ 
+<div class="code">
+<pre>  
+<code>$arr1 = [10, 20, 30, 40];
 
 $arr2 = [20, 40, 50, 60];
 
@@ -2169,14 +2427,18 @@ $result = array_intersect($arr1, $arr2);
 
 print_r($result);
 
-// 20, 40</code></pre>
+// 20, 40</code></pre></div></div>
 </div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Write a PHP program to check whether two strings are anagrams.</h2>
     </div>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function isAnagram($str1, $str2)
+     <div class="example">
+ 
+<div class="code">
+<pre>  
+<code>function isAnagram($str1, $str2)
 {
     $str1 = strtolower(str_replace(' ', '', $str1));
     $str2 = strtolower(str_replace(' ', '', $str2));
@@ -2192,14 +2454,20 @@ print_r($result);
 
 var_dump(isAnagram("listen", "silent"));
 
-// true</code></pre>
+// true</code>
+  </pre>
+</div></div>
 </div>
 
 <div class="mb-12">
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you implement a simple API response in PHP?</h2>
     </div>
-    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>header('Content-Type: application/json');
+     <div class="example">
+ 
+<div class="code">
+<pre>  
+<code>header('Content-Type: application/json');
 
 $response = [
     "status" =&gt; true,
@@ -2210,7 +2478,9 @@ $response = [
     ]
 ];
 
-echo json_encode($response);</code></pre>
+echo json_encode($response);</code>
+  </pre>
+</div></div>
 </div>
 
 <div class="mb-12">
@@ -2225,6 +2495,9 @@ echo json_encode($response);</code></pre>
         <li>Delete – Remove records.</li>
     </ul>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example using PDO:</p>
+     <div class="example">
+ 
+<div class="code">
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// CREATE
 $stmt = $pdo-&gt;prepare(
     "INSERT INTO users (name, email) VALUES (?, ?)"
@@ -2251,12 +2524,12 @@ $stmt = $pdo-&gt;prepare(
 
 $stmt-&gt;execute([1]);</code></pre>
 </div>
+</div>
+</div>
 
 
 
-
-<!-- Blade partial: examples are escaped for display. text-primary uses your existing Tailwind theme. -->
-
+ 
 <div class="mb-12">
     <div class="question">
         <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Explain how you design a scalable PHP application.</h2>
@@ -2334,6 +2607,9 @@ $stmt-&gt;execute([1]);</code></pre>
         <li>Monitor execution time and memory usage.</li>
     </ol>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <div class="example">
+ 
+<div class="code">
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function getRecords()
 {
     $lastId = 0;
@@ -2355,6 +2631,8 @@ $stmt-&gt;execute([1]);</code></pre>
         }
     }
 }</code></pre>
+  </div>
+  </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">This avoids loading millions of records into memory at once.</p>
 </div>
 
@@ -2389,6 +2667,9 @@ foreach ($users as $user) {
         <li>Distributed Cache: Shares cached data across multiple application servers.</li>
     </ol>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example using Redis in Laravel:</p>
+     <div class="example">
+ 
+<div class="code">
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$data = Cache::remember(
     'users',
     3600,
@@ -2396,6 +2677,9 @@ foreach ($users as $user) {
         return User::all();
     }
 );</code></pre>
+  </div>
+  </div>
+
 </div>
 
 <div class="mb-12">
@@ -2445,6 +2729,9 @@ foreach ($users as $user) {
         <li>Monitor query execution time.</li>
     </ol>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+     <div class="example">
+ 
+<div class="code">
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>EXPLAIN
 SELECT id, name, email
 FROM users
@@ -2452,6 +2739,8 @@ WHERE email = 'test&#64;example.com';</code></pre>
     <p class="text-lg text-gray-700 mt-3 leading-8">Create an index:</p>
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>CREATE INDEX idx_users_email
 ON users(email);</code></pre>
+</div>
+</div>
 </div>
 
 <div class="mb-12">
@@ -2492,6 +2781,9 @@ ON users(email);</code></pre>
         <li>Durability – Committed changes remain persistent.</li>
     </ul>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+     <div class="example">
+ 
+<div class="code">
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>DB::transaction(function () {
     Account::where('id', 1)
         -&gt;decrement('balance', 1000);
@@ -2499,6 +2791,8 @@ ON users(email);</code></pre>
     Account::where('id', 2)
         -&gt;increment('balance', 1000);
 });</code></pre>
+  </div>
+  </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">If an exception occurs, Laravel rolls back the transaction.</p>
 </div>
 
@@ -2595,6 +2889,9 @@ ON users(email);</code></pre>
         <li>Proper logging and reconciliation.</li>
     </ol>
     <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+     <div class="example">
+ 
+<div class="code">
     <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$payment = Payment::firstOrCreate(
     ['transaction_id' =&gt; $transactionId],
     [
@@ -2603,6 +2900,8 @@ ON users(email);</code></pre>
         'status' =&gt; 'pending'
     ]
 );</code></pre>
+  </div>
+  </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">For production, enforce a unique database constraint on the transaction reference and make payment status transitions atomic.</p>
 </div>
 
@@ -2893,7 +3192,7 @@ ON users(email);</code></pre>
      <div class="example">
  
 <div class="code"> 
-  
+  <pre><code>
   class Automobile {<br>
   private $bikeMake;<br>
   public function __construct($make, $model) {<br>
@@ -2911,13 +3210,14 @@ class AutomobileFactory {<br>
 $pulsar = AutomobileFactory::create('ktm', 'Pulsar');<br>
 print_r($pulsar-&gt;getMakeAndModel());<br>
 
- 
+  </code> </pre>
 
 </div></div>
 </li></ul></li><li><strong>2. Singleton:</strong> make sure that a class has one instance of a class that is produced like database connection and mailer class<ul class="mt-2 bg-gray-200 p-4 shadow-lg"><li class="bg-white p-3 border-l-4 border-green-500 text-sm">
   
 <div class="example"> 
 <div class="code"> 
+  <pre>
  class Singleton {<br>
   private static $instance;<br>
   private function __construct() {<br>
@@ -2936,7 +3236,7 @@ public static function getInstance() {<br>
   }<br>
  
 $singleton = Singleton::getInstance(); 
-
+<pre>
 </div></div>
 </li></ul></li>
 
@@ -2944,6 +3244,8 @@ $singleton = Singleton::getInstance();
   
 <strong>3. Repository Pattern:</strong> It is a collection of domain objects, acting like an in-memory collection. The repository is responsible for providing access to data.</li>
 
+<div class="example"> 
+<div class="code"> 
 <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class UserRepository
 {
     public function getAllUsers()
@@ -2961,6 +3263,8 @@ $singleton = Singleton::getInstance();
         return User::create($data);
     }
 }</code></pre>
+  </div>
+  </div>
     <p class="text-lg text-gray-700 mt-3 leading-8">Benefits:</p>
     <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
         <li>Code reusability.</li>
