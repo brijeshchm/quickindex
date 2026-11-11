@@ -187,7 +187,7 @@ a.new-payment-type {position: relative;}
 		};
 	</script>
 	<section class="consular-tp-banner">
-	<img loading="lazy" src="{{asset('public/img/pay/consular-banner.png')}}" alt="consular-banner" class="img-fluid">
+	<img loading="lazy" src="{{asset('public/img/pay/consular-banner.png')}}" alt="consular-banner" class="img-fluid" >
 	</section>
 				
 				

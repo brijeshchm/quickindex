@@ -242,7 +242,7 @@ $bgImage = $bgImage ?? '/computer-courses-training.jpg';
                         <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
                             <div class="relative w-full h-48 overflow-hidden rounded-t-2xl bg-gray-100">
                                 <img src="{{ $qb['image'] ?? '' }}" alt="{{ $qb['name'] ?? '' }}"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" width="100" height="100">
                             </div>
                             <div class="p-5">
                                 <div class="flex items-center gap-2 mb-3">
@@ -262,7 +262,7 @@ $bgImage = $bgImage ?? '/computer-courses-training.jpg';
                                     </a>
                                     <a href="https://wa.me/{{ preg_replace('/\D/', '', $qb['phone'] ?? '') }}" rel="nofollow noopener noreferrer" target="_blank"
                                        class="flex items-center justify-center w-12 h-12 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all">
-                                        <img src="{{ asset('WhatsApp.svg') }}" alt="WhatsApp" class="w-6 h-6">
+                                        <img src="{{ asset('WhatsApp.svg') }}" alt="WhatsApp" class="w-6 h-6" width="6" height="6">
                                     </a>
                                 </div>
                             </div>

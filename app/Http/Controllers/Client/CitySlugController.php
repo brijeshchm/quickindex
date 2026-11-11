@@ -2601,6 +2601,46 @@ $reviewList = DB::table('clients')
             if ($q && $a) $faqs[] = ['q' => $q, 'a' => $a];
         }
 
+
+		
+
+
+
+		$citySlug = strtolower(trim((string) $city));
+	$keywordSlug = strtolower(trim((string) ($kwData['keyword_slug'] ?? '')));
+
+	$customFaqs = config('city_keyword_faqs', [])[$citySlug][$keywordSlug] ?? [];
+
+	$faqs = [];
+
+	if (!empty($customFaqs)) {
+		foreach ($customFaqs as $faq) {
+			$q = trim($faq['q'] ?? '');
+			$a = trim($faq['a'] ?? '');
+
+			if ($q !== '' && $a !== '') {
+				$faqs[] = ['q' => $q, 'a' => $a];
+			}
+		}
+	}
+
+// Default FAQs if no valid city-and-keyword FAQs exist.
+if (empty($faqs)) {
+    for ($i = 0; $i <= 10; $i++) {
+        $q = replaceCity($kwData["faqq{$i}"] ?? '', $city);
+        $a = replaceCity($kwData["faqa{$i}"] ?? '', $city);
+
+        if ($q && $a) {
+            $faqs[] = ['q' => $q, 'a' => $a];
+        }
+    }
+}
+
+
+
+
+
+
         // ── Businesses ─────────────────────────────────────────────────────
         $rawList    = $response['clientsList'] ?? [];
        

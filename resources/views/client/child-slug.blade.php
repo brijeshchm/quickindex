@@ -34,6 +34,8 @@ $bgImage = !empty($bgImage)
     <img
         src="{{ $bgImage }}"
         alt="{{ $keyword }}"
+        width="100"
+        height="100"
         class="block w-full h-auto object-contain sm:h-[170px] sm:object-cover"
         loading="eager"
     >
@@ -126,6 +128,8 @@ $bgImage = !empty($bgImage)
                                             src="{{ $img }}"
                                             alt="{{ $title }}"
                                             loading="lazy"
+                                            width="100"
+                                            height="100"
                                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                                             loading="lazy" decoding="async"
                                         />

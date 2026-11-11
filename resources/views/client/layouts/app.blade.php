@@ -109,8 +109,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .hidden-init { display: none; }
     </style>     
        
-
- 
 @php     
     $serviceName = !empty($metaTitle)
         ? $metaTitle

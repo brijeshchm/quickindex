@@ -336,7 +336,7 @@ $schema = [
                          alt="banner.alt_text"
                          :loading="idx === 0 ? 'eager' : 'lazy'"
                          :fetchpriority="idx === 0 ? 'high' : 'auto'"
-                         width="1351sw" height="190"
+                         width="1351" height="190"
                          class="w-full h-full object-contain" />
                 </a>
             </template>
@@ -738,6 +738,7 @@ function bannerSlider(banners, interval = 4000) {
                             <div class="relative w-full h-48 overflow-hidden rounded-t-2xl bg-gray-100">
                                 <img loading="lazy"
             decoding="async" src="{{ $qb['image'] ?? '' }}" alt="{{ $qb['name'] ?? $keyword }}" 
+            width="100" height="100"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" >
                             </div>
                             <div class="p-5">
@@ -758,7 +759,9 @@ function bannerSlider(banners, interval = 4000) {
                                     </a>
                                     <a href="https://wa.me/{{ preg_replace('/\D/', '', $qb['phone'] ?? '') }}" rel="nofollow noopener noreferrer" target="_blank"
                                        class="flex items-center justify-center w-12 h-12 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all">
-                                        <img src="{{ asset('WhatsApp.svg') }}" alt="WhatsApp" class="w-6 h-6" loading="lazy"
+                                        <img src="{{ asset('WhatsApp.svg') }}" alt="WhatsApp" 
+                                        width="6" height="6"
+                                        class="w-6 h-6" loading="lazy"
                                             decoding="async">
                                     </a>
                                 </div>

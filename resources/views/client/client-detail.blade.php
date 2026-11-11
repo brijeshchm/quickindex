@@ -130,6 +130,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
     <div class="relative flex-1 overflow-hidden">
         <img loading="lazy" decoding="async" src="{{ $clientsList['profile_banner'] ?? asset('images/banner-gallery.jpg') }}"
              alt="{{ $clientsList['business_name'] ?? '' }}"
+             width="100"
+             height="100"
              class="hero-img absolute inset-0 w-full h-full object-cover" style="transform:scale(1.06);">
         <div class="hero-overlay-l opacity-0"></div>
         <div class="hero-overlay-b "></div>
@@ -142,6 +144,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                             border:2px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);backdrop-filter:blur(14px);">
                     <img src="{{ $clientsList['logo'] ?? asset('client/images/default_pp_small.png') }}"
                          alt="{{ $clientsList['business_name'] ?? '' }}"
+                         width="100"
+                         height="100"
                          class="w-full h-full object-cover" loading="lazy" decoding="async">
                 </div>
                 {{-- Name --}}
@@ -174,6 +178,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         @if($hImages)    
         @foreach($hImages as $i => $img)
             <img src="{{ $img }}" alt="Gallery" class="tile-img {{ $i===0?'active':'' }}"
+            width="100"
+            height="100"
                  data-h-slide="{{ $i }}" loading="lazy" decoding="async">
             @endforeach
             @endif
@@ -183,6 +189,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         @if($vImages)   
         @foreach($vImages as $i => $img)
             <img src="{{ $img }}" alt="Gallery" class="tile-img {{ $i===0?'active':'' }}"
+            width="100"
+            height="100"
                  data-v-slide="{{ $i }}" loading="lazy" decoding="async">
             @endforeach
             @endif
@@ -421,7 +429,10 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
         <div class="gallery-grid-item reveal d-{{ min($i%6,5) }} {{ $i===0?'col-span-2 row-span-2':'' }}"
              style="aspect-ratio:{{ $i===0?'1/1':'4/3' }};border:1px solid rgba(59,130,246,.1);"
              onclick="openLightbox({{ $i }})">
-            <img src="{{ $img }}" alt="Gallery {{ $i+1 }}" loading="lazy" decoding="async">
+            <img src="{{ $img }}" alt="Gallery {{ $i+1 }}" loading="lazy" 
+            width="100"
+            height="100"
+            decoding="async">
             <div class="gallery-overlay"></div>
             <div class="absolute inset-0 flex items-end p-2 opacity-0 hover:opacity-100 transition-opacity">
                 <span class="text-white text-[10px] font-bold rounded-full px-2 py-0.5 bg-white/20 backdrop-blur-sm">View</span>
@@ -466,6 +477,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
             <div class="relative overflow-hidden" style="aspect-ratio:16/9;">
                 <img src="{{ $activity['img'] ?? '' }}"
                      alt="{{ $activity['name'] ?? 'Recent Activity' }}"
+                     width="100"
+                     height="100"
                      loading="lazy"
                      class="w-full h-full object-cover">
 
@@ -535,6 +548,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                          style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2);">
                         @if(!empty($doc['img']))
                             <img src="{{ asset($doc['img']) }}" alt="{{ $doc['title'] }}"
+                            width="100"
+                            height="100"
                                  class="w-full h-full object-cover">
                         @else
                             <span class="text-white text-xl">🏛️</span>
@@ -590,6 +605,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
                     <img src="{{ asset($doc['img']) }}"
                         alt="{{ $doc['title'] }}"
+                        width="100"
+                        height="100"
                         loading="lazy"
                         class="w-full h-48 object-cover block
                                 group-hover:scale-105 transition-transform duration-500">
@@ -646,6 +663,8 @@ $starImg = $starMap[$starKey] ?? 'star_4.5.png';
                                         hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
                                 <img src="{{ asset($doc['img']) }}"
                                     alt="{{ $doc['title'] }}"
+                                    width="100"
+                                    height="100"
                                     loading="lazy"
                                     class="w-full h-48 object-cover block
                                             group-hover:scale-105 transition-transform duration-500">
@@ -735,7 +754,9 @@ function selectGov(i) {
         ? `<div class="group rounded-xl overflow-hidden mx-auto w-full max-w-xs cursor-pointer
                 shadow-md border border-black/5
                 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300" style="box-shadow:0 2px 20px rgba(0,0,0,.08);">
-               <img src="${doc.img}" alt="${doc.title}" class="w-full">
+               <img src="${doc.img}" alt="${doc.title}" 
+               width="100" height="100"
+               class="w-full">
            </div>`
         : `<div class="rounded-xl flex flex-col items-center gap-3 py-8 text-center"
                 style="background:rgba(29,78,216,.06);">
@@ -792,7 +813,9 @@ function selectGov(i) {
                 shadow-md border border-black/5
                 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300" style="box-shadow:0 2px 20px rgba(0,0,0,.08);">
                             <img src="{{ $certifications[0]['img'] }}"
-                                 alt="{{ $certifications[0]['name'] }}" class="w-full">
+                                 alt="{{ $certifications[0]['name'] }}" 
+                                 width="100" height="100"
+                                 class="w-full">
                         </div>
                         @endif
                     </div>
@@ -816,6 +839,7 @@ function selectGov(i) {
                          style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.2);">
                         @if(!empty($cert['img']))
                             <img src="{{ $cert['img'] }}" alt="{{ $cert['name'] }}"
+                            width="100" height="100"
                                  class="w-full h-full object-cover">
                         @else
                             <span class="text-white text-xl">🏅</span>
@@ -855,7 +879,9 @@ function selectGov(i) {
                         @if(!empty($cert['img']))
                         <div class="rounded-xl overflow-hidden"
                              style="box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.06);">
-                            <img src="{{ $cert['img'] }}" alt="{{ $cert['name'] }}" class="w-full block">
+                            <img src="{{ $cert['img'] }}" alt="{{ $cert['name'] }}" 
+                            width="100" height="100"
+                            class="w-full block">
                         </div>
                         @else
                         <div class="rounded-xl flex flex-col items-center gap-3 py-6 text-center"
@@ -928,7 +954,9 @@ function selectCert(i) {
         ? `<div class="group rounded-xl overflow-hidden mx-auto w-full max-w-xs cursor-pointer
                 shadow-md border border-black/5
                 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300" style="box-shadow:0 2px 20px rgba(0,0,0,.08);">
-               <img src="${cert.img}" alt="${cert.name || ''}" class="w-full">
+               <img src="${cert.img}" alt="${cert.name || ''}" 
+               width="100" height="100"
+               class="w-full">
            </div>`
         : `<div class="rounded-xl flex flex-col items-center gap-3 py-8 text-center"
                 style="background:rgba(217,119,6,.08);">
@@ -1356,7 +1384,7 @@ function selectCert(i) {
     <button onclick="lbPrev()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);">‹</button>
     <button onclick="lbNext()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);">›</button>
     <div id="lightbox-content" class="max-w-5xl max-h-[90vh] p-8 md:p-16 flex items-center justify-center w-full">
-        <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
+        <img id="lightbox-img" src="" alt="lightbox" width="100" height="100" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
     </div>  
 </div>
 <div id="gallery-modal">
@@ -1376,7 +1404,9 @@ function selectCert(i) {
             @foreach($gallery as $i => $img)
             <div class="gallery-grid-item {{ $i===0?'col-span-1 row-span-2':'' }}"
                  onclick="closeLightbox();openLightbox({{ $i }})">
-                <img src="{{ $img }}" alt="Gallery {{ $i+1 }}" loading="lazy" decoding="async">
+                <img src="{{ $img }}" alt="Gallery {{ $i+1 }}" 
+                width="100" height="100"
+                loading="lazy" decoding="async">
                 <div class="gallery-overlay"></div>
             </div>
             @endforeach

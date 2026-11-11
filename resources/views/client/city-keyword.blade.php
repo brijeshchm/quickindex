@@ -198,6 +198,8 @@ $colorMap = [
                         @if(!empty($item['icon']))
                         <img loading="lazy" decoding="async" src="{{ $item['icon'] }}"
                              alt="{{ $item['alt'] }}"
+                             height="4"
+                             width="4"
                              class="w-4 h-4 object-contain shrink-0">
                         @endif
                         {{ $item['child_category'] }}

@@ -61,6 +61,7 @@
         <div class="absolute inset-0" :style="`transform: translateY(${parallaxY}px); will-change: transform`">
             @if ($clinic->cover_image_url)
                 <img src="{{ $clinic->cover_image_url }}" alt="{{ $clinic->name }}"
+                width="100" height="100"
                      class="w-full h-full object-cover">
             @else
                 <div class="w-full h-full bg-gradient-to-br from-primary/80 to-primary"></div>
@@ -77,7 +78,10 @@
                     {{-- Logo --}}
                     <div class="w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden border-4 border-white/90 shadow-2xl bg-white shrink-0">
                         @if ($clinic->logo_url)
-                            <img src="{{ $clinic->logo_url }}" alt="{{ $clinic->name }}" class="w-full h-full object-cover">
+                            <img src="{{ $clinic->logo_url }}" alt="{{ $clinic->name }}" 
+                            width="100" height="100"
+                            
+                            class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-3xl font-bold text-primary">
                                 {{ substr($clinic->name, 0, 1) }}
@@ -299,6 +303,7 @@
                                     <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-2 border-border/50 bg-muted">
                                         @if ($doctor->image_url)
                                             <img src="{{ $doctor->image_url }}" alt="{{ $doctor->name }}"
+                                            width="100" height="100"
                                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                         @else
                                             <div class="w-full h-full flex items-center justify-center text-2xl font-bold text-primary/40">

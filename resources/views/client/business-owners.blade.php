@@ -276,7 +276,7 @@ select.form-input { padding-left:1rem; }
                 <div class="reveal inline-flex items-center gap-2 bg-white/80 backdrop-blur
                             border border-blue-100 text-blue-700 text-sm font-semibold
                             px-4 py-2 rounded-full shadow-sm">
-                    <img src="{{ asset('img/golden-sparkle.png') }}" alt="golden-sparkle" width="50"> Join 15,57+ Suppliers on QuickDials
+                    <img src="{{ asset('img/golden-sparkle.png') }}" alt="golden-sparkle" width="50" height="50"> Join 15,57+ Suppliers on QuickDials
                 </div>
 
                 {{-- Animated Title --}}
@@ -597,7 +597,7 @@ select.form-input { padding-left:1rem; }
                                    <img
             src="{{ asset('img/' . $cat[1]) }}"
             alt="{{ $cat[1] }}"
-         
+         width="24" height="24"
             class="h-24 w-24 object-contain"
         >
                             </div>
@@ -687,7 +687,7 @@ select.form-input { padding-left:1rem; }
             src="{{ asset('img/' . $step[3]) }}"
             alt="{{ $step[3] }}"
            
-            
+            width="24" height="24"
             class="h-24 w-24 object-contain"
         >
                     </div>
@@ -728,7 +728,7 @@ select.form-input { padding-left:1rem; }
             <img
                 src="{{ asset('img/' . $feat['icon']) }}"
                 alt="{{ $feat['title'] }}"
-                
+                width="24" height="24"
                 class="h-14 w-24 object-contain"
             >
         </div>

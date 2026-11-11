@@ -1391,6 +1391,7 @@ list-style: none;
 			<div class="col-xs-12 col-sm-12 col-md-12 third-add-section">
 
 				<img loading="lazy" src="<?php echo asset('client/images/computer-courses-training.jpg'); ?>"
+                width="100" height="100"
 					alt="computer-courses-training">
 				 
 
@@ -1411,7 +1412,9 @@ list-style: none;
 									</div>
 									<div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
 										<img loading="lazy" itemprop="image" src="{{ asset('client/images/star_4.75_new.png') }}"
-											alt="5 Star Rating: Very Good" />
+											alt="5 Star Rating: Very Good"
+                                            width="100" height="100"
+                                            />
 										<span itemprop="ratingValue">4.75</span> out of <span itemprop="bestRating"></span>based on <span itemprop="ratingCount">314</span> ratings
 									</div>
 								</div>

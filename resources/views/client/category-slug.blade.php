@@ -120,6 +120,8 @@ $bgImage = !empty($bgImage)
                                             src="{{ $img }}"
                                             alt="{{ $title }}"
                                             loading="lazy"
+                                            width="100"
+                                            height="100"
                                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                                             loading="lazy" decoding="async"
                                         />
