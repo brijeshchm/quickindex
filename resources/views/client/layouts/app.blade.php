@@ -242,7 +242,7 @@ if (request()->is('/')){
         ];
     }
    
-
+  $schemasFaqs = []; 
     // ---- 5. FAQ ----
     if (!empty($faqs)) {
         $validFaqs = collect($faqs)
@@ -259,7 +259,7 @@ if (request()->is('/')){
             ->all();
 
         if (!empty($validFaqs)) {
-            $schemas[] = [
+            $schemasFaqs[] = [
                 '@context'   => 'https://schema.org',
                 '@type'      => 'FAQPage',
                 'mainEntity' => $validFaqs,
@@ -272,6 +272,15 @@ if (request()->is('/')){
 <script type="application/ld+json">
 {!! json_encode(
     count($schemas) === 1 ? $schemas[0] : $schemas,
+    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+) !!}
+</script>
+@endif 
+
+@if(!empty($schemasFaqs))
+<script type="application/ld+json">
+{!! json_encode(
+    count($schemasFaqs) === 1 ? $schemasFaqs[0] : $schemasFaqs,
     JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
 ) !!}
 </script>
