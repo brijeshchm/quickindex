@@ -552,9 +552,10 @@
                             <input type="hidden" id="amount1" value="{{ $data->amt ?? '' }}" readonly>
                             <input type="hidden" id="amount2" value="{{ $data->amt ?? '' }}" readonly>
                             <input type="hidden" id="amount3" value="{{ $data->amt ?? '' }}" readonly>
-                            <input type="hidden" id="paid_amount" name="paid_amount" value="{{ $data->amt ?? '' }}" readonly>
+                            <input type="hidden" id="amount" name="amount" value="{{ $data->amt ?? '' }}" readonly>                             
                             <input type="hidden" id="gst_tax" name="gst_tax" value="{{ $data->amt ? $data->amt * 0.18 : '' }}" readonly>
                             <input type="hidden" id="gst_total_amount" name="gst_total_amount" value="{{ $data->amt ? ($data->amt * 0.18) + $data->amt : '' }}" readonly>
+                            <input type="hidden" id="paid_amount" name="paid_amount" value="{{ $data->amt ? ($data->amt * 0.18) + $data->amt : '' }}" readonly>
 
                             <input type="hidden" name="billing_name" id="billing-name" value="{{ $data->customer_name }}">
                             <input type="hidden" name="billing_email" id="billing-email" value="{{ $data->email }}">
@@ -740,6 +741,7 @@ jQuery(document).ready(function ($) {
         var card_holder_name_id = $form.find('#billing-name').val();
         var merchant_total     = total;
         var paid_amount        = $form.find('#paid_amount').val();
+        var amount              = $form.find('#amount').val();
         var merchant_amount    = $form.find('#gst_total_amount').val();
         var gst_tax            = $form.find('#gst_tax').val();
         var currency_code_id   = $form.find('#currency').val();
@@ -819,6 +821,7 @@ jQuery(document).ready(function ($) {
                         client_id: client_id,
                         username: username,
                         gst_tax: gst_tax,
+                        amount: amount
                         paid_amount: paid_amount
                     },
                     dataType: 'json',

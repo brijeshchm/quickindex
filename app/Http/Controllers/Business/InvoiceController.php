@@ -59,10 +59,7 @@ class InvoiceController extends Controller
 				$action = '';
 				$separator = '';
 				if ($payment->invoice_status == '1') {
-					// $action .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Invoice PDF" id="invoiceBillingPdf" data-trigger="hover" data-placement="left" data-sid="' . $payment->id . '"><i aria-hidden="true" class="bi bi-file-earmark-pdf"></i></a>';			
-					// 					$action .= $separator . '<a href="' . url('business/getinvoiceBillingPrintPdf/' . $payment->id) . '" target="_blank">
-					//     <i aria-hidden="true" class="bi bi-file-earmark-pdf"></i>
-					// </a>';
+					 
 
 					$action .= $separator . '<a href="'.url('business/getinvoiceBillingPrintPdf/'.$payment->id).'">
 					<i class="bi bi-file-earmark-pdf"></i>
@@ -72,7 +69,7 @@ class InvoiceController extends Controller
 
 				$data[] = [
 					date_format(date_create($payment->created_at), 'd M Y'),
-					$payment->paid_amount,
+					$payment->amount,
 					$payment->gst_tax,
 					$payment->total_amount,
 					$action,
@@ -98,7 +95,7 @@ class InvoiceController extends Controller
 
 
 		$pdf = Pdf::loadView(
-			'business.getInvoicePrintPdfSlip',
+			'invoice.getInvoicePrintPdfSlip',
 			compact('paymentprint', 'client','imageSrc')
 		);
 
@@ -111,29 +108,7 @@ class InvoiceController extends Controller
 		 
 	}
 
-	// public function getinvoiceBillingPrintPdf(Request $request, $paymentid)
-	// {
-
-	// 	if ($paymentid) {
-
-
-	// 		$paymentprint = PaymentHistory::find($paymnetid);
-	// 		$client = Client::withTrashed()->where('id', $paymentprint->client_id)->first();
-	// 		//	return response()->view("business.getInvoicePrintPdfSlip", ['paymentprint' => $paymentprint, 'client' => $client]);
-
-
-
-
-	// 		$pdf = Pdf::loadView(
-	// 			'business.getInvoicePrintPdfSlip',
-	// 			compact('paymentprint', 'client')
-	// 		);
-	// 		return $pdf->download(
-	// 			'invoice_' . $paymnetid . '_' . date('d-m-Y_H-i-s') . '.pdf'
-	// 		);
-
-	// 	}
-	// }
+	 
 
 	public function coinsHistory(Request $request)
 	{
@@ -183,7 +158,7 @@ class InvoiceController extends Controller
 
 			$data[] = [
 				date_format(date_create($payment->created_at), 'd M Y'),
-				$payment->paid_amount,
+				$payment->amount,
 				$payment->gst_tax,
 				$payment->total_amount,
 				$payment->payment_mode,

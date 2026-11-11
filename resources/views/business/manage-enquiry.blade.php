@@ -115,7 +115,7 @@ $popupLeads = collect($popupLeadSource)->map(function ($lead) {
         'lead_id' => (int) $lead->lead_id,
         'name' => $lead->name ?? '',
         'email' => $lead->email ?? '',
-        'mobile' => $lead->mobile ?? '',
+        'mobile' => dataDecodeJsonBase64($lead->mobile) ?? '',
         'service' => $lead->kw_text ?? '',
         'status_id' => (int) ($lead->status ?? 0),
     ];
@@ -254,7 +254,7 @@ window.followupManager = function () {
         @if($lead->favorite_lead)<i data-lucide="star" class="h-4 w-4 fill-amber-500 text-amber-500"></i>@endif
        </div>
        <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 sm:mt-2 sm:text-sm">
-        <span class="flex items-center gap-1.5"><i data-lucide="phone" class="h-3.5 w-3.5"></i>{{ $lead->mobile }}</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="phone" class="h-3.5 w-3.5"></i>{{ dataDecodeJsonBase64($lead->mobile) }}</span>
         @if($lead->email)<span class="flex items-center gap-1.5"><i data-lucide="mail" class="h-3.5 w-3.5"></i>{{ $lead->email }}</span>@endif
        </div>
       </div>
@@ -296,7 +296,7 @@ window.followupManager = function () {
 
       <button >
      
-      <a href="tel:{{ preg_replace('/[^+\d]/','',$lead->mobile) }}" class="btn btn-primary w-full text-white"><i data-lucide="phone" class="h-4 w-4"></i>Call Now</a>
+      <a href="tel:{{ preg_replace('/[^+\d]/','',dataDecodeJsonBase64($lead->mobile)) }}" class="btn btn-primary w-full text-white"><i data-lucide="phone" class="h-4 w-4"></i>Call Now</a>
      
    
      </button>

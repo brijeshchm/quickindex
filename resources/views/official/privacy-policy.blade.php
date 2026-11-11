@@ -546,7 +546,7 @@
                     <div class="mt-5">
                         <h3 class="font-semibold text-base mb-2 subsection-title">B. How to Exercise Your Rights</h3>
                         <div class="pl-4 border-l-2 subsection-border">
-                            <p>To exercise any of the above rights, submit a written request to <strong>privacy@quickdials.com</strong> with the subject line "Data Principal Rights Request". Provide your registered email/mobile, the right you wish to exercise, and any supporting documentation. We will verify your identity and respond within a reasonable period, typically within thirty (30) days.</p>
+                            <p>To exercise any of the above rights, submit a written request to <strong>info@quickdials.com</strong> with the subject line "Data Principal Rights Request". Provide your registered email/mobile, the right you wish to exercise, and any supporting documentation. We will verify your identity and respond within a reasonable period, typically within thirty (30) days.</p>
                         </div>
                     </div>
 
@@ -582,7 +582,17 @@
                     <div class="mt-5">
                         <h3 class="font-semibold text-base mb-2 subsection-title">F. Governing Law & Jurisdiction</h3>
                         <div class="pl-4 border-l-2 subsection-border">
-                            <p>This Policy is governed by and construed in accordance with the laws of the Republic of India. Any disputes shall be subject to the exclusive jurisdiction of the courts at <strong>[Insert City]</strong>, India, without prejudice to the powers of the Data Protection Board of India.</p>
+                            <p>This Policy is governed by and construed in accordance with the laws of the Republic of India. Any disputes shall be subject to the exclusive jurisdiction of the courts at <strong>Bangalore</strong>, India, without prejudice to the powers of the Data Protection Board of India.</p>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="font-semibold text-base mb-2 subsection-title">G. Compliance with the DPDP Act, 2023</h3>
+                        <div class="pl-4 border-l-2 subsection-border">
+                            
+
+QuickDials.com is committed to protecting your personal data and processes it in accordance with the Digital Personal Data Protection Act, 2023 (“DPDP Act”). We collect and use your personal data, such as your name and mobile number, only for lawful purposes and with your consent. We apply reasonable security safeguards, including encryption, to protect your data from unauthorized access, disclosure, or loss.
+
+Under the DPDP Act, you have the right to access information about your personal data, request correction or erasure of your data, withdraw your consent at any time, and seek grievance redressal. To exercise these rights or raise a concern, please contact us at info@quickdials.com. We will respond within a reasonable time as required by law.
                         </div>
                     </div>
 

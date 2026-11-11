@@ -1,10 +1,7 @@
 @extends('interview.layouts.app')
 @section('title')
 RestAPI Interview Questions & Answers
-@endsection 
-@section('keywords')
-QuickDials-  Business Services list 
-@endsection
+@endsection  
 @section('description'),  
 Master REST API interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
 @endsection

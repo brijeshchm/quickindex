@@ -997,12 +997,17 @@ class LeadDashboardController extends Controller
 
 				$action .= $separator . '<a data-lead_id_follow="' . $lead->id . '" href="javascript:pushLeadController.getLeadFollowupForm(' . $lead->id . ')"  title="' . $lead->remark . '"><i class="fa fa-fw fa-eye"></i></a>';
 				$separator = ' | ';
-
-
+				$mobile = "";
+				if(!is_numeric($lead->mobile)){
+					$mobile = dataDecodeJsonBase64($lead->mobile);
+					$mobile = substr($mobile, 0, 3)
+					. str_repeat('X', max(0, strlen($mobile) - 7))
+					. substr($mobile, -4);
+				}
 				$data[] = [
 					"<th><input type='checkbox' class='check-box' value='$lead->id'></th>",
 					$leadname,
-					$lead->mobile,
+					$mobile,
 					($lead->created_by) ? $owner[$lead->created_by] : '',
 					$lead->status_name,
 					$lead->kw_text,
@@ -1141,13 +1146,19 @@ class LeadDashboardController extends Controller
 
 				$action .= $separator . '<a data-lead_id_follow="' . $lead->lead_id . '" href="javascript:pushLeadController.getLeadFollowupForm(' . $lead->lead_id . ')"  title="' . $lead->remark . '"><i class="fa fa-fw fa-eye"></i></a>';
 				$separator = ' | ';
-
+				$mobile = "";
+				if(!is_numeric($lead->mobile)){
+				$mobile = dataDecodeJsonBase64($lead->mobile);
+				$mobile = substr($mobile, 0, 3)
+					. str_repeat('X', max(0, strlen($mobile) - 7))
+					. substr($mobile, -4);
+				}
 
 				$data[] = [
 					"<th><input type='checkbox' class='check-box' value='$lead->lead_id'></th>",
 					$leadname,
 					//$lead->fistName, 				
-					$lead->mobile,
+					$mobile,
 					$userName,
 					//($lead->created_by)? $owner[$lead->created_by]:'',									
 					$lead->status_name,

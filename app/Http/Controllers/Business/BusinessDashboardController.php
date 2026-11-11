@@ -144,9 +144,13 @@ class BusinessDashboardController extends Controller
                 $remark .= " " . trim($lead->remark);
             }
 
+            $mobile = "";
+				if(!is_numeric($lead->mobile)){
+				$mobile = dataDecodeJsonBase64($lead->mobile);
+				}
             $lead->share_lead =
                 "Name: {$lead->name}\n" .
-                "Mobile: {$lead->mobile}\n" .
+                "Mobile: {$mobile}\n" .
                 "Email: {$lead->email}\n" .
                 "Service: {$keyword}\n" .
                 "Location: {$location}\n" .

@@ -103,7 +103,7 @@ class EnquiryController extends Controller
 
 			$html = '<div class="row">
 						<div class="x_content" style="padding:0">';
-			$number = $lead->mobile;
+		 
 			$html .= '<form class="form-label-left" method="post" onsubmit="return enquiryController.storeFollowUp(' . $id . ',this)">
 				 
 					 
@@ -121,7 +121,7 @@ class EnquiryController extends Controller
                         
                          <div class="col-md-4" style="display:flex;">
                          <label for=" " class="col-md-3 col-lg-3 col-form-label">Mobile :</label>
-                         <p name="mobile" type="tel" class="form-control-static" > ' . $lead->mobile . '</p>
+                         <p name="mobile" type="tel" class="form-control-static" > ' .dataDecodeJsonBase64($lead->mobile) . '</p>
                         </div>
                         
                     </div>
@@ -393,9 +393,14 @@ class EnquiryController extends Controller
 			$returnLeads['recordsTotal'] = $leads->total();
 			$returnLeads['recordsFiltered'] = $leads->total();
 			foreach ($leads as $lead) {
+
+				$mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
 				$data[] = [
 					$lead->name,
-					$lead->mobile,
+					$mobile,
 					$lead->email,
 					$lead->kw_text,
 					$lead->city_name,
@@ -543,10 +548,13 @@ class EnquiryController extends Controller
 			if (!empty($lead->remark)) {
 				$remark .= " " . trim($lead->remark);
 			}
-
+				$mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
 			$lead->share_lead =
 				"Name: {$lead->name}\n" .
-				"Mobile: {$lead->mobile}\n" .
+				"Mobile: {$mobile}\n" .
 				"Email: {$lead->email}\n" .
 				"Service: {$keyword}\n" .
 				"Location: {$location}\n" .
@@ -839,9 +847,13 @@ class EnquiryController extends Controller
 				$remark .= " " . trim($lead->remark);
 			}
 
+			$mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
 			$lead->share_lead =
 				"Name: {$lead->name}\n" .
-				"Mobile: {$lead->mobile}\n" .
+				"Mobile: {$mobile}\n" .
 				"Email: {$lead->email}\n" .
 				"Service: {$keyword}\n" .
 				"Location: {$location}\n" .
@@ -978,9 +990,13 @@ class EnquiryController extends Controller
 				$remark .= " " . trim($lead->remark);
 			}
 
+			$mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
 			$lead->share_lead =
 				"Name: {$lead->name}\n" .
-				"Mobile: {$lead->mobile}\n" .
+				"Mobile: {$mobile}\n" .
 				"Email: {$lead->email}\n" .
 				"Service: {$keyword}\n" .
 				"Location: {$location}\n" .
@@ -1113,10 +1129,16 @@ class EnquiryController extends Controller
 						$npupMark .= ' <span class="light-red">*</span>';
 					}
 				}
+				$mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
+
+
 				$data[] = [
 
 					$lead->name,
-					$lead->mobile,
+					$mobile,
 					$lead->kw_text,
 					$lead->city_name,
 
@@ -1170,9 +1192,17 @@ class EnquiryController extends Controller
 
 				$action .= $separator . '<a href="javascript:enquiryController.getfollowUps(' . $lead->id . ')" title="followUp"><i class="bi bi-eye" aria-hidden="true"></i></a>';
 				$separator = ' | ';
+
+				$mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
+
+
+
 				$data[] = [
 					$lead->name,
-					$lead->mobile,
+					$mobile,
 					$lead->email,
 					$lead->kw_text,
 					$lead->city_name,
@@ -1394,11 +1424,17 @@ class EnquiryController extends Controller
 			if ($leads) {
 				//$data = [];
 				foreach ($leads as $lead) {
+					$mobile = "";
+					if(!is_numeric($lead->mobile)){
+					$mobile = dataDecodeJsonBase64($lead->mobile);
+					}
+
+
 					$data[] = [
 						'target_id' => $lead->id,
 						'expected_date_time' => ($lead->expected_date_time == NULL) ? "" : $lead->expected_date_time,
 						'name' => $lead->name,
-						'mobile' => $lead->mobile,
+						'mobile' => $mobile,
 						'kw_text' => $lead->kw_text,
 						'status_name' => $lead->status_name,
 						'status' => $lead->status,

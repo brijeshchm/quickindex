@@ -144,9 +144,9 @@ function closeLoginModal() {
 }
 
 // Close on backdrop click
-document.getElementById('login-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeLoginModal();
-});
+// document.getElementById('login-modal').addEventListener('click', function(e) {
+//     if (e.target === this) closeLoginModal();
+// });
 
 // Close on Escape
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLoginModal(); });

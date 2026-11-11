@@ -41,7 +41,7 @@ class SendLeadPushNotification
                 'lead_id' => (string) ($lead->leadId ?? ''),
                 'assignId' => (string) ($lead->assignId ?? ''),
                 'name' => (string) ($lead->name ?? ''),
-                'mobile' => (string) ($lead->mobile ?? ''),
+                'mobile' => (string) (dataDecodeJsonBase64($lead->mobile) ?? ''),
                 'email' => (string) ($lead->email ?? ''),
                 'cityName' => (string) ($lead->city_name ?? ''),
                 'area' => (string) ($lead->zone ?? ''),

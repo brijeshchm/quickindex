@@ -302,6 +302,8 @@ class WebsiteRazorpayController extends Controller
 				'client_id' => $request->client_id,
 				'username' => $request->username,
 				'paid_amount' => $request->paid_amount,
+			 
+				'amount' => $request->amount,
 
 				'email' => $request->email,
 				'phone' => $request->phone,
@@ -353,6 +355,7 @@ class WebsiteRazorpayController extends Controller
 					$paymenthistory->coins_amt = $paymentInfo['coins'];
 					$paymenthistory->selectproofid = "";
 					$paymenthistory->proofid = "";
+					$paymenthistory->amount = $paymentInfo['amount'];
 					$paymenthistory->paid_amount = $paymentInfo['paid_amount'];
 					$paymenthistory->tds_status = "No";
 					$paymenthistory->tds_amount = "0";
@@ -424,6 +427,7 @@ class WebsiteRazorpayController extends Controller
 					$paymenthistory->coins_amt = $paymentInfo['coins'];
 					$paymenthistory->selectproofid = "";
 					$paymenthistory->proofid = "";
+					$paymenthistory->amount = $paymentInfo['amount'];
 					$paymenthistory->paid_amount = $paymentInfo['paid_amount'];
 					$paymenthistory->tds_status = "No";
 					$paymenthistory->tds_amount = "0";

@@ -47,8 +47,8 @@
         </div>
 
         <div>
-            <label class="tw-label tw-required">Paid Amount</label>
-            <input type="number" name="paid_amount" class="tw-input" placeholder="Paid Amount"
+            <label class="tw-label tw-required">Amount</label>
+            <input type="number" name="amount" class="tw-input" placeholder="Enter Amount"
                 x-model="paidAmount" @input="recalcGst()">
         </div>
 

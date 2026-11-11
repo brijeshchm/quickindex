@@ -209,7 +209,7 @@ class BulkUploadController extends Controller
 
                         $lead->name         = $name;
                         $lead->email        = $email;
-                        $lead->mobile       = $mobile;
+                        $lead->mobile       = dataEncodeJsonBase64($mobile);
                         $lead->code         = '91';
                         $lead->city_id      = $city_id;
                         $lead->city_name    = $city_name;

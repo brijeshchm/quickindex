@@ -1,8 +1,7 @@
 @extends('interview.layouts.app')
 @section('title')
 Pimcore Interview Questions & Answers
-@endsection 
- 
+@endsection  
 @section('description'),  
 Master interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
 @endsection

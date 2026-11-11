@@ -4203,6 +4203,7 @@ document.addEventListener('DOMContentLoaded', function () {
             body.innerHTML = result.data.length
                 ? result.data.map(function (lead) {
                     const leadId = Number(lead.lead_id);
+                
 
                     return `
                         <tr class="hover:bg-slate-50">
@@ -4711,9 +4712,9 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
 
             <div>
-                <label for="paid_amount" class="{{ $labelClass }}">Paid amount *</label>
-                <input id="paid_amount" name="paid_amount" type="number"
-                       min="0" step="0.01" value="{{ old('paid_amount') }}"
+                <label for="amount" class="{{ $labelClass }}">Amount *</label>
+                <input id="amount" name="amount" type="number"
+                       min="0" step="0.01" value="{{ old('amount') }}"
                        placeholder="Enter paid amount"
                        onblur="handlingPaiAmt()"
                        class="{{ $inputClass }}">
@@ -5074,7 +5075,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </td>
 
                     <td class="whitespace-nowrap px-4 py-3">
-                        ${amount(payment.paid_amount)}
+                        ${amount(payment.amount)}
                     </td>
 
                     <td class="whitespace-nowrap px-4 py-3">
@@ -5280,15 +5281,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function handlingPaiAmt() {
 	
-	var paid_amount = jQuery('#paid_amount');
-	var paid_am= parseInt(paid_amount.val());
+	var amount = jQuery('#amount');
+	var paid_am= parseInt(amount.val());
 
 	var coins = jQuery('#coins_per_lead');
      
 
     if (!Number.isFinite(paid_am) || paid_am <= 0) {
         alert('Please enter a valid paid amount.');
-        paid_amount.val('');
+        amount.val('');
         coins.val('');
         return;
     }
@@ -5296,7 +5297,7 @@ function handlingPaiAmt() {
 
     if (!Number.isFinite(paid_am) || paid_am < 1000) {
         alert('The minimum amount will be ₹1,000.');
-        paid_amount.val('');
+        amount.val('');
         coins.val('');
         return;
     }
@@ -5367,9 +5368,9 @@ function handlingPaiAmt() {
 
 function paidgst(gst){			
 			 
-			var paid = parseInt($('#paid_amount').val());		
-			//var tot = parseInt(((paid)*(.18)));			 
-			 var tot = Math. round(((paid)*(.18)));			 
+			var paid = parseInt($('#amount').val());		
+						 
+			 var tot = Math. round(((paid)*(0.18)));			 
 			 var gstamount = $('#gst_tax').val(tot);			 
 			 var tatol= parseInt(paid + tot);			 
 			 var tobe = $('#gst_total_amount').val(tatol);	 
@@ -5377,7 +5378,7 @@ function paidgst(gst){
 		}
 		
 		function nopaidgst(gstno){
-			var paid = parseInt($('#paid_amount').val());		
+			var paid = parseInt($('#amount').val());		
 			 var tot = parseInt(0);			 
 			 var gstamount = $('#gst_tax').val(tot);			 
 			 var tatol= paid + tot;			 
@@ -5386,7 +5387,7 @@ function paidgst(gst){
 		
 		function paidtds(tds){			
 			 
-			var tdspaid = parseInt($('#paid_amount').val());			 		 
+			var tdspaid = parseInt($('#amount').val());			 		 
 			var gst_total_amount = parseInt($('#gst_total_amount').val());			 		 
 			 var tottds = Math. round(((tdspaid)*(2))/100);			 
 			 var gstamount = $('#tds_amount').val(tottds);			 
@@ -5396,7 +5397,7 @@ function paidgst(gst){
 		}
 		
 		function nopaidtds(tdsno){
-			var tdspaid = parseInt($('#paid_amount').val());	
+			var tdspaid = parseInt($('#amount').val());	
 			var gst_total_amount = parseInt($('#gst_total_amount').val());				
 			 var tottds = parseInt(0);			 
 			 var gstamount = $('#tds_amount').val(tottds);			 

@@ -64,7 +64,7 @@ class InvoiceController extends Controller
 
 				$data[] = [
 					date_format(date_create($payment->created_at), 'd M Y'),
-					$payment->paid_amount,
+					$payment->amount,
 					$payment->gst_tax,
 					$payment->total_amount,
 					$action,
@@ -78,12 +78,15 @@ class InvoiceController extends Controller
 
 	public function getinvoiceBillingPrintPdf(Request $request)
 	{
+			$imagePath = ('https://www.quickdials.com/client/images/small-logo.jpg');
+		$imageData = base64_encode(file_get_contents($imagePath));
+		$imageSrc  = 'data:image/png;base64,' . $imageData;
 		if (isset($_GET['pid'])) {
 			if ($request->input('action') == 'getinvoicePrintPdf') {
 				$paymnetid = $_GET['pid'];
 				$paymentprint = PaymentHistory::find($paymnetid);
 				$client = Client::withTrashed()->where('id', $paymentprint->client_id)->first();
-				return response()->view("business.getInvoicePrintPdfSlip", ['paymentprint' => $paymentprint, 'client' => $client]);
+				return response()->view("invoice.getInvoicePrintPdfSlip", ['paymentprint' => $paymentprint, 'client' => $client,'imageSrc'=>$imageSrc]);
 				die;
 			}
 		}
@@ -173,7 +176,7 @@ class InvoiceController extends Controller
 
 			$data[] = [
 				date_format(date_create($payment->created_at), 'd M Y'),
-				$payment->paid_amount,
+				$payment->amount,
 				$payment->gst_tax,
 				$payment->total_amount,
 				$payment->payment_mode,

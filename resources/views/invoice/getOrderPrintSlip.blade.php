@@ -345,12 +345,9 @@
                             </tr>
                             <tr>
                                 <th>Package</th>
-                                <td>{{ $paymentuprint->package_name }}</td>
+                                <td>{{ ucfirst($paymentuprint->package_name) }}</td>
                             </tr>
-                            <tr>
-                                <th>Leads</th>
-                                <td>{{ $paymentuprint->leads_count }}</td>
-                            </tr>
+                             
 
                             @if (!empty($paymentuprint->expired_from))
                                 <tr>
@@ -412,20 +409,20 @@
 
                         <table class="info summary">
                             <tr>
-                                <th>Amount Paid</th>
-                                <td>₹ {{ $money($paymentuprint->paid_amount) }}</td>
+                                <th>Amount</th>
+                                <td>₹ <?php if($paymentuprint->amount){ ?>{{ $money($paymentuprint->amount) }} <?php } ?></td>
                             </tr>
                             <tr>
                                 <th>GST</th>
-                                <td>₹ {{ $money($paymentuprint->gst_tax) }}</td>
+                                <td>₹ <?php if($paymentuprint->gst_tax){ ?> {{ $money($paymentuprint->gst_tax) }} <?php } ?></td>
                             </tr>
                             <tr>
                                 <th>TDS</th>
-                                <td>₹ {{ $money($paymentuprint->tds_amount) }}</td>
+                                <td>₹ <?php if($paymentuprint->tds_amount){ ?>{{ $money($paymentuprint->tds_amount) }}<?php  } ?></td>
                             </tr>
                             <tr class="total">
                                 <th>Total Amount</th>
-                                <td>₹ {{ $money($paymentuprint->total_amount) }}</td>
+                                <td>₹ <?php if($paymentuprint->total_amount){ ?>{{ $money($paymentuprint->total_amount) }}<?php } ?></td>
                             </tr>
                         </table>
                     </div>
@@ -479,8 +476,8 @@
             <table class="listing">
                 <thead>
                     <tr>
-                        <th style="width: 7%;">#</th>
-                        <th style="width: 38%;">Category</th>
+                        <th style="width: 7%;">Sn No</th>
+                        
                         <th style="width: 55%;">Keyword</th>
                     </tr>
                 </thead>
@@ -489,7 +486,7 @@
                     @foreach ($keywords as $keyword)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $keyword->parent_category }}</td>
+                        
                             <td>{{ $keyword->keyword }}</td>
                         </tr>
                     @endforeach
@@ -524,7 +521,7 @@
             </li>
             <li>
                 For queries: help@quickdials.com.
-                Timings: Monday to Sunday — 24/7.
+                Timings: Monday to Saturday — 24/7.
             </li>
         </ul>
     </div>
@@ -547,7 +544,7 @@
             <tr>
                 <td class="footer-left">
                     <p>
-                        <a href="https://www.quickdials.com/privacy-policy">
+                        <a href="https://www.quickdials.com/privacy-policy" target="_blank">
                             Terms & Conditions
                         </a>
                     </p>

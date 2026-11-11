@@ -1,8 +1,7 @@
 @extends('interview.layouts.app')
 @section('title')
 Javascript Interview Questions & Answers
-@endsection 
- 
+@endsection  
 @section('description'),  
 Javascript interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
 @endsection
@@ -1489,7 +1488,7 @@ function outer() {
 }
 
 outer();</code></pre>
-<h2 id="2-advanced-functions-and-objects">2. Advanced Functions and Objects</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1659,7 +1658,7 @@ console.log(result); // 30</code></pre>
     return a + b;
 }</code></pre>
 <p class="mb-3 text-lg leading-8 text-gray-700">Pure functions are easier to test and maintain.</p>
-<h2 id="3-advanced-asynchronous-programming">3. Advanced Asynchronous Programming</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1848,7 +1847,7 @@ controller.abort();</code></pre>
         }
     };
 }</code></pre>
-<h2 id="4-javascript-performance-optimization">4. JavaScript Performance Optimization</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1938,7 +1937,7 @@ button.addEventListener(&quot;click&quot;, async () =&gt; {
 <li>Use document fragments for large DOM insertions.</li>
 <li>Use requestAnimationFrame for animation updates.</li>
 </ul>
-<h2 id="5-javascript-security-questions">5. JavaScript Security Questions</h2>
+
 </div>
 
 <div class="mb-12">
@@ -2001,7 +2000,7 @@ button.addEventListener(&quot;click&quot;, async () =&gt; {
 <p class="mb-3 text-lg leading-8 text-gray-700">Token storage depends on the application architecture.</p>
 <p class="mb-3 text-lg leading-8 text-gray-700">For browser applications, secure HttpOnly, Secure, and appropriately configured SameSite cookies are often preferable for session or refresh-token storage.</p>
 <p class="mb-3 text-lg leading-8 text-gray-700">I avoid storing sensitive long-lived authentication tokens in localStorage because JavaScript can access them if an XSS vulnerability occurs.</p>
-<h2 id="6-es6-and-modern-javascript">6. ES6+ and Modern JavaScript</h2>
+
 </div>
 
 <div class="mb-12">
@@ -2117,7 +2116,7 @@ console.log(name ?? &quot;Guest&quot;); // Guest
 let age = 0;
 
 console.log(age ?? 18); // 0</code></pre>
-<h2 id="7-advanced-javascript-coding-questions">7. Advanced JavaScript Coding Questions</h2>
+
 <p class="mb-3 text-lg leading-8 text-gray-700">These are common practical questions for senior developer interviews.</p>
 </div>
 
@@ -2328,7 +2327,7 @@ async function searchUsers(keyword) {
         }
     }
 }</code></pre>
-<h2 id="8-javascript-architecture-and-team-lead-questions">8. JavaScript Architecture and Team Lead Questions</h2>
+
 </div>
 
 <div class="mb-12">
@@ -2433,6 +2432,1345 @@ async function searchUsers(keyword) {
 <li>Browser memory profiling.</li>
 </ul>
 </div>
+
+<!-- Blade partial. JavaScript examples are escaped display text. -->
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">JavaScript is a high-level, dynamically typed, single-threaded programming language primarily used to make web pages interactive. It runs in browsers and also on servers using environments such as Node.js.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Key features:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Dynamically typed language.</li>
+        <li>Supports object-oriented and functional programming.</li>
+        <li>Supports asynchronous programming.</li>
+        <li>Prototype-based inheritance.</li>
+        <li>Event-driven execution.</li>
+        <li>Runs in browsers and server-side environments.</li>
+    </ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">var</code>, <code class="rounded bg-slate-100 px-1 text-base">let</code>, and <code class="rounded bg-slate-100 px-1 text-base">const</code>?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">These three keywords are used to declare variables in JavaScript.</p>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Feature</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">var</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">let</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">const</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Scope</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Function</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Block</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Block</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Re-declaration</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Allowed</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Not allowed in same scope</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Not allowed in same scope</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Re-assignment</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Allowed</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Allowed</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Not allowed</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Hoisting</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Yes, initialized as <code class="rounded bg-slate-100 px-1 text-base">undefined</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Yes, but in TDZ</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Yes, but in TDZ</td></tr></tbody>
+        </table>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>var name = "Brijesh";
+var name = "Rahul"; // Allowed
+
+let age = 30;
+age = 35; // Allowed
+
+const country = "India";
+// country = "USA"; // TypeError</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Interview point: Prefer <code class="rounded bg-slate-100 px-1 text-base">const</code> by default, use <code class="rounded bg-slate-100 px-1 text-base">let</code> when reassignment is required, and avoid <code class="rounded bg-slate-100 px-1 text-base">var</code> in modern JavaScript.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">==</code> and <code class="rounded bg-slate-100 px-1 text-base">===</code>?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">==</code> compares values after type conversion when necessary.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">===</code> compares both value and data type without type coercion.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>console.log(10 == "10");  // true
+console.log(10 === "10"); // false
+
+console.log(null == undefined);  // true
+console.log(null === undefined); // false</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Best practice: Use <code class="rounded bg-slate-100 px-1 text-base">===</code> to avoid unexpected type conversion.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are JavaScript data types?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">JavaScript has two main categories of data types.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Primitive data types:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>String</li>
+        <li>Number</li>
+        <li>Boolean</li>
+        <li>Undefined</li>
+        <li>Null</li>
+        <li>BigInt</li>
+        <li>Symbol</li>
+    </ol>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Non-primitive data types:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Object</li>
+        <li>Array</li>
+        <li>Function</li>
+    </ol>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>let name = "Brijesh";
+let age = 30;
+let isActive = true;
+let user = { name: "Brijesh", age: 30 };
+let skills = ["PHP", "Laravel", "JavaScript"];</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">null</code> and <code class="rounded bg-slate-100 px-1 text-base">undefined</code>?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">undefined</code>: A variable has been declared but has not been assigned a value.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">null</code>: An intentional absence of a value.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>let a;
+let b = null;
+
+console.log(a); // undefined
+console.log(b); // null
+
+console.log(typeof a); // undefined
+console.log(typeof b); // object (historical JavaScript behavior)</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is hoisting in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Hoisting is JavaScript's behavior of processing declarations before executing code in their scope.</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">var</code> declarations are hoisted and initialized with <code class="rounded bg-slate-100 px-1 text-base">undefined</code>.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">let</code> and <code class="rounded bg-slate-100 px-1 text-base">const</code> declarations are hoisted but cannot be accessed before initialization because of the Temporal Dead Zone (TDZ).</li>
+        <li>Function declarations can generally be called before their declaration.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>console.log(a); // undefined
+var a = 10;
+
+// console.log(b); // ReferenceError
+let b = 20;
+
+hello(); // Works
+
+function hello() {
+    console.log("Hello JavaScript");
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the Temporal Dead Zone (TDZ)?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The Temporal Dead Zone is the period between entering a block scope and initializing a <code class="rounded bg-slate-100 px-1 text-base">let</code> or <code class="rounded bg-slate-100 px-1 text-base">const</code> variable. Accessing that variable during this period causes a <code class="rounded bg-slate-100 px-1 text-base">ReferenceError</code>.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>{
+    // TDZ starts
+    // console.log(value); // ReferenceError
+
+    let value = 100;
+    console.log(value);
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between primitive and reference types?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Primitive values are copied by value. Objects and arrays are assigned and copied by reference.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>let a = 10;
+let b = a;
+
+b = 20;
+
+console.log(a); // 10
+
+let user1 = { name: "John" };
+let user2 = user1;
+
+user2.name = "David";
+
+console.log(user1.name); // David</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Interview point: Both variables refer to the same object in the second example.</p>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between function declaration and function expression?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A function declaration defines a named function. It can generally be called before its declaration because the declaration is hoisted.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A function expression assigns a function to a variable.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// Function declaration
+function add(a, b) {
+    return a + b;
+}
+
+console.log(add(10, 20));
+
+// Function expression
+const multiply = function (a, b) {
+    return a * b;
+};
+
+console.log(multiply(10, 20));</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is an arrow function?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">An arrow function is a shorter syntax for writing functions. It does not have its own <code class="rounded bg-slate-100 px-1 text-base">this</code>, <code class="rounded bg-slate-100 px-1 text-base">arguments</code>, or <code class="rounded bg-slate-100 px-1 text-base">super</code> binding.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const add = (a, b) =&gt; a + b;
+
+console.log(add(10, 20)); // 30</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Difference between normal and arrow functions:</p>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Normal function</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Arrow function</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Has its own <code class="rounded bg-slate-100 px-1 text-base">this</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Uses lexical <code class="rounded bg-slate-100 px-1 text-base">this</code></td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Can be used as a constructor with <code class="rounded bg-slate-100 px-1 text-base">new</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Cannot be used with <code class="rounded bg-slate-100 px-1 text-base">new</code></td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Has its own <code class="rounded bg-slate-100 px-1 text-base">arguments</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Does not have its own <code class="rounded bg-slate-100 px-1 text-base">arguments</code></td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Can be a generator</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Cannot be a generator</td></tr></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a callback function?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A callback is a function passed as an argument to another function. The receiving function invokes it when needed.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function calculate(a, b, callback) {
+    return callback(a, b);
+}
+
+function add(a, b) {
+    return a + b;
+}
+
+console.log(calculate(10, 20, add)); // 30</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Real-world use: AJAX responses, event handling, timers, and asynchronous operations.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a closure in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A closure occurs when an inner function remembers and accesses variables from its outer function's lexical scope, even after the outer function has completed execution.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function counter() {
+    let count = 0;
+
+    return function () {
+        count++;
+        return count;
+    };
+}
+
+const increment = counter();
+
+console.log(increment()); // 1
+console.log(increment()); // 2
+console.log(increment()); // 3</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Advantages:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Data privacy.</li>
+        <li>Maintaining state.</li>
+        <li>Creating function factories.</li>
+        <li>Implementing callbacks and event handlers.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is lexical scope?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Lexical scope means a function can access variables based on where it is defined in the source code, not where it is called.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>let message = "Hello";
+
+function outer() {
+    let name = "John";
+
+    function inner() {
+        console.log(message);
+        console.log(name);
+    }
+
+    inner();
+}
+
+outer();</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">call()</code>, <code class="rounded bg-slate-100 px-1 text-base">apply()</code>, and <code class="rounded bg-slate-100 px-1 text-base">bind()</code>?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">These methods control the <code class="rounded bg-slate-100 px-1 text-base">this</code> value when calling a function.</p>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Description</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">call()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Calls a function immediately with individual arguments</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">apply()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Calls a function immediately with arguments in an array</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">bind()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Returns a new function with a fixed <code class="rounded bg-slate-100 px-1 text-base">this</code> value</td></tr></tbody>
+        </table>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const user = { name: "Brijesh" };
+
+function greet(city, country) {
+    console.log(
+        `Hello ${this.name}, ${city}, ${country}`
+    );
+}
+
+greet.call(user, "Delhi", "India");
+
+greet.apply(user, ["Delhi", "India"]);
+
+const newGreet = greet.bind(user, "Delhi", "India");
+newGreet();</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between local, global, and block scope?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Global scope: Variables accessible throughout the relevant global environment.</li>
+        <li>Function scope: Variables accessible inside the function where they are declared.</li>
+        <li>Block scope: Variables declared using <code class="rounded bg-slate-100 px-1 text-base">let</code> or <code class="rounded bg-slate-100 px-1 text-base">const</code> are accessible inside their enclosing block.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>let globalName = "John";
+
+function test() {
+    let localName = "David";
+
+    if (true) {
+        let blockName = "Alex";
+        console.log(blockName);
+    }
+
+    console.log(localName);
+}
+
+test();</code></pre>
+</div>
+
+<h2 class="mt-12 mb-6 text-4xl font-bold text-slate-900">Part 3: Objects, Arrays and ES6+</h2>
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is destructuring in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Destructuring allows us to extract values from arrays or properties from objects into separate variables.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// Array destructuring
+const colors = ["Red", "Green", "Blue"];
+
+const [first, second] = colors;
+
+console.log(first);  // Red
+console.log(second); // Green
+
+// Object destructuring
+const user = {
+    name: "Brijesh",
+    age: 30
+};
+
+const { name, age } = user;</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the spread operator?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The spread operator (<code class="rounded bg-slate-100 px-1 text-base">...</code>) expands an iterable or object into individual elements or properties.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const arr1 = [1, 2, 3];
+const arr2 = [...arr1, 4, 5];
+
+console.log(arr2);
+
+const user = { name: "John", age: 30 };
+
+const updatedUser = {
+    ...user,
+    age: 35
+};
+
+console.log(updatedUser);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the rest operator?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The rest operator collects multiple arguments or remaining elements into an array or object.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function sum(...numbers) {
+    return numbers.reduce((total, num) =&gt; total + num, 0);
+}
+
+console.log(sum(10, 20, 30, 40)); // 100</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Difference:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Spread expands values.</li>
+        <li>Rest collects values.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">map()</code>, <code class="rounded bg-slate-100 px-1 text-base">filter()</code>, and <code class="rounded bg-slate-100 px-1 text-base">reduce()</code>?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Purpose</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Return</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">map()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Transforms every element</td><td class="border border-slate-200 px-4 py-3 text-gray-700">New array</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">filter()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Selects matching elements</td><td class="border border-slate-200 px-4 py-3 text-gray-700">New array</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">reduce()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Combines elements into a result</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Accumulated value</td></tr></tbody>
+        </table>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const numbers = [1, 2, 3, 4, 5];
+
+// map
+const doubled = numbers.map(n =&gt; n * 2);
+
+// filter
+const even = numbers.filter(n =&gt; n % 2 === 0);
+
+// reduce
+const total = numbers.reduce((sum, n) =&gt; sum + n, 0);
+
+console.log(doubled); // [2, 4, 6, 8, 10]
+console.log(even);    // [2, 4]
+console.log(total);   // 15</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">forEach()</code> and <code class="rounded bg-slate-100 px-1 text-base">map()</code>?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">forEach()</code> executes a callback for each element and returns <code class="rounded bg-slate-100 px-1 text-base">undefined</code>.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">map()</code> creates and returns a new array containing transformed values.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const numbers = [1, 2, 3];
+
+const result1 = numbers.forEach(n =&gt; n * 2);
+const result2 = numbers.map(n =&gt; n * 2);
+
+console.log(result1); // undefined
+console.log(result2); // [2, 4, 6]</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is optional chaining?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Optional chaining (<code class="rounded bg-slate-100 px-1 text-base">?.</code>) safely accesses nested object properties. If a value before <code class="rounded bg-slate-100 px-1 text-base">?.</code> is <code class="rounded bg-slate-100 px-1 text-base">null</code> or <code class="rounded bg-slate-100 px-1 text-base">undefined</code>, the expression returns <code class="rounded bg-slate-100 px-1 text-base">undefined</code> instead of throwing an error.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const user = {
+    name: "John",
+    address: {
+        city: "Delhi"
+    }
+};
+
+console.log(user.address?.city);     // Delhi
+console.log(user.contact?.phone);    // undefined</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is nullish coalescing (<code class="rounded bg-slate-100 px-1 text-base">??</code>)?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The nullish coalescing operator returns the right-hand value only when the left-hand value is <code class="rounded bg-slate-100 px-1 text-base">null</code> or <code class="rounded bg-slate-100 px-1 text-base">undefined</code>.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>let username = null;
+
+console.log(username ?? "Guest"); // Guest
+
+let age = 0;
+
+console.log(age ?? 18); // 0</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Difference between <code class="rounded bg-slate-100 px-1 text-base">||</code> and <code class="rounded bg-slate-100 px-1 text-base">??</code>:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>console.log(0 || 100);  // 100
+console.log(0 ?? 100);  // 0
+
+console.log("" || "Default"); // Default
+console.log("" ?? "Default"); // ""</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between shallow copy and deep copy?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A shallow copy copies only the top-level properties. Nested objects remain shared references.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A deep copy creates independent copies of nested objects too.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// Shallow copy
+const original = {
+    name: "John",
+    address: {
+        city: "Delhi"
+    }
+};
+
+const copy = { ...original };
+
+copy.address.city = "Mumbai";
+
+console.log(original.address.city); // Mumbai</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Deep copy:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const original = {
+    name: "John",
+    address: {
+        city: "Delhi"
+    }
+};
+
+const deepCopy = structuredClone(original);
+
+deepCopy.address.city = "Mumbai";
+
+console.log(original.address.city); // Delhi</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8"><code class="rounded bg-slate-100 px-1 text-base">structuredClone()</code> supports many built-in data types, but not every JavaScript value, such as functions.</p>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is synchronous and asynchronous programming?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Synchronous programming: Code executes one operation at a time, and each operation generally waits for the previous one to finish.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Asynchronous programming: An operation can start and allow other work to continue while waiting for its result.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>console.log("Start");
+
+setTimeout(() =&gt; {
+    console.log("Async task");
+}, 1000);
+
+console.log("End");</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Output:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Start
+End
+Async task</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the JavaScript Event Loop?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The Event Loop coordinates JavaScript execution and asynchronous callbacks.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Important components include:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Call Stack – executes JavaScript functions.</li>
+        <li>Web APIs or runtime APIs – handle timers, network requests, and other asynchronous operations.</li>
+        <li>Task Queue – holds callbacks such as timer callbacks.</li>
+        <li>Microtask Queue – holds Promise callbacks and other microtasks.</li>
+        <li>Event Loop – schedules queued work when the call stack is empty.</li>
+    </ol>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>console.log("1");
+
+setTimeout(() =&gt; {
+    console.log("2");
+}, 0);
+
+Promise.resolve().then(() =&gt; {
+    console.log("3");
+});
+
+console.log("4");</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Output:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>1
+4
+3
+2</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Reason: Synchronous code runs first, then microtasks, then timer tasks.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a Promise?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A Promise is an object representing the eventual success or failure of an asynchronous operation.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Promise states:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Pending – initial state.</li>
+        <li>Fulfilled – operation completed successfully.</li>
+        <li>Rejected – operation failed.</li>
+    </ol>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const promise = new Promise((resolve, reject) =&gt; {
+    const success = true;
+
+    if (success) {
+        resolve("Data fetched successfully");
+    } else {
+        reject("Something went wrong");
+    }
+});
+
+promise
+    .then(result =&gt; console.log(result))
+    .catch(error =&gt; console.log(error))
+    .finally(() =&gt; console.log("Completed"));</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is async/await?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8"><code class="rounded bg-slate-100 px-1 text-base">async</code> and <code class="rounded bg-slate-100 px-1 text-base">await</code> provide a cleaner way to write Promise-based asynchronous code.</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>An <code class="rounded bg-slate-100 px-1 text-base">async</code> function always returns a Promise.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">await</code> pauses execution of the surrounding async function until the Promise settles. It does not block the entire JavaScript thread.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>async function getUsers() {
+    try {
+        const response = await fetch(
+            "https://jsonplaceholder.typicode.com/users"
+        );
+
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+
+        const data = await response.json();
+
+        console.log(data);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+getUsers();</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between Promise.all(), Promise.allSettled(), Promise.race(), and Promise.any()?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Description</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">Promise.all()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Fulfills when all fulfill; rejects when one rejects</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">Promise.allSettled()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Waits for every Promise to settle</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">Promise.race()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Settles with the first Promise to settle</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">Promise.any()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Fulfills with the first fulfilled Promise; rejects if all reject</td></tr></tbody>
+        </table>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const p1 = Promise.resolve("A");
+const p2 = Promise.resolve("B");
+const p3 = Promise.resolve("C");
+
+Promise.all([p1, p2, p3]).then(result =&gt; {
+    console.log(result);
+});</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is callback hell?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Callback hell occurs when multiple nested callbacks make code difficult to read, maintain, and debug.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>getUser(function (user) {
+    getOrders(user.id, function (orders) {
+        getPayment(orders[0].id, function (payment) {
+            console.log(payment);
+        });
+    });
+});</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Solution: Use Promises and async/await.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>async function getUserPayment() {
+    const user = await getUser();
+    const orders = await getOrders(user.id);
+    const payment = await getPayment(orders[0].id);
+
+    console.log(payment);
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is debouncing and throttling?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Debouncing: Executes a function after a specified period of inactivity. Useful for search boxes and autocomplete.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function debounce(fn, delay) {
+    let timer;
+
+    return function (...args) {
+        clearTimeout(timer);
+
+        timer = setTimeout(() =&gt; {
+            fn.apply(this, args);
+        }, delay);
+    };
+}
+
+const search = debounce((value) =&gt; {
+    console.log("Searching:", value);
+}, 500);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Throttling: Ensures a function executes at most once during a specified time interval.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function throttle(fn, delay) {
+    let lastCall = 0;
+
+    return function (...args) {
+        const now = Date.now();
+
+        if (now - lastCall &gt;= delay) {
+            lastCall = now;
+            fn.apply(this, args);
+        }
+    };
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Real-world examples:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Debouncing: Search API requests.</li>
+        <li>Throttling: Scroll and resize events.</li>
+    </ul>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the DOM?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">DOM stands for Document Object Model. It represents an HTML document as a tree of objects that JavaScript can access and modify.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const heading = document.getElementById("title");
+
+heading.textContent = "Welcome to JavaScript";
+heading.style.color = "blue";</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">innerHTML</code>, <code class="rounded bg-slate-100 px-1 text-base">innerText</code>, and <code class="rounded bg-slate-100 px-1 text-base">textContent</code>?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Property</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Description</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">innerHTML</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Gets or sets HTML markup</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">innerText</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Gets or sets rendered text</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">textContent</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Gets or sets text content, including hidden text</td></tr></tbody>
+        </table>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>element.innerHTML = "&lt;b&gt;Hello&lt;/b&gt;";
+element.innerText = "Hello";
+element.textContent = "Hello";</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Security point: Avoid inserting untrusted data through <code class="rounded bg-slate-100 px-1 text-base">innerHTML</code>, because it can introduce cross-site scripting (XSS).</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is event bubbling and event capturing?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Event propagation has three phases:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Capturing phase – event travels from the document toward the target.</li>
+        <li>Target phase – event reaches the target element.</li>
+        <li>Bubbling phase – event travels from the target back toward the document.</li>
+    </ol>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>document.getElementById("parent").addEventListener(
+    "click",
+    () =&gt; console.log("Parent clicked")
+);
+
+document.getElementById("child").addEventListener(
+    "click",
+    () =&gt; console.log("Child clicked")
+);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">By default, <code class="rounded bg-slate-100 px-1 text-base">addEventListener()</code> uses bubbling phase. Pass <code class="rounded bg-slate-100 px-1 text-base">true</code> or <code class="rounded bg-slate-100 px-1 text-base">{ capture: true }</code> to listen during capturing.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is event delegation?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Event delegation means attaching one event listener to a parent element instead of adding separate listeners to every child. It uses event bubbling.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>document.getElementById("list").addEventListener("click", function (event) {
+    if (event.target.matches(".item")) {
+        console.log(event.target.textContent);
+    }
+});</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Advantages:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Reduces event listeners.</li>
+        <li>Improves maintainability.</li>
+        <li>Works for dynamically added child elements.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between localStorage, sessionStorage, and cookies?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Feature</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">localStorage</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">sessionStorage</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Cookies</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Lifetime</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Until cleared</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Current tab session</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Configurable expiry</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Storage</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Browser</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Browser tab</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Browser</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Sent automatically with HTTP requests</td><td class="border border-slate-200 px-4 py-3 text-gray-700">No</td><td class="border border-slate-200 px-4 py-3 text-gray-700">No</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Yes, based on cookie rules</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Typical use</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Preferences</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Temporary session data</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Authentication/session management</td></tr></tbody>
+        </table>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>localStorage.setItem("name", "John");
+
+const name = localStorage.getItem("name");
+
+sessionStorage.setItem("token", "example");</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Security point: Do not store sensitive authentication tokens in JavaScript-accessible storage without carefully considering XSS risk. Secure, HttpOnly, SameSite cookies are often preferable for session credentials.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is CORS?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">CORS stands for Cross-Origin Resource Sharing. It is a browser security mechanism that controls whether a web page can access resources from a different origin.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">For example, a React frontend running on one domain may request data from a Laravel API on another domain.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The backend must return appropriate headers such as:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Headers: Content-Type, Authorization</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">CORS is enforced by browsers; it is not a replacement for API authentication or authorization.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">preventDefault()</code> and <code class="rounded bg-slate-100 px-1 text-base">stopPropagation()</code>?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">preventDefault()</code> stops the browser's default action.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">stopPropagation()</code> stops the event from propagating to other elements.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>document.querySelector("a").addEventListener("click", function (event) {
+    event.preventDefault();
+
+    console.log("Default navigation prevented");
+});</code></pre>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is prototype inheritance?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">JavaScript uses prototype-based inheritance. Objects can inherit properties and methods from other objects through their prototype chain.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const person = {
+    greet() {
+        console.log("Hello");
+    }
+};
+
+const employee = Object.create(person);
+
+employee.name = "John";
+employee.greet(); // Hello</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">__proto__</code> and <code class="rounded bg-slate-100 px-1 text-base">prototype</code>?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">prototype</code> is a property on constructor functions that is used as the prototype for objects created with <code class="rounded bg-slate-100 px-1 text-base">new</code>.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">__proto__</code> is a legacy accessor that exposes an object's internal prototype. Prefer <code class="rounded bg-slate-100 px-1 text-base">Object.getPrototypeOf()</code> and <code class="rounded bg-slate-100 px-1 text-base">Object.setPrototypeOf()</code> instead.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function User(name) {
+    this.name = name;
+}
+
+User.prototype.greet = function () {
+    console.log("Hello " + this.name);
+};
+
+const user = new User("John");
+
+user.greet();</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are classes in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Classes provide a cleaner syntax for creating objects and implementing prototype-based inheritance.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class User {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    display() {
+        console.log(this.name, this.age);
+    }
+}
+
+const user = new User("John", 30);
+
+user.display();</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is inheritance in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Inheritance allows one class to reuse and extend the functionality of another class.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Person {
+    constructor(name) {
+        this.name = name;
+    }
+
+    showName() {
+        console.log(this.name);
+    }
+}
+
+class Employee extends Person {
+    constructor(name, salary) {
+        super(name);
+        this.salary = salary;
+    }
+
+    showSalary() {
+        console.log(this.salary);
+    }
+}
+
+const employee = new Employee("John", 50000);
+
+employee.showName();
+employee.showSalary();</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a higher-order function?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A higher-order function is a function that accepts another function as an argument, returns a function, or both.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function calculate(operation, a, b) {
+    return operation(a, b);
+}
+
+const add = (a, b) =&gt; a + b;
+
+console.log(calculate(add, 10, 20)); // 30</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Examples include <code class="rounded bg-slate-100 px-1 text-base">map()</code>, <code class="rounded bg-slate-100 px-1 text-base">filter()</code>, and <code class="rounded bg-slate-100 px-1 text-base">reduce()</code>.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is currying?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Currying converts a function that takes multiple arguments into a sequence of functions, each accepting one argument.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function multiply(a) {
+    return function (b) {
+        return a * b;
+    };
+}
+
+console.log(multiply(5)(3)); // 15</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Use cases: Reusable functions, configuration, and functional programming.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is memoization?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Memoization is an optimization technique that stores the result of an expensive function call and reuses it when the same inputs occur again.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function memoize(fn) {
+    const cache = new Map();
+
+    return function (n) {
+        if (cache.has(n)) {
+            return cache.get(n);
+        }
+
+        const result = fn(n);
+
+        cache.set(n, result);
+
+        return result;
+    };
+}
+
+const square = memoize(n =&gt; n * n);
+
+console.log(square(5)); // 25
+console.log(square(5)); // Cached result</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is garbage collection?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Garbage collection is the process through which the JavaScript engine automatically identifies and reclaims memory occupied by objects that are no longer reachable.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Important points:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>JavaScript manages memory automatically.</li>
+        <li>Modern engines commonly use mark-and-sweep techniques.</li>
+        <li>Unnecessary references can cause memory leaks.</li>
+        <li>Event listeners and timers should be cleaned up when no longer needed.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">Map</code>, <code class="rounded bg-slate-100 px-1 text-base">Set</code>, <code class="rounded bg-slate-100 px-1 text-base">WeakMap</code>, and <code class="rounded bg-slate-100 px-1 text-base">WeakSet</code>?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Structure</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Purpose</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Map</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Stores key-value pairs; keys can be any value</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Set</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Stores unique values</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">WeakMap</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Stores weakly held object keys</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">WeakSet</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Stores weakly held object values</td></tr></tbody>
+        </table>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const map = new Map();
+
+map.set("name", "John");
+console.log(map.get("name"));
+
+const set = new Set([1, 2, 2, 3]);
+
+console.log([...set]); // [1, 2, 3]</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">WeakMap and WeakSet are not enumerable, which makes them useful for certain object-associated data without keeping objects alive solely through those weak references.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">Object.freeze()</code> and <code class="rounded bg-slate-100 px-1 text-base">Object.seal()</code>?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">Object.freeze()</code> prevents adding, removing, or changing existing own properties.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">Object.seal()</code> prevents adding or removing properties but allows changing writable existing properties.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const user = {
+    name: "John",
+    age: 30
+};
+
+Object.freeze(user);
+
+// user.age = 35; // Does not change in non-strict mode</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Both are shallow operations; nested objects are not automatically frozen or sealed.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are JavaScript modules?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Modules allow developers to organize code into reusable files and share functionality using <code class="rounded bg-slate-100 px-1 text-base">export</code> and <code class="rounded bg-slate-100 px-1 text-base">import</code>.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Export:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// math.js
+export function add(a, b) {
+    return a + b;
+}
+
+export const PI = 3.14;</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Import:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>// app.js
+import { add, PI } from "./math.js";
+
+console.log(add(10, 20));
+console.log(PI);</code></pre>
+</div>
+
+<h2 class="mt-12 mb-6 text-4xl font-bold text-slate-900">Part 7: JavaScript Coding Interview Questions</h2>
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Reverse a string without using <code class="rounded bg-slate-100 px-1 text-base">reverse()</code>.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function reverseString(str) {
+    let result = "";
+
+    for (let i = str.length - 1; i &gt;= 0; i--) {
+        result += str[i];
+    }
+
+    return result;
+}
+
+console.log(reverseString("JavaScript"));
+// tpircSavaJ</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find duplicate elements in an array.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function findDuplicates(arr) {
+    const seen = new Set();
+    const duplicates = new Set();
+
+    for (const item of arr) {
+        if (seen.has(item)) {
+            duplicates.add(item);
+        } else {
+            seen.add(item);
+        }
+    }
+
+    return [...duplicates];
+}
+
+console.log(findDuplicates([1, 2, 3, 2, 4, 1]));
+// [2, 1]</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find the second-highest number in an array.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function secondHighest(arr) {
+    const unique = [...new Set(arr)];
+
+    unique.sort((a, b) =&gt; b - a);
+
+    return unique.length &gt;= 2 ? unique[1] : null;
+}
+
+console.log(secondHighest([10, 20, 40, 30, 40]));
+// 30</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Check whether a string is a palindrome.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function isPalindrome(str) {
+    const cleaned = str.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    return cleaned === [...cleaned].reverse().join("");
+}
+
+console.log(isPalindrome("Madam")); // true
+console.log(isPalindrome("Hello")); // false</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find the frequency of each character.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function charFrequency(str) {
+    const result = {};
+
+    for (const char of str) {
+        result[char] = (result[char] || 0) + 1;
+    }
+
+    return result;
+}
+
+console.log(charFrequency("javascript"));</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Remove duplicate values from an array.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const numbers = [1, 2, 3, 2, 4, 1, 5];
+
+const uniqueNumbers = [...new Set(numbers)];
+
+console.log(uniqueNumbers);
+// [1, 2, 3, 4, 5]</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Flatten a nested array.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const arr = [1, [2, 3], [4, [5, 6]]];
+
+const flattened = arr.flat(Infinity);
+
+console.log(flattened);
+// [1, 2, 3, 4, 5, 6]</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find the largest number in an array.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function findLargest(arr) {
+    if (arr.length === 0) {
+        return null;
+    }
+
+    return Math.max(...arr);
+}
+
+console.log(findLargest([10, 50, 30, 90, 20]));
+// 90</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Sort an array of objects by salary.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const employees = [
+    { name: "John", salary: 50000 },
+    { name: "David", salary: 30000 },
+    { name: "Alex", salary: 70000 }
+];
+
+const sorted = [...employees].sort(
+    (a, b) =&gt; a.salary - b.salary
+);
+
+console.log(sorted);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Find missing numbers from an array.</h2>
+    </div>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>function findMissing(arr, start, end) {
+    const numbers = new Set(arr);
+    const missing = [];
+
+    for (let i = start; i &lt;= end; i++) {
+        if (!numbers.has(i)) {
+            missing.push(i);
+        }
+    }
+
+    return missing;
+}
+
+console.log(findMissing([1, 2, 4, 6, 7], 1, 7));
+// [3, 5]</code></pre>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you optimize JavaScript application performance?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">I follow these optimization techniques:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Avoid unnecessary DOM manipulations.</li>
+        <li>Use event delegation for multiple elements.</li>
+        <li>Apply debouncing to search inputs.</li>
+        <li>Use throttling for scroll and resize events.</li>
+        <li>Reduce unnecessary API requests.</li>
+        <li>Use lazy loading for images and components.</li>
+        <li>Minimize JavaScript bundle size.</li>
+        <li>Use caching where appropriate.</li>
+        <li>Avoid memory leaks by cleaning up timers and event listeners.</li>
+        <li>Use browser developer tools to identify performance bottlenecks.</li>
+    </ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle API errors in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">I use <code class="rounded bg-slate-100 px-1 text-base">try...catch</code> with async/await and check the HTTP response status.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>async function getEmployees() {
+    try {
+        const response = await fetch("/api/employees");
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const employees = await response.json();
+
+        return employees;
+
+    } catch (error) {
+        console.error("API Error:", error.message);
+
+        return [];
+    }
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you prevent multiple API calls when a user clicks a button repeatedly?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">I disable the button while the request is in progress and re-enable it after completion. On the backend, I also use idempotency where duplicate operations could cause financial or data-integrity problems.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>async function saveData(button) {
+    if (button.disabled) return;
+
+    button.disabled = true;
+
+    try {
+        const response = await fetch("/api/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ name: "John" })
+        });
+
+        if (!response.ok) {
+            throw new Error("Save failed");
+        }
+
+        console.log("Saved successfully");
+
+    } catch (error) {
+        console.error(error.message);
+
+    } finally {
+        button.disabled = false;
+    }
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle large API responses?</h2>
+    </div>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Implement server-side pagination.</li>
+        <li>Use filtering and sorting on the backend.</li>
+        <li>Load data when required.</li>
+        <li>Use virtual scrolling for large lists.</li>
+        <li>Avoid unnecessary object transformations.</li>
+        <li>Cache frequently accessed data.</li>
+        <li>Use Web Workers for CPU-intensive browser-side tasks when appropriate.</li>
+    </ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a memory leak in JavaScript?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A memory leak occurs when memory is no longer needed but remains reachable, preventing garbage collection.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Common causes:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Unremoved event listeners.</li>
+        <li>Unnecessary global variables.</li>
+        <li>Uncleaned timers.</li>
+        <li>Retained references to large DOM elements.</li>
+        <li>Unbounded caches.</li>
+    </ul>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>const timer = setInterval(() =&gt; {
+    console.log("Running");
+}, 1000);
+
+// When no longer needed:
+clearInterval(timer);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you secure a JavaScript application?</h2>
+    </div>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Validate input on both frontend and backend.</li>
+        <li>Prevent XSS by avoiding unsafe HTML insertion.</li>
+        <li>Use HTTPS.</li>
+        <li>Implement secure authentication and authorization on the server.</li>
+        <li>Avoid exposing secret keys in frontend code.</li>
+        <li>Configure appropriate CORS policies.</li>
+        <li>Use Content Security Policy (CSP).</li>
+        <li>Keep dependencies updated.</li>
+        <li>Protect sensitive cookies using HttpOnly, Secure, and appropriate SameSite settings.</li>
+    </ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

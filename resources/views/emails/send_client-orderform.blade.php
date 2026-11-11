@@ -237,7 +237,7 @@
               💰 &nbsp;Amount Paid
             </td>
             <td style="padding:11px 20px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;color:#0D1340;border-bottom:1px solid #FDE68A;">
-              ₹ <?php echo number_format($paid_amount, 2); ?>
+              ₹ <?php echo number_format($amount, 2); ?>
             </td>
           </tr>
           <!-- GST -->

@@ -299,25 +299,14 @@ hr{
 				<tbody>
 					<tr style="height: 104px;">
 						<td><span >1</span></td>					 
-						<?php if($paymentprint->package_name=='Gold'){ ?>
-						<td><span >Gold</span></td>
+						 
+						<td><span ><?php  echo ucfirst($paymentprint->package_name); ?></span></td>
 						<td><span ><?php  echo $paymentprint->coins_amt; ?> </span></td>	
-						<td><span ><?php echo $paymentprint->paid_amount; ?></span></td>	
+						<td><span ></span></td>	
 				
-				<?php }else if($paymentprint->package_name=='Diamond'){ ?>
 				 
-						<td><span >Diamond</span></td>
-						<td><span ><?php  echo $paymentprint->coins_amt; ?> </span></td>	
-						<td><span ><?php echo $paymentprint->paid_amount; ?></span></td>
-				<?php }if($paymentprint->package_name=='Platinum'){ ?>
-					
-					<td><span >Platinum</span></td>
-						<td><span ><?php  echo $paymentprint->coins_amt; ?> </span></td>	
-						<td><span ><?php echo $paymentprint->paid_amount; ?></span></td>
-				
-				<?php } ?>
 						
-					<td><?php echo $paymentprint->paid_amount; ?></td>	 
+					<td><?php echo $paymentprint->amount; ?></td>	 
 					</tr>
 					<tr>
 					<td colspan="3"></td>

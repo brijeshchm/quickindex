@@ -243,14 +243,14 @@
                 </button>
 
 
-                <button
+                <!-- <button
                     type="button"
                     id="issueTab"
                     onclick="openPaymentTab('faceIssue')"
                     class="payment-tab whitespace-nowrap border-b-2 border-transparent px-4 py-3 text-sm font-medium text-slate-500 transition hover:text-slate-800"
                 >
                     Face an Issue
-                </button>
+                </button> -->
 
             </div>
 

@@ -21,6 +21,7 @@ class PaymentHistory extends Model
         'expired_on',
         'selectproofid',
         'proofid',
+        'amount',
         'paid_amount',
         'coins_amt',
         'gst_status',

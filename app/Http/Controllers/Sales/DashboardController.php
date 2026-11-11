@@ -623,12 +623,17 @@ public function followUpHistory(int $id)
 
 				$action .= $separator . '<a href="javascript:pushLeadController.newleaddelete(' . $lead->id . ')" title="lead Delete"><i class="fa fa-fw fa-trash"></i></a>';
 				$separator = ' | ';
+				$mobile = "";
+					if(!is_numeric($lead->mobile)){
+					$mobile = dataDecodeJsonBase64($lead->mobile);
+					}
 
+				
 				$data[] = [
 					"<th><input type='checkbox' class='check-box' value='$lead->id'></th>",
 					$leadname,
 					$lead_from,
-					$lead->mobile,
+					$mobile,
 					$lead->status_name,
 					$lead->kw_text,
 					$lead->city_name,

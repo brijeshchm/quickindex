@@ -343,8 +343,12 @@ Route::get('/interviews/technical-logic-question-answer', [App\Http\Controllers\
 Route::get('/interviews/laravel-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'laravelInterview']);
 Route::get('/interviews/javascript-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'javascriptInterview']);
 Route::get('/interviews/reactjs-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'reactjsInterview']);
+Route::get('/interviews/nextjs-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'nextjsInterview']);
+Route::get('/interviews/mongodb-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'mongodbInterview']);
 Route::get('/interviews/restapi-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'restapiInterview']);
+Route::get('/interviews/workday-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'workdayInterview']);
 Route::get('/interviews/extjs-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'extjsInterview']);
+Route::get('/interviews/python-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'pythonInterview']);
 Route::get('/interviews/pimcore-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'pimcoreInterview']);
 Route::get('/interviews/computer-interview-question-answer', [App\Http\Controllers\Client\InterviewController::class, 'computerInterview']);
 

@@ -135,7 +135,7 @@
  <div class="hidden overflow-x-auto md:block">
     
  
- <table class="w-full min-w-[650px] text-left text-sm"><thead class="border-b bg-secondary/50 text-slate-500"><tr><th class="px-6 py-4 font-medium">Date</th><th class="px-6 py-4 font-medium">Paid Amount</th><th class="px-6 py-4 font-medium">GST (18%)</th><th class="px-6 py-4 text-right font-medium">Total Amount</th><th class="px-6 py-4 text-right font-medium">Invoice</th></tr></thead><tbody class="divide-y">
+ <table class="w-full min-w-[650px] text-left text-sm"><thead class="border-b bg-secondary/50 text-slate-500"><tr><th class="px-6 py-4 font-medium">Date</th><th class="px-6 py-4 font-medium">Amount</th><th class="px-6 py-4 font-medium">GST (18%)</th><th class="px-6 py-4 text-right font-medium">Total Amount</th><th class="px-6 py-4 text-right font-medium">Invoice</th></tr></thead><tbody class="divide-y">
     
  @php
  
@@ -146,7 +146,7 @@
  
  <tr class="hover:bg-secondary/20"><td class="px-6 py-4 text-slate-500"> 
  
- {{ date_format(date_create($inv->created_at), 'd M Y') }}</td><td class="px-6 py-4">₹{{ number_format($inv['paid_amount']) }}</td><td class="px-6 py-4">₹{{ number_format($inv['gst_tax']) }}</td><td class="px-6 py-4 text-right font-bold">₹{{ number_format($inv['total_amount']) }}</td><td class="px-6 py-4 text-right">
+ {{ date_format(date_create($inv->created_at), 'd M Y') }}</td><td class="px-6 py-4">₹{{ number_format($inv['amount']) }}</td><td class="px-6 py-4">₹{{ number_format($inv['gst_tax']) }}</td><td class="px-6 py-4 text-right font-bold">₹{{ number_format($inv['total_amount']) }}</td><td class="px-6 py-4 text-right">
     
  
  <a href="{{ route('invoice.billing.pdf',$inv['id']) }}" class="inline-flex items-center gap-1.5 font-medium text-primary hover:underline"><i data-lucide="download" class="h-4 w-4"></i>Download</a>
@@ -172,7 +172,7 @@
  <span class="font-display text-lg font-bold">₹{{ number_format($inv['total_amount']) }}</span></div>
  
  
- <div class="flex justify-between rounded-lg border bg-secondary/30 p-2 text-sm text-slate-500"><span>Paid: <b class="text-foreground">₹{{ number_format($inv['paid_amount']) }}</b></span>
+ <div class="flex justify-between rounded-lg border bg-secondary/30 p-2 text-sm text-slate-500"><span>Paid: <b class="text-foreground">₹{{ number_format($inv['amount']) }}</b></span>
  
  
  

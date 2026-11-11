@@ -1,12 +1,9 @@
 @extends('business.layouts.app')
 @section('title')
- 
+ Pay Deposit
 @endsection 
-@section('keyword')
- 
-@endsection
 @section('description')
- 
+ Pay Deposit
 @endsection
 @section('content')
 	<div class="main">		

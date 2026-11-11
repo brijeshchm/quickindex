@@ -11,7 +11,7 @@ use Excel;
 use Auth;
 use Carbon\Carbon;
 use Cookie;
-
+use Illuminate\Support\Facades\Crypt;
 use App\Models\PushLead;
 use App\Models\Lead;
 use App\Models\LeadFollowUp;
@@ -23,7 +23,7 @@ use App\Models\Citieslists;
 use App\Models\Keyword;
 use App\Models\AssignedLead;
 use App\Models\KeywordSellCount;
-
+use Illuminate\Contracts\Encryption\EncryptException;
 use App\Models\Zone;
 use App\Models\Area;
 use App\Models\Client\Client;
@@ -117,10 +117,18 @@ class LeadController extends Controller
 				if ($lead->created_by != null && isset($owner[$lead->created_by])) {
 					$owner_name = $owner[$lead->created_by];
 				}
+				$mobile = "";
+				if(!is_numeric($lead->mobile)){
+				$mobile = dataDecodeJsonBase64($lead->mobile);
+				$mobile = substr($mobile, 0, 3)
+					. str_repeat('X', max(0, strlen($mobile) - 7))
+					. substr($mobile, -4);
+				} 
+
 				$data[] = [
 					($lead->b_end) ? $lead->name . " <i aria-hidden=\"true\" style=\"color:red\" class=\"fa fa-fw fa-asterisk\"></i>" : $lead->name,
 					($lead->b_end) ? "Internal" : "External",
-					$lead->mobile,
+					$mobile,
 					//$lead->email,
 					$owner_name,
 					$lead->area,
@@ -217,7 +225,9 @@ class LeadController extends Controller
 				if (!empty($request->input('email'))) {
 					$lead->email = $request->input('email');
 				}
-				$lead->mobile = $request->input('mobile');
+				$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+				$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
+
 				$lead->created_by = $request->input('created_by');
 
 
@@ -299,6 +309,19 @@ class LeadController extends Controller
 	}
 
 	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function encryptString(Request $request)
+	{
+		if (!($request->user()->current_user_can('administrator') || $request->user()->current_user_can('add_lead'))) {
+			return view('errors.unauthorised');
+		}
+		return view('admin.lead.encrypt-number');
+	}
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
@@ -324,7 +347,8 @@ class LeadController extends Controller
 			} else {
 				$lead->email = $request->input('email');
 			}
-			$lead->mobile = $request->input('mobile');
+			$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+			$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
 
 			if (Auth::check()) {
 				$lead->created_by = $request->user()->id;
@@ -387,6 +411,88 @@ class LeadController extends Controller
 
 		}
 	}
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+
+	
+	public function numberToEncrypt(Request $request)
+	{
+		if (!$request->ajax()) {
+			return response()->json([
+				'status' => 0,
+				'msg' => 'Invalid request.',
+			], 400);
+		}
+
+		$updated = 0;
+		$skipped = 0;
+// 		// $mobile = '9205323836';
+// 		$mobile = 'IjkyMDUzMjM4MzYi';
+// // $mobile =  dataEncodeJsonBase64($mobile);
+// $mobile =  dataDecodeJsonBase64($mobile);
+// dd($mobile);
+
+//dataDecodeJsonBase64
+		DB::table('leads')
+			->select('id', 'mobile')
+			->whereNotNull('mobile')
+			// ->where('id', '145')
+			->chunkById(200, function ($rows) use (&$updated, &$skipped) {
+				foreach ($rows as $lead) {
+					$mobile = trim((string) $lead->mobile);
+
+					// Skip encrypted or invalid values.
+					if (!preg_match('/^\+?[0-9]{7,15}$/', $mobile)) {
+						$skipped++;
+						continue;
+					}
+
+					$affected = DB::table('leads')
+						->where('id', $lead->id)
+						->where('mobile', $lead->mobile)
+						->update([
+							'mobile' => dataEncodeJsonBase64($mobile),
+
+							// Hash must be generated from the plain mobile.
+							'mobile_hash' => hash_hmac('sha256',$mobile,config('app.key')),
+						]);
+
+					$updated += $affected;
+				}
+			});
+
+
+
+		//$leads = 	DB::table('leads')->where('id','145')->first();
+		 
+		// $mobile = dataDecodeJsonBase64($leads->mobile);
+// dd($mobile);
+
+// $mobile_hash = hash_hmac(
+// 								'sha256',
+// 								$leads->mobile,
+// 								config('app.key')
+// 							);
+//7657657887
+
+//
+// dd($mobile_hash);
+		return response()->json([
+			'status' => 1,
+			'msg' => $updated > 0
+				? 'Mobile encrypted successfully.'
+				: 'No changes needed. No matching plain mobile found.',
+			'updated' => $updated,
+			'skipped' => $skipped,
+		], 200);
+	}
+
+
+	 
 
 
 	public function storeWithoutZone(AddLeadRequest $request)
@@ -411,8 +517,8 @@ class LeadController extends Controller
 			} else {
 				$lead->email = $request->input('email');
 			}
-			$lead->mobile = $request->input('mobile');
-
+			$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+			$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
 			if (Auth::check()) {
 				$lead->created_by = $request->user()->id;
 			}
@@ -1421,8 +1527,9 @@ class LeadController extends Controller
 	 */
 	public function updateNewLead(Request $request, $id)
 	{
+
 		$validator = Validator::make($request->all(), [
-			'name' => 'required|unique:leads,name,' . $id . ',id,mobile,' . $request->input('mobile'),
+			'name' => 'required|unique:leads,name,' . $id . ',id,mobile,' . dataEncodeJsonBase64($request->input('mobile')),
 			'mobile' => 'required',
 			'city_id' => 'required',
 			//	'area_zone'=>'required',
@@ -1459,7 +1566,9 @@ class LeadController extends Controller
 				if (!empty($request->input('email'))) {
 					$lead->email = $request->input('email');
 				}
-				$lead->mobile = $request->input('mobile');
+				 
+				$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+				$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
 				$lead->created_by = $request->input('created_by');
 
 
@@ -1694,7 +1803,7 @@ class LeadController extends Controller
 		foreach ($leads as $lead) {
 			$arr[] = [
 				"Name" => $lead->name,
-				"Mobile" => $lead->mobile,
+				"Mobile" => dataDecodeJsonBase64($lead->mobile),
 				"Email" => $lead->email,
 				"Area" => $lead->area,
 				"Course" => $lead->kw_text,
@@ -2025,14 +2134,37 @@ class LeadController extends Controller
 		if ($request->ajax()) {
 
 			$leads = DB::table('leads');
-			if ($request->input('search.value') != '') {
-				$leads = $leads->where(function ($query) use ($request) {
-					$query->orWhere('leads.name', 'LIKE', '%' . $request->input('search.value') . '%')
-						->orWhere('leads.mobile', 'LIKE', '%' . $request->input('search.value') . '%')
-						->orWhere('leads.kw_text', 'LIKE', '%' . $request->input('search.value') . '%')
-						->orWhere('leads.city_name', 'LIKE', '%' . $request->input('search.value') . '%')
-						->orWhere('leads.email', 'LIKE', '%' . $request->input('search.value') . '%');
+
+			$search = trim((string) $request->input('search.value', ''));
+
+			if ($search !== '') {
+				$mobileHash = hash_hmac(
+					'sha256',
+					$search,
+					config('app.key')
+				);
+
+				$leads = $leads->where(function ($query) use ($search, $mobileHash) {
+					$query->where('leads.name', 'LIKE', '%' . $search . '%')
+						->orWhere('leads.mobile_hash', $mobileHash)
+						->orWhere('leads.kw_text', 'LIKE', '%' . $search . '%')
+						->orWhere('leads.city_name', 'LIKE', '%' . $search . '%')
+						->orWhere('leads.email', 'LIKE', '%' . $search . '%');
 				});
+			}
+
+
+			// if ($request->input('search.value') != '') {
+			// 	$leads = $leads->where(function ($query) use ($request) {
+			// 		$query->orWhere('leads.name', 'LIKE', '%' . $request->input('search.value') . '%')
+			// 			->orWhere('leads.mobile', 'LIKE', '%' . $request->input('search.value') . '%')
+			// 			->orWhere('leads.kw_text', 'LIKE', '%' . $request->input('search.value') . '%')
+			// 			->orWhere('leads.city_name', 'LIKE', '%' . $request->input('search.value') . '%')
+			// 			->orWhere('leads.email', 'LIKE', '%' . $request->input('search.value') . '%');
+			// 	});
+			// }
+			if ($request->input('search.not_interested') != '') {
+				$leads = $leads->where('leads.move_not_interested', '=', $request->input('search.not_interested'));
 			}
 			if ($request->input('search.city') != '') {
 				$leads = $leads->where('leads.city_name', '=', $request->input('search.city'));
@@ -2127,11 +2259,25 @@ class LeadController extends Controller
 				$action .= $separator . '<a href="javascript:pushLeadController.newleaddelete(' . $lead->id . ')" title="lead Delete"><i class="fa fa-fw fa-trash"></i></a>';
 				$separator = ' | ';
 
+				$mobile = "";
+				if(!is_numeric($lead->mobile)){
+
+
+				$mobile = dataDecodeJsonBase64($lead->mobile);
+
+				$mobile = substr($mobile, 0, 3)
+				. str_repeat('X', max(0, strlen($mobile) - 7))
+				. substr($mobile, -4);
+				} 
+
+
+
+
 				$data[] = [
 					"<th><input type='checkbox' class='check-box' value='$lead->id'></th>",
 					$leadname,
 					$lead_from,
-					$lead->mobile,
+					$mobile,
 					$lead->status_name,
 					$lead->kw_text,
 					$lead->city_name,
@@ -2630,7 +2776,7 @@ class LeadController extends Controller
 								<div class="form-group">
 								 <div class="col-md-4">
 										<label for="mobile">Mobile <span class="required">:</span></label>									 
-										<p class="form-control-static" style="display:inline">' . $lead->mobile . '</p>
+										<p class="form-control-static" style="display:inline">' . dataDecodeJsonBase64($lead->mobile) . '</p>
 									 </div>
 								</div>
 								<div class="form-group">
@@ -2825,6 +2971,14 @@ class LeadController extends Controller
 			$lead->status_name = $statusObj->name;
 			if ($lead->save()) {
 
+				$followUp = new LeadFollowUp;
+				$followUp->status = Status::where('id',$request->input('status'))->first()->id;
+				$followUp->remark = htmlspecialchars(strip_tags(trim($request->input('remark'))));
+				$followUp->expected_date_time = date('Y-m-d H:i:s');
+				$followUp->lead_id = $lead->id;
+				$followUp->remark_by = Auth::user()->id;
+				$followUp->save();
+
 			return response()->json([
 						'statusCode' => 1,
 						'data' => [
@@ -2936,7 +3090,7 @@ return response()->json([
 	{
 
 		$ids = $request->input('ids');
-
+		$add = '';
 		if (!empty($ids)) {
 			foreach ($ids as $id) {
 
@@ -2951,11 +3105,14 @@ return response()->json([
 					$leadFollowUp = $leadFollowUp->first();
 
 					if (strcasecmp($leadFollowUp->name, 'Not Interested') == 0 || strcasecmp($leadFollowUp->name, 'Invalid Number') == 0) {
-						$lead->move_not_interested = 1;
+						$lead->move_not_interested = '1';
 						$lead->save();
+						$add = '1';
 					}
 				}
 			}
+
+if($add){
 			return response()->json([
 				'statusCode' => 1,
 				'data' => [
@@ -2964,6 +3121,18 @@ return response()->json([
 					'message' => 'Moved successfully...'
 				]
 			], 200);
+			}else{
+
+
+			return response()->json([
+				'statusCode' => 0,
+				'data' => [
+					'responseCode' => 200,
+					'payload' => '',
+					'message' => 'Not Moved not interested lead.'
+				]
+			], 200);
+			}
 		} else {
 
 			return response()->json([

@@ -510,7 +510,10 @@ class HomePageController extends Controller
 			$mobile = ltrim($request->input('mobile'), '0');
 			$mobile = trim($mobile);
 			$newmobile = preg_replace('/\s+/', '', $mobile);
-			$lead->mobile = $newmobile;
+			 		
+			$lead->mobile = dataEncodeJsonBase64($newmobile);
+			$lead->mobile_hash = hash_hmac('sha256',$newmobile,config('app.key'));
+
 			$keyword = Keyword::where('keyword', $request->input('kw_text'))->first();
 
 			if (!empty($keyword)) {
@@ -687,7 +690,9 @@ class HomePageController extends Controller
 			$phone = ltrim($request->input('phone'), '0');
 			$phone = trim($phone);
 			$newmobile = preg_replace('/\s+/', '', $phone);
-			$lead->mobile = $newmobile;
+		 
+			$lead->mobile = dataEncodeJsonBase64($newmobile);
+			$lead->mobile_hash = hash_hmac('sha256',$newmobile,config('app.key'));
 			if ($request->country_code) {
 				$lead->code = $request->country_code;
 			}
@@ -899,8 +904,9 @@ class HomePageController extends Controller
 			$string = preg_replace('/[^A-Za-z0-9]/', ' ', $string);
 			$name = preg_replace('/\s+/', ' ', str_replace('&', '', trim($string)));
 			$lead->name = $name;
-			$lead->email = $request->input('email');
-			$lead->mobile = $request->input('mobile');
+			$lead->email = $request->input('email');			 
+			$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+			$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
 			$lead->subject = filter_var($request->input('subject'), FILTER_SANITIZE_STRING);
 
 			$message = filter_var($request->input('message'), FILTER_SANITIZE_STRING);
@@ -911,6 +917,7 @@ class HomePageController extends Controller
 
 			if ($lead->save()) {
 
+			
 				return response()->json([
 					'statusCode' => true,
 					'response' => [
@@ -1035,7 +1042,9 @@ class HomePageController extends Controller
 			$mobile = ltrim($request->input('mobile'), '0');
 			$mobile = trim($mobile);
 			$newmobile = preg_replace('/\s+/', '', $mobile);
-			$lead->mobile = $newmobile;
+			 
+			$lead->mobile = dataEncodeJsonBase64($newmobile);
+			$lead->mobile_hash = hash_hmac('sha256',$newmobile,config('app.key'));
 			$lead->code = $request->code;
 			$kw_text = filter_var($request->input('kw_text'), FILTER_SANITIZE_STRING);
 			$kw_text = preg_replace('/[^A-Za-z0-9]/', ' ', $kw_text);
@@ -1186,7 +1195,8 @@ class HomePageController extends Controller
 		$mobile = ltrim($request->input('mobile'), '0');
 		$mobile = trim($mobile);
 		$newmobile = preg_replace('/\s+/', '', $mobile);
-		$lead->mobile = $newmobile;
+	 	$lead->mobile = dataEncodeJsonBase64($newmobile);
+		$lead->mobile_hash = hash_hmac('sha256',$newmobile,config('app.key'));
 		$lead->lead_form = $request->input('lead_form');
 		$lead->from_page = filter_var($request->input('from_page'), FILTER_SANITIZE_STRING);
 		$keyword = Keyword::where('keyword', 'LIKE', $request->input('kw_text'))->get();
@@ -1360,7 +1370,9 @@ class HomePageController extends Controller
 
 				$lead->email = $request->input('email');
 			}
-			$lead->mobile = $request->input('mobile');
+			 
+			$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+			$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
 			$lead->lead_form = $request->input('lead_form');
 			$keyword = Keyword::where('keyword', 'LIKE', $request->input('kw_text'))->get();
 			if (!empty($keyword)) {

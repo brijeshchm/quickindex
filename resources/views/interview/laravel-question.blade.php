@@ -14,7 +14,7 @@ Explore top Laravel interview questions and answers covering routing, Eloquent, 
   <div class='row white'>
     <div class='col l11 m12' id='main'>
        
-<h1>laravel<span class="color_h1"> Interview Question & Answer</span></h1>
+<h1>Laravel<span class="color_h1"> Interview Question & Answer</span></h1>
 <div class="clear nextprev">
 <a class="left btn" href="{{url('interviews/technical-logic-question-answer')}}">&#10094; Previous</a>
 <a class="right btn" href="{{url('interviews/javascript-interview-question-answer')}}">Next &#10095;</a>
@@ -611,7 +611,7 @@ HAVING COUNT(*) &gt; 5;</code></pre>
 $user-&gt;roles()-&gt;detach([1]);
 
 $user-&gt;roles()-&gt;sync([2, 3]);</code></pre>
-<h2 id="5-migrations-seeders-and-factories">5. Migrations, Seeders and Factories</h2>
+
 </div>
 
 <div class="mb-12">
@@ -702,7 +702,7 @@ $user-&gt;roles()-&gt;sync([2, 3]);</code></pre>
 </tr>
 </tbody>
 </table></div>
-<h2 id="6-authentication-and-authorization">6. Authentication and Authorization</h2>
+
 </div>
 
 <div class="mb-12">
@@ -790,7 +790,7 @@ $user-&gt;roles()-&gt;sync([2, 3]);</code></pre>
 </tr>
 </tbody>
 </table></div>
-<h2 id="7-advanced-laravel-concepts">7. Advanced Laravel Concepts</h2>
+
 </div>
 
 <div class="mb-12">
@@ -949,7 +949,7 @@ $user-&gt;roles()-&gt;sync([2, 3]);</code></pre>
 &#125;</code></pre>
 <p class="mb-3 text-lg leading-8 text-gray-700">Usage:</p>
 <pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>return new UserResource(User::findOrFail(1));</code></pre>
-<h2 id="8-laravel-security-questions">8. Laravel Security Questions</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1024,7 +1024,7 @@ $user-&gt;roles()-&gt;sync([2, 3]);</code></pre>
 $path = $request-&gt;file(&#39;document&#39;)
     -&gt;store(&#39;documents&#39;, &#39;private&#39;);</code></pre>
 <p class="mb-3 text-lg leading-8 text-gray-700">I avoid trusting the original file name and keep sensitive files outside publicly accessible storage.</p>
-<h2 id="9-database-transactions-and-performance">9. Database Transactions and Performance</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1129,7 +1129,7 @@ try &#123;
 <pre class="mb-4 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-100"><code>php artisan config:cache
 php artisan route:cache
 php artisan view:cache</code></pre>
-<h2 id="10-laravel-design-patterns">10. Laravel Design Patterns</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1174,6 +1174,42 @@ php artisan view:cache</code></pre>
 </ul>
 </div>
 
+
+
+<div class="mb-12">
+
+<div class="question"><h2 class="text-3xl font-bold text-primary mt-5 mb-4">9. Routing</h2></div>
+
+<p class="mb-4 text-lg leading-8 text-gray-700">Routing maps an HTTP request URL and method to a controller/action.</p>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Laravel</h3>
+
+<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Route::get(&#x27;/users&#x27;, [UserController::class, &#x27;index&#x27;]);</code></pre>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">POST:</h3>
+
+<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Route::post(&#x27;/users&#x27;, [UserController::class, &#x27;store&#x27;]);</code></pre>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Route parameter:</h3>
+
+<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Route::get(&#x27;/users/{id}&#x27;, [UserController::class, &#x27;show&#x27;]);</code></pre>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">Controller:</h3>
+
+<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>public function show($id)
+{
+    return User::findOrFail($id);
+}</code></pre>
+
+<h3 class="mt-6 mb-3 text-xl font-semibold text-gray-900">RESTful routing</h3>
+
+<pre class="my-5 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>GET     /users          -&gt; list users
+GET     /users/{id}     -&gt; show user
+POST    /users          -&gt; create user
+PUT     /users/{id}     -&gt; update user
+DELETE  /users/{id}     -&gt; delete user</code></pre>
+
+</div>
 <div class="mb-12">
     <div class="question">
         <h2 class="mt-5 mb-4 text-3xl font-bold text-primary">50. What is the Service Pattern in Laravel?</h2>
@@ -1218,7 +1254,7 @@ php artisan view:cache</code></pre>
 </ul>
 <p class="mb-3 text-lg leading-8 text-gray-700">A service may use a repository to retrieve and save data.</p>
 <p class="mb-3 text-lg leading-8 text-gray-700">They solve different problems and can be used together, but neither is mandatory for every Laravel application.</p>
-<h2 id="11-scenario-based-laravel-interview-questions">11. Scenario-Based Laravel Interview Questions</h2>
+
 </div>
 
 <div class="mb-12">
@@ -1492,37 +1528,851 @@ class User extends Model
 </tr>
 </tbody>
 </table></div>
-<h2 id="14-most-important-topics-for-senior-laravel-interviews">14. Most Important Topics for Senior Laravel Interviews</h2>
-<h2 id="interview-preparation-priority">Interview preparation priority</h2>
-<p class="mb-3 text-lg leading-8 text-gray-700">Your preparation progress</p>
-<h1 id="012">0/12</h1>
-<p class="mb-3 text-lg leading-8 text-gray-700">MVC architecture and request lifecycle</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Fundamentals</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Service Container and Dependency Injection</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Advanced</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Service Providers and Facades</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Advanced</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Eloquent relationships and N+1 queries</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Database</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Queues, Jobs, Events and Listeners</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Advanced</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Sanctum, Passport and JWT</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Security</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Middleware, Gates and Policies</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Security</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Transactions, deadlocks and locking</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Database</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Repository and Service Patterns</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Architecture</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">REST API, webhooks and duplicate payments</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Real-world</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Caching, Redis and performance</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Performance</p>
-<p class="mb-3 text-lg leading-8 text-gray-700">Laravel deployment and CI/CD</p>
+ 
 </div>
 
 
 
+<!-- Blade partial. SQL examples are escaped display text. -->
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Laravel?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Laravel is an open-source PHP framework that follows the MVC architectural pattern and provides built-in features for developing secure, scalable, and maintainable web applications.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Important Laravel features:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>MVC architecture.</li>
+        <li>Routing and middleware.</li>
+        <li>Eloquent ORM.</li>
+        <li>Blade templating engine.</li>
+        <li>Service container.</li>
+        <li>Service providers.</li>
+        <li>Authentication and authorization.</li>
+        <li>Queues and jobs.</li>
+        <li>Events and listeners.</li>
+        <li>Caching.</li>
+        <li>Database migrations.</li>
+        <li>API resources.</li>
+        <li>Testing support.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">Explain Laravel MVC architecture.</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">MVC stands for Model, View, Controller.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Request / Route</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Incoming HTTP request</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Controller</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Handles request and application flow</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Model</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Database operations</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">View</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">User interface</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">HTTP Response</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Explanation:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Model: Manages database-related data and relationships.</li>
+        <li>View: Displays the user interface.</li>
+        <li>Controller: Handles requests and coordinates application logic.</li>
+    </ul>
+    <p class="text-lg text-gray-700 mt-3 leading-8">For a modern API application, the controller commonly returns JSON rather than a Blade view.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the Laravel Service Container?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: The service container is Laravel's dependency injection system. It resolves class dependencies and manages object construction.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class OrderController extends Controller
+{
+    public function __construct(
+        private OrderService $orderService
+    ) {}
+
+    public function index()
+    {
+        return $this-&gt;orderService-&gt;getOrders();
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Laravel can automatically resolve concrete classes when their dependencies can also be resolved.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">For interface-based dependencies, register a binding:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$this-&gt;app-&gt;bind(
+    PaymentInterface::class,
+    RazorpayService::class
+);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is a Service Provider?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: A service provider is the central place where Laravel registers and bootstraps application services.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Two important methods:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li><code class="rounded bg-slate-100 px-1 text-base">register()</code>: Registers bindings and services in the container.</li>
+        <li><code class="rounded bg-slate-100 px-1 text-base">boot()</code>: Executes initialization logic after providers have been registered.</li>
+    </ul>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this-&gt;app-&gt;bind(
+            PaymentInterface::class,
+            RazorpayService::class
+        );
+    }
+
+    public function boot(): void
+    {
+        //
+    }
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Middleware in Laravel?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Middleware filters incoming HTTP requests before they reach the application's route or controller. It can also process responses.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class CheckAdmin
+{
+    public function handle($request, Closure $next)
+    {
+        if (!auth()-&gt;check() || !auth()-&gt;user()-&gt;is_admin) {
+            abort(403);
+        }
+
+        return $next($request);
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Common middleware use cases:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Authentication.</li>
+        <li>Authorization.</li>
+        <li>CORS handling.</li>
+        <li>Request logging.</li>
+        <li>Rate limiting.</li>
+        <li>Request validation or filtering.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Eloquent ORM?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Eloquent is Laravel's object-relational mapper (ORM). It allows developers to interact with database tables using PHP models.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$users = User::where('status', 'active')
+    -&gt;orderBy('created_at', 'desc')
+    -&gt;get();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Insert:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$user = User::create([
+    'name' =&gt; 'John',
+    'email' =&gt; 'john&#64;example.com'
+]);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Update:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$user = User::findOrFail(1);
+$user-&gt;update([
+    'name' =&gt; 'David'
+]);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Delete:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>User::destroy(1);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are Laravel relationships?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Laravel provides several Eloquent relationships.</p>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Relationship</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Definition</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">One-to-One</td><td class="border border-slate-200 px-4 py-3 text-gray-700">One record belongs to one related record</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">One-to-Many</td><td class="border border-slate-200 px-4 py-3 text-gray-700">One record has multiple related records</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Many-to-Many</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Multiple records are related to multiple records</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Has-One-Through</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Accesses a distant one-to-one relationship</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Has-Many-Through</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Accesses a distant one-to-many relationship</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Polymorphic</td><td class="border border-slate-200 px-4 py-3 text-gray-700">One model can belong to different model types</td></tr></tbody>
+        </table>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example – One-to-Many:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class User extends Model
+{
+    public function orders()
+    {
+        return $this-&gt;hasMany(Order::class);
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example – Inverse relationship:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class Order extends Model
+{
+    public function user()
+    {
+        return $this-&gt;belongsTo(User::class);
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example – Many-to-Many:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class User extends Model
+{
+    public function roles()
+    {
+        return $this-&gt;belongsToMany(Role::class);
+    }
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">hasOne()</code> and <code class="rounded bg-slate-100 px-1 text-base">belongsTo()</code>?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">hasOne(): Defines a relationship from the model containing the parent-side relationship.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">belongsTo(): Defines the inverse relationship from the model containing the foreign key.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class User extends Model
+{
+    public function profile()
+    {
+        return $this-&gt;hasOne(Profile::class);
+    }
+}
+
+class Profile extends Model
+{
+    public function user()
+    {
+        return $this-&gt;belongsTo(User::class);
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Here, <code class="rounded bg-slate-100 px-1 text-base">profiles.user_id</code> is the foreign key.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is eager loading and lazy loading?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Lazy loading: Related records are fetched when the relationship is accessed.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$users = User::all();
+
+foreach ($users as $user) {
+    echo $user-&gt;orders-&gt;count();
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Eager loading: Related records are fetched in advance.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$users = User::with('orders')-&gt;get();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Interview answer: Eager loading helps prevent N+1 query problems and is particularly useful when listing users with their related records.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">get()</code>, <code class="rounded bg-slate-100 px-1 text-base">first()</code>, <code class="rounded bg-slate-100 px-1 text-base">find()</code>, and <code class="rounded bg-slate-100 px-1 text-base">firstOrFail()</code>?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Description</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">get()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Returns a collection of matching records</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">first()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Returns the first matching record or null</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">find()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Retrieves a record by primary key or returns null</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">firstOrFail()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Returns the first matching record or throws ModelNotFoundException</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">findOrFail()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Finds by primary key or throws ModelNotFoundException</td></tr></tbody>
+        </table>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$user = User::findOrFail(10);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are Laravel migrations?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Migrations are version-controlled database schema changes managed through PHP files.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Create migration:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan make:migration create_employees_table</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Schema::create('employees', function (Blueprint $table) {
+    $table-&gt;id();
+    $table-&gt;string('name');
+    $table-&gt;string('email')-&gt;unique();
+    $table-&gt;decimal('salary', 10, 2)-&gt;nullable();
+    $table-&gt;timestamps();
+});</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Run migration:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan migrate</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Rollback:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan migrate:rollback</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What are Laravel queues and jobs?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Queues allow time-consuming tasks to run asynchronously outside the main HTTP request.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Examples:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Sending emails.</li>
+        <li>Generating reports.</li>
+        <li>Processing images.</li>
+        <li>Importing large Excel files.</li>
+        <li>Calling external APIs.</li>
+    </ul>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Create job:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan make:job SendWelcomeEmail</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Dispatch:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>SendWelcomeEmail::dispatch($user);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Start worker:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan queue:work</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Advantages: Improves response time, supports retries, and allows background workload processing.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between Events and Listeners?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Event: Represents something that happened in the application.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Listener: Performs an action in response to that event.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>event(new OrderPlaced($order));</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Listener:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class SendOrderNotification
+{
+    public function handle(OrderPlaced $event): void
+    {
+        // Send notification
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Use cases: Order confirmation, payment notifications, audit logging, and email notifications.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Laravel caching?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Caching stores frequently used data temporarily so the application does not need to repeatedly perform expensive operations.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$users = Cache::remember(
+    'active_users',
+    3600,
+    fn() =&gt; User::where('status', 'active')-&gt;get()
+);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Common cache stores:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>File.</li>
+        <li>Database.</li>
+        <li>Redis.</li>
+        <li>Memcached.</li>
+    </ul>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Other useful methods:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Cache::put('name', 'John', 3600);
+
+Cache::get('name');
+
+Cache::forget('name');
+
+Cache::flush();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Be careful: <code class="rounded bg-slate-100 px-1 text-base">Cache::flush()</code> clears the entire cache store and may affect unrelated application data.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is the difference between <code class="rounded bg-slate-100 px-1 text-base">bind()</code>, <code class="rounded bg-slate-100 px-1 text-base">singleton()</code>, and <code class="rounded bg-slate-100 px-1 text-base">scoped()</code>?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Behavior</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">bind()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Creates a new instance when resolved</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">singleton()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Reuses the same instance from the container</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700"><code class="rounded bg-slate-100 px-1 text-base">scoped()</code></td><td class="border border-slate-200 px-4 py-3 text-gray-700">Reuses the instance within a request or job lifecycle and resets it for the next lifecycle</td></tr></tbody>
+        </table>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$this-&gt;app-&gt;bind(
+    PaymentService::class,
+    PaymentService::class
+);
+
+$this-&gt;app-&gt;singleton(
+    ReportService::class,
+    ReportService::class
+);
+
+$this-&gt;app-&gt;scoped(
+    UserContext::class,
+    UserContext::class
+);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Laravel API Resource?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: API Resources provide a transformation layer between Eloquent models and JSON responses.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Create:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan make:resource UserResource</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class UserResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' =&gt; $this-&gt;id,
+            'name' =&gt; $this-&gt;name,
+            'email' =&gt; $this-&gt;email,
+        ];
+    }
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Controller:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>return new UserResource(User::findOrFail(1));</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Benefits: Consistent API response structures, controlled field exposure, and easier API versioning.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Laravel Sanctum vs Passport?</h2>
+    </div>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Sanctum</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Passport</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Lightweight API authentication</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Full OAuth2 server implementation</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Personal access tokens</td><td class="border border-slate-200 px-4 py-3 text-gray-700">OAuth2 access and refresh tokens</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">SPA authentication support</td><td class="border border-slate-200 px-4 py-3 text-gray-700">OAuth2 clients and grants</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Simpler setup</td><td class="border border-slate-200 px-4 py-3 text-gray-700">More complex setup</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">Suitable for many first-party APIs</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Suitable when OAuth2 requirements exist</td></tr></tbody>
+        </table>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Interview answer: I choose Sanctum for straightforward first-party SPA and API token authentication. I choose Passport when the application needs OAuth2 functionality, such as third-party clients and authorization grants.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Laravel validation?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Validation checks incoming request data against defined rules before processing it.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$request-&gt;validate([
+    'name' =&gt; 'required|string|max:100',
+    'email' =&gt; 'required|email|unique:users,email',
+    'password' =&gt; 'required|min:8|confirmed'
+]);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Form Request:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>php artisan make:request StoreUserRequest</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Use Form Requests to organize reusable validation and authorization logic.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle database transactions in Laravel?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Laravel provides transaction methods to ensure that related database operations succeed or fail together.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>DB::transaction(function () use ($request) {
+
+    $order = Order::create([
+        'user_id' =&gt; auth()-&gt;id(),
+        'total' =&gt; $request-&gt;total
+    ]);
+
+    OrderItem::create([
+        'order_id' =&gt; $order-&gt;id,
+        'product_id' =&gt; $request-&gt;product_id,
+        'quantity' =&gt; $request-&gt;quantity
+    ]);
+
+});</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">If an exception occurs inside the transaction, Laravel rolls it back.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Manual approach:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>DB::beginTransaction();
+
+try {
+    // Database operations
+
+    DB::commit();
+
+} catch (Throwable $e) {
+    DB::rollBack();
+
+    throw $e;
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is Laravel soft delete?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Soft deletion marks a database record as deleted without physically removing it.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Model:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Employee extends Model
+{
+    use SoftDeletes;
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Migration:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$table-&gt;softDeletes();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Usage:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Employee::find(1)-&gt;delete();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Retrieve deleted records:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Employee::withTrashed()-&gt;get();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Restore:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Employee::withTrashed()
+    -&gt;find(1)
+    -&gt;restore();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Permanently delete:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Employee::withTrashed()
+    -&gt;find(1)
+    -&gt;forceDelete();</code></pre>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you create REST APIs in Laravel?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: REST (Representational State Transfer) is an architectural style for designing web APIs around resources and HTTP methods.</p>
+    <div class="my-4 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-base">
+            <thead><tr><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Method</th><th class="border border-slate-200 bg-slate-100 px-4 py-3 font-bold">Purpose</th></tr></thead>
+            <tbody><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">GET</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Retrieve data</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">POST</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Create data</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">PUT</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Replace a resource</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">PATCH</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Partially update a resource</td></tr><tr><td class="border border-slate-200 px-4 py-3 text-gray-700">DELETE</td><td class="border border-slate-200 px-4 py-3 text-gray-700">Delete a resource</td></tr></tbody>
+        </table>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example routes:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Route::apiResource('employees', EmployeeController::class);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example controller:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>class EmployeeController extends Controller
+{
+    public function index()
+    {
+        return EmployeeResource::collection(
+            Employee::paginate(20)
+        );
+    }
+
+    public function store(StoreEmployeeRequest $request)
+    {
+        $employee = Employee::create($request-&gt;validated());
+
+        return new EmployeeResource($employee);
+    }
+
+    public function show(Employee $employee)
+    {
+        return new EmployeeResource($employee);
+    }
+
+    public function update(
+        StoreEmployeeRequest $request,
+        Employee $employee
+    ) {
+        $employee-&gt;update($request-&gt;validated());
+
+        return new EmployeeResource($employee);
+    }
+
+    public function destroy(Employee $employee)
+    {
+        $employee-&gt;delete();
+
+        return response()-&gt;noContent();
+    }
+}</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is JWT authentication?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: JSON Web Token (JWT) is a compact, digitally signed token used to transmit claims between parties.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">JWT contains three parts:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Header.</li>
+        <li>Payload.</li>
+        <li>Signature.</li>
+    </ol>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Format:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>header.payload.signature</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Authentication flow:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>User submits login credentials.</li>
+        <li>Server validates credentials.</li>
+        <li>Server issues a signed token.</li>
+        <li>Client stores the token securely.</li>
+        <li>Client sends it with subsequent API requests.</li>
+        <li>Server verifies the token and its claims.</li>
+    </ol>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Header example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Authorization: Bearer YOUR_ACCESS_TOKEN</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Important: JWT payloads are normally encoded, not encrypted. Do not put passwords or sensitive secrets in the payload.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is CORS?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Cross-Origin Resource Sharing is a browser security mechanism that controls whether a web application from one origin can access resources from another origin.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Frontend:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>https://frontend.example.com</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Backend:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>https://api.example.com</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">The backend must return appropriate CORS headers to allow the frontend origin.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">CORS is not an authentication mechanism; APIs still need proper authorization.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is CSRF?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Cross-Site Request Forgery is an attack in which a malicious website attempts to make an authenticated user's browser submit an unwanted request to another website.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Laravel protects browser-based session-authenticated routes using CSRF tokens.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Blade example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>&lt;form method="POST" action="/profile"&gt;
+    &#64;csrf
+
+    &lt;input type="text" name="name"&gt;
+
+    &lt;button type="submit"&gt;Save&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is SQL injection, and how do you prevent it?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: SQL injection occurs when untrusted input is incorporated into SQL in a way that changes the intended query.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Unsafe:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>DB::select(
+    "SELECT * FROM users WHERE email = '$email'"
+);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Safe:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>DB::select(
+    "SELECT * FROM users WHERE email = ?",
+    [$email]
+);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Eloquent example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>User::where('email', $email)-&gt;first();</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Use parameter binding, validate input, and avoid concatenating untrusted values into SQL.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is rate limiting in Laravel?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: Rate limiting restricts the number of requests a client can make within a configured time period.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Route::middleware('throttle:60,1')
+    -&gt;group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+    });</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">This applies a limit of 60 requests per minute per limiter identity under the configured throttle behavior.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Use cases: Login endpoints, OTP verification, public APIs, and payment endpoints.</p>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you optimize a slow Laravel application?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Interview answer:</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">I follow a systematic performance optimization process:</p>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Identify slow endpoints using logs and monitoring.</li>
+        <li>Inspect database queries using Laravel query logging or database slow query logs.</li>
+        <li>Fix N+1 queries with eager loading.</li>
+        <li>Add suitable database indexes.</li>
+        <li>Use pagination for large datasets.</li>
+        <li>Cache frequently accessed data.</li>
+        <li>Move time-consuming operations to queues.</li>
+        <li>Optimize API response size.</li>
+        <li>Review PHP memory usage and application configuration.</li>
+        <li>Use production monitoring to validate improvements.</li>
+    </ol>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>$users = User::with(['orders', 'profile'])
+    -&gt;where('status', 'active')
+    -&gt;paginate(20);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you structure a large Laravel application?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">A maintainable structure separates responsibilities.</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>
+app/
+├── Models/
+├── Http/
+│   ├── Controllers/
+│   ├── Requests/
+│   ├── Resources/
+│   └── Middleware/
+├── Services/
+├── Repositories/
+├── Interfaces/
+├── Jobs/
+├── Events/
+├── Listeners/
+├── Notifications/
+└── Exceptions/
+</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Responsibilities:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Controllers: Handle HTTP requests and responses.</li>
+        <li>Form Requests: Validate incoming data.</li>
+        <li>Services: Implement business workflows.</li>
+        <li>Repositories: Encapsulate data access when useful.</li>
+        <li>Models: Represent database entities and relationships.</li>
+        <li>Jobs: Handle asynchronous tasks.</li>
+        <li>Events and Listeners: Handle decoupled application reactions.</li>
+    </ul>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Avoid adding repository layers automatically to every project; use them where they provide a clear architectural benefit.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle large Excel imports in Laravel?</h2>
+    </div>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Validate the uploaded file.</li>
+        <li>Store it securely.</li>
+        <li>Dispatch an import job.</li>
+        <li>Read records in chunks.</li>
+        <li>Validate each row.</li>
+        <li>Use bulk inserts or upserts where appropriate.</li>
+        <li>Track failed records.</li>
+        <li>Log errors and report import status.</li>
+    </ol>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>DB::table('employees')-&gt;upsert(
+    $rows,
+    ['email'],
+    ['name', 'department_id']
+);</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">For large imports, avoid loading the entire file into memory.</p>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you prevent duplicate API requests?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Use idempotency keys for operations such as payments and orders.</li>
+        <li>Create unique database constraints.</li>
+        <li>Use database transactions.</li>
+        <li>Validate request states.</li>
+        <li>Make webhook handlers idempotent.</li>
+        <li>Use atomic updates or appropriate row locks.</li>
+    </ul>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>ALTER TABLE payments
+ADD UNIQUE KEY uq_payment_request (idempotency_key);</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you manage API versioning?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Definition: API versioning allows an application to introduce changes without breaking existing clients.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>Route::prefix('v1')-&gt;group(function () {
+    Route::apiResource('users', UserController::class);
+});
+
+Route::prefix('v2')-&gt;group(function () {
+    Route::apiResource('users', V2\UserController::class);
+});</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Benefits:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Backward compatibility.</li>
+        <li>Controlled API evolution.</li>
+        <li>Easier client migration.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle exceptions and logging in Laravel?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Laravel provides logging through its logging system and supports multiple channels.</p>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Example:</p>
+    <pre class="my-4 overflow-x-auto rounded-xl bg-slate-900 p-5 text-sm leading-7 text-slate-100"><code>use Illuminate\Support\Facades\Log;
+
+try {
+    // Business operation
+
+} catch (Throwable $e) {
+
+    Log::error('Order processing failed', [
+        'message' =&gt; $e-&gt;getMessage(),
+        'order_id' =&gt; $orderId ?? null,
+    ]);
+
+    throw $e;
+}</code></pre>
+    <p class="text-lg text-gray-700 mt-3 leading-8">Do not log passwords, access tokens, payment secrets, or other sensitive information.</p>
+</div>
+
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle a legacy PHP/Laravel project?</h2>
+    </div>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Understand existing application architecture.</li>
+        <li>Review database relationships and business logic.</li>
+        <li>Identify dependencies and PHP/Laravel versions.</li>
+        <li>Analyze current production issues.</li>
+        <li>Add tests around critical existing functionality.</li>
+        <li>Refactor small modules gradually.</li>
+        <li>Avoid unnecessary complete rewrites.</li>
+        <li>Maintain backward compatibility.</li>
+        <li>Document technical changes.</li>
+        <li>Deploy changes in controlled stages.</li>
+    </ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you divide tasks among developers?</h2>
+    </div>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Understand the project requirements.</li>
+        <li>Break work into smaller modules.</li>
+        <li>Assign tasks based on experience and skills.</li>
+        <li>Define responsibilities and deadlines.</li>
+        <li>Track progress through project management tools.</li>
+        <li>Conduct code reviews.</li>
+        <li>Identify blockers early.</li>
+        <li>Escalate risks before deadlines are affected.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you handle production issues?</h2>
+    </div>
+    <ol class="my-4 list-decimal space-y-2 pl-6 text-lg text-gray-700">
+        <li>Understand the impact and severity.</li>
+        <li>Check application and server logs.</li>
+        <li>Reproduce the problem where possible.</li>
+        <li>Identify the root cause.</li>
+        <li>Apply a safe fix or rollback.</li>
+        <li>Test the correction.</li>
+        <li>Monitor the production application.</li>
+        <li>Document the incident and preventive actions.</li>
+    </ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">What is your approach to code review?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">I review code based on:</p>
+    <ul class="my-4 list-disc space-y-2 pl-6 text-lg text-gray-700">
+        <li>Coding standards.</li>
+        <li>SOLID principles.</li>
+        <li>Security.</li>
+        <li>Database query efficiency.</li>
+        <li>Error handling.</li>
+        <li>Reusability.</li>
+        <li>Maintainability.</li>
+        <li>Test coverage.</li>
+        <li>Performance.</li>
+        <li>Business requirement correctness.</li>
+    </ul>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">How do you ensure project delivery on time?</h2>
+    </div>
+    <p class="text-lg text-gray-700 mt-3 leading-8">I first clarify requirements and technical dependencies. Then I divide the project into milestones, estimate development and testing effort, assign responsibilities, track progress, and identify risks early. I communicate blockers to stakeholders and prioritize critical features to meet the delivery deadline without compromising essential quality.</p>
+</div>
 
 
 

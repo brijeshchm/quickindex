@@ -29,7 +29,7 @@
                 'lead_id' => (int) $lead->lead_id,
                 'name' => $lead->name ?? '',
                 'email' => $lead->email ?? '',
-                'mobile' => $lead->mobile ?? '',
+                'mobile' => dataDecodeJsonBase64($lead->mobile) ?? '',
                 'service' => $lead->kw_text ?? '',
                 'status_id' => (int) ($lead->status ?? 0),
             ];
@@ -164,7 +164,7 @@
                                     </h3>
 
                                     <p class="mt-0.5 break-words text-sm text-slate-500">
-                                        {{ $lead->kw_text }} · {{ $lead->mobile }}
+                                        {{ $lead->kw_text }} · {{ dataDecodeJsonBase64($lead->mobile) }}
                                     </p>
 
                                     @if(!empty($lead->remark))
@@ -197,7 +197,7 @@
                             </div>
 
                             <div class="flex w-full flex-wrap gap-2 md:w-auto md:flex-nowrap">
-                                <a href="tel:{{ preg_replace('/[^+\d]/', '', $lead->mobile) }}"
+                                <a href="tel:{{ preg_replace('/[^+\d]/', '', dataDecodeJsonBase64($lead->mobile)) }}"
                                     class="btn btn-outline flex-1 md:flex-none">
                                     <i data-lucide="phone" class="h-4 w-4"></i>
                                     Call

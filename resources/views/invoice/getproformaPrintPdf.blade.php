@@ -606,7 +606,7 @@ tr {
 
                 <td class="half right">
                     <div class="party">
-                        <div class="party-label">Shipped To</div>
+                        <div class="party-label">Shipped Details</div>
 
                         <div class="business-name">
                             {{ ucwords((string) $client->business_name) }}
@@ -639,8 +639,8 @@ tr {
             <thead>
                 <tr>
                     <th style="width: 8%;">No.</th>
-                    <th style="width: 44%;">Description</th>
-                    <th class="number" style="width: 24%;">Package Rate</th>
+                    <th style="width: 44%;">Package</th>
+                    <th class="number" style="width: 24%;">Package(Per Rate)</th>
                     <th class="number" style="width: 24%;">Amount</th>
                 </tr>
             </thead>
@@ -653,16 +653,16 @@ tr {
                         <div class="package-name">{{ $package }}</div>
 
                         <div class="small">
-                            {{ $paymentprint->leads_count }} Leads
+                            
                         </div>
                     </td>
 
                     <td class="number">
-                        ₹ {{ $money($paymentprint->paid_amount) }}
+                        
                     </td>
 
                     <td class="number">
-                        <strong>₹ {{ $money($paymentprint->paid_amount) }}</strong>
+                        <strong>₹ <?php if($paymentprint->amount){ ?>{{ $money($paymentprint->amount) }}  <?php } ?></strong>
                     </td>
                 </tr>
             </tbody>
@@ -680,9 +680,9 @@ tr {
                 <td class="summary-cell">
                     <table class="totals">
                         <tr>
-                            <td>Package Amount</td>
+                            <td>Amount</td>
                             <td class="value">
-                                ₹ {{ $money($paymentprint->paid_amount) }}
+                                ₹ <?php if($paymentprint->amount){ ?>{{ $money($paymentprint->amount) }}  <?php } ?>
                             </td>
                         </tr>
 

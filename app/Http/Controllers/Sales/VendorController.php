@@ -25,6 +25,8 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 use DB;
 use Auth;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Validator;
 
@@ -664,6 +666,7 @@ class VendorController extends Controller
 				$paymenthistory->coins_amt = '555';
 				$paymenthistory->selectproofid = "";
 				$paymenthistory->proofid = "";
+				$paymenthistory->amount = '0';
 				$paymenthistory->paid_amount = '0';
 				$paymenthistory->tds_status = "No";
 				$paymenthistory->tds_amount = "0";
@@ -722,10 +725,79 @@ class VendorController extends Controller
 	}
 
  
+public function getPaginatedLeads(Request $request, int $id)
+{
+    $vendor = Client::findOrFail($id);
 
+    $perPage = min(max((int) $request->input('per_page', 10), 1), 50);
+    $search = trim((string) $request->input('search', ''));
+
+    $query = DB::table('assigned_leads')
+        ->join('leads', 'leads.id', '=', 'assigned_leads.lead_id')
+        ->where('assigned_leads.client_id', $vendor->id);
+
+    if ($search !== '') {
+        // Must match the mobile format used when saving the hash.
+        $mobileHash = hash_hmac('sha256', $search, config('app.key'));
+
+        $query->where(function ($q) use ($search, $mobileHash) {
+            $q->where('leads.name', 'like', '%' . $search . '%')
+                ->orWhere('leads.mobile_hash', $mobileHash)
+                ->orWhere('leads.email', 'like', '%' . $search . '%')
+                ->orWhere('leads.kw_text', 'like', '%' . $search . '%')
+                ->orWhere('leads.city_name', 'like', '%' . $search . '%');
+        });
+    }
+
+    $leads = $query
+        ->select(
+            'assigned_leads.id as assignment_id',
+            'leads.id as lead_id',
+            'leads.name',
+            'leads.mobile',
+            'leads.email',
+            'leads.kw_text as course',
+            'leads.city_name as city',
+            'assigned_leads.created_at as assigned_at'
+        )
+        ->orderByDesc('assigned_leads.created_at')
+        ->orderByDesc('assigned_leads.id')
+        ->paginate($perPage)
+        ->withQueryString();
+
+    $leads->setCollection(
+        $leads->getCollection()->map(function ($lead) {
+            $mobile = null;
+
+            if ($lead->mobile !== null && $lead->mobile !== '') {
+                try {
+                    $mobile = dataDecodeJsonBase64($lead->mobile);
+                } catch (DecryptException $exception) {
+                    report($exception);
+                }
+            }
+
+            return [
+                'assignment_id' => $lead->assignment_id,
+                'lead_id'       => $lead->lead_id,
+                'name'          => $lead->name,
+                'mobile'        => $mobile,
+                'email'         => $lead->email,
+                'course'        => $lead->course,
+                'city'          => $lead->city,
+                'assigned_at'   => $lead->assigned_at,
+                'date'          => $lead->assigned_at
+                    ? Carbon::parse($lead->assigned_at)->format('d-m-Y H:i')
+                    : '',
+            ];
+        })
+    );
+
+    return response()->json($leads);
+}
  
 
-    public function getPaginatedLeads(Request $request, int $id)
+    public function getPaginatedLeads_old(Request $request, int $id)
     {
     
         $vendor = Client::findOrFail($id);
@@ -964,8 +1036,9 @@ class VendorController extends Controller
 				//	$paymenthistory->expired_on = $request->input('expired_on');
 				$paymenthistory->selectproofid = $request->input('selectproofid');
 				$paymenthistory->proofid = $request->input('proofid');
-				$paid_amount = $request->input('paid_amount');
-				$paymenthistory->paid_amount = $paid_amount;
+			 
+				$paymenthistory->amount = $request->input('amount');
+				$paymenthistory->paid_amount = $request->input('total_amount');
 				$tds_status = $request->input('tds_status');
 				$paymenthistory->tds_status = $request->input('tds_status');
 				$gst_tax = $request->input('gst_tax');
@@ -1116,13 +1189,13 @@ class VendorController extends Controller
 			->where('assigned_kwds.client_id', $client->id)
 			->get();
  
-		return Pdf::loadView('sales.getOrderPrintSlip', [
+		return Pdf::loadView('invoice.getOrderPrintSlip', [
 			'paymentuprint' => $paymentuprint,
 			'client' => $client,
 			'imageSrc' => $imageSrc,
 			'assignKeyword' => $assignKeyword,
 		])			 
-			->download('order-'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
+			->download('Order-'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
 	}
 
 	public function getproformaPrintPdf(Request $request)
@@ -1141,12 +1214,12 @@ class VendorController extends Controller
 		$imageSrc  = 'data:image/png;base64,' . $imageData;
 
 		$pdf = Pdf::loadView(
-    'sales.getproformaPrintPdf',
+    'invoice.getproformaPrintPdf',
     compact('paymentprint', 'client','imageSrc'));
 // )->setPaper('a4', 'portrait');
 
 return $pdf->download(
-    'proforma_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf'
+    'Proforma_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf'
 );
 
 	}
@@ -1174,13 +1247,13 @@ return $pdf->download(
 		$client = Client::withTrashed()
 			->findOrFail($paymentprint->client_id);
 
-		return Pdf::loadView('sales.getInvoicePrintPdfSlip', [
+		return Pdf::loadView('invoice.getInvoicePrintPdfSlip', [
 			'paymentprint' => $paymentprint,
 			'client' => $client,
 			'imageSrc' => $imageSrc,
 		])
 		 
-			->download('invoice_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
+			->download('Invoice_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
 	}
 
 

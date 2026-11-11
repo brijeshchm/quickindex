@@ -1512,15 +1512,14 @@ function saveImageSmart($file, $destinationPath, $width = null, $height = null)
 		return $finalName;
 	}
 	function dataEncodeJsonBase64($o){
-				$o = json_encode($o);
-				$o = base64_encode($o);
-				return $o;
+		$o = json_encode($o);
+		$o = base64_encode($o);
+		return $o;
 	}
 	function dataDecodeJsonBase64($o){
-				$o = base64_decode($o);
-				$o = json_decode($o); 
-				
-				return $o;
+			$o = base64_decode($o);
+			$o = json_decode($o); 			
+			return $o;
 	}
  
  
@@ -2079,7 +2078,8 @@ function saveImageSmart($file, $destinationPath, $width = null, $height = null)
 		 	 
 		// Separate cache key for each search and the default list.
 		$cacheKey = 'city_ajax:v1:' . hash('sha256', $cid);
- 
+ 		$cid = str_replace('-', ' ', $cid);
+		 
 		$data = Cache::remember(
 			$cacheKey,
 			now()->addHour(),

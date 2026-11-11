@@ -1,15 +1,10 @@
- @extends('business.layouts.app')
+@extends('business.layouts.app')
 @section('title')
- A Local Search Engine for Businesses
+ Pay checkout
 @endsection 
-@section('keyword')
- 
-Find Best It Training Centre near You, Find Best It Training Institute near You, Find Top 10 IT Training Institute near You, Find Best Entrance Exam Preparation Centre Near you, Top 10 Entrance Exam Centre Near you, Find Best Distance Education Centre Near You, Find Top 10 Distance Education Centre Near You, Find Best School And Colleges Near You, Find Top 10 school And College Near You, Get Education Loan, GET Free career Counselling, Find Best overseas education consultants Near you, Find Top 10 overseas education consultants Near you
- 
-@endsection
+
 @section('description')
-Find Only Certified Training Institutes, Coaching Centers near you on quickdials and Get Free counseling, Free Demo Classes, and Get Placement Assistence.
- 
+payment pay
 @endsection
 @section('content')
  
@@ -257,12 +252,14 @@ document.getElementById("merchant_order_id").value = o;
 				<input type="hidden" name="surl" id="surl" value="https://www.quickdials.com/business/success/"> 
 				<input type="hidden" name="furl" id="furl" value="https://www.quickdials.com/business/failed/">  -->
 
-				<input type="hidden" class="form-control" id="amount1" placeholder="amount" value="<?php if($data->amt){ echo $data->amt; } ?>" readonly="readonly">
-				<input type="hidden" class="form-control" id="amount2" placeholder="amount" value="<?php if($data->amt){ echo $data->amt; } ?>" readonly="readonly">
-				<input type="hidden" class="form-control" id="amount3" placeholder="amount" value="<?php if($data->amt){ echo $data->amt; } ?>" readonly="readonly">		 
-				<input type="hidden" class="form-control" id="paid_amount" name="paid_amount" placeholder="amount" value="<?php if($data->amt){ echo  $data->amt; } ?>" readonly="readonly">
-				<input type="hidden" class="form-control" id="gst_tax" name="gst_tax" placeholder="amount" value="<?php if($data->amt){ echo ($data->amt*0.18); } ?>" readonly="readonly">
+				<input type="hidden" class="form-control" id="amount1" name="amount1" placeholder="amount" value="<?php if($data->amt){ echo $data->amt; } ?>" readonly="readonly">
+				<input type="hidden" class="form-control" id="amount2" name="amount2" placeholder="amount" value="<?php if($data->amt){ echo $data->amt; } ?>" readonly="readonly">
+				<input type="hidden" class="form-control" id="amount3" name="amount3" placeholder="amount" value="<?php if($data->amt){ echo $data->amt; } ?>" readonly="readonly">		 
+				<input type="hidden" class="form-control" id="amount" name="amount" placeholder="amount" value="<?php if($data->amt){ echo  $data->amt; } ?>" readonly="readonly">
+				<input type="hidden" class="form-control" id="gst_tax" name="gst_tax" placeholder="amount" value="<?php if($data->amt){ echo $data->amt*0.18; } ?>" readonly="readonly">
 				<input type="hidden" class="form-control" id="gst_total_amount" name="gst_total_amount" placeholder="gst_total_amount" value="<?php if($data->amt){ echo (($data->amt*0.18) + $data->amt); } ?>" readonly="readonly">
+				<input type="hidden" class="form-control" id="total_amount" name="total_amount" placeholder="total_amount" value="<?php if($data->amt){ echo (($data->amt*0.18) + $data->amt); } ?>" readonly="readonly">
+				<input type="hidden" class="form-control" id="paid_amount" name="paid_amount" placeholder="paid_amount" value="<?php if($data->amt){ echo (($data->amt*0.18) + $data->amt); } ?>" readonly="readonly">
 
 					<input type="hidden" name="billing_name" class="form-control" id="billing-name" value="<?php echo $data->customer_name; ?>" Placeholder="Name" required> 
 					<input type="hidden" name="billing_email"class="form-control" id="billing-email" value="<?php echo $data->email; ?>" Placeholder="Email" required>
@@ -333,7 +330,7 @@ $(document).on('click', '#razor-pay-now', function (e) {
 
     const button = $(this);
     const form = $('#razorpay-frm-payment');
-console.log('payment');
+
     // Prevent double click
     if (button.prop('disabled')) {
         return;
@@ -359,7 +356,9 @@ console.log('payment');
     const email                = form.find('#billing-email').val();
     const phone                = form.find('#billing-phone').val();
 
-    const paid_amount    = form.find('#paid_amount').val();
+    const amount    = form.find('#amount').val();
+    const paid_amount    = form.find('#total_amount').val();
+    
     const merchant_amount = form.find('#gst_total_amount').val();
     const gst_tax         = form.find('#gst_tax').val();
 
@@ -525,7 +524,9 @@ console.log('payment');
                         gst_tax,
 
                     paid_amount:
-                        paid_amount
+                        paid_amount,
+                    amount:
+                        amount
 
                 },
  				dataType: 'json',

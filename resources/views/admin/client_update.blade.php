@@ -2749,7 +2749,7 @@ textarea.form-control-modern {
 					<label class="col-sm-2">Paid Amount<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
 					
 					<div class="col-md-6"> 							 
-					<input type="text" name="paid_amount" id="paid_amount" class="form-control" placeholder="Paid Amount" onkeypress="return isNumericKeyCheck(event);" onblur="handlingPaiAmt()"> 
+					<input type="text" name="amount" id="amount" class="form-control" placeholder="Paid Amount" onkeypress="return isNumericKeyCheck(event);" onblur="handlingPaiAmt()"> 
 					</div>
 					</div> 
 					
@@ -2821,15 +2821,12 @@ textarea.form-control-modern {
 					<div class="col-md-6"> 								 
 					<input type="number" name="total_amount" id="total_amount" class="form-control" placeholder="Total Amount" readonly> 
 					</div>
-					</div> 
-					 
-						
+					</div> 				
 					
 					<div class="form-group">
 							<label class="col-sm-2" for="stud-payment_mode">Payment Mode<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
 							<div class="col-sm-6">
-								<?php
-																					
+								<?php																					
 									foreach($moderesults as $moderesult){
 										$modes[$moderesult->slug] = $moderesult->mode;
 									}
@@ -2955,9 +2952,9 @@ textarea.form-control-modern {
 				 
 		function paidgst(gst){			
 			 
-			var paid = parseInt($('#paid_amount').val());		
-			//var tot = parseInt(((paid)*(.18)));			 
-			 var tot = Math. round(((paid)*(.18)));			 
+			var paid = parseInt($('#amount').val());		
+			 	 
+			 var tot = Math. round(((paid)*(0.18)));			 
 			 var gstamount = $('#gst_tax').val(tot);			 
 			 var tatol= parseInt(paid + tot);			 
 			 var tobe = $('#gst_total_amount').val(tatol);	 
@@ -2965,7 +2962,7 @@ textarea.form-control-modern {
 		}
 		
 		function nopaidgst(gstno){
-			var paid = parseInt($('#paid_amount').val());		
+			var paid = parseInt($('#amount').val());		
 			 var tot = parseInt(0);			 
 			 var gstamount = $('#gst_tax').val(tot);			 
 			 var tatol= paid + tot;			 
@@ -2974,7 +2971,7 @@ textarea.form-control-modern {
 		
 		function paidtds(tds){			
 			 
-			var tdspaid = parseInt($('#paid_amount').val());			 		 
+			var tdspaid = parseInt($('#amount').val());			 		 
 			var gst_total_amount = parseInt($('#gst_total_amount').val());			 		 
 			 var tottds = Math. round(((tdspaid)*(2))/100);			 
 			 var gstamount = $('#tds_amount').val(tottds);			 
@@ -2984,7 +2981,7 @@ textarea.form-control-modern {
 		}
 		
 		function nopaidtds(tdsno){
-			var tdspaid = parseInt($('#paid_amount').val());	
+			var tdspaid = parseInt($('#amount').val());	
 			var gst_total_amount = parseInt($('#gst_total_amount').val());				
 			 var tottds = parseInt(0);			 
 			 var gstamount = $('#tds_amount').val(tottds);			 

@@ -34,63 +34,41 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">							 
 							  
-							<!--<form method="POST" action="{{ url('/developer/orderhistory/update/'.base64_encode($paymentHistory->id)) }}" class="form-horizontal">		-->				 
-							<form method="POST" action="" onsubmit="return client.updateClientPayOrder(this)"  class="form-horizontal updateorder_validation">						 
+					 	 
+							<form method="POST" onsubmit="return client.updateClientPayOrder(this)"  class="form-horizontal updateorder_validation">						 
 							<div class="modal-body">
 								{{ csrf_field() }}
-								<input type="hidden" name="id">		
+								<input type="hidden" name="client_id" value="<?php if(!empty($client->id)){  echo $client->id; } ?>">		
 								<div class="form-group">
 								<label class="col-sm-3">Business Name</label>
-								<div class="col-md-6"> 		<?php if(!empty($client)){  echo $client->business_name; } ?>
+								<div class="col-md-6"><?php if(!empty($client)){  echo $client->business_name; } ?>
 								</div>
 								</div>
 								<div class="form-group">
 								<label class="col-sm-3">Package Name<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>							 
 								<div class="col-md-6"> 				
 								<input type="hidden" name="order_id" value="{{$paymentHistory->id}}">			 
-								 
-							<!-- <input type="text" name="package_name" class="form-control package_status" value="{{$paymentHistory->package_name or ""}}" placeholder="Package Name" > -->
-									<select class="select2-single form-control package_name" name="package_name">
-									<?php
-									$clientTypes = getClientsType();
-									foreach($clientTypes as $key => $value){
-									$selected = "";
-									if($key == $paymentHistory->package_name):
-									$selected = "selected";
-									endif;
-									?>
-									<option value="{{ $key }}" <?php echo $selected; ?>>{{ $value }}</option>
-									<?php
-									}
-									?>
-									</select>
+								 {{ ucfirst($paymentHistory->package_name) }}
+						 
+							 
+									 
+									 
 								</div>
 								</div> 	
 									
-								<!--<div class="form-group">
-									<label class="col-sm-3">Expire<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
-										<div class="col-md-3">
-											<label>Starting Date:</label>
-											<input type="text" class="form-control expired_from" name="expired_from" value="{{date_format(date_create($paymentHistory->expired_from),'Y-m-d')}}" onclick="initDateInvoiceclientupdate()" />
-										</div>
-										<div class="col-md-3">
-											<label>End Date:</label>
-											<input type="text" class="form-control expired_on" name="expired_on" value="{{date_format(date_create($paymentHistory->expired_on),'Y-m-d')}}" />
-										</div>
-										 
-								</div>-->
+								 
 								<div class="form-group">
-								<label class="col-sm-3">Paid Amount<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
+								<label class="col-sm-3">Amount<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
 							 
 								<div class="col-md-6"> 							 
-								<input type="text" name="paid_amount" id="paid_amount" class="form-control" value="{{$paymentHistory->paid_amount or ""}}" placeholder="Paid Amount" onkeypress="return isNumericKeyCheck(event);" onblur="handlingPaiAmt()" > 
+								<input type="text" name="amount" id="amount" class="form-control" value="{{ old('amount',(isset($paymentHistory)) ? $paymentHistory->amount:"")}}" placeholder="Paid Amount" onkeypress="return isNumericKeyCheck(event);" onblur="handlingPaiAmt()" > 
 								</div>
 								</div> 
 								<div class="form-group">
 								<label class="col-sm-3">Coins<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
 								<div class="col-md-3">
 									<label>Coins:</label>
-									<input type="text" step=1 class="form-control" name="coins_amt"  id="coins_per_lead" value="{{$paymentHistory->coins_amt or 0}}"  readonly/>
+									<input type="text" step=1 class="form-control" name="coins_amt"  id="coins_per_lead" value="{{ old('coins_amt',(isset($paymentHistory)) ? $paymentHistory->coins_amt:"")}}"  readonly/>
 								</div>	
 							 																 
 								</div>
@@ -111,7 +89,7 @@
 							 
 								<div class="col-md-6"> 
 								 
-								<input type="number" name="gst_tax" id="gst_tax" class="form-control" placeholder="GST Amount"  value="{{$paymentHistory->gst_tax or ""}}"> 
+								<input type="number" name="gst_tax" id="gst_tax" class="form-control" placeholder="GST Amount"  value="{{ old('gst_tax',(isset($paymentHistory)) ? $paymentHistory->gst_tax:"")}}"> 
 								</div>
 								</div> 
 								
@@ -120,7 +98,7 @@
 							 
 								<div class="col-md-6"> 
 								 
-								<input type="number" name="gst_total_amount" id="gst_total_amount" class="form-control" value="{{$paymentHistory->gst_total_amount or ""}}" placeholder="GST Total Amount" > 
+								<input type="number" name="gst_total_amount" id="gst_total_amount" class="form-control" value="{{ old('gst_total_amount',(isset($paymentHistory)) ? $paymentHistory->gst_total_amount:"")}}" placeholder="GST Total Amount" > 
 								</div>
 								</div> 
 
@@ -142,28 +120,21 @@
 							 
 								<div class="col-md-6"> 
 								 
-								<input type="number" name="tds_amount" id="tds_amount" class="form-control" placeholder="TDS Amount" value="{{$paymentHistory->tds_amount or ""}}" > 
+								<input type="number" name="tds_amount" id="tds_amount" class="form-control" placeholder="TDS Amount" value="{{ old('tds_amount',(isset($paymentHistory)) ? $paymentHistory->tds_amount:"")}}" > 
 								</div>
 								</div> 
 								
 								<div class="form-group">
 								<label class="col-sm-3">Total Amount<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>						 
 								<div class="col-md-6"> 								 
-								<input type="number" name="total_amount" id="total_amount" class="form-control" placeholder="Total Amount" value="{{$paymentHistory->total_amount or ""}}" > 
+								<input type="number" name="total_amount" id="total_amount" class="form-control" placeholder="Total Amount" value="{{ old('total_amount',(isset($paymentHistory)) ? $paymentHistory->total_amount:"")}}" > 
 								</div>
 								</div> 
 								
 								
 								
 								
-								<!--<div class="form-group">
-								<label class="col-sm-3">Pay Amount in Words<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>
 							 
-								<div class="col-md-6"> 
-								 
-								<textarea type="text" name="paid_amt_in_words" class="form-control" placeholder="paid amt in words" > {{$paymentHistory->paid_amt_in_words or ""}}</textarea>
-								</div>
-								</div> -->
 								 
 								
 								<div class="form-group">
@@ -171,7 +142,7 @@
 										<div class="col-sm-6">
 											<?php
 											 
-												 	//echo 	"<pre>";print_r($moderesults);die;										
+												 	 									
 												foreach($moderesults as $moderesult){
 													$modes[$moderesult->slug] = $moderesult->mode;
 												}
@@ -216,28 +187,23 @@
 									<div class="form-group hide-mode cheque">
 										<label class="col-sm-3" for="stud-chq_no">Cheque Number</label>
 										<div class="col-sm-6">          
-										  <input type="text" class="form-control" id="stud-chq_no" name="stud-chq_no" placeholder="Enter Cheque Number" value="{{$paymentHistory->chq_card_no or ""}}">
+										  <input type="text" class="form-control" id="stud-chq_no" name="stud-chq_no" placeholder="Enter Cheque Number" value="{{ old('chq_card_no',(isset($paymentHistory)) ? $paymentHistory->chq_card_no:"")}}">
 										</div>
 									</div>	
 								 
 									<div class="form-group hide-mode bank">
 										<label class="col-sm-3" for="stud-card_no">Last 4 Digit Card Number</label>
 										<div class="col-sm-6">          
-										  <input type="text" class="form-control" maxlength="4" id="stud-card_no" name="stud-card_no" placeholder="Enter Last 4 Digit of Card Number" value="{{$paymentHistory->bank_card_no or ""}}">
+										  <input type="text" class="form-control" maxlength="4" id="stud-card_no" name="stud-card_no" placeholder="Enter Last 4 Digit of Card Number" value="{{ old('bank_card_no',(isset($paymentHistory)) ? $paymentHistory->bank_card_no:"")}}">
 										</div>
 									</div>	
 									
-								<!-- <div class="form-group">
-								<label class="col-sm-3">Pay Mode Details<sup><i style="color:red" class="fa fa-asterisk fa-fw" aria-hidden="true"></i></sup></label>							 
-								<div class="col-md-6"> 								 
-								<textarea type="text" name="pay_mode_details" class="form-control" placeholder="Enter Pay Mode Details">{{$paymentHistory->pay_mode_details or ""}} </textarea>
-								</div>
-								</div> -->
+							 
 								
 								<div class="form-group">
 								<label class="col-sm-3">Transaction-Id:</label>							 
 								<div class="col-md-6"> 								 
-								<input type="text" name="transactionid" class="form-control" placeholder="Enter Transaction-Id" value="{{$paymentHistory->transactionid or ""}}"> 
+								<input type="text" name="transactionid" class="form-control" placeholder="Enter Transaction-Id" value="{{ old('transactionid',(isset($paymentHistory)) ? $paymentHistory->transactionid:"")}}"> 
 								
 								</div>
 								</div>
@@ -258,7 +224,7 @@
 								<div class="form-group">
 								<label class="col-sm-3">ID Proof:</label>							 
 								<div class="col-md-6"> 								 
-								<input type="text" name="proofid" class="form-control" placeholder="Enter ID proof" value="{{$paymentHistory->proofid or ""}}"> 
+								<input type="text" name="proofid" class="form-control" placeholder="Enter ID proof" value="{{ old('proofid',(isset($paymentHistory)) ? $paymentHistory->proofid:"")}}"> 
 								
 								</div>
 								</div>
@@ -297,9 +263,9 @@
 				 
 		function paidgst(gst){			
 			 
-			var paid = parseInt($('#paid_amount').val());		
-			//var tot = parseInt(((paid)*(.18)));			 
-			 var tot = Math. round(((paid)*(.18)));			 
+			var paid = parseInt($('#amount').val());		
+		 		 
+			 var tot = Math. round(((paid)*(0.18)));			 
 			 var gstamount = $('#gst_tax').val(tot);			 
 			 var tatol= parseInt(paid + tot);			 
 			 var tobe = $('#gst_total_amount').val(tatol);	 
@@ -307,7 +273,7 @@
 		}
 		
 		function nopaidgst(gstno){
-			var paid = parseInt($('#paid_amount').val());		
+			var paid = parseInt($('#amount').val());		
 			 var tot = parseInt(0);			 
 			 var gstamount = $('#gst_tax').val(tot);			 
 			 var tatol= paid + tot;			 
@@ -316,7 +282,7 @@
 		
 		function paidtds(tds){			
 			 
-			var tdspaid = parseInt($('#paid_amount').val()); 	
+			var tdspaid = parseInt($('#amount').val()); 	
 			var gst_total_amount = parseInt($('#gst_total_amount').val());			 		 
 			 var tottds = Math. round(((tdspaid)*(2))/100);			 
 			 var gstamount = $('#tds_amount').val(tottds);			 
@@ -326,7 +292,7 @@
 		}
 		
 		function nopaidtds(tdsno){
-			var tdspaid = parseInt($('#paid_amount').val());	
+			var tdspaid = parseInt($('#amount').val());	
 			var gst_total_amount = parseInt($('#gst_total_amount').val());				
 			 var tottds = parseInt(0);			 
 			 var gstamount = $('#tds_amount').val(tottds);			 

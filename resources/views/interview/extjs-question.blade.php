@@ -4,7 +4,7 @@ Extjs Interview Questions & Answers
 @endsection 
  
 @section('description'),  
-Master extjs interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Master Extjs interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
 @endsection
 
 
@@ -1990,7 +1990,174 @@ console.log(5 === "5"); // false</code></pre>
     </div>
 </section>
 
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">
+            What is Ext JS?
+        </h2>
+    </div>
 
+    <p class="text-lg text-gray-700">
+        <strong>Ext JS</strong> is a JavaScript-based front-end framework
+        developed by Sencha. It is used to build enterprise-level web
+        applications with rich user interfaces.
+    </p>
+
+    <p class="text-lg text-gray-700 mt-4">
+        It provides reusable UI components such as:
+    </p>
+
+    <ul class="list-disc pl-6 mt-4 space-y-2 text-lg text-gray-700">
+        <li>Grid panels</li>
+        <li>Forms and text fields</li>
+        <li>Buttons and toolbars</li>
+        <li>Windows and dialogs</li>
+        <li>Tree panels</li>
+        <li>Charts and dashboards</li>
+        <li>Data stores and models</li>
+    </ul>
+
+    <p class="text-lg text-gray-700 mt-4">
+        <strong>Example:</strong>
+    </p>
+
+    <pre class="mt-4 overflow-x-auto rounded-lg bg-slate-900 p-5 text-sm leading-7 text-white"><code>Ext.create('Ext.panel.Panel', {
+    title: 'Employee Management',
+    width: 500,
+    height: 300,
+    renderTo: Ext.getBody(),
+
+    items: [{
+        xtype: 'textfield',
+        fieldLabel: 'Employee Name'
+    }, {
+        xtype: 'button',
+        text: 'Submit'
+    }]
+});</code></pre>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">
+            What are the main features of Ext JS?
+        </h2>
+    </div>
+
+    <ol class="list-decimal pl-6 space-y-2 text-lg text-gray-700">
+        <li>Component-based architecture.</li>
+        <li>MVC and MVVM application architecture.</li>
+        <li>Reusable UI components.</li>
+        <li>Data binding and data management.</li>
+        <li>Ajax and REST API integration.</li>
+        <li>Form validation.</li>
+        <li>Grid and tree components.</li>
+        <li>Cross-browser support.</li>
+        <li>Event-driven programming.</li>
+        <li>Themes and customization.</li>
+    </ol>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">
+            What is the difference between Ext JS and React JS?
+        </h2>
+    </div>
+
+    <div class="overflow-x-auto mt-4">
+        <table class="w-full border-collapse text-left text-lg text-gray-700">
+            <thead>
+                <tr class="bg-slate-100">
+                    <th scope="col" class="border border-gray-300 px-4 py-3 font-bold">
+                        Ext JS
+                    </th>
+                    <th scope="col" class="border border-gray-300 px-4 py-3 font-bold">
+                        React JS
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Full-featured UI framework.
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        JavaScript UI library.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Provides built-in grids, forms, trees, and layouts.
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        UI components are built using React or third-party libraries.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Uses configurations and <code>xtype</code>.
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Uses JSX and components.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Has built-in Store and Model classes.
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Commonly uses state and external data libraries.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Supports MVC and MVVM architecture.
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Uses component-based architecture.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Common in enterprise legacy applications.
+                    </td>
+                    <td class="border border-gray-300 px-4 py-3">
+                        Common in modern web applications.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mb-12">
+    <div class="question">
+        <h2 class="text-3xl font-bold text-primary mt-5 mb-4">
+            What is a component in Ext JS?
+        </h2>
+    </div>
+
+    <p class="text-lg text-gray-700">
+        A <strong>component</strong> is a reusable UI element in Ext JS.
+        Every visual element, such as a button, panel, grid, form, or window,
+        is generally represented as a component.
+    </p>
+
+    <p class="text-lg text-gray-700 mt-4">
+        <strong>Example:</strong>
+    </p>
+
+    <pre class="mt-4 overflow-x-auto rounded-lg bg-slate-900 p-5 text-sm leading-7 text-white"><code>Ext.create('Ext.button.Button', {
+    text: 'Save',
+    renderTo: Ext.getBody(),
+
+    handler: function () {
+        Ext.Msg.alert('Success', 'Record saved successfully');
+    }
+});</code></pre>
+</div>
 
 
 

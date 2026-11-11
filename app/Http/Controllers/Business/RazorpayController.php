@@ -302,6 +302,7 @@ class RazorpayController extends Controller
 				'gst_tax' => $request->gst_tax,
 				'client_id' => $request->client_id,
 				'username' => $request->username,
+				'amount' => $request->amount,
 				'paid_amount' => $request->paid_amount,
 
 				'email' => $request->email,
@@ -379,6 +380,7 @@ class RazorpayController extends Controller
 					$paymenthistory->coins_amt = $paymentInfo['coins'];
 					$paymenthistory->selectproofid = "";
 					$paymenthistory->proofid = "";
+					$paymenthistory->amount = $paymentInfo['amount'];
 					$paymenthistory->paid_amount = $paymentInfo['paid_amount'];
 					$paymenthistory->tds_status = "No";
 					$paymenthistory->tds_amount = "0";
@@ -432,6 +434,7 @@ class RazorpayController extends Controller
 					$paymenthistory->coins_amt = $paymentInfo['coins'];
 					$paymenthistory->selectproofid = "";
 					$paymenthistory->proofid = "";
+					$paymenthistory->amount = $paymentInfo['amount'];
 					$paymenthistory->paid_amount = $paymentInfo['paid_amount'];
 					$paymenthistory->tds_status = "No";
 					$paymenthistory->tds_amount = "0";
@@ -836,6 +839,7 @@ class RazorpayController extends Controller
 				$paymenthistory->selectproofid = "";
 				$paymenthistory->proofid = "";
 				$paymenthistory->paid_amount = '0';
+				$paymenthistory->amount = '0';
 				$paymenthistory->tds_status = "No";
 				$paymenthistory->tds_amount = "0";
 				$paymenthistory->gst_tax = '0';

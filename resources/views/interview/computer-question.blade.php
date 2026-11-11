@@ -1,6 +1,6 @@
 @extends('interview.layouts.app')
 @section('title')
-computer Interview Questions & Answers
+Computer Interview Questions & Answers
 @endsection 
  
 @section('description'),  

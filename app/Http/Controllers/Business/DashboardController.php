@@ -576,8 +576,14 @@ class DashboardController extends Controller
                 $remark .= '<br>' . trim($lead->remark);
             }
 
+            $mobile = "";
+            if(!is_numeric($lead->mobile)){
+            $mobile = dataDecodeJsonBase64($lead->mobile);
+            
+            }
+                
             $lead->share_lead = "Name: {$lead->name}\n"
-                . "Mobile: {$lead->mobile}\n"
+                . "Mobile: {$mobile}\n"
                 . "Email: {$lead->email}\n"
                 . "Service: {$keyword}\n"
                 . "Location: {$location}\n"
@@ -591,7 +597,7 @@ class DashboardController extends Controller
                 'lead_id' => $lead->lead_id,
                 'clientId' => $lead->clientId,
                 'customerName' => $lead->name,
-                'phone' => $lead->mobile,
+                'phone' => $mobile,
                 'email' => $lead->email,
                 'readLead' => $lead->readLead,
                 'service' => $keyword,
@@ -794,9 +800,12 @@ class DashboardController extends Controller
             if (!empty($lead->remark)) {
                 $remark .= '<br>' . trim($lead->remark);
             }
-
+            $mobile = "";
+            if(!is_numeric($lead->mobile)){
+            $mobile = dataDecodeJsonBase64($lead->mobile);
+            }
             $lead->share_lead = "Name: {$lead->name}\n"
-                . "Mobile: {$lead->mobile}\n"
+                . "Mobile: {$mobile}\n"
                 . "Email: {$lead->email}\n"
                 . "Service: {$keyword}\n"
                 . "Location: {$location}\n"
@@ -810,7 +819,7 @@ class DashboardController extends Controller
                 'lead_id' => $lead->lead_id,
                 'clientId' => $lead->clientId,
                 'customerName' => $lead->name,
-                'phone' => $lead->mobile,
+                'phone' => $mobile,
                 'email' => $lead->email,
                 'readLead' => $lead->readLead,
                 'service' => $keyword,
@@ -1013,9 +1022,12 @@ class DashboardController extends Controller
                 if (!empty($lead->remark)) {
                     $remark .= '<br>' . trim($lead->remark);
                 }
-
+                $mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
                 $lead->share_lead = "Name: {$lead->name}\n"
-                    . "Mobile: {$lead->mobile}\n"
+                    . "Mobile: {$mobile}\n"
                     . "Email: {$lead->email}\n"
                     . "Service: {$keyword}\n"
                     . "Location: {$location}\n"
@@ -1029,7 +1041,7 @@ class DashboardController extends Controller
                     'lead_id' => $lead->lead_id,         
                     'clientId' => $lead->client_id,          
                     'customerName' => $lead->name,
-                    'phone' => $lead->mobile,
+                    'phone' => $mobile,
                     'email' => $lead->email,
                     'readLead' => $lead->readLead,
                     'service' => $keyword,
@@ -1170,8 +1182,12 @@ class DashboardController extends Controller
                     $remark .= '<br>' . trim($lead->remark);
                 }
 
+                $mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
                 $lead->share_lead = "Name: {$lead->name}\n"
-                    . "Mobile: {$lead->mobile}\n"
+                    . "Mobile: {$mobile}\n"
                     . "Email: {$lead->email}\n"
                     . "Service: {$keyword}\n"
                     . "Location: {$location}\n"
@@ -1184,7 +1200,7 @@ class DashboardController extends Controller
                     'lead_id' => $lead->lead_id,         
                     'clientId' => $lead->client_id,         
                     'customerName' => $lead->name,
-                    'phone' => $lead->mobile,
+                    'phone' => $mobile,
                     'email' => $lead->email,
                     'readLead' => $lead->readLead,
                     'service' => $keyword,
@@ -1325,9 +1341,12 @@ class DashboardController extends Controller
                 if (!empty($lead->remark)) {
                     $remark .= '<br>' . trim($lead->remark);
                 }
-
+                $mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
                 $lead->share_lead = "Name: {$lead->name}\n"
-                    . "Mobile: {$lead->mobile}\n"
+                    . "Mobile: {$mobile}\n"
                     . "Email: {$lead->email}\n"
                     . "Service: {$keyword}\n"
                     . "Location: {$location}\n"
@@ -1340,7 +1359,7 @@ class DashboardController extends Controller
                     'lead_id' => $lead->lead_id,         
                     'clientId' => $lead->client_id,         
                     'customerName' => $lead->name,
-                    'phone' => $lead->mobile,
+                    'phone' => $mobile,
                     'email' => $lead->email,
                     'readLead' => $lead->readLead,
                     'service' => $keyword,
@@ -1519,9 +1538,12 @@ class DashboardController extends Controller
                 if (!empty($lead->remark)) {
                     $remark .= '<br>' . trim($lead->remark);
                 }
-
+                $mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
                 $lead->share_lead = "Name: {$lead->name}\n"
-                    . "Mobile: {$lead->mobile}\n"
+                    . "Mobile: {$mobile}\n"
                     . "Email: {$lead->email}\n"
                     . "Service: {$keyword}\n"
                     . "Location: {$location}\n"
@@ -2217,10 +2239,13 @@ class DashboardController extends Controller
                 | Share complete lead
                 |--------------------------------------------------------------------------
                 */
-
+                $mobile = "";
+                if(!is_numeric($lead->mobile)){
+                $mobile = dataDecodeJsonBase64($lead->mobile);
+                }
                 $lead->share_lead =
                     "Name: " . ($lead->name ?? '') . "\n" .
-                    "Mobile: " . ($lead->mobile ?? '') . "\n" .
+                    "Mobile: " . ($mobile ?? '') . "\n" .
                     "Email: " . ($lead->email ?? '') . "\n" .
                     "Service: {$keyword}\n" .
                     "Location: {$location}\n" .
@@ -2421,9 +2446,12 @@ class DashboardController extends Controller
             if (!empty($lead->remark)) {
                 $remark .= '<br>' . trim($lead->remark);
             }
-
+            $mobile = "";
+            if(!is_numeric($lead->mobile)){
+            $mobile = dataDecodeJsonBase64($lead->mobile);
+            }
             $lead->share_lead = "Name: {$lead->name}\n"
-                . "Mobile: {$lead->mobile}\n"
+                . "Mobile: {$mobile}\n"
                 . "Email: {$lead->email}\n"
                 . "Service: {$keyword}\n"
                 . "Location: {$location}\n"

@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-	<title>quickdials-Invoice_<?php echo date('d-m-Y H:i:s'); ?></title>
+	<title>Quickdials-Invoice_<?php echo date('d-m-Y H:i:s'); ?></title>
  
 		<style>
 			/* reset */
@@ -291,20 +291,18 @@ hr{
 					<tr>
 						<th><span >S.No</span></th>
 						<th><span >Package</span></th>
-						<th><span >Coins</span></th>
-						<th><span >Rate(Per Package )</span></th>						
-						<th><span >Amount</span></th>						
+						<th><span >Amout</span></th>
+						 						
+					 					
 					</tr>
 				</thead>
 				<tbody>
 					<tr style="height: 104px;">
 						<td><span >1</span></td>	
 						<td><span ><?php echo $paymentprint->package_name; ?></span></td>
-						<td><span ><?php  echo $paymentprint->coins_amt; ?> </span></td>	
-						<td><span ><?php echo $paymentprint->paid_amount; ?></span></td>	
-							 
-						
-					<td><?php echo $paymentprint->paid_amount; ?></td>	 
+						<td><span ><?php  echo $paymentprint->amount; ?> </span></td>	
+						 					
+					  
 					</tr>
 					<tr>
 					<td colspan="3"></td>

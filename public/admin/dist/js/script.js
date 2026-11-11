@@ -966,11 +966,11 @@ var dataTableLeadNotInterested = $('#datatable-lead-not-interested').on('draw.dt
 		});
 	},
 	"ajax":{
-			//url:"/developer/new-lead/not-interested",		
-			url:"/developer/new-lead",			
+			// url:"/developer/new-lead/not-interested",		
+			url:"/developer/getnewlead",			
 		data:function(d){
 		 
-			$('#check-all').prop('checked',false);
+			// $('#check-all').prop('checked',false);
 			d.page = (d.start/d.length)+1;			 
 			d.search['city']=$('*[name="search[city][]"]').val();
 			d.search['datef']=$('*[name="search[datef]"]').val();
@@ -985,6 +985,12 @@ var dataTableLeadNotInterested = $('#datatable-lead-not-interested').on('draw.dt
 			d.search['not_interested']=new String("1").valueOf();
 			d.columns = null;
 			d.order = null;
+
+
+
+		 
+
+
 		},
 		dataSrc:function(json){
 			recordCollection = json.recordCollection;
@@ -2116,6 +2122,11 @@ var dataTableAssignedKeywords = $('#datatable-assigned-keywords').dataTable({
 							mainSpinner.stop();
 							alert(data.data.message);
 							 
+						}else{
+
+
+							alert(data.data.message);
+
 						}
 					},
 					error:function(jqXHR,textStatus,errorThrown){
@@ -3848,7 +3859,50 @@ var bulkLeadController = (function(){
 					}
 				}); 
 				 return false;	
-			}
+			},
+			numberToEncrypt:function(THIS){	
+			  var $this = $(THIS);
+			var form = new FormData(THIS);		
+				 console.log(form);
+				$.ajax({
+					url:"/developer/lead/numberToEncrypt",
+					type:"POST",					   
+					dataType:"json",	
+					data:form,
+					 cache: false,
+					contentType: false, 
+                    processData: false,                      
+					success:function(data){
+					 	
+						if(data.status){	
+					 					
+						$('#messagemodel .modal-title').text("Update");	
+						$('#messagemodel .modal-body').html("<div class='alert alert-success'>"+data.msg+"</div>");			
+						$('#messagemodel').modal({keyboard:false,backdrop:'static'});
+						$('#messagemodel').css({'width':'100%'});
+							removeValidationErrors($this);
+						 	 
+						}else{
+							$('#messagemodel .modal-title').text("Meta Information");	
+							$('#messagemodel .modal-body').html("<div class='alert alert-danger'>"+data.msg+"</div>");			
+							$('#messagemodel').modal({keyboard:false,backdrop:'static'});
+							$('#messagemodel').css({'width':'100%'});		 
+							
+						}
+					},
+					error:function(jqXHR, textStatus, errorThrown){
+					 
+						var response = JSON.parse(jqXHR.responseText);
+						if(response.status){ 
+							showValidationErrors($this,response.errors);						 
+						}else{
+							alert('Something went wrong');
+						}
+						 
+					}
+				}); 
+				 return false;	
+			},
 			  	
 		};
 	})();
@@ -3980,21 +4034,27 @@ var bulkLeadController = (function(){
 			},
 
 			updateClientPayOrder:function(THIS){				 
-				var $this = $(THIS),
-					data  = $this.serialize();			 
-					//var data  = $(this).serialize();
-			// alert(data);
+				
+
+					  var $this = $(THIS);
+			var form = new FormData(THIS);	
 				$.ajax({
-					url:"/developer/order-history/update",					 
-					type:"POST",
-					data:data,					 
-					success:function(data,textStatus,jqXHR){					 
-						var response = JSON.parse(jqXHR.responseText);	
- 		
-						 if(response.status==true){	
-						alert('Client Order payment successfully');						 
-							$('#success-payment_update').html("<div class='alert alert-success'>Client Order payment successfully !!</div>");						 
-							dataTablePaymentHistory.ajax.reload(null,false);
+					url:"/developer/order-history/update",					 				 	
+					type:"POST",					   
+					dataType:"json",
+					data:form,
+					cache: false,
+					contentType: false, 
+                    processData: false,  				 
+					success:function(response){					 
+						 
+						 if(response.status){	
+
+						$('#messagemodel .modal-title').text("Payment Update");	
+						$('#messagemodel .modal-body').html("<div class='alert alert-success'>"+response.msg+"</div>");			
+						$('#messagemodel').modal({keyboard:false,backdrop:'static'});
+						$('#messagemodel').css({'width':'100%'});
+						dataTablePaymentHistory.ajax.reload(null,false);
 							 
 						} 
 					},
@@ -8519,21 +8579,23 @@ function initDateInvoiceclientupdate(){
 
 function handlingPaiAmt() {
 	
-	var paid_amount = jQuery('#paid_amount');
+	var paid_amount = jQuery('#amount');
 	var paid_am= parseInt(paid_amount.val());
 
 	var coins = jQuery('#coins_per_lead');
     
 	if( paid_am <= 0 ){
 		alert("paid amount Cannot be Empty");
-		paid_am.val("");
-		return;
+		paid_amount.val("");
+		paid_amount.focus();
+		return false;
 	}
 	if( paid_am <= 1000 ){		 
 		alert('The minimum amount will be ₹1,000.');
-		paid_am.val('');
+		paid_amount.val('');
         coins.val('');
-        return;
+		paid_amount.focus();
+        return false;
 	}
 	 
 
@@ -8605,13 +8667,13 @@ function handlingPaiAmt() {
 function handlingFee() {
 	
 	var paid_amount = jQuery('#paid_amount');
-	var c = jQuery('#coins_per_lead');
+	// var c = jQuery('#coins_per_lead');
 
 	var paid_am= parseInt(paid_amount.val());
  
 	var cost_le= parseInt(cost_per_lead.val()); 
 	var total_lead = parseInt(paid_am/cost_le);
-	var actualamt = $('#leadscount').val(total_lead);
+	// var actualamt = $('#leadscount').val(total_lead);
 	if( paid_am <= 0 ){
 		alert("paid amount Cannot be Empty");
 		paid_amount.val("");

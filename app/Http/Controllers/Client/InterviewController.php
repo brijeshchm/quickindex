@@ -62,15 +62,35 @@ class InterviewController extends Controller
 		return view('interview.restapi-question');
 
 	} 
+   public function mongodbInterview()
+	{ 
+		return view('interview.mongodb-question');
+
+	} 
+   public function nextjsInterview()
+	{ 
+		return view('interview.nextjs-question');
+
+	} 
 	
 	public function extjsInterview()
 	{ 
 		return view('interview.extjs-question');
 
 	}
+	public function workdayInterview()
+	{ 
+		return view('interview.workday-question');
+
+	}
      public function pimcoreInterview()
 	{ 
 		return view('interview.pimcore-question');
+
+	}
+     public function pythonInterview()
+	{ 
+		return view('interview.python-question');
 
 	}
      

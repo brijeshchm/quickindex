@@ -599,7 +599,7 @@ class BusinessOwnerController extends Controller
 
 			$data[] = [
 				date_format(date_create($payment->created_at), 'd M Y'),
-				$payment->paid_amount,
+				$payment->amount,
 				$payment->gst_tax,
 				$payment->total_amount,
 				$payment->payment_mode,
@@ -639,9 +639,13 @@ class BusinessOwnerController extends Controller
 			$returnLeads['recordsTotal'] = $leads->total();
 			$returnLeads['recordsFiltered'] = $leads->total();
 			foreach ($leads as $lead) {
+				$mobile = "";
+					if(!is_numeric($lead->mobile)){
+					$mobile = dataDecodeJsonBase64($lead->mobile);
+					}
 				$data[] = [
 					$lead->name,
-					$lead->mobile,
+					$mobile,
 					$lead->email,
 					$lead->kw_text,
 					$lead->city_name,

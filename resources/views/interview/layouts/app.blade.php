@@ -133,7 +133,8 @@ function getStyleValue(elmnt,style) {
       <a class="bar-item button" href="{{url('interviews/technical-logic-question-answer')}}" title='technical-logic-question-answer'>Technical Logic</a>
       <a class="bar-item button" href="{{url('interviews/laravel-interview-question-answer')}}" title='laravel-interview-question-answer'>Laravel Interview</a>
       <a class="bar-item button" href="{{url('interviews/javascript-interview-question-answer')}}" title='javascript-interview-question-answer'>javascript</a>    
-      <a class="bar-item button" href="{{url('interviews/reactjs-interview-question-answer')}}" title='reactjs-interview-question-answer'>reactjs</a> 
+      <a class="bar-item button" href="{{url('interviews/reactjs-interview-question-answer')}}" title='reactjs-interview-question-answer'>Reactjs</a> 
+      <a class="bar-item button" href="{{url('interviews/nextjs-interview-question-answer')}}" title='nextjs-interview-question-answer'>Next</a> 
       <a class="bar-item button" href="{{url('interviews/restapi-interview-question-answer')}}" title='restapi-interview-question-answer'>Restapi </a>    
       <a class="bar-item button" href="{{url('interviews/pimcore-interview-question-answer')}}" title='restapi-interview-question-answer'>Pimcore </a>    
      </div>
@@ -161,9 +162,13 @@ function getStyleValue(elmnt,style) {
 <a target="_top" href="{{url('interviews/laravel-interview-question-answer')}}">Laravel Interview Question Answer</a>
 <a target="_top" href="{{url('interviews/javascript-interview-question-answer')}}">Javascript Interview Question Answer</a>
 <a target="_top" href="{{url('interviews/reactjs-interview-question-answer')}}">Reactjs Interview Question Answer</a>
-<a target="_top" href="{{url('interviews/restapi-interview-question-answer')}}">Rest API Interview Question Answer</a> 
+<a target="_top" href="{{url('interviews/nextjs-interview-question-answer')}}">NextJs Interview Question Answer</a>
+
+<a target="_top" href="{{url('interviews/mongodb-interview-question-answer')}}">Mongodb Interview Question Answer</a> 
 <a target="_top" href="{{url('interviews/extjs-interview-question-answer')}}">Extjs Interview Question Answer</a> 
 <a target="_top" href="{{url('interviews/pimcore-interview-question-answer')}}">Pimcore Interview Question Answer</a> 
+<a target="_top" href="{{url('interviews/workday-interview-question-answer')}}">Workday Interview Question Answer</a> 
+<a target="_top" href="{{url('interviews/python-interview-question-answer')}}">Python Interview Question Answer</a> 
 <a target="_top" href="{{url('interviews/computer-interview-question-answer')}}">computer Interview Question Answer</a> 
 <br><br>
     </div> 

@@ -69,11 +69,24 @@ class OrderHistoryController extends Controller
 				$action = '';
 				$separator = '';
 				$proforma = '';
-				$orderpdf .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Oder PDF" id="paymentPrint" data-trigger="hover" data-placement="left" data-sid="' . $lead->id . '"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a> ';
-				$proforma .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Proforma Invoice PDF" id="proformaPrintPdf" data-trigger="hover" data-placement="left" data-sid="' . $lead->id . '"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a>';
+				
+				 
+				$orderpdf .= $separator . '<a href="' . route('developer.order.paymentPrint', ['pid' => $lead->id]) . '" data-toggle="popover" title="Order PDF">
+				<i aria-hidden="true" class="fa fa-file-pdf-o"></i>
+				</a>';
+
+				$proforma .= $separator . '<a href="' . route('developer.order.proformaPrintPdf', ['pid' => $lead->id]) . '" data-toggle="popover" title="Order PDF">
+				<i aria-hidden="true" class="fa fa-file-pdf-o"></i>
+				</a>';
+
+
 
 				if ($lead->invoice_status == 1) {
-					$invoicepdf .= $separator . '<a href="javascript:void(0)" data-toggle="popover" title="Invoice PDF" id="invoicePrintPdf" data-trigger="hover" data-placement="left" data-sid="' . $lead->id . '"><i aria-hidden="true" class="fa fa-file-pdf-o"></i></a>';
+					
+					$invoicepdf .= $separator . '<a href="' . route('developer.order.invoicePrintPdf', ['pid' => $lead->id]) . '" data-toggle="popover" title="Order PDF">
+				<i aria-hidden="true" class="fa fa-file-pdf-o"></i>
+				</a>';
+
 				} else {
 					if (Auth::user()->current_user_can('administrator') || Auth::user()->current_user_can('client_invoice_approved')) {
 						$invoicepdf .= $separator . '<a href="javascript:client.clientOrderHistoryStatus(' . $lead->id . ')" data-toggle="popover" title="Invoice Status Pending" ><i aria-hidden="true" class="fa fa-thumbs-up"></i></a>';
@@ -102,7 +115,7 @@ class OrderHistoryController extends Controller
 					"<a href='/developer/clients/update/$lead->username'>$lead->username</a>",
 					$lead->business_name,
 					$type,
-					$lead->paid_amount,
+					$lead->amount,
 					$lead->gst_tax,
 					$lead->total_amount,
 					ucfirst($lead->payment_mode),
@@ -243,11 +256,11 @@ class OrderHistoryController extends Controller
 
 	public function update(Request $request)
 	{
-
+//   dd($request->all());
 
 		$validator = Validator::make($request->all(), [
-			'package_name' => 'required',
-			'paid_amount' => 'required',
+			 
+			'amount' => 'required',
 			'gst_status' => 'required',
 			'gst_total_amount' => 'required',
 			'tds_status' => 'required',
@@ -268,19 +281,19 @@ class OrderHistoryController extends Controller
 
 
 
-		if ($request->input('Update_order') == 'UpdateOrder' && !empty($request->input('paid_amount'))) {
+		if ($request->input('Update_order') == 'UpdateOrder' && !empty($request->input('amount'))) {
 
 			$order_id = $request->input('order_id');
 			$paymenthistory = PaymentHistory::find($order_id);
-			$paymenthistory->package_name = $request->input('package_name');
-			// $paymenthistory->leads_count = $request->input('leads_count');
+ 
+		 
 			$paymenthistory->coins_amt = $request->input('coins_amt');
-			//	$paymenthistory->expired_from = $request->input('expired_from');
-			//	$paymenthistory->expired_on = $request->input('expired_on');
+		 
 			$paymenthistory->selectproofid = $request->input('selectproofid');
 			$paymenthistory->proofid = $request->input('proofid');
-			$paid_amount = $request->input('paid_amount');
-			$paymenthistory->paid_amount = $paid_amount;
+		 
+			$paymenthistory->amount = $request->input('amount');
+			$paymenthistory->paid_amount = $request->input('total_amount');
 			$gst_tax = $request->input('gst_tax');
 			$paymenthistory->gst_status = $request->input('gst_status');
 			$paymenthistory->gst_tax = $gst_tax;
@@ -292,10 +305,7 @@ class OrderHistoryController extends Controller
 			$total_amount = $request->input('total_amount');
 			$paymenthistory->total_amount = $total_amount;
 
-			//	$paid_amt_in_words=$request->input('paid_amt_in_words');
-			//	$paymenthistory->paid_amt_in_words = $paid_amt_in_words;
-			//$pay_mode_details=$request->input('pay_mode_details');
-			//$paymenthistory->pay_mode_details = $pay_mode_details;
+		 
 			$transactionid = $request->input('transactionid');
 			$paymenthistory->transactionid = $transactionid;
 			$paymenthistory->payment_updatedBy = Auth::user()->id;
@@ -356,22 +366,16 @@ class OrderHistoryController extends Controller
 			$paymenthistory->payment_mode = $stud_payment_mode;
 			$paymenthistory->payment_bank = $stud_payment_bank;	 
 			if ($paymenthistory->save()) {
-				return response()->json(['status' => 1, 'success' => 'Client Order payment successfully !!']);
+				return response()->json(['status' => 1, 'msg' => 'Client Order payment successfully !!']);
 			} else {
-				return response()->json(['status' => 0, 'failed' => 'Client not updated !!']);
+				return response()->json(['status' => 0, 'msg' => 'Client not updated !!']);
 			}
 
 
 
 		}
 
-		$order_id = base64_decode($id);		 
-		$paymentHistory = PaymentHistory::find($order_id);
-		$moderesults = Modesdetails::get();
-		$banksdetails = Banksdetails::get();
-
-		return view('admin.clientOrderhistory.update_orderhistory', ['paymentHistory' => $paymentHistory, 'moderesults' => $moderesults, 'banksdetails' => $banksdetails]);
-
+		 
 	}
 
 	/**
@@ -440,7 +444,7 @@ class OrderHistoryController extends Controller
 				"Mobile" => $lead->mobile,
 				"Package Name" => $lead->package_name,
 				"Leads Count" => $lead->leads_count,
-				"Paid Amount" => $lead->paid_amount,
+				"Amount" => $lead->amount,
 				"Total Amount" => $lead->total_amount,
 				"Payment Mode" => $lead->payment_mode,
 				"Payment Collect" => $paymentcollect,

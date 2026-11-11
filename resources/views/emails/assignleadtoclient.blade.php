@@ -167,9 +167,9 @@
             </td>
             <td class="row-td"
                 style="padding:12px 20px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#0D1340;">
-              <a href="tel:<?php echo $lead->mobile; ?>"
+              <a href="tel:<?php echo dataDecodeJsonBase64($lead->mobile); ?>"
                  style="color:#005DFF;text-decoration:none;">
-                <?php echo $lead->mobile; ?>
+                <?php echo dataDecodeJsonBase64($lead->mobile); ?>
               </a>
             </td>
           </tr>

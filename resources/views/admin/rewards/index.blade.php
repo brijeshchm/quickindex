@@ -878,7 +878,8 @@ function handlingCoins() {
     
 	if( paid_am <= 0 ){
 		alert("paid amount Cannot be Empty");
-		paid_am.val("");
+		paid_amount.val("");
+        return false;
 
 	}
 	 if (100 <= paid_am && paid_am < 500) {
@@ -886,7 +887,7 @@ function handlingCoins() {
      var coinAmt = parseInt(paid_am/0.90);
   
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else
 if (500 <= paid_am && paid_am < 1000) {
@@ -894,7 +895,7 @@ if (500 <= paid_am && paid_am < 1000) {
      var coinAmt = parseInt(paid_am/0.90);
   
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else 
 	if (1000 <= paid_am && paid_am < 2000) {
@@ -902,63 +903,65 @@ if (500 <= paid_am && paid_am < 1000) {
      var coinAmt = parseInt(paid_am/0.90);
   
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else if (2000 <= paid_am && paid_am < 4000) {
  
      var coinAmt = parseInt(paid_am/0.86);
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else if (4000 <= paid_am && paid_am < 6000) {
  
      var coinAmt = parseInt(paid_am/0.84);
     $('#f_credit_coins').val(coinAmt);
 	 
-
+    return false;
 	}else  if (6000 <= paid_am && paid_am < 8000) {
  
      var coinAmt = parseInt(paid_am/0.82);
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else if (8000 <= paid_am && paid_am < 10000) {
  
      var coinAmt = parseInt(paid_am/0.80);
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else if (10000 <= paid_am && paid_am < 15000) {
   
      var coinAmt = parseInt(paid_am/0.78);
     $('#f_credit_coins').val(coinAmt);	 
-
+    return false;
 	}else if (15000 <= paid_am && paid_am < 20000) {
  
      var coinAmt = parseInt(paid_am/0.75);
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else if (20000 <= paid_am && paid_am < 40000) {
  
      var coinAmt = parseInt(paid_am/0.70);
     $('#f_credit_coins').val(coinAmt);
-	 
+	 return false;
 
 	}else if (40000 <= paid_am && paid_am < 50000) {
  
      var coinAmt = parseInt(paid_am/0.65);
     $('#f_credit_coins').val(coinAmt); 
-
+    return false;
 	}else if (50000 <= paid_am && paid_am <= 100000) {
  
      var coinAmt = parseInt(paid_am/0.60);
     $('#f_credit_coins').val(coinAmt);
+    return false;
 	} 
     else if (100000 <= paid_am && paid_am <= 999999) {
  
      var coinAmt = parseInt(paid_am/0.49);
     $('#f_credit_coins').val(coinAmt);
+    return false;
 	} 
 }
 

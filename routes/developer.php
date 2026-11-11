@@ -281,8 +281,10 @@ Route::get('contacts/delete/{id}', [App\Http\Controllers\ContactsController::cla
 	Route::post('/lead',[App\Http\Controllers\LeadController::class, 'store'])->middleware('auth');
 	Route::post('/lead/getleadssexcel',[App\Http\Controllers\LeadController::class,'getLeadsExcel'])->middleware('auth');
 	Route::get('/lead/add-lead',[App\Http\Controllers\LeadController::class,'create'])->middleware('auth');
+	Route::get('/lead/encryptString',[App\Http\Controllers\LeadController::class,'encryptString'])->middleware('auth');
 	
 	Route::post('/lead/add-lead',[App\Http\Controllers\LeadController::class,'store'])->middleware('auth');
+	Route::post('/lead/numberToEncrypt',[App\Http\Controllers\LeadController::class,'numberToEncrypt'])->middleware('auth');
 	Route::get('/lead/repost/{id}', [App\Http\Controllers\LeadController::class,'leadRepost'])->middleware('auth');
 	Route::get('/lead/edit/{id}',[App\Http\Controllers\LeadController::class,'edit'])->middleware('auth');
 	Route::post('/lead/update/{id}',[App\Http\Controllers\LeadController::class,'updateSaveLead'])->middleware('auth');

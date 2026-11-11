@@ -492,6 +492,7 @@ class BackEndClientsController extends Controller
 				$paymenthistory->coins_amt = '555';
 				$paymenthistory->selectproofid = "";
 				$paymenthistory->proofid = "";
+				$paymenthistory->amount = '0';
 				$paymenthistory->paid_amount = '0';
 				$paymenthistory->tds_status = "No";
 				$paymenthistory->tds_amount = "0";
@@ -2946,11 +2947,12 @@ protected function deleteOldImage($jsonString)
 				$separator = ' | ';
 				$action .= $separator . '<a href="javascript:pushLeadController.clientAssignleaddelete(' . $lead->s_id . ')" title="lead Delete"><i class="fa fa-fw fa-trash"></i></a>';
 				$separator = ' | ';
-
+				
+				$mobile= dataDecodeJsonBase64($lead->mobile);
 
 				$data[] = [
 					$lead->name,
-					$lead->mobile,
+					$mobile,
 					$lead->email,
 					$lead->kw_text,
 					$lead->city_name,
@@ -3492,7 +3494,7 @@ protected function deleteOldImage($jsonString)
 	public function paymentClient(Request $request)
 	{
 
-
+// dd($request->all());
 		if ($request->ajax()) {
 
 			$id = $request->input('client-id');
@@ -3504,7 +3506,7 @@ protected function deleteOldImage($jsonString)
 				'business_name' => 'required',
 				'package_name' => 'required',
 				'selectproofid' => 'required',
-				'paid_amount' => 'required',
+				'amount' => 'required',
 				'gst_status' => 'required',
 				'gst_total_amount' => 'required',
 				'tds_status' => 'required',
@@ -3526,7 +3528,7 @@ protected function deleteOldImage($jsonString)
 
 
 
-			if ($request->input('pay-submit') == 'savepay' && !empty($request->input('paid_amount'))) {
+			if ($request->input('pay-submit') == 'savepay' && !empty($request->input('amount'))) {
 
 				$client = Client::withTrashed()->where('username', $id)->first();
 
@@ -3544,24 +3546,21 @@ protected function deleteOldImage($jsonString)
 				//	$paymenthistory->expired_on = $request->input('expired_on');
 				$paymenthistory->selectproofid = $request->input('selectproofid');
 				$paymenthistory->proofid = $request->input('proofid');
-				$paid_amount = $request->input('paid_amount');
-				$paymenthistory->paid_amount = $paid_amount;
-				$tds_status = $request->input('tds_status');
+				 
+				$paymenthistory->paid_amount = $request->input('total_amount');
+				$paymenthistory->amount = $request->input('amount');			 
 				$paymenthistory->tds_status = $request->input('tds_status');
-				$gst_tax = $request->input('gst_tax');
-				$paymenthistory->gst_tax = $gst_tax;
-				$gst_total_amount = $request->input('gst_total_amount');
-				$paymenthistory->gst_total_amount = $gst_total_amount;
+				 
+				$paymenthistory->gst_tax = $request->input('gst_tax');
+				
+				$paymenthistory->gst_total_amount = $request->input('gst_total_amount');
 				$gst_status = $request->input('gst_status');
 				$paymenthistory->gst_status = $request->input('gst_status');
 				$tds_amount = $request->input('tds_amount');
 				$paymenthistory->tds_amount = $tds_amount;
-				$total_amount = $request->input('total_amount');
-				$paymenthistory->total_amount = $total_amount;
-				// $paid_amt_in_words=$request->input('paid_amt_in_words');
-				// $paymenthistory->paid_amt_in_words = $paid_amt_in_words;
-				//$pay_mode_details=$request->input('pay_mode_details');
-				//$paymenthistory->pay_mode_details = $pay_mode_details;
+				 
+				$paymenthistory->total_amount = $request->input('total_amount');
+				 
 				$transactionid = $request->input('transactionid');
 				$paymenthistory->transactionid = $transactionid;
 				$paymenthistory->paymentcollect = $request->user()->id;
@@ -3623,9 +3622,7 @@ protected function deleteOldImage($jsonString)
 					$paymentupdate = PaymentHistory::find($paymenthistory->id);
 					$cityname = $request->input('business_name');
 					$clientIDToAppend = $clientID = $client->id;
-					/* if(strlen((string)$clientID)<4){
-					$clientIDToAppend = str_pad($clientIDToAppend, 4, '0', STR_PAD_LEFT);
-					} */
+					 
 					$order_number = strtoupper(substr($cityname, 0, 2)) . $clientIDToAppend . $paymenthistory->id;
 					$paymentupdate->order_number = $order_number;
 					$paymentupdate->save();
@@ -3722,7 +3719,7 @@ protected function deleteOldImage($jsonString)
 
 			$data[] = [
 				date_format(date_create($payment->created_at), 'd M Y'),
-				$payment->paid_amount,
+				$payment->amount,
 				$payment->gst_tax,
 				$payment->total_amount,
 				ucfirst($payment->payment_mode),
@@ -3788,13 +3785,13 @@ protected function deleteOldImage($jsonString)
 			->where('assigned_kwds.client_id', $client->id)
 			->get();
  
-		return Pdf::loadView('sales.getOrderPrintSlip', [
+		return Pdf::loadView('invoice.getOrderPrintSlip', [
 			'paymentuprint' => $paymentuprint,
 			'client' => $client,
 			'imageSrc' => $imageSrc,
 			'assignKeyword' => $assignKeyword,
 		])			 
-			->download('order-'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
+			->download('Order-'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
 	}
 
 	 
@@ -3816,12 +3813,12 @@ protected function deleteOldImage($jsonString)
 			$imageSrc  = 'data:image/png;base64,' . $imageData;
 
 			$pdf = Pdf::loadView(
-		'sales.getproformaPrintPdf',
+		'invoice.getproformaPrintPdf',
 		compact('paymentprint', 'client','imageSrc'));
 	// )->setPaper('a4', 'portrait');
 
 	return $pdf->download(
-		'proforma_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf'
+		'Proforma_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf'
 	);
 
 		}
@@ -3846,13 +3843,13 @@ protected function deleteOldImage($jsonString)
 		$client = Client::withTrashed()
 			->findOrFail($paymentprint->client_id);
 
-		return Pdf::loadView('sales.getInvoicePrintPdfSlip', [
+		return Pdf::loadView('invoice.getInvoicePrintPdfSlip', [
 			'paymentprint' => $paymentprint,
 			'client' => $client,
 			'imageSrc' => $imageSrc,
 		])
 		 
-			->download('invoice_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
+			->download('Invoice_'.$client->username.'_'.date('d-m-Y_H-i-s').'.pdf');
 	}
 
 
@@ -3860,8 +3857,7 @@ protected function deleteOldImage($jsonString)
 	/**
 	 * Show resource update form.
 	 *
-	 * @param client id
-	 * @param target id
+	 * @param client id 
 	 * @param Request
 	 * @return resource update form
 	 */

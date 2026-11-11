@@ -85,7 +85,7 @@ class EnquiryController extends Controller
 
 			$html = '<div class="row">
 						<div class="x_content" style="padding:0">';
-			$number = $lead->mobile;
+			 
 			$html .= '<form class="form-label-left" method="post" onsubmit="return enquiryController.storeFollowUp(' . $id . ',this)">
 				 
 					 
@@ -103,7 +103,7 @@ class EnquiryController extends Controller
                         
                          <div class="col-md-4" style="display:flex;">
                          <label for=" " class="col-md-3 col-lg-3 col-form-label">Mobile :</label>
-                         <p name="mobile" type="tel" class="form-control-static" > ' . $lead->mobile . '</p>
+                         <p name="mobile" type="tel" class="form-control-static" > ' . dataDecodeJsonBase64($lead->mobile) . '</p>
                         </div>
                         
                     </div>
@@ -790,9 +790,16 @@ class EnquiryController extends Controller
 				$separator = '';
 				$action .= $separator . '<a href="javascript:enquiryController.getfollowUps(' . $lead->id . ')" title="followUp"><i class="bi bi-eye" aria-hidden="true"></i></a>';
 				$separator = ' | ';
+				$mobile = "";
+				if(!is_numeric($lead->mobile)){
+				$mobile = dataDecodeJsonBase64($lead->mobile);
+				$mobile = substr($mobile, 0, 3)
+					. str_repeat('X', max(0, strlen($mobile) - 7))
+					. substr($mobile, -4);
+				}
 				$data[] = [
 					$lead->name,
-					$lead->mobile,
+					$mobile,
 					$lead->email,
 					$lead->kw_text,
 					$lead->city_name,

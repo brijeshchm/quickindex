@@ -12,9 +12,12 @@ use App\Models\PushLead;
 use App\Models\Citieslists;
 use App\Models\Keyword;
 use App\Models\AssignedLead;
+use App\Models\LeadFollowUp;
+use App\Models\Status;
 use App\Models\Client\Client;
 use DB;
 use Validator;
+use Auth;
 use App\Models\User;
 
 class PushLeadController extends Controller
@@ -84,11 +87,18 @@ class PushLeadController extends Controller
 					$owner_name = $owner[$lead->created_by];
 				}
 
+				$mobile = "";
+				if(!is_numeric($lead->mobile)){
+				$mobile = dataDecodeJsonBase64($lead->mobile);
+				$mobile = substr($mobile, 0, 3)
+					. str_repeat('X', max(0, strlen($mobile) - 7))
+					. substr($mobile, -4);
+				}
 				$data[] = [
 					(new Carbon($lead->created_at))->addMinutes(330)->format('d-m-Y'),
 					($lead->b_end) ? $lead->name . " <i aria-hidden=\"true\" style=\"color:red\" class=\"fa fa-fw fa-asterisk\"></i>" : $lead->name,
 					($lead->b_end) ? "Internal" : "External",
-					$lead->mobile,
+					$mobile,
 					//$lead->email,
 					$owner_name,
 
@@ -125,12 +135,13 @@ class PushLeadController extends Controller
 	 */
 	public function store(AddLeadRequest $request)
 	{
-		//
+
+	
 		header('Access-Control-Allow-Origin: *');
 		header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 		//header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 		$validator = Validator::make($request->all(), [
-			'name' => 'required|unique:leads,name,NULL,id,mobile,' . $request->input('mobile'),
+			'name' => 'required|unique:leads,name,NULL,id,mobile,' . dataEncodeJsonBase64($request->input('mobile')),
 			'mobile' => 'required',
 			'city_id' => 'required',
 			'area_zone' => 'required',
@@ -168,7 +179,9 @@ class PushLeadController extends Controller
 		} else {
 			$lead->email = $request->input('email');
 
-			$lead->mobile = $request->input('mobile');
+			 
+			$lead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+			$lead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
 
 			$lead->created_by = $request->created_by;
 			if ($request->has('b_end')) {
@@ -197,6 +210,14 @@ class PushLeadController extends Controller
 
 			$lead->remark = htmlspecialchars(strip_tags(trim($request->input('remark'))));
 			if ($lead->save()) {
+
+			$followUp = new LeadFollowUp;
+				$followUp->status = Status::where('id',$request->input('status'))->first()->id;
+				$followUp->remark = htmlspecialchars(strip_tags(trim($request->input('remark'))));
+				$followUp->expected_date_time = date('Y-m-d H:i:s');
+				$followUp->lead_id = $lead->id;
+				$followUp->remark_by = Auth::user()->id;
+				$followUp->save();
 				return response()->json([
 					"statusCode" => 1,
 					"data" => [
@@ -319,7 +340,7 @@ class PushLeadController extends Controller
 												<div class="col-md-4">
 													<div class="form-group">
 														<label>Mobile</label>
-														<input class="form-control" placeholder="Mobile" name="mobile" type="tel" value="' . $pushLead->mobile . '" />
+														<input class="form-control" placeholder="Mobile" name="mobile" type="tel" value="' . dataDecodeJsonBase64($pushLead->mobile) . '" />
 													</div>
 												</div>
 												<div class="col-md-4">
@@ -409,7 +430,7 @@ class PushLeadController extends Controller
 
  
 		$validator = Validator::make($request->all(), [
-			'name' => 'required|unique:leads,name,' . $id . ',id,mobile,' . $request->input('mobile'),
+			'name' => 'required|unique:leads,name,' . $id . ',id,mobile,' . dataEncodeJsonBase64($request->input('mobile')),
 			'mobile' => 'required',
 			'city_id' => 'required',
 			'area_zone'=>'required',
@@ -445,7 +466,10 @@ class PushLeadController extends Controller
 
 				$pushLead->email = $request->input('email');
 
-				$pushLead->mobile = $request->input('mobile');
+			 
+				$pushLead->mobile = dataEncodeJsonBase64($request->input('mobile'));
+				$pushLead->mobile_hash = hash_hmac('sha256',$request->input('mobile'),config('app.key'));
+
 				$pushLead->created_by = $request->input('created_by');
 
 				if ($request->input('area_zone')) {
@@ -585,7 +609,7 @@ class PushLeadController extends Controller
 		}
 		$city = Citieslists::where('city', 'LIKE', $request->input('iq_city'))->first();
 		if (!$city) {
-			$city = new City;
+			$city = new Citieslists;
 			$city->city = $request->input('iq_city');
 			$city->save();
 		}
@@ -600,7 +624,7 @@ class PushLeadController extends Controller
 			$lead->email = $request->input('iq_email');
 		}
 		//$lead->email = $request->input('email');
-		$lead->mobile = $request->input('iq_mobile');
+		$lead->mobile = dataEncodeJsonBase64($request->input('iq_mobile'));
 		//$lead->created_by = Auth::user()->id;
 		$lead->created_by = 1;
 
@@ -617,6 +641,14 @@ class PushLeadController extends Controller
 
 		$lead->remark = $request->input('iq_message');
 		if ($lead->save()) {
+
+		$followUp = new LeadFollowUp;
+				$followUp->status = Status::where('id',$request->input('status'))->first()->id;
+				$followUp->remark = htmlspecialchars(strip_tags(trim($request->input('remark'))));
+				$followUp->expected_date_time = date('Y-m-d H:i:s');
+				$followUp->lead_id = $lead->id;
+				$followUp->remark_by = Auth::user()->id;
+				$followUp->save();
 			return response()->json([
 				"statusCode" => 1,
 				"data" => [
