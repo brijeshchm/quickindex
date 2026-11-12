@@ -508,14 +508,14 @@ if(cityLower){
         }),
     })
     .then(async function (response) {
-        var data = await response.json();
+        // var data = await response.json();
 
          
 
          
     })
     .catch(function (error) {
-        console.error('City save error:', error);
+        
     });
 
 } 
