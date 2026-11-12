@@ -2606,11 +2606,9 @@ $reviewList = DB::table('clients')
 
 
 
-		$citySlug = strtolower(trim((string) $city));
+	$citySlug = strtolower(trim((string) $city));
 	$keywordSlug = strtolower(trim((string) ($kwData['keyword_slug'] ?? '')));
-
 	$customFaqs = config('city_keyword_faqs', [])[$citySlug][$keywordSlug] ?? [];
-
 	$faqs = [];
 
 	if (!empty($customFaqs)) {
@@ -2876,7 +2874,9 @@ if (empty($faqs)) {
 				}			 
 			}
 
-			$clientMap = $this->getClientSlugMap();  		 
+			$clientMap = $this->getClientSlugMap();  
+			
+			 
 			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);	
 
 		 
@@ -3480,6 +3480,8 @@ abort(410);
  
 		//client details
 		$clientMap = $this->getClientSlugMap();  
+
+		dd($clientMap);
 		$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
 
 		if ($slugUrl !== $slug && !empty($slugUrl)) {	

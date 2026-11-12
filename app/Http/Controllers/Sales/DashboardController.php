@@ -16,6 +16,7 @@ use App\Models\Meeting;
 use App\Models\Status;
 use App\Models\Keyword;
 use App\Models\Citieslists;
+use App\Models\PaymentHistory;
 use Carbon\Carbon;
 use Illuminate\View\View;
 use Illuminate\Validation\Rule;
@@ -32,12 +33,106 @@ class DashboardController extends Controller
 
  		$sales = Auth::guard('sales')->user();
 
+
+		
+
+
 		$totalClientsCount = Client::where('created_by',$sales->id)->count();
 
 		$activeClient = Client::where('created_by',$sales->id)->where('active_status', '1')->count();
 
 		$inactiveClient = Client::where('created_by',$sales->id)->where('active_status', '0')->count();
-	
+		$deleteClient = Client::withTrashed()
+    ->where('created_by', $sales->id)
+    ->whereNotNull('deleted_at')
+    ->count();
+		 
+	 
+ 
+
+
+
+
+		
+ $clientIds = Client::where('created_by', $sales->id)
+    ->pluck('id');
+
+// Total paid amount across all years.
+$totalPaidAmount = PaymentHistory::whereIn('client_id', $clientIds)
+    ->where('invoice_status', '1')
+    ->sum('paid_amount');
+
+// Monthly totals, separated by year.
+// $monthlyPayments = PaymentHistory::whereIn('client_id', $clientIds)
+//     ->where('invoice_status', '1')
+//     ->selectRaw('
+//         YEAR(created_at) AS year,
+//         MONTH(created_at) AS month,
+//         SUM(paid_amount) AS total_paid_amount
+//     ')
+//     ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+//     ->orderBy('year', 'desc')
+//     ->orderBy('month', 'desc')
+//     ->get();
+
+
+	$monthlyPayments = PaymentHistory::whereIn('client_id', $clientIds)
+    ->where('invoice_status', '1')
+    ->selectRaw('
+        YEAR(created_at) AS year,
+        MONTH(created_at) AS month,
+        SUM(paid_amount) AS total_paid_amount
+    ')
+    ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+    ->orderBy('year', 'desc')
+    ->orderBy('month', 'desc')
+    ->paginate(6, ['*'], 'payments_page')
+    ->withQueryString();
+
+
+// Yearly totals.
+$yearlyPayments = PaymentHistory::whereIn('client_id', $clientIds)
+    ->where('invoice_status', '1')
+    ->selectRaw('
+        YEAR(created_at) AS year,
+        SUM(paid_amount) AS total_paid_amount
+    ')
+    ->groupByRaw('YEAR(created_at)')
+    ->orderBy('year', 'desc')
+    ->get();
+
+
+
+
+
+
+// Vendors created by this salesperson in the current year.
+$vendorQuery = Client::where('created_by', $sales->id)
+    ->whereYear('created_at', now()->year);
+
+// Total vendors added this year.
+$totalVendors = (clone $vendorQuery)->count();
+
+// Month-wise vendor count.
+$monthlyVendors = (clone $vendorQuery)
+    ->selectRaw('
+        YEAR(created_at) AS year,
+        MONTH(created_at) AS month,
+        COUNT(*) AS total_vendors
+    ')
+    ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+    ->orderBy('month')
+    ->get();
+
+// dd([
+//     'year'            => now()->year,
+//     'total_vendors'   => $totalVendors,
+//     'monthly_vendors' => $monthlyVendors,
+// ]);
+
+
+
+
 		$paidClient = Client::where('created_by',$sales->id)->where('paid_status', '1')->count();
 		$totalRegClientsThisMonth = Client::where('created_by',$sales->id)->where('paid_status', '1')->whereMonth('created_at', '=', date('m'))->count();
 		$totalPendingRenewals = Client::where('created_by',$sales->id)->where('paid_status', '0')->count();
@@ -53,24 +148,28 @@ class DashboardController extends Controller
 
 		$kwds = Keyword::select('id', 'keyword')->orderBy('keyword', 'ASC')->get();
 		 
-		 
+		//  dd($inactiveClient);
 		$summary = [
 			'total' => $totalClientsCount,
 			'active' => $activeClient,
 			'inactive' => $inactiveClient,
+			'deleteClient' => $deleteClient,
 			'paidClient' => $paidClient,
 			'totalRegClientsThisMonth' => $totalRegClientsThisMonth,
 			'pending' => $totalPendingRenewals,
 			'citieslists' => $citieslists,
 			'kwds' => $kwds,
-			'sales' => '23',
-			'leads' => '30',
-			
+			'sales' => $totalPaidAmount,
+			'leads' => '30',			
 			'search' => $search
 		];
 
 		return view('sales.dashboard', [
 			'summary' => $summary,
+			'totalPaidAmount' => $totalPaidAmount,
+			'monthlyPayments' => $monthlyPayments,
+			'yearlyPayments' => $yearlyPayments,
+			'monthlyVendors' => $monthlyVendors,
 			
             'recentVendors' => Client::where('created_by',$sales->id)->latest()->limit(5)->get(),
 		]);

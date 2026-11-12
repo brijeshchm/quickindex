@@ -2,16 +2,30 @@
 
 <x-layouts.sales.app title="Dashboard · QuickDials" header="Dashboard">
 
+@php
+    $currentTime = now('Asia/Kolkata');
+    $hour = (int) $currentTime->format('H');
 
+    if ($hour >= 5 && $hour < 12) {
+        $greeting = 'Good Morning';
+    } elseif ($hour >= 12 && $hour < 17) {
+        $greeting = 'Good Afternoon';
+    } elseif ($hour >= 17 && $hour < 21) {
+        $greeting = 'Good Evening';
+    } else {
+        $greeting = 'Good Night';
+    }
 
+    
+@endphp
     <div class="space-y-6">
         <div>
             <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#a14f47]">{{ now()->format('l, F j, Y') }}</p>
-            <h1 class="mt-2 font-display text-3xl font-semibold tracking-[-0.045em]">Good morning, {{ auth()->user()->name ?? 'there' }}.</h1>
+            <h1 class="mt-2 font-display text-3xl font-semibold tracking-[-0.045em]">{{ $greeting }}, {{ auth()->user()->first_name ?? 'there' }}.</h1>
             <p class="mt-1 text-sm text-[#718394]">Here’s what’s moving across your vendor network today.</p>
         </div>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            @foreach ([['Total vendors', $summary['total'], 'Across your network', 'bg-[#e9f2f7] text-[#315b80]'], ['Active vendors', $summary['active'], 'Currently visible', 'bg-[#e4f4eb] text-[#26734b]'], ['Paid Vendor', $summary['paidClient'], 'Need attention today', 'bg-[#fff3df] text-[#9b681f]'], ['Inactive vendors', $summary['inactive'], 'Not currently visible', 'bg-[#f4e7e5] text-[#a14f47]']] as [$label, $value, $note, $tone])
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-5">
+            @foreach ([['Total vendors', $summary['total'], 'Across your network', 'bg-[#e9f2f7] text-[#315b80]'], ['Active vendors', $summary['active'], 'Currently visible', 'bg-[#e4f4eb] text-[#26734b]'], ['Paid Vendor', $summary['paidClient'], 'Need attention today', 'bg-[#fff3df] text-[#9b681f]'], ['Inactive vendors', $summary['inactive'], 'Not currently visible', 'bg-[#f4e7e5] text-[#a14f47]'], ['Delete vendors', $summary['deleteClient'], 'Deleted', 'bg-[#f4e7e5] text-[#a14f47]']] as [$label, $value, $note, $tone])
                 <div class="rounded-2xl border border-[#dfe7ec] bg-white p-5 shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
                     <div class="grid h-10 w-10 place-items-center rounded-xl {{ $tone }}"><span class="text-lg">•</span></div>
                     <p class="mt-5 text-xs font-medium text-[#718394]">{{ $label }}</p>
@@ -20,25 +34,165 @@
                 </div>
             @endforeach
         </div>
+
         <div class="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
             <div class="rounded-2xl border border-[#dfe7ec] bg-white p-5 shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
                 <div class="flex items-start justify-between"><div><p class="text-sm font-semibold">Vendor activity trend</p><p class="mt-1 text-xs text-[#718394]">New and reactivated vendors · last 12 months</p></div><span class="rounded-lg border border-[#dfe7ec] px-2.5 py-1.5 text-[11px] font-semibold text-[#718394]">This year</span></div>
                 <div class="mt-8 flex h-44 items-end gap-2">
-                    
-                @foreach ([38,45,42,58,54,67,62,76,69,82,78,92] as $height)<div class="flex-1 rounded-t-md bg-[#d9e7ee] hover:bg-[#a14f47]" style="height: {{ $height }}%"></div>                
+                    @if($monthlyVendors)
+                @foreach ($monthlyVendors as $height)<div class="flex-1 rounded-t-md bg-[#d9e7ee] hover:bg-[#a14f47]" style="height: {{ $height->total_vendors }}%"> {{ $height->total_vendors }} {{ \Carbon\Carbon::createFromDate(2000, (int) $height->month, 1)->format('M') }} {{ $height->year }}</div>                
                 @endforeach
+                @endif
             
             </div>
-                <div class="mt-5 flex items-center justify-between text-[11px] text-[#718394]"><span>New vendors</span><span class="font-semibold text-[#26734b]">+18.6% vs last year</span></div>
+                <div class="mt-5 flex items-center justify-between text-[11px] text-[#718394]"><span>New vendors</span><span class="font-semibold text-[#26734b]">Current year</span></div>
             </div>
             <div class="rounded-2xl bg-[#12263a] p-5 text-white shadow-[0_10px_24px_rgba(18,38,58,0.12)]">
                 <p class="text-xs text-[#aabccc]">Network sales</p>
-                <p class="mt-2 font-display text-3xl font-semibold">${{ number_format($summary['sales']) }}</p>
+                <p class="mt-2 font-display text-3xl font-semibold">Rs{{ number_format($summary['sales']) }}</p>
                 <p class="mt-2 text-xs font-semibold text-[#9cd7b3]">↑ 12.8% vs previous month</p>
                 <div class="mt-8 border-t border-[#355269] pt-5"><div class="flex justify-between text-xs"><span class="text-[#aabccc]">Quarterly target</span><span>$250,000</span></div><div class="mt-3 h-2 rounded-full bg-[#29465c]"><div class="h-2 w-[74%] rounded-full bg-[#f0b45a]"></div></div></div>
                 <div class="mt-7 grid grid-cols-2 gap-3"><div class="rounded-xl bg-[#1b3a52] p-3"><p class="text-[11px] text-[#aabccc]">Today’s leads</p><p class="mt-1 text-xl font-semibold">{{ $summary['leads'] }}</p></div><div class="rounded-xl bg-[#1b3a52] p-3"><p class="text-[11px] text-[#aabccc]">Conversion</p><p class="mt-1 text-xl font-semibold">18.4%</p></div></div>
             </div>
         </div>
+
+
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6">
+    <div class="mx-auto max-w-7xl space-y-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl">
+                Payment Overview
+            </h1>
+
+            <p class="mt-2 text-sm text-slate-500">
+                Track paid invoices by month and year.
+            </p>
+        </div>
+
+        {{-- Total paid --}}
+        <div class="rounded-2xl bg-emerald-700 p-6 text-white shadow-sm">
+            <p class="text-sm font-medium text-emerald-100">
+                Total Paid Amount · All Years
+            </p>
+
+            <h2 class="mt-3 break-words text-3xl font-bold sm:text-4xl">
+                ₹{{ number_format((float) $totalPaidAmount, 2) }}
+            </h2>
+
+            <span class="mt-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+                Paid invoices only
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
+            {{-- Monthly payments --}}
+            <div class="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm lg:col-span-2">
+                <div class="border-b border-slate-100 px-5 py-5 sm:px-6">
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Monthly Payments
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Monthly collections grouped by year.
+                    </p>
+                </div>
+
+
+                <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm">
+        <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+                <th class="px-5 py-4 font-semibold sm:px-6">Year</th>
+                <th class="px-5 py-4 font-semibold sm:px-6">Month</th>
+                <th class="whitespace-nowrap px-5 py-4 text-right font-semibold sm:px-6">
+                    Paid Amount
+                </th>
+            </tr>
+        </thead>
+
+        <tbody class="divide-y divide-slate-100">
+            @forelse ($monthlyPayments as $payment)
+                <tr class="transition-colors hover:bg-slate-50">
+                    <td class="px-5 py-4 font-medium text-slate-900 sm:px-6">
+                        {{ $payment->year }}
+                    </td>
+
+                    <td class="px-5 py-4 text-slate-600 sm:px-6">
+                        {{ $payment->month
+                            ? \Carbon\Carbon::createFromDate(
+                                2000,
+                                (int) $payment->month,
+                                1
+                            )->format('F')
+                            : 'Unknown' }}
+                    </td>
+
+                    <td class="whitespace-nowrap px-5 py-4 text-right font-semibold tabular-nums text-emerald-700 sm:px-6">
+                        ₹{{ number_format((float) $payment->total_paid_amount, 2) }}
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3" class="px-6 py-12 text-center text-slate-500">
+                        No monthly payments found.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+@if ($monthlyPayments->hasPages())
+    <div class="border-t border-slate-200 bg-white px-5 py-4 sm:px-6">
+        {{ $monthlyPayments->links('pagination::tailwind') }}
+    </div>
+@endif
+
+                
+            </div>
+
+            {{-- Yearly payments --}}
+            <div class="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <div class="border-b border-slate-100 px-5 py-5 sm:px-6">
+                    <h2 class="text-lg font-bold text-slate-900">
+                        Yearly Payments
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        Total collections for each year.
+                    </p>
+                </div>
+
+                <div class="divide-y divide-slate-100">
+                    @forelse ($yearlyPayments as $payment)
+                        <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-5 sm:px-6">
+                            <div>
+                                <p class="font-bold text-slate-900">
+                                    {{ $payment->year ?: 'Unknown year' }}
+                                </p>
+
+                                <p class="mt-1 text-xs text-slate-500">
+                                    Total paid
+                                </p>
+                            </div>
+
+                            <p class="break-words text-lg font-bold tabular-nums text-emerald-700">
+                                ₹{{ number_format((float) $payment->total_paid_amount, 2) }}
+                            </p>
+                        </div>
+                    @empty
+                        <p class="px-6 py-12 text-center text-sm text-slate-500">
+                            No yearly payments found.
+                        </p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
         <div class="rounded-2xl border border-[#dfe7ec] bg-white p-5 shadow-[0_5px_18px_rgba(18,38,58,0.035)]">
             <div class="flex items-center justify-between"><div><p class="text-sm font-semibold">Recent vendors</p><p class="mt-1 text-xs text-[#718394]">The latest accounts moving through your workspace.</p></div><a href="{{ url('sales/vendors') }}" class="text-xs font-semibold text-[#315b80] hover:text-[#a14f47]">View all vendors →</a></div>
             <div class="mt-5 divide-y divide-[#edf1f3]">
