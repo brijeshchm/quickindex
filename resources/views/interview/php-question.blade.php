@@ -1,6 +1,6 @@
  @extends('interview.layouts.app')
 @section('title')
-PHP Interview Questions & Answers
+PHP Interview Questions & Answers for Freshers & Experienced
 @endsection 
 @section('description'),  
 Prepare with PHP interview questions and answers covering OOP, arrays, sessions, MySQL, security, APIs, and advanced PHP concepts.

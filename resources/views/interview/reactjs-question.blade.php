@@ -1,11 +1,10 @@
 @extends('interview.layouts.app')
 @section('title')
-Reactjs Interview Questions & Answers
+ReactJS Interview Questions & Answers for Freshers & Experienced
 @endsection  
 @section('description'),  
-Explore ReactJS interview questions and answers covering components, hooks, state, props, routing, Redux, APIs, and performance optimization.
+Explore ReactJS interview questions and answers covering components, hooks, state, props, routing, Redux, APIs, and performance optimization
 @endsection
-
 
 @section('content')	 
  

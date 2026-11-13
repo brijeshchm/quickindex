@@ -245,7 +245,7 @@
                         </h2>
                         @if(!empty($firstBlog['excerpt']))
                         <p class="text-slate-500 text-lg mb-6 line-clamp-3">
-                            {{ strip_tags($firstBlog['excerpt']) }}
+                            {!! ($firstBlog['excerpt']) !!}
                         </p>
                         @endif
                         <div class="flex items-center text-sm text-slate-400 font-medium space-x-6">
@@ -333,7 +333,7 @@
                                 </h3>
                                 @if(!empty($article['excerpt']))
                                 <p class="text-slate-500 text-sm mb-4 line-clamp-2">
-                                    {{ strip_tags($article['excerpt']) }}
+                                    {!! ($article['excerpt']) !!}
                                 </p>
                                 @endif
                                 <div class="flex items-center text-xs text-slate-400 font-medium space-x-4 mt-auto">

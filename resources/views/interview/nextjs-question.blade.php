@@ -3,7 +3,7 @@
 NextJs Interview Questions & Answers
 @endsection  
 @section('description'),  
-Explore NextJs interview questions and answers covering components, hooks, state, props, routing, Redux, APIs, and performance optimization.
+Explore Next.js interview questions and answers covering routing, server components, SSR, static generation, caching, APIs, and performance optimization
 @endsection
 
 

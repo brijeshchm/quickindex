@@ -3,7 +3,7 @@
 RestAPI Interview Questions & Answers
 @endsection  
 @section('description'),  
-Master REST API interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Master REST API interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD operations, and API best practices
 @endsection
 
 

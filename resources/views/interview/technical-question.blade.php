@@ -3,7 +3,7 @@
 Technical Logic Interview Questions
 @endsection  
 @section('description'),  
-Practice technical logic questions and answers to improve problem-solving skills and prepare for coding, aptitude, and technical interviews.
+Practice technical logic questions and answers to improve problem-solving skills and prepare for coding, aptitude, and technical interviews
 @endsection
 
 

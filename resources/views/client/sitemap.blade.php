@@ -95,7 +95,7 @@
                 'city_slug' => $city,
                 'service_slug' => $keyword
             ]) }}</loc>
-        <lastmod>{{ now()->toAtomString() }}</lastmod> 
+        <lastmod>2026-10-09T10:30:00+00:00</lastmod> 
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -116,7 +116,7 @@
                 'city_slug' => $cityNoida,
                 'service_slug' => $keywordNoida
             ]) }}</loc>
-            <lastmod>{{ now()->toAtomString() }}</lastmod>
+            <lastmod>2026-10-09T10:30:00+00:00</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -137,7 +137,7 @@
                 'city_slug' => $cityDelhi,
                 'service_slug' => $keywordDelhi
             ]) }}</loc>
-            <lastmod>{{ now()->toAtomString() }}</lastmod>
+            <lastmod>2026-10-09T10:30:00+00:00</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -158,7 +158,7 @@
                 'city_slug' => $cityBangalore,
                 'service_slug' => $keywordBangalore
             ]) }}</loc>
-            <lastmod>{{ now()->toAtomString() }}</lastmod>
+            <lastmod>2026-10-09T10:30:00+00:00</lastmod>
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>

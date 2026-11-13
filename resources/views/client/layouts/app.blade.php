@@ -252,7 +252,7 @@ if (request()->is('/')){
                 'name'           => $f['q'],
                 'acceptedAnswer' => [
                     '@type' => 'Answer',
-                    'text'  => strip_tags($f['a']),
+                    'text'  => $f['a'],
                 ],
             ])
             ->values()

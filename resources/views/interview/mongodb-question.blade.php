@@ -1,10 +1,9 @@
 @extends('interview.layouts.app')
 @section('title')
 Mongodb Interview Questions & Answers
-@endsection 
- 
+@endsection  
 @section('description'),  
-Master Mongodb interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Master MongoDB interview questions and answers covering documents, CRUD operations, indexing, aggregation, replication, sharding, and schema design.
 @endsection
 
 

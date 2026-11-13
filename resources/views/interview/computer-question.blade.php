@@ -1,13 +1,10 @@
 @extends('interview.layouts.app')
 @section('title')
-Computer Interview Questions & Answers
+Computer Interview Questions & Answers for Freshers & Experienced
 @endsection 
- 
 @section('description'),  
-Computer interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Explore computer interview questions and answers covering hardware, software, operating systems, networking, databases, and computer fundamentals
 @endsection
-
-
 @section('content')	 
  
 

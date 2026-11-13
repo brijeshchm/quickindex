@@ -4,7 +4,7 @@ Python Interview Questions & Answers
 @endsection 
  
 @section('description'),  
-Master Python interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Master Python interview questions and answers covering data types, functions, OOP, exceptions, coding examples, and API basics for interview preparation
 @endsection
 
 

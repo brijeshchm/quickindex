@@ -3,7 +3,7 @@
 Javascript Interview Questions & Answers
 @endsection  
 @section('description'),  
-Javascript interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Explore JavaScript interview questions and answers covering closures, promises, async/await, DOM, events, prototypes, ES6 features, and APIs.
 @endsection
 
 

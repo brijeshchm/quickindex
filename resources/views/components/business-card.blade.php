@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     {{-- Mobile Description --}}
     <div class="sm:hidden mt-1">
         <p class="text-sm text-gray-500 line-clamp-2">
-            {!! strip_tags($business['business_description']) !!}
+            {!! $business['business_description'] !!}
         </p>
  Read More
         

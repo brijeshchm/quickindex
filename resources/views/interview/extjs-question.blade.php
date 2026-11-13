@@ -1,10 +1,9 @@
 @extends('interview.layouts.app')
 @section('title')
-Extjs Interview Questions & Answers
+Extjs Interview Questions & Answers Experienced level
 @endsection 
- 
 @section('description'),  
-Master Extjs interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Master Ext JS interview questions and answers covering components, grids, stores, MVC, MVVM, data binding, events, and API integration
 @endsection
 
 

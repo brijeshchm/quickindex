@@ -1,9 +1,9 @@
 @extends('interview.layouts.app')
 @section('title')
-Pimcore Interview Questions & Answers
+Pimcore Interview Questions & Answers Freshers, Experienced
 @endsection  
 @section('description'),  
-Master interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Prepare with Pimcore interview questions and answers covering data objects, assets, documents, PIM, DAM, APIs, and practical development concepts
 @endsection
 
 

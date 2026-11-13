@@ -2,9 +2,8 @@
 @section('title')
 Workday Interview Questions & Answers
 @endsection 
- 
 @section('description'),  
-Master workday interview questions and answers covering HTTP methods, status codes, authentication, JSON, CRUD, and API best practices.
+Explore Workday interview questions and answers covering HCM, business processes, security, reporting, integrations, and practical interview scenarios
 @endsection
 
 
