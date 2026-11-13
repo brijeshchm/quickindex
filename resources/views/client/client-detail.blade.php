@@ -1384,7 +1384,7 @@ function selectCert(i) {
     <button onclick="lbPrev()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);">‹</button>
     <button onclick="lbNext()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center text-white/60 hover:text-white" style="background:rgba(255,255,255,.1);">›</button>
     <div id="lightbox-content" class="max-w-5xl max-h-[90vh] p-8 md:p-16 flex items-center justify-center w-full">
-        <img id="lightbox-img" src="" alt="lightbox" width="100" height="100" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">
+        <img id="lightbox-img" src="" alt="lightbox" width="70%" height="100" class="max-w-full max-h-full w-[100%] object-contain rounded-xl shadow-2xl">
     </div>  
 </div>
 <div id="gallery-modal">

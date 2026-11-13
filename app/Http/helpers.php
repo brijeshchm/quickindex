@@ -855,7 +855,7 @@ function leadassignWithoutZoneCounsellor($lead)
 															 
 									$assignvalidation = AssignedLead::where('client_id', $clientC->client_id)->where('kw_id', $lead->kw_id)->where('lead_id', $lead->id)->get();
 							 
-								//  dd($assignvalidation);
+								 
 									if ($assignvalidation->isEmpty()) {
 
 										$assignedLead = new AssignedLead;
