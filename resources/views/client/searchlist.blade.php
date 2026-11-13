@@ -205,6 +205,8 @@ $keywordImg= !empty($kwData['key_icon'])
     if(!empty($businesses)){
         $businessCollections = collect($businesses)->take(20);
         foreach($businessCollections as $clientBus){    
+
+       
             if (!empty($clientBus['logo']) && !empty($clientBus['name']) && !empty($clientBus['business_slug'])) {
 
                 $address = [
@@ -227,7 +229,7 @@ $keywordImg= !empty($kwData['key_icon'])
                     '@context' => 'https://schema.org',
                     '@type'    => 'LocalBusiness',
                     'name'     => $clientBus['name'],
-                    'url' =>   route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($clientBus['city']),'service_slug' => $clientBus['business_slug']]),     
+                    'url' =>   route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($cityName),'service_slug' => $clientBus['business_slug']]),     
                     'address'  => $address,
                 ];
                
@@ -549,7 +551,9 @@ function bannerSlider(banners, interval = 4000) {
             : 'bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden divide-y divide-gray-50 mb-6'"
              id="chunk-{{ $chunkIndex }}">
             @foreach($chunk as $bIndex => $business)
-                @php         
+                @php        
+                
+                 
                 $globalIndex = $chunkIndex * $adInterval + $bIndex; @endphp
             <div class="business-card"
                 data-id="{{ $business['id'] ?? $globalIndex }}"

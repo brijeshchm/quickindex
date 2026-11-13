@@ -528,7 +528,7 @@ class CitySlugController extends Controller
 				'city' => $client->client_city ??'',	 		 
 				'state' => $client->state ?? '',	 		 
 				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
-				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 		 
+				'landmark' => $client->landmark ??'',	 		 
 				'verified' => $client->verified ,
 				'active_status' => $client->active_status,
 				'trending' => $client->trending,			 
@@ -536,12 +536,12 @@ class CitySlugController extends Controller
 				'featured' => $client->featured,				 
 				'mapUrl' => $client->mapUrl ? $client->mapUrl:"https://maps.google.com/?q=" . generate_slug($client->address),				 
 				'address' => $client->address,			 
-				'established' => $client->year_of_estb,			 
+				'established' => $client->year_of_estb ??'',			 
 				'rating' => $client->rating,
 				'avgRating' => $avgRating,
 				'call' => "917559435943",
 				'whatsapp' => "917559435943",
-				'reviewCount' => $client->comment_count,
+				'reviewCount' => $client->comment_count ??'',
 				'tags' => $assignedKeywords,
 				'category' => $assignedCategory ?? '',
 				'business_description' => $client->business_description ?? $template ?? '',
@@ -692,7 +692,7 @@ class CitySlugController extends Controller
 				'featured' => $client->featured,			 
 				'mapUrl' => $client->mapUrl ? $client->mapUrl:"https://maps.google.com/?q=" . generate_slug($client->address),				 
 				'address' => $client->address,			 
-				'year_of_estb' => $client->year_of_estb,			
+				'year_of_estb' => $client->year_of_estb ??'',			
 				'rating' => $client->rating,
 				'avgRating' => $avgRating,
 				'call' => "917559435943",
@@ -1288,9 +1288,9 @@ $reviewList = DB::table('clients')
 				'city' => $client->client_city ??'',	 		 
 				'state' => $client->state ?? '',	 		 
 				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
-				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 				 
+				'landmark' => $client->landmark ??'',	 				 
 				'address' => $client->address,			 
-				'year_of_estb' => $client->year_of_estb,	 
+				'year_of_estb' => $client->year_of_estb ??'',	 
 				'mapUrl' => $client->mapUrl ? $client->mapUrl:"https://maps.google.com/?q=" . generate_slug($client->address),
 				'whatsapp' => '7559435943',
 				'call' => '917559435943',
@@ -1456,11 +1456,11 @@ $reviewList = DB::table('clients')
 				'zone' => $client->zone,
 				'address' => $client->address,		 
 				'country' => $client->country,
-				'year_of_estb' => $client->year_of_estb,				 
+				'year_of_estb' => $client->year_of_estb ??'',				 
 				'city' => $client->city ??'',	 		 
 				'state' => $client->state ?? '',	 		 
 				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
-				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 
+				'landmark' => $client->landmark ??'',	 
 				'mapUrl' =>$client->mapUrl ? $client->mapUrl:  "https://maps.google.com/?q=" . generate_slug($client->address),
 				'whatsapp' => '7559435943',
 				'call' => '917559435943',
@@ -2258,7 +2258,7 @@ $reviewList = DB::table('clients')
 		? array_slice($b['gallery'], 0, 5)
 		: [];
 
-        $overviewBusiness = $b['business_description']; 
+        $overviewBusiness = $b['business_description'] ??''; 
  
         return [
             'id'            => $id,
@@ -2269,20 +2269,20 @@ $reviewList = DB::table('clients')
             'rating'        => (float) ($b['avgRating'] ?? 0),
             'reviewCount'   => (int)   ($b['reviewCount'] ?? 0),
             'address'       => $b['address'] ?? '',
-            'state'       => $b['state'] ?? 'Karnataka',
-            'city'          => $b['city'] ?? 'faridabad',
-            'pincode'          => $b['pincode'] ?? '560008',
+            'state'       => $b['state'] ?? '',
+            'city'          => $b['city'] ?? '',
+            'pincode'          => $b['pincode'] ?? '',
             'landmark'          => $b['landmark'] ?? '',
-            'openUntil'     => $b['openUntil'] ?? $b['open_until'] ?? '9:00 AM',
-            'isOpen'        => $b['isOpen'] ?? 0,
-            'active_status' => $b['active_status'] ?? 0,
-            'gst_status' => 	$b['gst_status'] ?? 0,
-            'certified_status' => 	$b['certified_status'] ?? 0,			
-            'trusted_status' => 	$b['trusted_status'] ?? 0,
-            'verified'      => $b['verified'] ?? $b['trusted_status'] ?? 0,
-            'trending'      => $b['trending'] ?? 0,
-            'topSearch'     => $b['topSearch'] ?? $b['top_search'] ?? 0,
-            'featured'      => $b['featured'] ?? 0,
+            'openUntil'     => $b['openUntil'] ?? $b['open_until'] ?? '9:00 AM To 10 PM',
+            'isOpen'        => $b['isOpen'] ?? '',
+            'active_status' => $b['active_status'] ?? '',
+            'gst_status' => 	$b['gst_status'] ?? '',
+            'certified_status' => 	$b['certified_status'] ?? '',			
+            'trusted_status' => 	$b['trusted_status'] ?? '',
+            'verified'      => $b['verified'] ?? $b['trusted_status'] ?? '',
+            'trending'      => $b['trending'] ?? '',
+            'topSearch'     => $b['topSearch'] ?? $b['top_search'] ?? '',
+            'featured'      => $b['featured'] ?? '',
             'tags'          => array_slice($tags, 0, 5),
             'phone'         => $b['call'] ?? '',
             'whatsapp'      => $b['whatsapp'] ?? '',
@@ -3566,7 +3566,7 @@ abort(410);
  
         // ── Businesses ─────────────────────────────────────────────────────
         $rawList    = $response['clientsList'] ?? [];
-     
+    
         $agents    = $response['agents'] ?? [];
         $businesses = collect($rawList)
             ->map(fn ($b, $i) => $this->normalizeBusiness($b, $i))

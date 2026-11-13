@@ -345,7 +345,7 @@ class HomePageController extends Controller
                 'address'           => $client->address,
                 'pincode'           => $client->pincode,
                 'country'           => $client->country,
-                'year_of_estb'      => $client->year_of_estb,
+                'year_of_estb'      => $client->year_of_estb ??'',
                 'landmark'          => $client->landmark,
                 'mapUrl'            => 'https://maps.google.com/?q=' . generate_slug($client->address),
                 'whatsapp'          => '7559435943',
