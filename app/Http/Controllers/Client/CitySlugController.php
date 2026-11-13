@@ -444,7 +444,7 @@ class CitySlugController extends Controller
             ELSE 5
         END
     ")
-			->limit(20)->get();
+			->limit(40)->get();
 
 		$data['clientsList'] = $clientsList->map(function ($client) {
 
