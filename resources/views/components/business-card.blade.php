@@ -22,8 +22,7 @@
     $rating = $business['rating'] ?? 0;
 
     
-    $reviewCount = $business['reviewCount'] ?? 0;
-     //echo "<pre>";print_r($business);
+    $reviewCount = $business['reviewCount'] ?? 0;  
     $isOpen = $business['active_status'] ?? false;
     $gstStatus = $business['gst_status'] ?? false;
     $verified = $business['verified'] ?? false;
@@ -38,7 +37,6 @@
     $phone = $business['phone'] ?? '';
     $slug = $business['business_slug'] ?? '';
     $openUntil = $business['openUntil'] ?? '9:00 AM';
-
     $filledStars = round($rating);
    
 @endphp

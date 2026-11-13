@@ -340,7 +340,7 @@
                                 <td>#{{ $orderNumber }}</td>
                             </tr>
                             <tr>
-                                <th>Order Date</th>
+                                <th>Date</th>
                                 <td>{{ $formatDate($paymentuprint->order_date) }}</td>
                             </tr>
                             <tr>
@@ -436,20 +436,20 @@
                             <tr>
                                 <th>Payment Mode</th>
                                 <td>
-                                    {{ ucfirst((string) ($paymentuprint->payment_mode ?: 'NA')) }}
+                                    N/A
                                 </td>
                             </tr>
                             <tr>
                                 <th>Bank / Reference</th>
-                                <td>{{ $reference }}</td>
+                                <td>N/A</td>
                             </tr>
 
-                            @if (!empty($paymentuprint->transactionid))
+                           
                                 <tr>
                                     <th>Transaction ID</th>
-                                    <td>{{ $paymentuprint->transactionid }}</td>
+                                    <td>N/A</td>
                                 </tr>
-                            @endif
+                            
 
                             @if (!empty($paymentuprint->proofid))
                                 <tr>

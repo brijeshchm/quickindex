@@ -545,7 +545,7 @@ tr {
                     </tr>
 
                     <tr>
-                        <td class="meta-label">Invoice Date</td>
+                        <td class="meta-label">Date</td>
                         <td class="meta-value">{{ $invoiceDate }}</td>
                     </tr>
 
@@ -719,20 +719,20 @@ tr {
             <table class="payment-details">
                 <tr>
                     <td class="label">Payment Mode</td>
-                    <td>{{ $paymentprint->payment_mode ?: 'NA' }}</td>
+                    <td>N/A</td>
                 </tr>
 
                 <tr>
                     <td class="label">Payment Date</td>
-                    <td>{{ $paymentDate }}</td>
+                    <td>N/A</td>
                 </tr>
 
-                @if (!empty($paymentprint->transactionid))
+                 
                     <tr>
                         <td class="label">Transaction Reference</td>
-                        <td>{{ $paymentprint->transactionid }}</td>
+                        <td>N/A</td>
                     </tr>
-                @endif
+                
             </table>
         </div>
     </div>
