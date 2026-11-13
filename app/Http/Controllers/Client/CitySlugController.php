@@ -582,8 +582,7 @@ class CitySlugController extends Controller
 		'clients.featured',	 
 		'clients.business_slug',
 		'clients.client_type',			 
-		'citylists.city as city',  
-        DB::raw('MIN(citylists.city)    as city'),
+		'citylists.city as assigned_city',         
         DB::raw('MIN(keyword.keyword)   as keywords'),
         DB::raw('MIN(keyword.slug)      as slugs'),
         'c.rating',
@@ -855,7 +854,7 @@ $reviewList = DB::table('clients')
         try {
                 $res = Http::timeout(10)->withoutVerifying()
                     ->get('https://api.quickdials.com/api/website/business-owners');
-                return $res->successful() ? $res->json() : '';
+                return $res->successful() ? $res->json() : null;
             } catch (\Exception $e) {
                 \Log::error('BusinessOwners API: ' . $e->getMessage());
                 return null;
@@ -3161,7 +3160,7 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
             return isset($slugMap[$inputSlug])
                 ? $inputSlug
                 : '';
-    }
+    }	
 
 
 

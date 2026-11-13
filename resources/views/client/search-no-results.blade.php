@@ -163,8 +163,8 @@ $businessCollections = collect($businesses)->take(20);
                 if (!empty($clientBus['pincode'])) {
                     $address['postalCode'] = $clientBus['pincode'];
                 }
-                if (!empty($clientBus['city'])) {
-                    $address['streetAddress'] = $clientBus['landmark'] ?? $clientBus['city'];
+                if (!empty($clientBus['address'])) {
+                    $address['streetAddress'] = $clientBus['address'];
                 }
 
                 $schema = [

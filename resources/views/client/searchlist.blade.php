@@ -221,8 +221,8 @@ $keywordImg= !empty($kwData['key_icon'])
                 if (!empty($clientBus['pincode'])) {
                     $address['postalCode'] = $clientBus['pincode'];
                 }
-                if (!empty($clientBus['city'])) {
-                    $address['streetAddress'] = $clientBus['landmark'] ?? $clientBus['city'];
+                if (!empty($clientBus['address'])) {
+                    $address['streetAddress'] = $clientBus['address'];
                 }
 
                 $schema = [
@@ -286,7 +286,7 @@ $schema = [
     ]
 ];
 }
-  
+ 
 @endphp
 
 
@@ -326,7 +326,7 @@ $schema = [
             <template x-if="banner.click_url">
                 <a :href="banner.click_url" rel="noopener sponsored" class="block w-full h-full">
                     <img :src="banner.image_url"
-                         alt="banner.alt_text"
+                         :alt="banner.alt_text"
                          :loading="idx === 0 ? 'eager' : 'lazy'"
                          :fetchpriority="idx === 0 ? 'high' : 'auto'"
                          width="1351sw" height="190"
@@ -336,7 +336,7 @@ $schema = [
 
             <template x-if="!banner.click_url">
                 <img :src="banner.image_url"
-                     alt="banner.alt_text"
+                     :alt="banner.alt_text"
                      :loading="idx === 0 ? 'eager' : 'lazy'"
                      :fetchpriority="idx === 0 ? 'high' : 'auto'"
                      width="1200" height="190"
@@ -391,7 +391,7 @@ function bannerSlider(banners, interval = 4000) {
         showAd: true,
 
         init() {
-            console.log('Slider init — banners loaded:', this.banners.length, this.banners);
+           
             if (this.banners.length > 1) {
                 this.start();
                 document.addEventListener('visibilitychange', () => {
