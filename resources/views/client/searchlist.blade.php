@@ -326,7 +326,7 @@ $schema = [
             <template x-if="banner.click_url">
                 <a :href="banner.click_url" rel="noopener sponsored" class="block w-full h-full">
                     <img :src="banner.image_url"
-                         :alt="banner.alt_text"
+                         :alt="banner.alt_text || 'Banner'"
                          :loading="idx === 0 ? 'eager' : 'lazy'"
                          :fetchpriority="idx === 0 ? 'high' : 'auto'"
                          width="1351sw" height="190"
@@ -336,7 +336,7 @@ $schema = [
 
             <template x-if="!banner.click_url">
                 <img :src="banner.image_url"
-                     :alt="banner.alt_text"
+                     :alt="banner.alt_text || 'Banner'"
                      :loading="idx === 0 ? 'eager' : 'lazy'"
                      :fetchpriority="idx === 0 ? 'high' : 'auto'"
                      width="1200" height="190"
