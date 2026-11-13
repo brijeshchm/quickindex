@@ -256,7 +256,7 @@ class OrderHistoryController extends Controller
 
 	public function update(Request $request)
 	{
-//   dd($request->all());
+
 
 		$validator = Validator::make($request->all(), [
 			 

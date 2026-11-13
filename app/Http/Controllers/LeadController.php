@@ -430,13 +430,9 @@ class LeadController extends Controller
 
 		$updated = 0;
 		$skipped = 0;
-// 		// $mobile = '9205323836';
-// 		$mobile = 'IjkyMDUzMjM4MzYi';
-// // $mobile =  dataEncodeJsonBase64($mobile);
-// $mobile =  dataDecodeJsonBase64($mobile);
-// dd($mobile);
 
-//dataDecodeJsonBase64
+
+
 		DB::table('leads')
 			->select('id', 'mobile')
 			->whereNotNull('mobile')
@@ -467,20 +463,7 @@ class LeadController extends Controller
 
 
 
-		//$leads = 	DB::table('leads')->where('id','145')->first();
 		 
-		// $mobile = dataDecodeJsonBase64($leads->mobile);
-// dd($mobile);
-
-// $mobile_hash = hash_hmac(
-// 								'sha256',
-// 								$leads->mobile,
-// 								config('app.key')
-// 							);
-//7657657887
-
-//
-// dd($mobile_hash);
 		return response()->json([
 			'status' => 1,
 			'msg' => $updated > 0

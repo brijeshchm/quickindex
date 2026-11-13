@@ -124,11 +124,6 @@ $monthlyVendors = (clone $vendorQuery)
     ->orderBy('month')
     ->get();
 
-// dd([
-//     'year'            => now()->year,
-//     'total_vendors'   => $totalVendors,
-//     'monthly_vendors' => $monthlyVendors,
-// ]);
 
 
 
@@ -148,7 +143,7 @@ $monthlyVendors = (clone $vendorQuery)
 
 		$kwds = Keyword::select('id', 'keyword')->orderBy('keyword', 'ASC')->get();
 		 
-		//  dd($inactiveClient);
+		 
 		$summary = [
 			'total' => $totalClientsCount,
 			'active' => $activeClient,

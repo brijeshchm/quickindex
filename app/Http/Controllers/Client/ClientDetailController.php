@@ -269,25 +269,39 @@ class ClientDetailController extends Controller
             ->all();
     }
 	
-    private function resolveBestCandidate(string $inputSlug, array $slugMap): ?string
-	{
-		$tokens = array_values(array_filter(explode('-', $inputSlug), fn ($p) => $p !== ''));
-		$candidates = $this->generateSubsequenceSlugs($tokens);
+    // private function resolveBestCandidate(string $inputSlug, array $slugMap): ?string
+	// {
+	// 	$tokens = array_values(array_filter(explode('-', $inputSlug), fn ($p) => $p !== ''));
+	// 	$candidates = $this->generateSubsequenceSlugs($tokens);
 
-		// Longest candidate first = most specific match wins.
-		usort($candidates, fn ($a, $b) => strlen($b) <=> strlen($a));
+	// 	// Longest candidate first = most specific match wins.
+	// 	usort($candidates, fn ($a, $b) => strlen($b) <=> strlen($a));
  
-		foreach ($candidates as $candidate) {
+	// 	foreach ($candidates as $candidate) {
  
-			if (isset($slugMap[$candidate])) {
+	// 		if (isset($slugMap[$candidate])) {
 
  
-				return $candidate;
-			}
-		}
+	// 			return $candidate;
+	// 		}
+	// 	}
 
-		return null;
-	}
+	// 	return null;
+	// }
+
+
+    private function resolveBestCandidate(
+    string $inputSlug,
+            array $slugMap
+        ): ?string {
+
+       
+            return isset($slugMap[$inputSlug])
+                ? $inputSlug
+                : null;
+    }
+
+
        /**
      * Check if a city is valid via the QuickDials city-check API.
      */

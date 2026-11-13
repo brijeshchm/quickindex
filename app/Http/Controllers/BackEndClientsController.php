@@ -3494,7 +3494,7 @@ protected function deleteOldImage($jsonString)
 	public function paymentClient(Request $request)
 	{
 
-// dd($request->all());
+
 		if ($request->ajax()) {
 
 			$id = $request->input('client-id');

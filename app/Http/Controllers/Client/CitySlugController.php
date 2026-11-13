@@ -2878,9 +2878,7 @@ if (empty($faqs)) {
 			$clientMap = $this->getClientSlugMap();  
 			
 			 
-			$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);	
-
-		 
+			$slugUrl   = $this->clientUrlMatch($newSlug, $clientMap);			 
 			if (!empty($slugUrl) && $slugUrl !== $slug && !empty($cityName)) {
 				 
 				return redirect()->route('city.slug', [
@@ -3154,6 +3152,19 @@ private function resolveBestCandidate(string $inputSlug, array $slugMap): ?strin
 
     return null;
 }
+
+
+ private function clientUrlMatch(
+    string $inputSlug,
+            array $slugMap
+        ): ?string {    
+            return isset($slugMap[$inputSlug])
+                ? $inputSlug
+                : '';
+    }
+
+
+
 	/**
      * Check if a city is valid via the QuickDials city-check API.
      */
