@@ -418,12 +418,12 @@ class CitySlugController extends Controller
 				'clients.client_type',			 
 				'clients.pictures',			 
 				'clients.logo',			 
-				'clients.city',			 
+				'clients.city as client_city',			 
 				'clients.state',			 
 				'clients.pincode',			 
 				'clients.landmark',			 
 				'clients.business_description',			 
-				'citylists.city',
+				'citylists.city as city',
 				'keyword.keyword as keywords',
 				'keyword.slug as slugs',
 				DB::raw('COALESCE(c.rating,0) as rating'),
@@ -525,7 +525,7 @@ class CitySlugController extends Controller
 				'certified_img' => $certified_img,
 				'trusted_img' => $trusted_img,
 				'gst_img' => $gst_img,			 
-				'city' => $client->city ??'',	 		 
+				'city' => $client->client_city ??'',	 		 
 				'state' => $client->state ?? '',	 		 
 				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
 				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 		 
@@ -578,10 +578,11 @@ class CitySlugController extends Controller
 		'clients.openUntil',
 		'clients.year_of_estb',
 		'clients.address',
+		'clients.city as client_city',
 		'clients.featured',	 
 		'clients.business_slug',
 		'clients.client_type',			 
-		'citylists.city',  
+		'citylists.city as city',  
         DB::raw('MIN(citylists.city)    as city'),
         DB::raw('MIN(keyword.keyword)   as keywords'),
         DB::raw('MIN(keyword.slug)      as slugs'),
@@ -684,7 +685,7 @@ class CitySlugController extends Controller
 				'certified_img' => $certified_img,
 				'trusted_img' => $trusted_img,
 				'gst_img' => $gst_img,				 
-				'city' => $client->city,			 
+				'city' => $client->client_city,			 
 				'verified' => $client->verified,
 				'trending' => $client->trending,
 				'topSearch' => $client->topSearch,
@@ -1167,7 +1168,7 @@ $reviewList = DB::table('clients')
 				'clients.certifications',
 				'clients.business_slug',
 				'clients.client_type',			 
-				'clients.city',		
+				'clients.city as client_city',		
 				'clients.state',		
 				'clients.pincode',		
 				'clients.logo',		
@@ -1284,7 +1285,7 @@ $reviewList = DB::table('clients')
 				'trending' => $client->trending,
 				'topSearch' => $client->topSearch,
 				'featured' => $client->featured,			 
-				'city' => $client->city ??'',	 		 
+				'city' => $client->client_city ??'',	 		 
 				'state' => $client->state ?? '',	 		 
 				'pincode' => !empty($client->pincode) ? $client->pincode : '',		 
 				'landmark' => $client->landmark ??'OLD AIRPORT RD',	 				 
@@ -1667,7 +1668,7 @@ $reviewList = DB::table('clients')
 				'clients.*',
 				'clients.id as business_id',
 				'assigned_kwds.*',
-				'clients.city',
+				'clients.city as client_city',
 				'assigned_kwds.sold_on_position',
 				'c.average_rating',
 				'c.comment_count'
@@ -1792,7 +1793,7 @@ $reviewList = DB::table('clients')
 		 
 			$addressText = !empty($clientscheck->address) ? $clientscheck->address : '';
 			$mapText = !empty($clientscheck->business_map) ? '\n Directions: ' . $clientscheck->business_map : '';
-			$profile_url = 'https://www.quickdials.com/'. Str::slug(strtolower($clientscheck->city)).'/' . $clientscheck->business_slug;
+			$profile_url = 'https://www.quickdials.com/'. Str::slug(strtolower($clientscheck->client_city)).'/' . $clientscheck->business_slug;
 			$keyword = "";
 			$address_data = "Greetings from {$businessName},\n"
 				. "We’re following up on your enquiry made on Quickdials for {$keyword}.\n"
@@ -1853,7 +1854,7 @@ $reviewList = DB::table('clients')
 				'h1_heading' => $clientscheck->h1_heading,
 				'business_name' => $clientscheck->business_name,
 				'business_slug' => $clientscheck->business_slug,
-				'business_url' => config('app.website') .$clientscheck->city. '/' . $clientscheck->business_slug,
+				'business_url' => config('app.website') .$clientscheck->client_city. '/' . $clientscheck->business_slug,
 				'logo' => $logoImage ?? '',
 				'altLogo' => $altLogo . ' Logo' ?? '',
 				'profile_banner' => $profile_pic ?? '',
@@ -1879,7 +1880,7 @@ $reviewList = DB::table('clients')
 				'trusted_img' => $trusted_img,
 				'gst_img' => $gst_img,
 				'website' => $clientscheck->website,
-				'city' => $clientscheck->city,
+				'city' => $clientscheck->client_city,
 				'state' => $clientscheck->state,
 				'area' => $clientscheck->area,
 				'zone' => $clientscheck->zone,
@@ -2141,7 +2142,7 @@ $reviewList = DB::table('clients')
 			
 				$businessName = $clientscheck->business_name ?? 'this business';
 				$area         = $clientscheck->area ?? '';
-				$city         = $clientscheck->city ?? $city;
+				$city         = $clientscheck->client_city ?? $city;
 				$location     = trim($area . ($area && $city ? ', ' : '') . $city);
 
 				if(!empty($clientscheck->business_description)){
@@ -2152,7 +2153,7 @@ $reviewList = DB::table('clients')
 				' in ' .
 				($clientscheck->area ?? '') .
 				', ' .
-				($clientscheck->city ?? ''),
+				($clientscheck->client_city ?? ''),
 
 				'paragraph' => $clientscheck->business_description,
 				];
@@ -2166,7 +2167,7 @@ $reviewList = DB::table('clients')
 				' in ' .
 				($clientscheck->area ?? '') .
 				', ' .
-				($clientscheck->city ?? ''),
+				($clientscheck->client_city ?? ''),
 
 				'paragraph' => "{$businessName}, located in {$location}, has built a strong reputation as a trusted name in {$city} for delivering professional, reliable, and customer-focused services. With years of hands-on experience, a skilled team, and a strong commitment to quality, {$businessName} It caters to a wide range of customer needs across {$city} and is open from 10:00 AM to 7:00 PM., ensuring timely service, transparent pricing, and lasting results every time.",
 				];
@@ -2200,7 +2201,7 @@ $reviewList = DB::table('clients')
 			// ─── Extract once for clarity & to avoid repetition ───
 			$businessName = $clientscheck->business_name ?? 'this business';
 			$area         = $clientscheck->area ?? '';
-			$city         = $clientscheck->city ?? $city;
+			$city         = $clientscheck->client_city ?? $city;
 			$location     = trim($area . ($area && $city ? ', ' : '') . $city);
 
 			// ─── Paragraph 1 ───
@@ -3481,7 +3482,7 @@ abort(410);
 		//client details
 		$clientMap = $this->getClientSlugMap();  
 
-		dd($clientMap);
+		 
 		$slugUrl   = $this->resolveBestCandidate($newSlug, $clientMap);
 
 		if ($slugUrl !== $slug && !empty($slugUrl)) {	
