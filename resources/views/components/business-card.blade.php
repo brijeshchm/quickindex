@@ -305,34 +305,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="line-clamp-1">{{ collect([$address, $city])->filter()->implode(', ') }}</span>
             </p>
             @endif
- 
-             @if(!empty($business['business_description']))
+            
 
-<div x-data="{ showDescription: false }">
+            @if (!empty($business['business_description']))
+                <div x-data="{ expanded: false }">
+                    <p
+                        class="text-sm leading-6 text-gray-600"
+                        :class="{ 'line-clamp-3': !expanded }"
+                    >
+                        {!! $business['business_description'] !!}
+                    </p>
 
-    {{-- Desktop Description --}}
-    <p class="hidden sm:block text-sm text-gray-500 mt-1 line-clamp-3">
-        {!! $business['business_description'] !!}
-    </p>
+                    <button
+                        type="button"
+                        @click="expanded = !expanded"
+                        :aria-expanded="expanded.toString()"
+                        class="mt-2 text-sm font-semibold text-blue-600 hover:text-blue-800"
+                        x-text="expanded ? 'Read Less' : 'Read More'"
+                    ></button>
+                </div>
+            @endif
 
-    {{-- Mobile Description --}}
-    <div class="sm:hidden mt-1">
-        <p class="text-sm text-gray-500 line-clamp-2">
-            {!! $business['business_description'] !!}
-        </p>
- Read More
-        
-    </div>
-
- 
- 
-
-    
-
-</div>
-
-@endif
-           
+            
         </div>
     </div>
 

@@ -94,8 +94,7 @@
             <loc>{{ route('city.slug', [
                 'city_slug' => $city,
                 'service_slug' => $keyword
-            ]) }}</loc>
-        <lastmod>2026-10-09T10:30:00+00:00</lastmod> 
+            ]) }}</loc>        
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -115,8 +114,7 @@
             <loc>{{ route('city.slug', [
                 'city_slug' => $cityNoida,
                 'service_slug' => $keywordNoida
-            ]) }}</loc>
-            <lastmod>2026-10-09T10:30:00+00:00</lastmod>
+            ]) }}</loc>            
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -136,8 +134,7 @@
             <loc>{{ route('city.slug', [
                 'city_slug' => $cityDelhi,
                 'service_slug' => $keywordDelhi
-            ]) }}</loc>
-            <lastmod>2026-10-09T10:30:00+00:00</lastmod>
+            ]) }}</loc>             
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>
@@ -157,8 +154,7 @@
             <loc>{{ route('city.slug', [
                 'city_slug' => $cityBangalore,
                 'service_slug' => $keywordBangalore
-            ]) }}</loc>
-            <lastmod>2026-10-09T10:30:00+00:00</lastmod>
+            ]) }}</loc>           
             <changefreq>daily</changefreq>
             <priority>0.80</priority>
         </url>

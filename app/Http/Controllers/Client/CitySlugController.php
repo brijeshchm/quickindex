@@ -543,8 +543,8 @@ class CitySlugController extends Controller
 				'whatsapp' => "917559435943",
 				'reviewCount' => $client->comment_count,
 				'tags' => $assignedKeywords,
-				'category' => $assignedCategory ?? null,
-				'business_description' => $client->business_description ?? $template ?? null,
+				'category' => $assignedCategory ?? '',
+				'business_description' => $client->business_description ?? $template ?? '',
 			];
 		});
  
@@ -698,8 +698,8 @@ class CitySlugController extends Controller
 				'whatsapp' => "917559435943",
 				'comment_count' => $client->comment_count,
 				'tags' => $assignedKeywords,
-				'category' => $assignedCategory ?? null,
-				'businesDescription' => $template ?? null,
+				'category' => $assignedCategory ?? '',
+				'businesDescription' => $template ?? '',
 
 			];
 		});
@@ -854,7 +854,7 @@ $reviewList = DB::table('clients')
         try {
                 $res = Http::timeout(10)->withoutVerifying()
                     ->get('https://api.quickdials.com/api/website/business-owners');
-                return $res->successful() ? $res->json() : null;
+                return $res->successful() ? $res->json() : '';
             } catch (\Exception $e) {
                 \Log::error('BusinessOwners API: ' . $e->getMessage());
                 return null;
@@ -1467,9 +1467,9 @@ $reviewList = DB::table('clients')
 				'openUntil' => $client->openUntil,
 				'avgRating' => $avgRating,
 				'comment_count' => $client->comment_count,				 
-				'tags' => $assignedKeywords ?? null,
-				'category' => $assignedCategory ?? null,
-				'overviewBusiness' => $template ?? null,
+				'tags' => $assignedKeywords ?? '',
+				'category' => $assignedCategory ?? '',
+				'overviewBusiness' => $template ?? '',
 			];
 		});
 
@@ -2056,20 +2056,20 @@ $reviewList = DB::table('clients')
 
 
 			$data['certificate'] = [
-				'gst_no' => $clientscheck->gst_no ?? null,
+				'gst_no' => $clientscheck->gst_no ?? '',
 				'gst_certificate' => $gstImage,
 				'pan_no' => $clientscheck->pan_no,
 				'pan_certificate' => $panImage,
-				'cin_no' => $clientscheck->cin_no ?? null,
+				'cin_no' => $clientscheck->cin_no ?? '',
 				'cin_certificate' => $cinImage,
-				'iso_no' => $clientscheck->iso_no ?? null,
-				'iso_certificate' => $isoImage ?? null,
-				'msme_no' => $clientscheck->msme_no ?? null,
-				'msme_certificate' => $msmeImage ?? null,
-				'coi_no' => $clientscheck->coi_no ?? null,
-				'coi_certificate' => $coiImage ?? null,
-				'dpiit_no' => $clientscheck->dpiit_no ?? null,
-				'dpiit_certificate' => $dpiitImage ?? null,
+				'iso_no' => $clientscheck->iso_no ?? '',
+				'iso_certificate' => $isoImage ?? '',
+				'msme_no' => $clientscheck->msme_no ?? '',
+				'msme_certificate' => $msmeImage ?? '',
+				'coi_no' => $clientscheck->coi_no ?? '',
+				'coi_certificate' => $coiImage ?? '',
+				'dpiit_no' => $clientscheck->dpiit_no ?? '',
+				'dpiit_certificate' => $dpiitImage ?? '',
 				'award_name1' => $clientscheck->award_name1,
 				'award_img1' => $awardimg1,
 				'award_name2' => $clientscheck->award_name2,
