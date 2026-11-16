@@ -22,7 +22,6 @@
 <meta property="og:title" content="@yield('title', 'QuickDials')" />
 <meta property="og:description" content="@yield('description')" />
 <meta property="og:url" content="{{ url()->current() }}" />
-<meta property="og:type" content="website" />
 <meta property="og:image" content="@yield('og_image', asset('client/images/quickdials-og.png'))" />
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -314,6 +313,7 @@ let cities = localStorage.getItem('city');
 
   if(cities){
     applyCity(cities);
+    return;
     }else{
     requestPreciseLocation();
     }

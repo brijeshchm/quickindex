@@ -186,14 +186,54 @@ $keywordImg= !empty($kwData['key_icon'])
         if (!empty($cityDetails['pincode'])) {
             $address['postalCode'] = $cityDetails['pincode'] ?? '560008';
         }
+        $pageUrl = url()->current();
+
+        $businessCollection = collect($businesses ?? [])
+        ->filter(function ($business) {
+            return filled(data_get($business, 'business_name'))
+                && filled(data_get($business, 'business_slug'));
+        })
+        ->take(10)
+        ->values();
 
         $schema = [
-            '@context' => 'https://schema.org',
-            '@type'    => 'CollectionPage',
-            'name'     => $metaTitle,
-            'url'      => url()->current(),
-            'description'  => $metaDescription,
+        '@context' => 'https://schema.org',
+        '@type' => 'CollectionPage',
+        '@id' => $pageUrl . '#webpage',
+        'name' => $metaTitle,
+        'url' => $pageUrl,
+        'description' => trim(strip_tags((string) $metaDescription)),
         ];
+
+        if ($businessCollection->isNotEmpty()) {
+        $schema['mainEntity'] = [
+            '@type' => 'ItemList',
+            '@id' => $pageUrl . '#business-list',
+            'numberOfItems' => $businessCollection->count(),
+
+            'itemListElement' => $businessCollection
+                ->map(function ($business, $index) {
+                    $businessUrl = route(
+                        'showCity',
+                        data_get($business, 'business_slug')
+                    );
+
+                    return [
+                        '@type' => 'ListItem',
+                        'position' => $index + 1,
+                        'item' => [
+                            '@type' => 'LocalBusiness',
+                            '@id' => $businessUrl . '#business',
+                            'name' => data_get($business, 'business_name'),
+                            'url' => $businessUrl,
+                        ],
+                    ];
+                })
+                ->all(),
+        ];
+        }
+
+
         
         if (!empty($keywordImg)) {
             $schema['image'] = $keywordImg;
@@ -242,50 +282,9 @@ $keywordImg= !empty($kwData['key_icon'])
         }
 
     } 
-                     
- if (!empty($businesses)) {
 
-$businessCollection = collect($businesses)->take(10);
 
-$schema = [
-    '@context' => 'https://schema.org',
-    '@type' => 'CollectionPage',
-
-    'name' => $keyword . ' in ' . ucfirst($city),
-
-    'description' => $metaDescription,
-
-    'url' => url()->current(),
-
-    'mainEntity' => [
-        '@type' => 'ItemList',
-
-        'numberOfItems' => $businessCollection->count(),
-
-        'itemListElement' => $businessCollection
-            ->values()
-            ->map(function ($business, $index) {
-
-                $businessName = data_get($business, 'business_name');
-                $businessSlug = data_get($business, 'business_slug');
-
-                return [
-                    '@type' => 'ListItem',
-
-                    'position' => $index + 1,
-
-                    'name' => $businessName,
-
-                    'url' => route(
-                        'showCity',
-                        $businessSlug
-                    )
-                ];
-            })
-            ->toArray()
-    ]
-];
-}
+ 
  
 @endphp
 
@@ -329,7 +328,7 @@ $schema = [
                          :alt="banner.alt_text || 'Banner'"
                          :loading="idx === 0 ? 'eager' : 'lazy'"
                          :fetchpriority="idx === 0 ? 'high' : 'auto'"
-                         width="1351sw" height="190"
+                         width="1351" height="190"
                          class="w-full h-full object-contain" />
                 </a>
             </template>

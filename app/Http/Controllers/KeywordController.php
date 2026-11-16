@@ -1581,6 +1581,7 @@ $leads->whereDate('created_at', '<=', $dateTo);
         return view('admin.seo.seoReport', ['search' => $search]);
     }
 }
+
 	public function seoReport_oldh(Request $request)
 	{
 		if (!($request->user()->current_user_can('administrator') || $request->user()->current_user_can('all_SEO'))) {

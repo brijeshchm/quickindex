@@ -272,7 +272,7 @@ $schema = [
                         loading="eager"
                         fetchpriority="high"
                         decoding="async"
-                         width="1351sw" height="190"
+                         width="1351" height="190"
                          class="w-full h-full object-contain" />
                 </a>
             </template>
@@ -331,7 +331,7 @@ function bannerSlider(banners, interval = 4000) {
         showAd: true,
 
         init() {
-            console.log('Slider init — banners loaded:', this.banners.length, this.banners);
+            
             if (this.banners.length > 1) {
                 this.start();
                 document.addEventListener('visibilitychange', () => {
