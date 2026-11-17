@@ -442,32 +442,60 @@ function bannerSlider(banners, interval = 4000) {
                     <span>{{ $keyword }}</span>                       
                 </nav>
 
-                <div itemscope itemtype="https://schema.org/Product" class="space-y-2">    
-                    <div itemprop="name">
-                        <h1 class="text-lg font-bold text-gray-900 leading-tight">{{ !empty($kwData['h1_heading']) ? $kwData['h1_heading'] : trim($keyword) }}</h1>
-                    </div>                           
-                    <div itemprop="aggregateRating"
-                        itemscope
-                        itemtype="https://schema.org/AggregateRating"
-                        class="flex items-center gap-2 text-sm">
-                        <img  itemprop="image" src="{{ asset('client/images/' . $starImg) }}"
+
+                <div class="space-y-2">
+                <h1 class="text-lg font-bold leading-tight text-gray-900">
+                {{ !empty($kwData['h1_heading'])
+                ? $kwData['h1_heading']
+                : trim(
+                ($keyword ?? '') .
+                (!empty($city)
+                ? ' in ' . ucwords(strtolower(str_replace('-', ' ', $city)))
+                : '')
+                )
+                }}
+                </h1>
+                </div>            
+
+            <div
+                itemscope
+                itemtype="https://schema.org/Course"
+                class="flex flex-wrap items-center gap-2"
+            >
+                <h2 itemprop="name" class="font-semibold text-gray-900">
+                    {{ $keyword }}
+                </h2>
+
+                <div
+                    itemprop="aggregateRating"
+                    itemscope
+                    itemtype="https://schema.org/AggregateRating"
+                    class="flex flex-wrap items-center gap-2 text-sm"
+                >
+                    <img
+                        src="{{ asset('client/images/' . $starImg) }}"
                         alt="{{ $ratingValue }} out of 5 stars"
-                        class="lazy-image h-4 w-auto"
+                        class="h-4 w-auto"
                         width="80"
                         height="16"
                         loading="lazy"
                         decoding="async"
-                        >
-                        <span class="font-semibold text-gray-900">
-                        <span itemprop="ratingValue">{{ $ratingValue }}</span>
-                        </span>
-                        <span class="text-gray-500">out of</span>
-                        <span itemprop="bestRating">5</span>
-                        <span class="text-gray-500">based on</span>
-                        <span itemprop="ratingCount">{{ $ratingCount }}</span>
-                        <span class="text-gray-500">ratings</span>
-                    </div>
-                </div>    
+                    >
+
+                    <span itemprop="ratingValue" class="font-semibold text-gray-900">
+                        {{ $ratingValue }}
+                    </span>
+
+                    <span class="text-gray-500">out of</span>
+                    <span itemprop="bestRating">5</span>
+                    <meta itemprop="worstRating" content="1">
+
+                    <span class="text-gray-500">based on</span>
+                    <span itemprop="ratingCount">{{ $ratingCount }}</span>
+                    <span class="text-gray-500">ratings</span>
+                </div>
+            </div>
+                           
                   <p class="pt-1">{{ $kwData['short_definition']??'' }}</p>         
             </div>
           
