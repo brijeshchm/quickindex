@@ -1041,8 +1041,14 @@ function filterStickyCities(q) {
             // const m = (d.data ?? []).map(i => i.cityDetails);
             const m = (d.data ?? []).map(i => ({ city: i.city, cityDetails: i.cityDetails }));
        
-            renderStickyCityList(m.length ? m : CITIES, q);
-        } catch { renderStickyCityList(CITIES.filter(c => c.toLowerCase().includes(q.toLowerCase())), q); }
+            renderStickyCityList(m.length ? m : FALLBACK_CITIES, q);
+
+            
+
+
+
+
+        } catch { renderStickyCityList(FALLBACK_CITIES.filter(c => c.toLowerCase().includes(q.toLowerCase())), q); }
     }, 250);
 }
 

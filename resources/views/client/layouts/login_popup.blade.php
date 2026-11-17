@@ -207,7 +207,7 @@ async function handleEmailLogin() {
         const res  = await fetch('/auth/send-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF() },
-            body: JSON.stringify({ login }),
+            body: JSON.stringify({ login:login }),
         });
         const data = await res.json();
 
@@ -344,13 +344,13 @@ function startCountdown(sec = 300) {
 }
 
 async function handleResend() {
-    const email = document.getElementById('otp-email-display').textContent;
+    const login = document.getElementById('otp-email-display').textContent;
     document.getElementById('resend-btn').disabled = true;
     try {
         await fetch('/auth/send-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF() },
-            body: JSON.stringify({ email }),
+            body: JSON.stringify({ login:login }),
         });
         document.querySelectorAll('.otp-box').forEach(b => {
             b.value = '';

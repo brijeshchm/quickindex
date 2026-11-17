@@ -133,8 +133,8 @@ class CitySlugController extends Controller
 		}
 
 
-		$child_icon =config('app.website') . 'client/images/it_training.jpg';
-		$key_icon =config('app.website') . 'client/images/it_training.jpg';
+		$child_icon ='';
+		$key_icon ='';
 		$child_alt =$keywordDetails->keyword;
 		
 		if (!empty($keywordDetails->pc_icon)) {
@@ -935,8 +935,8 @@ $reviewList = DB::table('clients')
 				return  null;
 			}
 		 
-		$child_icon =config('app.website') . 'client/images/it_training.jpg';
-		$key_icon =config('app.website') . 'client/images/it_training.jpg';
+		$child_icon ='';
+		$key_icon ='';
 		$child_alt =$keywordDetails->keyword;
 		$alt = "";
 
@@ -2584,6 +2584,7 @@ $reviewList = DB::table('clients')
         $ratingCount = (int) ($kwData['ratingcount'] ?? 0);
         $ratingValue = (float) ($kwData['ratingvalue'] ?? 0);
        	$bgImage = !empty($kwData['child_banner']) ? $kwData['child_banner'] : ($kwData['category_banner'] ?? '');
+       
 
 		$topDescription = !empty($kwData['top_description']) ? replaceCity($kwData['top_description'], $area) : '';
 		$bottomDescription = !empty($kwData['bottom_description']) ? replaceCity($kwData['bottom_description'], $area) : '';

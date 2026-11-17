@@ -66,6 +66,7 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KZF3WGSW');</script>
+
 <!-- End Google Tag Manager --> 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <style>
@@ -315,8 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
 let cities = localStorage.getItem('city');
 
   if(cities){
-    applyCity(cities);
-    return;
+    applyCity(cities);    
     }else{
     requestPreciseLocation();
     }
