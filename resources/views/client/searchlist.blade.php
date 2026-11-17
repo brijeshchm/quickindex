@@ -405,7 +405,7 @@ function bannerSlider(banners, interval = 4000) {
 }
 </script>
 @else
-     @if($bgImage)
+      @if($bgImage)
     <div x-show="showAd" x-cloak
          class="relative w-full overflow-hidden h-48"
          style="background-image: url('{{ $bgImage }}'); background-size: cover; background-position: center;">

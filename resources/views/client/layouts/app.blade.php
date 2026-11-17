@@ -36,7 +36,6 @@
 <meta name="twitter:image:alt" content="@yield('title', 'QuickDials')">
 <meta name="geo.region" content="@yield('geo_region', 'IN')" />
 <meta name="geo.placename" content="@yield('geo_city', 'India')" />
-<meta name="geo.position" content="@yield('geo_position', '')" />
 <meta name="google-site-verification" content="O8A-LG3YpW7vOcPtVP9OuNrEcLfLf1kW2tTVpFpHNxM" />
 <meta name="msvalidate.01" content="456AED0115D50D42C4F3A79DAB89D41D" />
 <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('client/images/favicon.png') }}">
