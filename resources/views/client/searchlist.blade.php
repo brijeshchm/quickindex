@@ -1,7 +1,6 @@
 @extends('client.layouts.app')
 @section('title', $metaTitle ?? $keyword . ' in ' . ucwords(strtolower(str_replace('-', ' ', $city))) . ' | QuickDials')
 @section('description', $metaDescription ?? 'Find the best ' . $keyword . ' in ' . ucwords(strtolower(str_replace('-', ' ', $city))) . ' with QuickDials. Discover verified businesses, addresses, phone numbers, reviews, ratings, photos, maps, and top local services near you.')
-
 @php
     
     $cityKeywordMap = [
@@ -76,7 +75,6 @@ $modifiedDate = \Carbon\Carbon::parse($kwData['updated_at'])->toIso8601String();
 ) !!}
 </script>
 @endsection
-
 @section('content') 
 <style>  
     #enquiry-modal { display: none; }
@@ -124,10 +122,10 @@ $starMap = [
     3.5 => 'star_3.5.png', 4 => 'star_4.png', 4.5 => 'star_4.5.png',
     4.75 => 'star_4.75.png', 5 => 'star_5.png',
 ];
- 
+
 $bgImage = !empty($bgImage)
     ? $bgImage
-    : '/client/images/computer-courses-training.jpg';
+    : '';
 $starKey = 0;
 foreach ($starMap as $k => $v) {
     if ($ratingValue >= $k) $starKey = $k;
@@ -248,7 +246,7 @@ $keywordImg= !empty($kwData['key_icon'])
   if (!empty($businesses)) { 
 
 $businessCollection = collect($businesses)->take(10);
-
+ 
 $schema = [
     '@context' => 'https://schema.org',
     '@type' => 'CollectionPage',
@@ -268,8 +266,7 @@ $schema = [
             ->values()
             ->map(function ($business, $index) {
 
-                $businessName = data_get($business, 'business_name');
-                $businessSlug = data_get($business, 'business_slug');
+                $businessName = data_get($business, 'name');               
 
                 return [
                     '@type' => 'ListItem',
@@ -277,11 +274,8 @@ $schema = [
                     'position' => $index + 1,
 
                     'name' => $businessName,
-
-                    'url' => route(
-                        'showCity',
-                        $businessSlug
-                    )
+                    'url'=>    route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($business['city']),'service_slug' => $business['business_slug']]),  
+                     
                 ];
             })
             ->toArray()
@@ -411,7 +405,7 @@ function bannerSlider(banners, interval = 4000) {
 }
 </script>
 @else
-     
+     @if($bgImage)
     <div x-show="showAd" x-cloak
          class="relative w-full overflow-hidden h-48"
          style="background-image: url('{{ $bgImage }}'); background-size: cover; background-position: center;">
@@ -426,6 +420,8 @@ function bannerSlider(banners, interval = 4000) {
             </div>
         </div>
     </div>
+@endif
+
 @endif
  
     <div class="w-full bg-white border-b border-gray-100 px-4 sm:px-6 py-2">

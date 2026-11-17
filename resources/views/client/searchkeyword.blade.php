@@ -259,20 +259,13 @@ $schema = [
             ->values()
             ->map(function ($business, $index) {
 
-                $businessName = data_get($business, 'business_name');
-                $businessSlug = data_get($business, 'business_slug');
+                $businessName = data_get($business, 'name');
 
                 return [
                     '@type' => 'ListItem',
-
                     'position' => $index + 1,
-
                     'name' => $businessName,
-
-                    'url' => route(
-                        'showCity',
-                        $businessSlug
-                    )
+                    'url'=>    route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug($business['city']),'service_slug' => $business['business_slug']]),  
                 ];
             })
             ->toArray()
