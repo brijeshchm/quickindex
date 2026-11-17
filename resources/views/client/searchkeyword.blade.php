@@ -459,7 +459,7 @@ function bannerSlider(banners, interval = 4000) {
 
             <div
                 itemscope
-                itemtype="https://schema.org/Course"
+                itemtype="https://schema.org/Product"
                 class="flex flex-wrap items-center gap-2"
             >
                 <h2 itemprop="name" class="font-semibold text-gray-900">
