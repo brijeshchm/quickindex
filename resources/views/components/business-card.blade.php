@@ -154,7 +154,7 @@
                                 : url('/' . $business['business_slug']);
                         @endphp
 
-                        <a href="{{ $businessUrl }}" rel="noopener noreferrer nofollow">
+                        <a href="{{ $businessUrl }}" >
                             {{ $name }}
                         </a>
                         </h2>
@@ -269,8 +269,7 @@
                 ✉ <span>Enquiry</span>
             </button>
 
-            <a href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($business['city'])),'service_slug' => $business['business_slug']]) }}"  rel="noopener noreferrer nofollow"
-            class="{{ $actionClass }} bg-sky-500 hover:bg-sky-600">
+            <a href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($business['city'])),'service_slug' => $business['business_slug']]) }}" class="{{ $actionClass }} bg-sky-500 hover:bg-sky-600">
                 🗺 <span>View</span>
             </a>
         </div>
@@ -304,7 +303,7 @@
         </div>
 
         <h3 class="font-bold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors mb-0.5">
-            <a href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($biz['city'])),'service_slug' => $biz['business_slug']]) }}" rel="noopener noreferrer nofollow">{{ $name }}</a>
+            <a href="{{ route('city.slug', ['city_slug'=> \Illuminate\Support\Str::slug(strtolower($biz['city'])),'service_slug' => $biz['business_slug']]) }}" >{{ $name }}</a>
         </h3>
         <p class="text-[11px] text-gray-400 mb-3">{{ implode(', ', array_slice($category, 0, 2)) }}</p>
 

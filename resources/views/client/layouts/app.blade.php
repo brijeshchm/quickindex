@@ -8,7 +8,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @if (request()->is('/'))
 <link rel="canonical" href="https://www.quickdials.com/" />
-<meta property="og:type" content="Website">
+
 @elseif (View::hasSection('canonical'))
 @yield('canonical')
 @else
@@ -19,6 +19,7 @@
 @else
 <meta name="robots" content="index, follow">
 @endif
+<meta property="og:type" content="Website">
 <meta name="author" content="QuickDials">
 <meta property="og:title" content="@yield('title', 'QuickDials')" />
 <meta property="og:description" content="@yield('description')" />
