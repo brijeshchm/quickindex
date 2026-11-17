@@ -182,7 +182,7 @@ $keywordImg= !empty($kwData['key_icon'])
         '@id' => $pageUrl . '#webpage',
         'name' => $metaTitle,
         'url' => $pageUrl,
-        'description' => trim(strip_tags((string) $metaDescription)),
+        'description'  => $metaDescription,
         ];
 
         if ($businessCollection->isNotEmpty()) {
