@@ -505,8 +505,8 @@ const desktopNavhome  = document.getElementById('desktop-nav');
 window.addEventListener('scroll', () => {
     const y = window.scrollY;
   
-    const scrolled = y > 140;
-    const showSearch = y > 140;
+    const scrolled = y > 10;
+    const showSearch = y > 100;
  
     navbarhome.classList.toggle('bg-white/95', scrolled || false);
     navbarhome.classList.toggle('backdrop-blur-md', scrolled);

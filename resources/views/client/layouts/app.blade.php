@@ -8,7 +8,6 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @if (request()->is('/'))
 <link rel="canonical" href="https://www.quickdials.com/" />
-
 @elseif (View::hasSection('canonical'))
 @yield('canonical')
 @else
@@ -19,7 +18,6 @@
 @else
 <meta name="robots" content="index, follow">
 @endif
-
 <meta name="author" content="QuickDials">
 <meta property="og:type" content="Website">
 <meta property="og:title" content="@yield('title', 'QuickDials')" />
@@ -33,9 +31,7 @@
 <meta name="twitter:title" content="@yield('title')" />
 <meta name="twitter:description" content="@yield('description')" />
 <meta name="twitter:image" content="@yield('og_image', asset('client/images/quickdials-og.png'))" />
-<meta name="twitter:image:alt" content="@yield('title', 'QuickDials')">
-<meta name="geo.region" content="@yield('geo_region', 'IN')" />
-<meta name="geo.placename" content="@yield('geo_city', 'India')" />
+<meta name="twitter:image:alt" content="@yield('title', 'QuickDials')"> 
 <meta name="google-site-verification" content="O8A-LG3YpW7vOcPtVP9OuNrEcLfLf1kW2tTVpFpHNxM" />
 <meta name="msvalidate.01" content="456AED0115D50D42C4F3A79DAB89D41D" />
 <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('client/images/favicon.png') }}">
@@ -65,7 +61,6 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-KZF3WGSW');</script>
-
 <!-- End Google Tag Manager --> 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <style>

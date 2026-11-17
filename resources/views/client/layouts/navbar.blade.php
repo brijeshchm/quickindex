@@ -394,7 +394,7 @@
             <img loading="lazy"
                  src="{{ $profileImg }}"
                  alt="{{ $businessName }}"
-                 loading="lazy" decoding="async"
+                  decoding="async"
                  class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm">
 
             {{-- Online indicator --}}
@@ -1060,7 +1060,7 @@ function clearStickyCitySearch() {
 
 function selectStickyCity(city) {
     stickySelectedCity = city;
-    localStorage.setItem('city', city);
+    localStorage.setItem('city', city.toLowerCase());
     document.getElementById('sticky-city-label').textContent = city;
     // document.getElementById('mobile-city-label').textContent = city; 
     document.getElementById('sticky-city-panel').classList.add('hidden');
@@ -1297,7 +1297,7 @@ function filterMobileCities(q) {
     if (q.length < 1) { renderMobileCityList(FALLBACK_CITIES); return; }
     mobileCityTimeout = setTimeout(async () => {
         try {
-            console.log(q);
+             
             const r = await fetch(`/getCityAjax?city=${encodeURIComponent(q)}`);
             const d = await r.json();
             const m = (d.data ?? []).map(i => ({ city: i.city, cityDetails: i.cityDetails }));

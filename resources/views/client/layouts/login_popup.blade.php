@@ -12,7 +12,7 @@
         {{-- Logo & heading --}}
         <div class="text-center mb-6">
             <img loading="lazy" decoding="async" src="{{ asset('client/images/small-logo.png') }}" alt="QuickDials"
-                 class="h-10 mx-auto mb-3 object-contain" loading="lazy" decoding="async">
+                 class="h-10 mx-auto mb-3 object-contain">
             <span class="text-lg font-black text-gray-900">Welcome Quickdials</span>
             <p class="text-sm text-gray-500 mt-1">Sign in to your business account</p>
         </div>
@@ -101,7 +101,7 @@
             <p class="text-center text-sm text-gray-500">
                 Didn't receive it?
                 <span id="resend-countdown" class="text-gray-400">
-                    Resend in <span id="countdown-num" class="font-semibold text-sky-500">10 Minuts</span>s
+                    Resend in <span id="countdown-num" class="font-semibold text-sky-500">5 Minuts</span>s
                 </span>
                 <button id="resend-btn" onclick="handleResend()"
                         class="hidden text-sky-500 hover:text-sky-700 font-semibold transition-colors">
@@ -308,9 +308,7 @@ async function handleVerifyOtp() {
                 
             window.location.href = data.redirect;
 
-
-
-             }, 1500);
+             }, 1200);
         } else {
             showError('otp-error', data.message || 'Invalid or expired code.');
         }
@@ -323,6 +321,7 @@ async function handleVerifyOtp() {
 
 // ── Resend countdown ──────────────────────────────────────────────────────────
 function startCountdown(sec = 300) {
+
     const countdownEl = document.getElementById('resend-countdown');
     const numEl       = document.getElementById('countdown-num');
     const resendBtn   = document.getElementById('resend-btn');
@@ -330,17 +329,37 @@ function startCountdown(sec = 300) {
     countdownEl.classList.remove('hidden');
     resendBtn.classList.add('hidden');
     numEl.textContent = sec;
+    if (window._resendTimer) {
+    clearInterval(window._resendTimer);
+    }
 
-    if (window._resendTimer) clearInterval(window._resendTimer);
-    window._resendTimer = setInterval(() => {
-        sec--;
-        numEl.textContent = sec;
-        if (sec <= 0) {
-            clearInterval(window._resendTimer);
-            countdownEl.classList.add('hidden');
-            resendBtn.classList.remove('hidden');
-        }
-    }, 1000);
+sec = 300; // 5 minutes
+
+// Display time in MM:SS format
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
+// Show initial time
+numEl.textContent = formatTime(sec);
+
+window._resendTimer = setInterval(() => {
+    sec--;
+
+    numEl.textContent = formatTime(sec);
+
+    if (sec <= 0) {
+        clearInterval(window._resendTimer);
+        window._resendTimer = null;
+
+        countdownEl.classList.add('hidden');
+        resendBtn.classList.remove('hidden');
+    }
+}, 1000);
+    
 }
 
 async function handleResend() {

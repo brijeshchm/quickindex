@@ -843,10 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         @foreach($quickBusinesses ?? [] as $qb)
                         <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
                             <div class="relative w-full h-48 overflow-hidden rounded-t-2xl bg-gray-100">
-                                <img loading="lazy"
-            decoding="async" src="{{ $qb['image'] ?? '' }}" alt="{{ $qb['name'] ?? $keyword }}" 
-            width="100" height="100"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" >
+                                <img loading="lazy" decoding="async" src="{{ $qb['image'] ?? '' }}" alt="{{ $qb['name'] ?? $keyword }}" width="100" height="100" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" >
                             </div>
                             <div class="p-5">
                                 <div class="flex items-center gap-2 mb-3">

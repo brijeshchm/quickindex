@@ -36,6 +36,7 @@
     $hasCuratedContent = $faridabadIndex || $noidaIndex || $delhiIndex || $bangaloreIndex;
 @endphp
 
+@section('geo_city',$city)
 @section('meta_robots')
 <meta name="robots" content="{{ $shouldIndex ? 'index, follow' : 'noindex, follow' }}">
 @endsection
