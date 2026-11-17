@@ -682,7 +682,7 @@ function imgGoToIndex(id, idx) {
     for (let i = 0; i < s.total; i++) {
         const dot = document.getElementById(id + '-dot-' + i);
         if (!dot) continue;
-        dot.className = i === s.current
+        dot.class = i === s.current
             ? 'rounded-full transition-all duration-300 w-3 h-1.5 bg-white'
             : 'rounded-full transition-all duration-300 w-1.5 h-1.5 bg-white/50';
     }

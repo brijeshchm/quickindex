@@ -275,7 +275,7 @@ select.ef-input { padding-left:1rem; }
         }
         items.forEach(c => {
             const div = document.createElement('div');
-            div.className = 'cc-item' + (
+            div.class = 'cc-item' + (
                 String(c.phonecode) === String(hiddenCode.value) &&
                 c.sortname === flagImg.alt ? ' active' : ''
             );
