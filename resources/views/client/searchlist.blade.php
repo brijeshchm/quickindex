@@ -680,7 +680,7 @@ function imgGoToIndex(id, idx) {
     for (let i = 0; i < s.total; i++) {
         const dot = document.getElementById(id + '-dot-' + i);
         if (!dot) continue;
-        dot.class = i === s.current
+        dot.className = i === s.current
             ? 'rounded-full transition-all duration-300 w-3 h-1.5 bg-white'
             : 'rounded-full transition-all duration-300 w-1.5 h-1.5 bg-white/50';
     }
@@ -700,10 +700,19 @@ window.imgGoTo = function (id, idx) {
     if (s) { clearInterval(s.timer); imgStartAuto(id); }
 };
 
+
 function imgStartAuto(id) {
-    const s = window._sliders[id];
-    if (!s || s.total <= 1) return;
-    s.timer = setInterval(() => imgGoToIndex(id, s.current + 1), 3500);
+    const slider = window._sliders[id];
+
+    if (!slider) return;
+
+    clearInterval(slider.timer);
+
+    if (slider.total <= 1) return;
+
+    slider.timer = setInterval(() => {
+        imgGoToIndex(id, slider.current + 1);
+    }, 3500);
 }
 
 // Auto-init all sliders on page load
