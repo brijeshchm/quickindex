@@ -461,7 +461,7 @@ function bannerSlider(banners, interval = 4000) {
             <div
                 itemscope
                 itemtype="https://schema.org/Course"
-                class="flex flex-wrap items-center gap-2"
+                class="flex flex-wrap items-center gap-2 space-y-1"
             >
                 <div itemprop="name" class="text-gray-500">
                     {{ $keyword }}
