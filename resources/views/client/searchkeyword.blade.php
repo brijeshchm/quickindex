@@ -459,7 +459,7 @@ function bannerSlider(banners, interval = 4000) {
 
             <div
                 itemscope
-                itemtype="https://schema.org/Product"
+                itemtype="https://schema.org/Course"
                 class="flex flex-wrap items-center gap-2"
             >
                 <h2 itemprop="name" class="font-semibold text-gray-900">
@@ -494,9 +494,13 @@ function bannerSlider(banners, interval = 4000) {
                     <span itemprop="ratingCount">{{ $ratingCount }}</span>
                     <span class="text-gray-500">ratings</span>
                 </div>
+
+                <p itemprop="description" class="w-full text-sm text-gray-600">
+    {{ $kwData['short_definition']??'' }}
+</p>
             </div>
                            
-                  <p class="pt-1">{{ $kwData['short_definition']??'' }}</p>         
+                          
             </div>
           
             <div class="flex items-center gap-2 flex-wrap">
