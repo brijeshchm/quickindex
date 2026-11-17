@@ -187,13 +187,10 @@ $keywordImg= !empty($kwData['key_icon'])
             $address['postalCode'] = $cityDetails['pincode'] ?? '560008';
         }
 
-        $schema = [
-            '@context' => 'https://schema.org',
-            '@type'    => 'CollectionPage',
-            'name'     => $metaTitle,
-            'url'      => url()->current(),
-            'description'  => $metaDescription,
-        ];
+       
+
+        
+ 
         
         if (!empty($keywordImg)) {
             $schema['image'] = $keywordImg;
@@ -243,7 +240,12 @@ $keywordImg= !empty($kwData['key_icon'])
 
     } 
                      
- if (!empty($businesses)) {
+  
+ 
+
+
+ 
+  if (!empty($businesses)) { 
 
 $businessCollection = collect($businesses)->take(10);
 
@@ -251,7 +253,7 @@ $schema = [
     '@context' => 'https://schema.org',
     '@type' => 'CollectionPage',
 
-    'name' => $keyword . ' in ' . ucfirst($city),
+    'name' => $keyword,
 
     'description' => $metaDescription,
 
@@ -286,7 +288,6 @@ $schema = [
     ]
 ];
 }
- 
 @endphp
 
 
@@ -439,36 +440,64 @@ function bannerSlider(banners, interval = 4000) {
                     @endif
                     <span>{{ $keyword }} in {{ ucwords(strtolower(str_replace('-', ' ', $city))) }}</span>                     
                 </nav>                           
-                <div itemscope itemtype="https://schema.org/Product" class="space-y-2">    
-                    <div itemprop="name">
-                        <h1 class="text-lg font-bold text-gray-900 leading-tight">{{ !empty($kwData['h1_heading']) ? $kwData['h1_heading'] : trim(($keyword ?? '') . (!empty($city) ? ' in ' . ucwords(strtolower(str_replace('-', ' ', $city))) : '' ))}}</h1>
-                    </div>                           
-                    <div itemprop="aggregateRating"
+                <div class="space-y-2">
+                    <h1 class="text-lg font-bold leading-tight text-gray-900">
+                    {{ !empty($kwData['h1_heading'])
+                    ? $kwData['h1_heading']
+                    : trim(
+                    ($keyword ?? '') .
+                    (!empty($city)
+                    ? ' in ' . ucwords(strtolower(str_replace('-', ' ', $city)))
+                    : '')
+                    )
+                    }}
+                    </h1>
+                </div>  
+                    <div
+                    itemscope
+                    itemtype="https://schema.org/Course"
+                    class="flex flex-wrap items-center gap-2"
+                >
+                    <div itemprop="name" class="text-gray-500">
+                        {{ $keyword }}
+                    </div>
+
+                    <div
+                        itemprop="aggregateRating"
                         itemscope
                         itemtype="https://schema.org/AggregateRating"
-                        class="flex items-center gap-2 text-sm">
-                        <img  itemprop="image" src="{{ asset('client/images/' . $starImg) }}"
-                        alt="{{ $ratingValue }} out of 5 stars"
-                        class="lazy-image h-4 w-auto"
-                        width="80"
-                        height="16"
-                        loading="lazy"
-                        decoding="async"
+                        class="flex flex-wrap items-center gap-2 text-sm"
+                    >
+                        <img
+                            src="{{ asset('client/images/' . $starImg) }}"
+                            alt="{{ $ratingValue }} out of 5 stars"
+                            class="h-4 w-auto"
+                            width="80"
+                            height="16"
+                            loading="lazy"
+                            decoding="async"
                         >
-                        <span class="font-semibold text-gray-900">
-                        <span itemprop="ratingValue">{{ $ratingValue }}</span>
+
+                        <span itemprop="ratingValue" class="font-semibold text-gray-900">
+                            {{ $ratingValue }}
                         </span>
+
                         <span class="text-gray-500">out of</span>
                         <span itemprop="bestRating">5</span>
+                        <meta itemprop="worstRating" content="1">
+
                         <span class="text-gray-500">based on</span>
                         <span itemprop="ratingCount">{{ $ratingCount }}</span>
                         <span class="text-gray-500">ratings</span>
-                        
                     </div>
+
+                    <p itemprop="description" class="w-full text-sm text-gray-600">
+                    {{ $kwData['short_definition']??'' }}
+                    </p>
+                </div>
+                
+                 
                   
-                  
-                </div> 
-                 <p class="pt-1">{{ $kwData['short_definition']??'' }}</p>
             </div>
     
             <div class="flex items-center gap-2 flex-wrap">

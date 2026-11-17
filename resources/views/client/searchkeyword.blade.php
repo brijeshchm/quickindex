@@ -70,7 +70,7 @@ body.modal-open { overflow: hidden; }
 .bg-white h2{
     font-size: 1.025rem;
     line-height: 1.75rem;
-    font-weight: 700;
+    font-weight: 500;
 }
 </style>
 
@@ -164,54 +164,9 @@ $keywordImg= !empty($kwData['key_icon'])
         }
         if (!empty($cityDetails['pincode'])) {
             $address['postalCode'] = $cityDetails['pincode'] ?? '560008';
-        }
-       
-        $pageUrl = url()->current();
+        }          
+        
 
-        $businessCollection = collect($businesses ?? [])
-        ->filter(function ($business) {
-            return filled(data_get($business, 'business_name'))
-                && filled(data_get($business, 'business_slug'));
-        })
-        ->take(10)
-        ->values();
-
-        $schema = [
-        '@context' => 'https://schema.org',
-        '@type' => 'CollectionPage',
-        '@id' => $pageUrl . '#webpage',
-        'name' => $metaTitle,
-        'url' => $pageUrl,
-        'description'  => $metaDescription,
-        ];
-
-        if ($businessCollection->isNotEmpty()) {
-        $schema['mainEntity'] = [
-            '@type' => 'ItemList',
-            '@id' => $pageUrl . '#business-list',
-            'numberOfItems' => $businessCollection->count(),
-
-            'itemListElement' => $businessCollection
-                ->map(function ($business, $index) {
-                    $businessUrl = route(
-                        'showCity',
-                        data_get($business, 'business_slug')
-                    );
-
-                    return [
-                        '@type' => 'ListItem',
-                        'position' => $index + 1,
-                        'item' => [
-                            '@type' => 'LocalBusiness',
-                            '@id' => $businessUrl . '#business',
-                            'name' => data_get($business, 'business_name'),
-                            'url' => $businessUrl,
-                        ],
-                    ];
-                })
-                ->all(),
-        ];
-        }
       
         if (!empty($keywordImg)) {
             $schema['image'] = $keywordImg;
@@ -223,6 +178,7 @@ $keywordImg= !empty($kwData['key_icon'])
 
     if(!empty($businesses)){
             $businessCollections = collect($businesses)->take(20);
+
         foreach($businessCollections as $clientBus){
     
             if (!empty($clientBus['logo']) && !empty($clientBus['name']) && !empty($clientBus['business_slug'])) {
@@ -259,7 +215,7 @@ $keywordImg= !empty($kwData['key_icon'])
                 'city_slug'    => $citySlug,
                 'service_slug' => $businessSlug,
                 ])
-                : url('/' . $businessSlug);
+                : '';
 
                 $schema = [
                 '@context' => 'https://schema.org',
@@ -278,6 +234,51 @@ $keywordImg= !empty($kwData['key_icon'])
 
     }
  
+
+
+  if (!empty($businesses)) { 
+
+$businessCollection = collect($businesses)->take(10);
+
+$schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'CollectionPage',
+
+    'name' => $keyword,
+
+    'description' => $metaDescription,
+
+    'url' => url()->current(),
+
+    'mainEntity' => [
+        '@type' => 'ItemList',
+
+        'numberOfItems' => $businessCollection->count(),
+
+        'itemListElement' => $businessCollection
+            ->values()
+            ->map(function ($business, $index) {
+
+                $businessName = data_get($business, 'business_name');
+                $businessSlug = data_get($business, 'business_slug');
+
+                return [
+                    '@type' => 'ListItem',
+
+                    'position' => $index + 1,
+
+                    'name' => $businessName,
+
+                    'url' => route(
+                        'showCity',
+                        $businessSlug
+                    )
+                ];
+            })
+            ->toArray()
+    ]
+];
+}
  
 @endphp
 
@@ -462,10 +463,9 @@ function bannerSlider(banners, interval = 4000) {
                 itemtype="https://schema.org/Course"
                 class="flex flex-wrap items-center gap-2"
             >
-                <h2 itemprop="name" class="font-semibold text-gray-900">
+                <div itemprop="name" class="text-gray-500">
                     {{ $keyword }}
-                </h2>
-
+                </div>
                 <div
                     itemprop="aggregateRating"
                     itemscope
