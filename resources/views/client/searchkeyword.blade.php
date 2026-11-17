@@ -630,6 +630,94 @@ function bannerSlider(banners, interval = 4000) {
             ])
         </div>
     </div>
+
+
+    
+<script>
+// ── Global image slider — handles multiple instances ──────────────────────
+window._sliders = {};
+
+function imgSliderInit(id, total) {
+    if (window._sliders[id]) return;
+    window._sliders[id] = { current: 0, total, timer: null };
+
+    const slider = document.getElementById(id);
+    if (!slider) return;
+
+    // Touch/swipe
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) imgSlide(id, diff > 0 ? 1 : -1);
+    });
+
+    // Pause on hover
+    slider.addEventListener('mouseenter', () => {
+        clearInterval(window._sliders[id].timer);
+    });
+    slider.addEventListener('mouseleave', () => {
+        imgStartAuto(id);
+    });
+
+    if (total > 1) imgStartAuto(id);
+}
+
+function imgGoToIndex(id, idx) {
+    const s = window._sliders[id];
+    if (!s) return;
+    s.current = (idx + s.total) % s.total;
+
+    // Move track
+    const track = document.getElementById(id + '-track');
+    if (track) track.style.transform = `translateX(-${s.current * 100}%)`;
+
+    // Counter
+    const counter = document.getElementById(id + '-current');
+    if (counter) counter.textContent = s.current + 1;
+
+    // Dots
+    for (let i = 0; i < s.total; i++) {
+        const dot = document.getElementById(id + '-dot-' + i);
+        if (!dot) continue;
+        dot.className = i === s.current
+            ? 'rounded-full transition-all duration-300 w-3 h-1.5 bg-white'
+            : 'rounded-full transition-all duration-300 w-1.5 h-1.5 bg-white/50';
+    }
+}
+
+window.imgSlide = function (id, dir) {
+    const s = window._sliders[id];
+    if (!s) return;
+    imgGoToIndex(id, s.current + dir);
+    clearInterval(s.timer);
+    imgStartAuto(id);
+};
+
+window.imgGoTo = function (id, idx) {
+    imgGoToIndex(id, idx);
+    const s = window._sliders[id];
+    if (s) { clearInterval(s.timer); imgStartAuto(id); }
+};
+
+function imgStartAuto(id) {
+    const s = window._sliders[id];
+    if (!s || s.total <= 1) return;
+    s.timer = setInterval(() => imgGoToIndex(id, s.current + 1), 3500);
+}
+
+// Auto-init all sliders on page load
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[id^="slider-"]').forEach(el => {
+        const track = document.getElementById(el.id + '-track');
+        if (!track) return;
+        const total = track.children.length;
+        imgSliderInit(el.id, total);
+    });
+});
+</script>
 @endif
 <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 my-3 shadow-md">
                     <div class="relative px-5 py-4 flex items-center gap-5 flex-wrap sm:flex-nowrap">
