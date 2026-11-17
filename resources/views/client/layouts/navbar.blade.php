@@ -1028,6 +1028,7 @@ function renderStickyCityList(list, q = '') {
 renderStickyCityList(FALLBACK_CITIES);
 let stickyCityTimeout = null;
 function filterStickyCities(q) {
+     q = q.trim();
     document.getElementById('sticky-city-clear').classList.toggle('hidden', !q);
     clearTimeout(stickyCityTimeout);
     
