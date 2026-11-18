@@ -1043,12 +1043,17 @@ function filterStickyCities(q) {
        
             renderStickyCityList(m.length ? m : FALLBACK_CITIES, q);
 
+        } catch { 
             
+       // renderStickyCityList(FALLBACK_CITIES.filter(c => c.toLowerCase().includes(q.toLowerCase())), q); 
 
-
-
-
-        } catch { renderStickyCityList(FALLBACK_CITIES.filter(c => c.toLowerCase().includes(q.toLowerCase())), q); }
+       renderStickyCityList(FALLBACK_CITIES.filter(city =>
+    String(city.cityDetails || '')
+        .toLowerCase()
+        .includes(q.toLowerCase())
+), q);
+    
+    }
     }, 250);
 }
 
@@ -1290,23 +1295,121 @@ function renderMobileCityList(list, q = '') {
 }
 
 
-function filterMobileCities(q) {
-    const clearBtn = document.getElementById('mobile-city-clear');
-    if (clearBtn) clearBtn.classList.toggle('hidden', !q);
-    clearTimeout(mobileCityTimeout);
-    if (q.length < 1) { renderMobileCityList(FALLBACK_CITIES); return; }
-    mobileCityTimeout = setTimeout(async () => {
-        try {
+// function filterMobileCities(q) {
+//     const clearBtn = document.getElementById('mobile-city-clear');
+//     if (clearBtn) clearBtn.classList.toggle('hidden', !q);
+//     clearTimeout(mobileCityTimeout);
+//     if (q.length < 1) { renderMobileCityList(FALLBACK_CITIES); return; }
+//     mobileCityTimeout = setTimeout(async () => {
+//         try {
              
-            const r = await fetch(`/getCityAjax?city=${encodeURIComponent(q)}`);
-            const d = await r.json();
-            const m = (d.data ?? []).map(i => ({ city: i.city, cityDetails: i.cityDetails }));
-            renderMobileCityList(m.length ? m : FALLBACK_CITIES, q);
-        } catch {
-            renderMobileCityList(FALLBACK_CITIES.filter(c => c.cityDetails.toLowerCase().includes(q.toLowerCase())), q);
+//             const r = await fetch(`/getCityAjax?city=${encodeURIComponent(q)}`);
+//             const d = await r.json();
+//             const m = (d.data ?? []).map(i => ({ city: i.city, cityDetails: i.cityDetails }));
+//             renderMobileCityList(m.length ? m : FALLBACK_CITIES, q);
+//         } catch {
+//            // renderMobileCityList(FALLBACK_CITIES.filter(c => c.cityDetails.toLowerCase().includes(q.toLowerCase())), q);
+//             renderMobileCityList(FALLBACK_CITIES.filter(city =>
+//     String(city.cityDetails || '')
+//         .toLowerCase()
+//         .includes(q.toLowerCase())
+// ), q);
+
+
+            
+
+//         }
+//     }, 250);
+// }
+
+
+// Sirf ek baar declare karein.
+let mobileCityTimeout = null;
+let mobileCityController = null;
+let mobileCitySearchId = 0;
+
+function filterMobileCities(q = '') {
+    q = String(q).trim();
+
+    const searchId = ++mobileCitySearchId;
+    const clearBtn = document.getElementById('mobile-city-clear');
+
+    clearBtn?.classList.toggle('hidden', !q);
+
+    clearTimeout(mobileCityTimeout);
+    mobileCityController?.abort();
+
+    const defaults = Array.isArray(FALLBACK_CITIES)
+        ? FALLBACK_CITIES
+        : [];
+
+    if (!q) {
+        renderMobileCityList(defaults);
+        return;
+    }
+
+    const fallback = defaults.filter(city =>
+        String(city.cityDetails || city.city || '')
+            .toLowerCase()
+            .includes(q.toLowerCase())
+    );
+
+    mobileCityTimeout = setTimeout(async () => {
+        const controller = new AbortController();
+        mobileCityController = controller;
+
+        try {
+            const response = await fetch(
+                `/getCityAjax?city=${encodeURIComponent(q)}`,
+                {
+                    signal: controller.signal,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('City search failed');
+            }
+
+            const data = await response.json();
+
+            const cities = (Array.isArray(data.data) ? data.data : [])
+                .map(item => ({
+                    city: String(item.city || '').trim(),
+                    cityDetails: String(
+                        item.cityDetails || item.city || ''
+                    ).trim()
+                }))
+                .filter(city => city.city && city.cityDetails);
+
+            if (searchId !== mobileCitySearchId) return;
+
+            renderMobileCityList(
+                cities.length ? cities : fallback,
+                q
+            );
+        } catch (error) {
+            if (
+                error.name === 'AbortError' ||
+                searchId !== mobileCitySearchId
+            ) {
+                return;
+            }
+
+            renderMobileCityList(fallback, q);
+        } finally {
+            if (mobileCityController === controller) {
+                mobileCityController = null;
+            }
         }
     }, 250);
 }
+
+
+
 
 function clearMobileCitySearch() {
     const input = document.getElementById('mobile-city-search');
